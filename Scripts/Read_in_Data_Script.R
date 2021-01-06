@@ -24,7 +24,6 @@ library(readxl)
 # ---------------------------------------------------------------------------
 
 
-
 # ---------------------------------------------------------------------------
 #     Habitat Raw Data
 # ---------------------------------------------------------------------------
@@ -58,7 +57,6 @@ cols.num <- c( 'Sand_occular_prcnt_INDICATOR_1',	'Gravel_occular_prcnt_INDICATOR
 habitat_raw_data[cols.num] <- sapply(habitat_raw_data[cols.num],as.numeric)
 
 
-
 # USE for interactive (COULD just have a person edit a CSV)
 # habitat_raw_data_new <- data_edit(habitat_raw_data, save_as = "habitat_raw_data_updated.csv")
 
@@ -66,25 +64,25 @@ habitat_raw_data[cols.num] <- sapply(habitat_raw_data[cols.num],as.numeric)
 #     AU Ranks
 # ---------------------------------------------------------------------------
 
-AU_Ranks_data = read_excel( paste(data_path_2,'AU_Ranks.xlsx', sep="") )
+AU_Ranks_data = read_excel( paste(data_path,'AU_Ranks.xlsx', sep="") )
 
 # ---------------------------------------------------------------------------
 #     Life Stage Priorities - only AU level
 # ---------------------------------------------------------------------------
 
-Life_Stage_Priorities_AU_only_data = read_excel( paste(data_path_2,'LifeStagePriorities.xlsx', sep=""), skip=1 )
+Life_Stage_Priorities_AU_only_data = read_excel( paste(data_path,'LifeStagePriorities.xlsx', sep=""), skip=1 )
 
 # ---------------------------------------------------------------------------
 #     Life Stage Priorities - only AU level
 # ---------------------------------------------------------------------------
 
-Life_Stage_Priorities_AU_and_Reach_data = read_excel( paste(data_path_2,'LifeStagePriorities_AUandReach.xlsx', sep="/"), skip=1 )
+Life_Stage_Priorities_AU_and_Reach_data = read_excel( paste(data_path,'LifeStagePriorities_AUandReach.xlsx', sep="/"), skip=1 )
 
 # ---------------------------------------------------------------------------
 #    Reach Information
 # ---------------------------------------------------------------------------
 
-Reach_Information_data = read_excel( paste(data_path_2,'ReachInfo.xlsx', sep="/") )
+Reach_Information_data = read_excel( paste(data_path,'ReachInfo.xlsx', sep="/") )
 
 
 # ---------------------------------------------------------------------------

@@ -23,8 +23,7 @@ script_path = 'Scripts/'
 data_path = 'Data/'
 #setwd(data_path)
 
-data_path_2 = 'Y:/UCRTT/Prioritization/Tables for Tools/'
-# NOTE - eventually copy this data over to it is read from the "Data" directory
+# Old location of the reach attribute (NOT Raw) data:  'Y:/UCRTT/Prioritization/Tables for Tools/'
 
 # ---------------------------------------------------------------------------
 #
