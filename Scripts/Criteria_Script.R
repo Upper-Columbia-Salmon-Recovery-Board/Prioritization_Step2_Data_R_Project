@@ -1,8 +1,8 @@
 # ---------------------------------------------------------------------------
 #
-#      Script: Establish Critiera for Filters 
+#      SCRIPT: Establish Critiera for Filters 
 #
-#      R Script to generate Priority Action Categories Based on Habitat Quality 
+#      R Project to generate Priority Action Categories Based on Habitat Quality 
 #          and Limiting Factor Analysis from Step 2 of RTT Prioritization Process
 #
 #          Author: Ryan Niemeyer, Upper Columbia Salmon Recovery Board

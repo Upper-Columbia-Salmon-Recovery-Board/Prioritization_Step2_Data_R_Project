@@ -8,6 +8,7 @@
 #
 # ---------------------------------------------------------------------------
 
+library(tidyverse)
 
 # ---------------------------------------------------------------------------
 #
@@ -23,9 +24,7 @@ data_path = 'Data/'
 #setwd(data_path)
 
 data_path_2 = 'Y:/UCRTT/Prioritization/Tables for Tools/'
-
-
-
+# NOTE - eventually copy this data over to it is read from the "Data" directory
 
 # ---------------------------------------------------------------------------
 #
@@ -46,11 +45,13 @@ source(paste(script_path, 'Criteria_Script.R', sep=""))
 
 # ---------------------------------------------------------------------------
 #
-#   
+#   Generate Habitat Quality and Habitat Attribute Scores
 #
 # ---------------------------------------------------------------------------
 
 
+
+source(paste(script_path, 'Habitat_Quality_Scores_Generate_Script.R', sep=""))
 
 
 
@@ -74,11 +75,20 @@ summary(habitat_raw_data )
 
 
 plot( Pieces_per_mile_INDICATOR_1  ~  as.factor(Disturbance_CATEGORY_1 ), habitat_raw_data )
+plot( Pieces_per_mile_INDICATOR_1  ~  GravelCobble_UCSRB_pct, habitat_raw_data )
+plot( Pools_deeper_3_ft_per_mile_INDICATOR_4  ~  GravelCobble_UCSRB_pct, habitat_raw_data )
 
 
 hist(as.numeric(habitat_raw_data$Pools_deeper_5_ft_per_mile_INDICATOR_5))
 
+ 
+filter(habitat_raw_data,  Pools_deeper_3_ft_per_mile_INDICATOR_4   < 200 )
 
-filter(habitat_raw_data,  Boulder_occular_prcnt_INDICATOR_4  > 5 )
+habitat_raw_data %>%  filter(Pools_deeper_3_ft_per_mile_INDICATOR_4   >10)
+
+habitat_raw_data %>%
+  filter(Basin  == "Wenatchee", ) %>%
+  select(ReachName, Pools_deeper_3_ft_per_mile_INDICATOR_4)
 
 
+habitat_raw_data %>%  select(ReachName, Pools_deeper_3_ft_per_mile_INDICATOR_4 ) %>% head(100)
