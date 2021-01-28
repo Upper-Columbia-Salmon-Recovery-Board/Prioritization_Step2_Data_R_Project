@@ -19,14 +19,14 @@
 
 # -------- Assessment Unit (AU) (HUC12) Tier rank (data in habitat_attribute_scores) ----------------
 AU_Rank = c(1)                       # potential: 1, 2, or 3; 1 is high priority, 3 is low priority
-# --------------- Reach Confinment (data in confinement_scores) --------------------------------
+# --------------- Reach Confinement (data in confinement_scores) --------------------------------
 Reach_Confinement =  c(5)           # potential: 1, 3, 5; 1 is higher % confined, 5 is higher % unconfined, based on USGS Valley Confinment Algorithm
 # --------------- Sum Life Stage (sum of all the life stages present in reach) ---------------------
 Sum_Life_Stage = c(4, 5, 6, 7)   # potential: 1,2,3,4,5,6,7
 # ----------------- Habitat Quality Score (data in habitat_attribute_scores) -----------------
 Habitat_Quality_score = c(5)      # potential: 1,2,3,4,5; based on "goldilocks method" where 5 is highest proirity, 1 is lowest
 # --------------------- Habitat Attribute Scores-- "DRAFT Habitat Attribute..." data (data in Cumul_Habitat_Attribute_Score)
-# Oct 2020: did [1] (Unacceptable only)   OR [1, 3] (Unaceptable and At Risk)
+# Oct 2020: did [1] (Unacceptable only)   OR [1, 3] (Unacceptable and At Risk)
 Individual_Habitat_Attribute_Score = c(1, 3)   # possible scores - [1,3,5] 1 - unacceptable, 5 - adequate
 
 

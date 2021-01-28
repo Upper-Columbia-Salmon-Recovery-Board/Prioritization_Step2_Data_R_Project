@@ -21,7 +21,9 @@ script_path = 'Scripts/'
 
 # ----------- directory of data -------------------
 data_path = 'Data/'
-#setwd(data_path)
+
+# ----------- directory for output ---------
+output_path = 'Output/'
 
 # Old location of the reach attribute (NOT Raw) data:  'Y:/UCRTT/Prioritization/Tables for Tools/'
 
@@ -44,11 +46,9 @@ source(paste(script_path, 'Criteria_Script.R', sep=""))
 
 # ---------------------------------------------------------------------------
 #
-#   Generate Habitat Quality and Habitat Attribute Scores
+#   Generate Habitat Attribute Table
 #
 # ---------------------------------------------------------------------------
-
-
 
 source(paste(script_path, 'Habitat_Quality_Scores_Generate_Script.R', sep=""))
 
@@ -56,9 +56,12 @@ source(paste(script_path, 'Habitat_Quality_Scores_Generate_Script.R', sep=""))
 
 # ---------------------------------------------------------------------------
 #
-#   
+#   Generate Habitat Quality Restoration and Protection Score
 #
 # ---------------------------------------------------------------------------
+
+source(paste(script_path, 'Habitat_Attribute_Scores_Generate_Script.R', sep=""))
+
 
 
 
@@ -91,3 +94,12 @@ habitat_raw_data %>%
 
 
 habitat_raw_data %>%  select(ReachName, Pools_deeper_3_ft_per_mile_INDICATOR_4 ) %>% head(100)
+
+species_reach = 'Steelhead.Reach'
+species_reaches_true = 'yes'
+
+
+habitat_raw_data %>%
+  filter(ReachName  == "White River Upper 01" ) %>%
+  select(ReachName, PROSER)
+
