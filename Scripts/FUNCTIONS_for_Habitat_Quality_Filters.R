@@ -81,58 +81,58 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(data_
     if(length(metric_criteria_x$Category) == 2){
       data_output_x = data_output_x  %>%
         mutate(score = ifelse(metric_data  > metric_criteria_x$Category_lower[1] & 
-                                metric_data  <= metric_criteria_x$Category_upper[1] , metric_criteria$Score[1],
+                                metric_data  <= metric_criteria_x$Category_upper[1] , metric_criteria_x$Score[1],
                               ifelse(metric_data  > metric_criteria_x$Category_lower[2] & 
-                                       metric_data  <= metric_criteria_x$Category_upper[2] , metric_criteria$Score[2],
+                                       metric_data  <= metric_criteria_x$Category_upper[2] , metric_criteria_x$Score[2],
                                                    NA)))
       
     }else if(length(metric_criteria_x$Category) == 3){
       data_output_x = data_output_x  %>%
         mutate(score = ifelse(metric_data  > metric_criteria_x$Category_lower[1] & 
-                                metric_data  <= metric_criteria_x$Category_upper[1] , metric_criteria$Score[1],
+                                metric_data  <= metric_criteria_x$Category_upper[1] , metric_criteria_x$Score[1],
                               ifelse(metric_data  > metric_criteria_x$Category_lower[2] & 
-                                       metric_data  <= metric_criteria_x$Category_upper[2] , metric_criteria$Score[2],
+                                       metric_data  <= metric_criteria_x$Category_upper[2] , metric_criteria_x$Score[2],
                                      ifelse(metric_data  > metric_criteria_x$Category_lower[3] & 
-                                              metric_data  <= metric_criteria_x$Category_upper[3] , metric_criteria$Score[3],
+                                              metric_data  <= metric_criteria_x$Category_upper[3] , metric_criteria_x$Score[3],
                                             NA))))
     }else if(length(metric_criteria_x$Category) == 4){
       data_output_x = data_output_x  %>%
         mutate(score = ifelse(metric_data  > metric_criteria_x$Category_lower[1] & 
-                                metric_data  <= metric_criteria_x$Category_upper[1] , metric_criteria$Score[1],
+                                metric_data  <= metric_criteria_x$Category_upper[1] , metric_criteria_x$Score[1],
                               ifelse(metric_data  > metric_criteria_x$Category_lower[2] & 
-                                       metric_data  <= metric_criteria_x$Category_upper[2] , metric_criteria$Score[2],
+                                       metric_data  <= metric_criteria_x$Category_upper[2] , metric_criteria_x$Score[2],
                                      ifelse(metric_data  > metric_criteria_x$Category_lower[3] & 
-                                              metric_data  <= metric_criteria_x$Category_upper[3] , metric_criteria$Score[3],
+                                              metric_data  <= metric_criteria_x$Category_upper[3] , metric_criteria_x$Score[3],
                                             ifelse(metric_data  > metric_criteria_x$Category_lower[4] & 
-                                                     metric_data  <= metric_criteria_x$Category_upper[4] , metric_criteria$Score[4],  
+                                                     metric_data  <= metric_criteria_x$Category_upper[4] , metric_criteria_x$Score[4],  
                                             NA)))))
     }else if(length(metric_criteria_x$Category) == 5){
       data_output_x = data_output_x  %>%
         mutate(score = ifelse(metric_data  > metric_criteria_x$Category_lower[1] & 
-                                metric_data  <= metric_criteria_x$Category_upper[1] , metric_criteria$Score[1],
+                                metric_data  <= metric_criteria_x$Category_upper[1] , metric_criteria_x$Score[1],
                               ifelse(metric_data  > metric_criteria_x$Category_lower[2] & 
-                                       metric_data  <= metric_criteria_x$Category_upper[2] , metric_criteria$Score[2],
+                                       metric_data  <= metric_criteria_x$Category_upper[2] , metric_criteria_x$Score[2],
                                      ifelse(metric_data  > metric_criteria_x$Category_lower[3] & 
-                                              metric_data  <= metric_criteria_x$Category_upper[3] , metric_criteria$Score[3],
+                                              metric_data  <= metric_criteria_x$Category_upper[3] , metric_criteria_x$Score[3],
                                             ifelse(metric_data  > metric_criteria_x$Category_lower[4] & 
-                                                     metric_data  <= metric_criteria_x$Category_upper[4] , metric_criteria$Score[4],
+                                                     metric_data  <= metric_criteria_x$Category_upper[4] , metric_criteria_x$Score[4],
                                                    ifelse(metric_data  > metric_criteria_x$Category_lower[5] & 
-                                                            metric_data  <= metric_criteria_x$Category_upper[5] , metric_criteria$Score[5], 
+                                                            metric_data  <= metric_criteria_x$Category_upper[5] , metric_criteria_x$Score[5], 
                                                    NA))))))
     }else if(length(metric_criteria_x$Category) == 6){
       data_output_x = data_output_x  %>%
         mutate(score = ifelse(metric_data  > metric_criteria_x$Category_lower[1] & 
-                                metric_data  <= metric_criteria_x$Category_upper[1] , metric_criteria$Score[1],
+                                metric_data  <= metric_criteria_x$Category_upper[1] , metric_criteria_x$Score[1],
                               ifelse(metric_data  > metric_criteria_x$Category_lower[2] & 
-                                       metric_data  <= metric_criteria_x$Category_upper[2] , metric_criteria$Score[2],
+                                       metric_data  <= metric_criteria_x$Category_upper[2] , metric_criteria_x$Score[2],
                                      ifelse(metric_data  > metric_criteria_x$Category_lower[3] & 
-                                              metric_data  <= metric_criteria_x$Category_upper[3] , metric_criteria$Score[3],
+                                              metric_data  <= metric_criteria_x$Category_upper[3] , metric_criteria_x$Score[3],
                                             ifelse(metric_data  > metric_criteria_x$Category_lower[4] & 
-                                                     metric_data  <= metric_criteria_x$Category_upper[4] , metric_criteria$Score[4],
+                                                     metric_data  <= metric_criteria_x$Category_upper[4] , metric_criteria_x$Score[4],
                                                    ifelse(metric_data  > metric_criteria_x$Category_lower[5] & 
-                                                            metric_data  <= metric_criteria_x$Category_upper[5] , metric_criteria$Score[5], 
+                                                            metric_data  <= metric_criteria_x$Category_upper[5] , metric_criteria_x$Score[5], 
                                                           ifelse(metric_data  > metric_criteria_x$Category_lower[6] & 
-                                                                   metric_data  <= metric_criteria_x$Category_upper[6] , metric_criteria$Score[6],
+                                                                   metric_data  <= metric_criteria_x$Category_upper[6] , metric_criteria_x$Score[6],
                                                           NA)))))))
     }
     
@@ -204,9 +204,6 @@ FUNCTION_generate_habitat_attribute_score_from_CHAMP_or_Channel_Unit = function(
     colnames(data_output_x) = "metric_data"
     
     
-    
-    
-  }else if(  ){
     
     
   }
@@ -329,130 +326,5 @@ FUNCTION_generate_habitat_attribute_score_from_multiple_habitat_attributes = fun
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-data_output_x = habitat_raw_data %>%
-  select(data_col_name)
-
-colnames(data_output_x) = "metric_data"
-
-data_output_x2 = data_output_x  %>%
-  mutate(score = ifelse(metric_data  > metric_criteria_x$Category_lower[1] & 
-                          metric_data  <= metric_criteria_x$Category_upper[1] , metric_criteria$Score[1],
-                        ifelse(metric_data  > metric_criteria_x$Category_lower[2] & 
-                                 metric_data  <= metric_criteria_x$Category_upper , metric_criteria$Score[2],
-                               ifelse(metric_data  > metric_criteria_x$Category_lower[3] & 
-                                        metric_data  <= metric_criteria_x$Category_upper , metric_criteria$Score[3],
-                                      NA))))
-
-
-
-
-habitat_raw_data_Extra %>% 
-  dplyr::mutate(habitat_score_x = correct == 1L & attempts == 1L)
-out <- habitat_raw_data %>%
-  summarise_all(list(~ list(funx(.))))
-
-
-fxn_generate_score = function(.datax){
-  
-  if( any(colnames(habitat_raw_data) == data_col_name) ){
-    
-    # -----------------------------------
-    #    Generate Metric value from Raw (primary) data table
-    # -----------------------------------
-    data_output_x = habitat_raw_data%>%
-      select(data_col_name)
-    
-  }
-  
-  
-  # ---------------------------------------------------------------------- 
-  #
-  #  Generate Score (1,3,5) - IF Metric data is present - based on Criteria
-  #
-  # ---------------------------------------------------------------------- 
-  
-  # -------------------- Identify rows with the data source (will be multiple if multiple criteria) -----
-  metric_criteria_x = Habitat_Quality_and_Geomorphic_Potential_Rating_Criteria_Updated %>%
-    filter(Data_Sources   == data_col_name) 
-
-  # -----------------------------
-  #    IF score based on category (e.g. "Adequate" or "At Risk" score)
-  # -----------------------------
-  if(metric_criteria_x$Category_Type[1]== 'factor'){
-    
-    # -----------------------------
-    #    IF score is simple REI value
-    # ----------------------------- 
-    # ------------------- identify specific score for the metric -----------
-    score_output_x = metric_criteria_x %>%
-      filter(Category   == data_output_x[[1]], ) 
-    score_output_x = score_output_x$Score
-    
-    
-    
-    
-    # -----------------------------
-    #    IF score based on numeric value
-    # -----------------------------
-  }else if(metric_criteria_x$Category_Type[1]== 'numeric'){
-    
-    # ------------ identify category based on lower and upper bounds -------
-    data_output_filter_x = metric_criteria_x %>%
-      filter(Category_upper   > data_output_x[[1]], ) %>%
-      filter(Category_lower   <= data_output_x[[1]] ) 
-    
-    score_output_x = data_output_filter_x$Score
-    
-  }
-      
-    }else{
-      score_output_x = NA
-    }  
-    
-    }else{
-      score_output_x = NA
-    }
-    }else{
-      score_output_x = NA
-    }
-
-
-}
-
-
-
-
-data_output_x  %>%
-  mutate(socre_x = ifelse(RAWatershed_Rating_Flow  == metric_criteria_x$Category[1], metric_criteria$Score[1],
-                   ifelse(RAWatershed_Rating_Flow  == metric_criteria_x$Category[2], metric_criteria$Score[2],
-                          ifelse(RAWatershed_Rating_Flow  == metric_criteria_x$Category[3], metric_criteria$Score[3],
-                                 ifelse(RAWatershed_Rating_Flow  == metric_criteria_x$Category[4], metric_criteria$Score[4],
-                                        NA)))))
-
-
-
-
-out <- habitat_raw_data %>%
-  fxn_generate_score()
-
-
-
-add_cfa_col <- function(.data) {
-  dplyr::mutate(.data, habitat_outpux = correct == 1L & attempts == 1L)
-}
-student_assignment_data %>% 
-  add_cfa_col()
 
 

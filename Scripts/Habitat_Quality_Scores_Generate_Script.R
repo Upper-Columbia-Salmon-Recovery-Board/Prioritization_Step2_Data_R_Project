@@ -119,9 +119,9 @@ for(habitat_attribute_x in names(Habitat_Quality_Habitat_Attributes_List)){
   # --------------------------------------------------------------------
   
   # ---------------------------- add new columns to summary data frame -----------
-  column_metric = paste(gsub(" ", "", habitat_attribute_x, fixed = TRUE), "metric", sep="_")
+  #column_metric = paste(gsub(" ", "", habitat_attribute_x, fixed = TRUE), "metric", sep="_")
   column_score = paste(gsub(" ", "", habitat_attribute_x, fixed = TRUE), "score", sep="_")
-  Habitat_Quality_Scores[,column_metric] = output_x$metric_data
+  #Habitat_Quality_Scores[,column_metric] = output_x$metric_data
   Habitat_Quality_Scores[,column_score] = as.numeric(output_x$score)
   
   # --------------------------------------------------------------------
@@ -159,7 +159,7 @@ Habitat_Quality_Scores = Habitat_Quality_Scores%>%
   mutate(HQ_Sum = sum(c_across(c('Stability_Mean','CoarseSubstrate_score','Cover-Wood_score',
                                  'Flow-SummerBaseFlow_score', 'Off-Channel-Floodplain_score',
                                  'Off-Channel-Side-Channels_score','PoolQuantity&Quality_score','Riparian_Mean',
-                                 'Temperature-Rearing_score'   )), na.rm=T) )
+                                 'Temperature-Rearing_score'   )), na.rm=F) )
 
 # -------------------- Calculate percent (0 - 100%) ------------------
 Habitat_Quality_Scores$HQ_Pct = Habitat_Quality_Scores$HQ_Sum/45
@@ -199,61 +199,6 @@ write.xlsx(
   showNA = TRUE,
   password = NULL
 )
-
-
-
-
-
-
-
-
-
-
-# ---------------------------------------------------------------------------
-#
-#    OLD
-#
-# ---------------------------------------------------------------------------
-
-
-# ---------------------------------------------------------------------------
-#
-#    Calculate Habitat Quality Score for Restoration
-#
-# ---------------------------------------------------------------------------
-
-
-habitat_raw_data %>%
-  filter(ReachName  == "White River Upper 01" ) %>%
-  select(ReachName, PROSER)
-
-
-# ---------------------------------------------------------------------------
-# 
-#       Calculate Habitat Quality Score for Restoration
-#
-# ---------------------------------------------------------------------------
-
-
-
-
-
-# ---------------------------------------------------------------------------
-#
-#
-#
-# ---------------------------------------------------------------------------
-
-
-
-
-
-# ---------------------------------------------------------------------------
-#
-#
-#
-# ---------------------------------------------------------------------------
-
 
 
 
