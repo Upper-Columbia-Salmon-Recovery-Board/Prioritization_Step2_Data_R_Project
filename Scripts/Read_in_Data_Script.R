@@ -25,7 +25,9 @@ library(readxl)
 
 
 # ---------------------------------------------------------------------------
+#
 #     Habitat Raw Data
+#
 # ---------------------------------------------------------------------------
 
 habitat_raw_data = read_excel(  paste(data_path,'Habitat_Data_Raw.xlsx', sep="") ,   skip=1  )
@@ -61,7 +63,9 @@ habitat_raw_data[cols.num] <- sapply(habitat_raw_data[cols.num],as.numeric)
 # habitat_raw_data_new <- data_edit(habitat_raw_data, save_as = "habitat_raw_data_updated.csv")
 
 # ---------------------------------------------------------------------------
+#
 #     AU Ranks
+#
 # ---------------------------------------------------------------------------
 
 AU_Ranks_data = read_excel( paste(data_path,'AU_Ranks.xlsx', sep="") )
@@ -73,19 +77,25 @@ cols.num = c('Spring Chinook_Restoration',	'SPCHNTier_Restoration',	'Steelhead_R
 AU_Ranks_data[cols.num] <- sapply(AU_Ranks_data[cols.num],as.numeric)
 
 # ---------------------------------------------------------------------------
+#
 #     Life Stage Priorities - only AU level
+#
 # ---------------------------------------------------------------------------
 
 Life_Stage_Priorities_AU_only_data = read_excel( paste(data_path,'LifeStagePriorities.xlsx', sep=""), skip=1 )
 
 # ---------------------------------------------------------------------------
+#
 #     Life Stage Priorities - only AU level
+#
 # ---------------------------------------------------------------------------
 
 Life_Stage_Priorities_AU_and_Reach_data = read_excel( paste(data_path,'LifeStagePriorities_AUandReach.xlsx', sep=""), skip=1 )
 
 # ---------------------------------------------------------------------------
+#
 #     Channel Habitat Unit Data
+#
 # ---------------------------------------------------------------------------
 
 Channel_Unit_Raw = read_excel( paste(data_path,'Channel_Unit_Raw.xlsx', sep="") )
@@ -97,7 +107,9 @@ cols.num = c('Riffle_Habitat_Prcnt_INDICATOR_1' , 'Rapid_Habitat_Prcnt_INDICATOR
 Channel_Unit_Raw[cols.num] <- sapply(Channel_Unit_Raw[cols.num],as.numeric)
 
 # ---------------------------------------------------------------------------
+#
 #     CHAMP data per reach
+#
 # ---------------------------------------------------------------------------
 
 CHAMP_data_per_reach = read_excel( paste(data_path,'CHAMP_data_per_reach.xlsx', sep="") )
@@ -132,27 +144,79 @@ cols.num = c('NumberofCHaMPDataPoints', 'SlowWater_Pct_Average',	'SlowWater_Pct_
 CHAMP_data_per_reach[cols.num] <- sapply(CHAMP_data_per_reach[cols.num],as.numeric)
 
 
-
 # ---------------------------------------------------------------------------
+#
 #    Reach Information
+#
 # ---------------------------------------------------------------------------
 
 Reach_Information_data = read_excel( paste(data_path,'ReachInfo.xlsx', sep="") )
 
 # ---------------------------------------------------------------------------
+#
 #   Confinement Scores
+#
 # ---------------------------------------------------------------------------
 
 confinement_scores = read_excel( paste(data_path,'Confinement_Scores.xlsx', sep="") )
 
 # ---------------------------------------------------------------------------
+#
 #  Habitat Quality and Geomorphic Potential Rating Criteria
+#
+# ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+#    Read in main data
 # ---------------------------------------------------------------------------
 
 Habitat_Quality_and_Geomorphic_Potential_Rating_Criteria = read_excel( paste(data_path,'Habitat_Quality_and_Geomorphic_Potential_Rating_Criteria.xlsx', sep="") )
+# ----------- update columns that are numeric to numeric ------------
+cols.num = c('Category_lower', 'Category_upper')
+Habitat_Quality_and_Geomorphic_Potential_Rating_Criteria[cols.num] <- sapply(Habitat_Quality_and_Geomorphic_Potential_Rating_Criteria[cols.num],as.numeric)
 
 # ---------------------------------------------------------------------------
+#    Generate data frame where each Data Source has a row (since some rows have multiple data sources)
+# ---------------------------------------------------------------------------
+Habitat_Quality_and_Geomorphic_Potential_Rating_Criteria_Updated = data.frame()
+
+for(rowx in rownames(Habitat_Quality_and_Geomorphic_Potential_Rating_Criteria)){
+  
+  # ------------- choose each row -------------
+  rowx2 = Habitat_Quality_and_Geomorphic_Potential_Rating_Criteria[rowx, ]
+  data_source_x = rowx2$Data_Sources
+  
+  # -------------- verify if multiple data sources ---------
+  if(grepl( ",", data_source_x, fixed = TRUE)){
+    
+    list_data_sources = unlist(strsplit(data_source_x, ","))
+    for(data_sources_x in list_data_sources){
+      
+      # ------------- create updated row with just one data sources --------
+      rowx2_updated = rowx2
+      rowx2_updated$Data_Sources = data_sources_x
+      # ------------- append new row ------------
+      Habitat_Quality_and_Geomorphic_Potential_Rating_Criteria_Updated = 
+        rbind(Habitat_Quality_and_Geomorphic_Potential_Rating_Criteria_Updated, rowx2_updated)
+    }
+    
+    # ----------- if only one data sources ---------------
+  }else{
+    Habitat_Quality_and_Geomorphic_Potential_Rating_Criteria_Updated = 
+      rbind(Habitat_Quality_and_Geomorphic_Potential_Rating_Criteria_Updated, rowx2)
+  }
+  
+}
+
+
+# ---------------------------------------------------------------------------
+#
 #  Habitat Limiting Factor Rating Criteria
+#
+# ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+#    Read in main data
 # ---------------------------------------------------------------------------
 
 Habitat_Limiting_Factor_Rating_Criteria = read_excel( paste(data_path,'Habitat_Limiting_Factor_Rating_Criteria.xlsx', sep="") )
@@ -161,8 +225,9 @@ Habitat_Limiting_Factor_Rating_Criteria = read_excel( paste(data_path,'Habitat_L
 cols.num = c('Category_lower', 'Category_upper', 'Filter_value_lower_meters', 'Filter_value_upper_meters')
 Habitat_Limiting_Factor_Rating_Criteria[cols.num] <- sapply(Habitat_Limiting_Factor_Rating_Criteria[cols.num],as.numeric)
 
-
-# ------------------- for each Data Source (since some rows have multipe) into an individual row for each Data Source -------
+# ---------------------------------------------------------------------------
+#    Generate data frame where each Data Source has a row (since some rows have multiple data sources)
+# ---------------------------------------------------------------------------
 Habitat_Limiting_Factor_Rating_Criteria_Updated = data.frame()
 
 for(rowx in rownames(Habitat_Limiting_Factor_Rating_Criteria)){
@@ -195,14 +260,33 @@ for(rowx in rownames(Habitat_Limiting_Factor_Rating_Criteria)){
 
 
 # ---------------------------------------------------------------------------
+#
+#   Habitat Quality Restoration and Protection Criteria
+#
+# ---------------------------------------------------------------------------
+
+Habitat_Quality_Restoration_and_Protection_Scoring = read_excel( paste(data_path,'Habitat_Quality_Restoration_and_Protection_Scoring.xlsx', sep="") )
+
+# --------------- divide up into Restoration and Protectoin -------------------------
+Restoration_Scoring = Habitat_Quality_Restoration_and_Protection_Scoring %>%
+  filter(Habitat_Quality_Score_Metric == 'Habitat Quality Scoring- Restoration')
+
+Protection_Scoring = Habitat_Quality_Restoration_and_Protection_Scoring %>%
+  filter(Habitat_Quality_Score_Metric == 'Habitat Quality Scoring- Protection')
+
+# ---------------------------------------------------------------------------
+#
 # Professional Judgment Information
+#
 # ---------------------------------------------------------------------------
 
 Habitat_Attribute_Notes_and_Professional_Judgement = read_excel( paste(data_path,'Habitat_Attribute_Notes_and_Professional_Judgement.xlsx', sep="") )
 
 
 # ---------------------------------------------------------------------------
+#
 #  Reach Assessments Projects and Status
+#
 # ---------------------------------------------------------------------------
 
 Reach_Asessment_Project_Data = read_excel( paste(data_path,'Reach_Assessments_Projects_Table_05052020.xlsx', sep="/"), 

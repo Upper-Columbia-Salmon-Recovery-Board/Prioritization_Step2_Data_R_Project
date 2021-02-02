@@ -11,58 +11,16 @@
 #          For more information, see https://www.ucsrb.org/prioritization/
 #
 # ---------------------------------------------------------------------------
+
+
 # ---------------------------------------------------------------------------
 #
-#   List of Attributes and Data Sources      
+#   Read in List of Data sources for Habitat Attributes
 #
 # ---------------------------------------------------------------------------
 
-# ----------------------- list of habitat attribute names in habitat raw data data frame --------------
-# a few data sources are in the Channel_Unit_Raw or CHAMP_data_per_reach data frames, see list below
-# data frame: habitat_raw_data (each of these data sources is a column in habitat_raw_data)
-# NOTE: order of the list is order data are pulled - so the first data source listed for each habitat attribute
-#       is the first data source pulled for each reach
-# 
-Habitat_Attributes_List = list(
-  '% Fines/Embeddedness' = c('Dominant_Substrate_CATEGORY_1', 'Clay_Silt_Sand_occular_prcnt_INDICATOR_7', 'D50_sieve_size_prcnt_finer_mm_INDICATOR_13', 'SubEstSandFines_CHAMP'),
-  'Brook Trout' = c('PROFESSIONAL JUDGEMENT', 'Step1 results'),
-  'Coarse Substrate' = c('Dominant_Substrate_CATEGORY_1', 'GravelCobble_UCSRB_pct', 'SubEmbed_Avg_Average_CHAMP', 'SubEstSandFines_Average'),
-  'Contaminants' = c( 'Contaminants_303d'),
-  'Cover- Boulders'  = c( 'Boulder_UCSRB_pct',  'SubEstBldr_CHAMP'), 
-  'Cover- Undercut Banks' = c('Bank_Stability_CATEGORY_1', 'Structure_CATEGORY_1', 'Undercut_Area_Pct_CHAMP' ), 
-  'Cover- Wood' = c('Pieces_per_mile_CATEGORY_1', 'Pieces_per_mile_INDICATOR_1', 'LWFreq_Bf_CHAMP' ), 
-  'Entrainment/Stranding' = c('PROFESSIONAL JUDGEMENT'),
-  'Flow- Scour' = c( 'PROFESSIONAL JUDGEMENT'), 
-  'Flow- Summer Base Flow' = c( 'RAWatershed_Rating_Flow', 'Flow_305bList', 'PROSPER', 'PROFESSIONAL JUDGEMENT'), 
-  'Food- Food Web Resources' = c( 'PROFESSIONAL JUDGEMENT'), 
-  'Harassment' = c('PROFESSIONAL JUDGEMENT' ), 
-  'Icing' = c( 'PROFESSIONAL JUDGEMENT'), 
-  'Off-Channel- Floodplain' = c( 'Connectivity_CATEGORY_1', 'Entrenchment_CATEGORY_2', 'Channel_Confinementor_or_Entrenchment_Ratio_INDICATOR_9' ),   # Data Sources listes first HabAtr as Floodplain_Connectivity_CATEGORY_1
-  'Off-Channel- Side-Channels' = c('Connectivity_CATEGORY_1', 'Side_Channel_Habitat_Prcnt_INDICATOR_6', 'WetSC_Pct_Average'  ),
-  'Pool Quantity & Quality' = c( 'Pools_CATEGORY_1', 'Pool_Habitat_Prcnt_INDICATOR_4', 'Pools_per_mile_INDICATOR_2'), 
-  'Pools- Deep Pools' = c('Pools_deeper_3_ft_prcnt_INDICATOR_3', 'Pools_deeper_3_ft_per_mile_INDICATOR_4'  ), 
-  'Predators- Adults' = c( 'PROFESSIONAL JUDGEMENT'), 
-  'Predators- Juveniles' = c( 'PROFESSIONAL JUDGEMENT'),
-  'Superimposition' = list('PROFESSIONAL JUDGEMENT' ), 
-  'Temperature- Adult Holding' = c( 'NORWEST_Temperature', '305bListings_Temperature', 'RAWatershed_Rating_Temp' ), 
-  'Temperature- Adult Spawning' = c('NORWEST_Temperature', '305bListings_Temperature', 'RAWatershed_Rating_Temp' ), 
-  'Temperature- Rearing'  = c('NORWEST_Temperature', '305bListings_Temperature', 'RAWatershed_Rating_Temp' )
-)
 
-# ------------- habitat attribute AND habitat attribute number/location of data FROM Channel Unit Data -------
-#    Data listed here should pull data from Channel_Unit_Raw data frame (not habitat_raw_data)
-# data frame: Channel_Unit_Raw
-# the number is the location in the list of data sources (so 2 means it is the second data pulled for that habitat attribute)
-Channel_Unit_Raw_data_use = list('Off-Channel- Side-Channels' = 2,
-                                 'Pool Quantity & Quality'  = 2)
-
-# ------------- habitat attribute AND habitat attribute number/location of data FROM CHAMP data table -------
-#    Data listed here should pull data from Channel_Unit_Raw data frame (not habitat_raw_data)
-# data frame: CHAMP_data_per_reach
-# the number is the location in the list of data sources (so 3 means it is the third data pulled for that habitat attribute)
-CHAMP_data_per_reach_data_use = list('Off-Channel- Side-Channels' = 3,
-                                     'Coarse Substrate' = 4)
-
+source(paste(script_path, 'Data_Sources_List_for_Habitat_Attributes.R', sep=""))
 
 # ---------------------------------------------------------------------------
 #
@@ -173,7 +131,7 @@ for(reach_x in reach_names){
     # ---------------- generate professional judgment score -----------------
     prof_judgement_score_notes_x = FUNCTION_Update_REI_value_OR_Profession_Judgment(habitat_attribute_x, reach_x)
     # --------------- only replace professional judgment where new score (1,3,5) is generated --------------
-    if(!is.na(prof_judgement_score_x)){
+    if(!is.na(prof_judgement_score_notes_x[1])){
       output_single_row$Habitat_Attribute_Score = prof_judgement_score_notes_x[1]
       output_single_row$Data_Sources = paste("Professoinal_Judgement (Final), ",output_single_row$Data_Sources)
       output_single_row$Notes_or_Professional_Judgement = prof_judgement_score_notes_x[2]
@@ -211,6 +169,8 @@ NA_x = is.na(Habitat_Attribute_Scores$HabitatAttributeScore3)
 Habitat_Attribute_Scores$HabitatAttributeScore3[NA_x] = "NA"
 NA_x = is.na(Habitat_Attribute_Scores$HabitatAttributeScore4)
 Habitat_Attribute_Scores$HabitatAttributeScore4[NA_x] = "NA"
+NA_x = is.na(Habitat_Attribute_Scores$Notes_or_Professional_Judgement)
+Habitat_Attribute_Scores$Notes_or_Professional_Judgement[NA_x] = "NA"
 
 # ------------------ 
 output_path_x =  paste(output_path,'Habitat_Attribute_Scores.xlsx', sep="") 
