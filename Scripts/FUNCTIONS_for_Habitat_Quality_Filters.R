@@ -301,28 +301,6 @@ FUNCTION_generate_habitat_attribute_score_from_CHAMP_or_Channel_Unit = function(
 
 
 
-# ---------------------------------------------------------------------------
-#
-#   Create A Function when multiple Habitat Attributes 
-#
-# ---------------------------------------------------------------------------
-
-
-
-FUNCTION_generate_habitat_attribute_score_from_multiple_habitat_attributes = function(habitat_attribute_x){
-  
-  
-  
-  FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw()
-  
-  
-  
-}
-
-
-
-
-
 
 
 

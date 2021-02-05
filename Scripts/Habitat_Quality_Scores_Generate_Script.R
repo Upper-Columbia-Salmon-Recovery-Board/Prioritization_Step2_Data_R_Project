@@ -156,10 +156,7 @@ print(paste("Time to complete loop: ", paste(round((proc.time()[3] - ptm)/60, 2)
 # -------------------- Calculate the HQ Sum ----------------------
 Habitat_Quality_Scores = Habitat_Quality_Scores%>%
   rowwise() %>%
-  mutate(HQ_Sum = sum(c_across(c('Stability_Mean','CoarseSubstrate_score','Cover-Wood_score',
-                                 'Flow-SummerBaseFlow_score', 'Off-Channel-Floodplain_score',
-                                 'Off-Channel-Side-Channels_score','PoolQuantity&Quality_score','Riparian_Mean',
-                                 'Temperature-Rearing_score'   )), na.rm=F) )
+  mutate(HQ_Sum = sum(c_across( habitat_quality_scores_colnames_for_sum  ), na.rm=F) )
 
 # -------------------- Calculate percent (0 - 100%) ------------------
 Habitat_Quality_Scores$HQ_Pct = Habitat_Quality_Scores$HQ_Sum/45

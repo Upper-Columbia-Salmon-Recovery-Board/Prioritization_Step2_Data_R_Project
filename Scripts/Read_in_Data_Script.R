@@ -73,7 +73,7 @@ AU_Ranks_data = read_excel( paste(data_path,'AU_Ranks.xlsx', sep="") )
 # ----------- update columns that are numeric to numeric ------------
 cols.num = c('Spring Chinook_Restoration',	'SPCHNTier_Restoration',	'Steelhead_Restoration',	'STLTier_Restoration',
              'BullTrout_Restoration',	'BTTier_Restoration',	'Spring Chinook_Protection',	'SPCHNTier_Protection',
-             'Steelhead_Protection',	'STLTier_Protection',	'BullTrout_Protection',	'BTTier__Protection')
+             'Steelhead_Protection',	'STLTier_Protection',	'BullTrout_Protection',	'BTTier_Protection')
 AU_Ranks_data[cols.num] <- sapply(AU_Ranks_data[cols.num],as.numeric)
 
 # ---------------------------------------------------------------------------
@@ -91,6 +91,32 @@ Life_Stage_Priorities_AU_only_data = read_excel( paste(data_path,'LifeStagePrior
 # ---------------------------------------------------------------------------
 
 Life_Stage_Priorities_AU_and_Reach_data = read_excel( paste(data_path,'LifeStagePriorities_AUandReach.xlsx', sep=""), skip=1 )
+
+# ---------------------- match column names to life stages - 
+spring_chinook_life_stages = list("Adult Migration" = "SPCH Adult Migration  AU LS Priority",	  "Holding"=	"SPCH Holding  AU LS Priority",
+                                "Spawning and Incubation" = "SPCH Spawning AU LS Priority",	"Fry Colonization" = "SPCH Fry Colonization  AU LS Priority", 	
+                                "Summer Rearing"  = "SPCH Summer Rearing  AU LS Priority", 	"Winter Rearing" = "SPCH Winter Rearing  AU LS Priority",
+                                "Smolt Outmigration"="SPCH Smolt Emigration  AU LS Priority")	
+steelhead_life_stages =     life_stage_priority_list = list("Adult Migration"  = "SH Adult Migration  AU LS Priority",
+                                                            "Holding and Maturation"  =  "SH Holding  AU LS Priority",	"Spawning and Incubation" ="SH Spawning AU LS Priority", 
+                                                            "Fry" = "SH Fry Colonization  AU LS Priority", "Spawning and Incubation" = "SH Summer Rearing  AU LS Priority",
+                                                            "Winter Rearing"  = "SH Winter Rearing  AU LS Priority",	"Smolt Outmigration" = "SH Smolt Emigration  AU LS Priority")
+
+bull_trout_life_stages = list("Adult Migration"  = "BT Adult Migration  AU LS Priority",	"Holding and Maturation"= 	"BT Holding  AU LS Priority",
+                                "Spawning and Incubation" =	"BT Spawning AU LS Priority",	"BT Natal Rearing" =  "BT Natal Rearing  AU LS Priority",
+                                "Adult Non-Spawning" = "BT Adult Non-Spawning AU LS Priority", "BT Subadult Rearing"=  "BT Subadult Rearing  AU LS Priority")
+
+life_stages_priorities = list("spring_chinook_life_stages" =  spring_chinook_life_stages,  
+                              "steelhead_life_stages" = steelhead_life_stages, 
+                              "bull_trout_life_stages" = bull_trout_life_stages )
+
+# ---------------------------------------------------------------------------
+#
+#     Life Stages and accompanying Habitat Attributes for each Species
+#
+# ---------------------------------------------------------------------------
+
+Attribute_LifeStage_Crosswalk = read_excel( paste(data_path,'Attribute_LifeStage_Crosswalk.xlsx', sep="") )
 
 # ---------------------------------------------------------------------------
 #
@@ -158,7 +184,7 @@ Reach_Information_data = read_excel( paste(data_path,'ReachInfo.xlsx', sep="") )
 #
 # ---------------------------------------------------------------------------
 
-confinement_scores = read_excel( paste(data_path,'Confinement_Scores.xlsx', sep="") )
+Confinement_Scores = read_excel( paste(data_path,'Confinement_Scores.xlsx', sep="") )
 
 # ---------------------------------------------------------------------------
 #
@@ -289,6 +315,10 @@ Habitat_Attribute_Notes_and_Professional_Judgement = read_excel( paste(data_path
 #
 # ---------------------------------------------------------------------------
 
+Crosswalk_Habitat_Attributes_and_Actions = read_excel( paste(data_path,'Crosswalk_Habitat_Attributes_and_Actions.xlsx', sep="/"), 
+                                                       sheet = 'Sheet1')
+Crosswalk_Habitat_Attributes_and_Actions$Habitat_Attribute_2 = gsub(" ", "", Crosswalk_Habitat_Attributes_and_Actions$`Habitat Attribute`, fixed = TRUE)
+  
 Reach_Asessment_Project_Data = read_excel( paste(data_path,'Reach_Assessments_Projects_Table_05052020.xlsx', sep="/"), 
                                                         sheet = 'Data_Entry')
 

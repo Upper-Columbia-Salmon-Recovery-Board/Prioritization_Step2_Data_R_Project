@@ -64,7 +64,16 @@ Channel_Unit_Raw_data_use = list('Off-Channel- Side-Channels' = 2,
 CHAMP_data_per_reach_data_use = list('Off-Channel- Side-Channels' = 3,
                                      'Coarse Substrate' = 4)
 
+#------------------------- column names of Habitat_Quality_Scores - HQ scores output (generated scores for pathway) -------
+habitat_quality_scores_colnames_for_sum = c('Stability_Mean','CoarseSubstrate_score','Cover-Wood_score',
+                                    'Flow-SummerBaseFlow_score', 'Off-Channel-Floodplain_score',
+                                    'Off-Channel-Side-Channels_score','PoolQuantity&Quality_score','Riparian_Mean',
+                                    'Temperature-Rearing_score')
 
+habitat_quality_scores_colnames_ALL = c("BankStability_score", "ChannelStability_score",'Stability_Mean','CoarseSubstrate_score','Cover-Wood_score',
+                                            'Flow-SummerBaseFlow_score', 'Off-Channel-Floodplain_score',
+                                            'Off-Channel-Side-Channels_score','PoolQuantity&Quality_score',"Riparian-Disturbance_score" , "Riparian-CanopyCover_score" ,
+                                        'Riparian_Mean', 'Temperature-Rearing_score')
 
 # ---------------------------------------------------------------------------
 #
