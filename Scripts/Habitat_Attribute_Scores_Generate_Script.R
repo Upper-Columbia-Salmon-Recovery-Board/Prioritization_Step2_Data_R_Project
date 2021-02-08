@@ -2,7 +2,7 @@
 # ---------------------------------------------------------------------------
 #
 #      SCRIPT: Generate Habitat Attribute Scores Table
- #            (for Habitat Quality AND Limiting Factor Analysis)
+#            (for Habitat Quality AND Limiting Factor Analysis)
 #
 #      R Project to generate Priority Action Categories Based on Habitat Quality 
 #          and Limiting Factor Analysis from Step 2 of RTT Prioritization Process
