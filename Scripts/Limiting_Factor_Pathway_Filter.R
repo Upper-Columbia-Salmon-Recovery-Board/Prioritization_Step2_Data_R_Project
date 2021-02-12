@@ -262,7 +262,7 @@ Generate_Species_Output_Table = function(species){
     #     Generate and combine in list of filtered life stages
     # ----------------------------------------------------------------
     # ---------------------- use life stage (reach-level) priority filter ----------
-    Habitat_Attribute_Scores_for_individual_Life_Stage_Filtered = Life_Stage_Priority_Filter_Function(life_stage, Habitat_Attribute_Scores_for_individual_Life_Stage, Life_Stage_Priority)
+    Habitat_Attribute_Scores_for_individual_Life_Stage_Filtered = Life_Stage_Priority_Filter_Function(life_stage_x, Habitat_Attribute_Scores_for_individual_Life_Stage, Life_Stage_Priority)
     
     # --------------------- combine into list ---------------------
     # ------------------- add the data frame for this life stage to the list for the species ----------
@@ -412,7 +412,7 @@ list_indiv_habitat_attributes_low_FUNCTION <- function(row){
 #output_path_x =  paste(output_path,'Habitat_Quality_Scores.xlsx', sep="")
 #write.xlsx(  Habitat_Quality_Scores,
 #  output_path_x, col.names = TRUE,  row.names = FALSE, append = FALSE, showNA = TRUE, password = NULL)
-
+life_stage = "Spawning and Incubation"
 Life_Stage_Priority_Filter_Function = function(life_stage, Habitat_Attribute_Scores_for_individual_Life_Stage, Life_Stage_Priority){
   
   # -------------------------------------------------------

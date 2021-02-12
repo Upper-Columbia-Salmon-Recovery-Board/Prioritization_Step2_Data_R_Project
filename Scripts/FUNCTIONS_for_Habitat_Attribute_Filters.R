@@ -320,7 +320,9 @@ FUNCTION_Return_Habitat_Data = function(habitat_attribute_x, location_x, reach_n
 #
 # ---------------------------------------------------------------------- 
 
-FUNCTION_Update_REI_value_OR_Profession_Judgment = function(habitat_attribute_x, reach_name_x){
+# habitat_attribute_x = "Entrainment/Stranding"
+
+FUNCTION_Update_REI_value_OR_Profession_Judgment = function(habitat_attribute_x){
   
   
   # ---------------------------------------------------------------------- 
@@ -332,13 +334,11 @@ FUNCTION_Update_REI_value_OR_Profession_Judgment = function(habitat_attribute_x,
   
   # ----- identify if reach and habitat attribute has REI value over-ride ------
   data_rei_x = Habitat_Attribute_Notes_and_Professional_Judgement %>%
-    filter(ReachName   == reach_name_x, ) %>%                # ONLY for this reach
     filter(Habitat_Attribute == habitat_attribute_x ) %>%    # ONLY for this habitat attribute
     filter(Use_REI_Value == "yes")                           # ONLY if indicated to replace w/ REI value
   
   # --------------- data - where REI value will not over-ride ----------------
   data_output_x = Habitat_Attribute_Notes_and_Professional_Judgement %>%
-    filter(ReachName   == reach_name_x) %>%
     filter(Habitat_Attribute == habitat_attribute_x ) %>%    # ONLY for this habitat attribute
     filter(Use_REI_Value == "no") 
   
@@ -349,28 +349,33 @@ FUNCTION_Update_REI_value_OR_Profession_Judgment = function(habitat_attribute_x,
   #
   # ---------------------------------------------------------------------- 
   
-  if(nrow(data_rei_x)==1){
+  if( nrow(data_rei_x)>=1 ){
     
     # ------ name of REI category score for this habitat attribute (always first location) ----
     data_col_name = Habitat_Attributes_List[habitat_attribute_x ][[1]][1]
     
-    # ------------ get metric value (Unacceptable, At Risk, or Adequate) ------
+    # ------------ get metric values (Unacceptable, At Risk, or Adequate) for each row in data_rei_x ------
     metric_value_x = habitat_raw_data %>%
-      filter(ReachName   == reach_name_x, ) %>%
-      select(data_col_name)
+      filter(ReachName   %in% data_rei_x$ReachName ) %>%
+      select(c("ReachName",data_col_name))
+    colnames(metric_value_x) = c("ReachName", "metric_data")
     
     # -------------------- Identify rows with the data source (will be multiple if multiple criteria) -----
     metric_criteria_x = Habitat_Limiting_Factor_Rating_Criteria_Updated %>%
       filter(Data_Sources   == data_col_name) 
     
     # ------------------- identify specific score for the metric -----------
-    score_output_x = metric_criteria_x %>%
-      filter(Category   == metric_value_x[[1]], ) 
-    score_x = score_output_x$Score
+    metric_value_x = metric_value_x  %>%
+      mutate(score = ifelse(metric_data  == metric_criteria_x$Category[1], metric_criteria_x$Score[1],
+                            ifelse(metric_data  == metric_criteria_x$Category[2], metric_criteria_x$Score[2],
+                                   ifelse(metric_data  == metric_criteria_x$Category[3], metric_criteria_x$Score[3],
+                                          ifelse(metric_data  == metric_criteria_x$Category[4], metric_criteria_x$Score[4],
+                                                 NA)))))
+    
     
     # ------------------ generate notes ------------
-    notes_output_x = data_rei_x$Notes_or_Professional_Judgement[1]
-    
+    metric_value_x$Notes_or_Professional_Judgement = data_rei_x$Notes_or_Professional_Judgement
+    data_output_x = metric_value_x 
     
     # ---------------------------------------------------------------------- 
     #
@@ -378,31 +383,53 @@ FUNCTION_Update_REI_value_OR_Profession_Judgment = function(habitat_attribute_x,
     #
     # ---------------------------------------------------------------------- 
     
-  }else if(nrow(data_output_x) > 0){
+  }else if( nrow(data_output_x) > 0 ){
     
     
     # ---------------- if reach AND habitat attribute is present in Professional Judgment -------------
+    # NOTE - will not use the "Use_REI_Value", it's just for filler
+    data_output_x = data_output_x[,c("ReachName","Use_REI_Value","Updated_Value","Notes_or_Professional_Judgement")]
+    colnames(data_output_x) = c( "ReachName","metric_data","score","Notes_or_Professional_Judgement"   )
     
     
-    # ---------------- if reach AND habitat attribute is present in Professional Judgment -------------
-    score_x = data_output_x$Updated_Value
-    # ----------- take minimum value -----------
-    score_x = min(score_x, na.rm=T)
-    
-    # ------------------ generate notes ------------
-    notes_output_x = data_output_x$Notes_or_Professional_Judgement[1]
-    
-    
+    # ---------------------------------------------------------------------- 
+    #
+    # IF not REI force OR update value based on Professional Judgement
+    #
+    # ---------------------------------------------------------------------- 
   }else{
     
-    score_x = NA
-    notes_output_x = NA
+    data_output_x = t(as.data.frame(rep(NA, length.out=4)))
+    colnames(data_output_x) = c( "ReachName","metric_data","score","Notes_or_Professional_Judgement"   )
+    data_output_x = as.data.frame(data_output_x)
+  }
+  
+  
+  # ---------------------------------------------------------------------- 
+  #
+  #  IF there are duplicated reaches, take the smaller number 
+  #
+  # ---------------------------------------------------------------------- 
+  
+  reach_names_duplicated_x = duplicated(data_output_x$ReachName)
+  if( any(reach_names_duplicated_x) ){
+    for(reach_x in data_output_x$ReachName[reach_names_duplicated_x] ){
+      
+      # -------------- identify duplicated rows
+      duplicated_rows_x = which(data_output_x$ReachName == reach_x)
+      # --------------------- identify lower score column --------------
+      lower_x = which( data_output_x$score[duplicated_rows_x] == min(data_output_x$score) )
+      # -------------------- identify rows that are not lower ---------
+      duplicated_rows_x_REMOVE = duplicated_rows_x[-lower_x[1]]
+      # -------------- remove rows that is higher -----------------
+      data_output_x = data_output_x[-duplicated_rows_x_REMOVE,]
+      
+    }
     
   }
   
-  output_x = c(score_x, notes_output_x)
   
-  return(output_x)
+  return(data_output_x)
   
 }
 

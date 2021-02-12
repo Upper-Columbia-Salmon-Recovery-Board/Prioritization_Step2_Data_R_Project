@@ -56,6 +56,8 @@ Habitat_Attributes_List = list(
 # the number is the location in the list of data sources (so 2 means it is the second data pulled for that habitat attribute)
 Channel_Unit_Raw_data_use = list('Off-Channel- Side-Channels' = 2,
                                  'Pool Quantity & Quality'  = 2)
+Channel_Unit_Raw_data_sources = list('Off-Channel- Side-Channels' = 'Side_Channel_Habitat_Prcnt_INDICATOR_6',
+                                 'Pool Quantity & Quality'  = 'Pool_Habitat_Prcnt_INDICATOR_4')
 
 # ------------- habitat attribute AND habitat attribute number/location of data FROM CHAMP data table -------
 #    Data listed here should pull data from Channel_Unit_Raw data frame (not habitat_raw_data)
@@ -63,7 +65,8 @@ Channel_Unit_Raw_data_use = list('Off-Channel- Side-Channels' = 2,
 # the number is the location in the list of data sources (so 3 means it is the third data pulled for that habitat attribute)
 CHAMP_data_per_reach_data_use = list('Off-Channel- Side-Channels' = 3,
                                      'Coarse Substrate' = 4)
-
+CHAMP_data_per_reach_data_sources = list('Off-Channel- Side-Channels' = 'WetSC_Pct_Average',
+                                     'Coarse Substrate' = 'SubEstSandFines_Average')
 #------------------------- column names of Habitat_Quality_Scores - HQ scores output (generated scores for pathway) -------
 habitat_quality_scores_colnames_for_sum = c('Stability_Mean','CoarseSubstrate_score','Cover-Wood_score',
                                     'Flow-SummerBaseFlow_score', 'Off-Channel-Floodplain_score',

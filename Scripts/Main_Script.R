@@ -11,6 +11,9 @@
 library(tidyverse)
 library(xlsx)
 library(writexl)
+library(readxl)
+
+time1 <- proc.time()[3] # for timing the total time to run the tool
 
 # ---------------------------------------------------------------------------
 #
@@ -57,7 +60,6 @@ source(paste(script_path, 'Criteria_Script.R', sep=""))
 
 source(paste(script_path, 'Habitat_Quality_Scores_Generate_Script.R', sep=""))
 
-
 # ---------------------------------------------------------------------------
 #   Generate Habitat Attribute Table (used in Limiting Factor Pathway)
 # ---------------------------------------------------------------------------
@@ -65,9 +67,9 @@ source(paste(script_path, 'Habitat_Quality_Scores_Generate_Script.R', sep=""))
 source(paste(script_path, 'Habitat_Attribute_Scores_Generate_Script.R', sep=""))
 
 # ONLY if you want to skip this step and read in data that was already generated
-Habitat_Attribute_Scores  = read_excel(  paste(output_path,'Habitat_Attribute_Scores.xlsx', sep="")  )
-cols.num = c("HabitatAttributeScore1" , "HabitatAttributeScore2","HabitatAttributeScore3" , "HabitatAttributeScore4", "Habitat_Attribute_Score")
-Habitat_Attribute_Scores [cols.num] <- sapply(Habitat_Attribute_Scores[cols.num],as.numeric)
+#Habitat_Attribute_Scores  = read_excel(  paste(output_path,'Habitat_Attribute_Scores.xlsx', sep="")  )
+#cols.num = c("HabitatAttributeScore1" , "HabitatAttributeScore2","HabitatAttributeScore3" , "HabitatAttributeScore4", "Habitat_Attribute_Score")
+#Habitat_Attribute_Scores [cols.num] <- sapply(Habitat_Attribute_Scores[cols.num],as.numeric)
 
 
 # ---------------------------------------------------------------------------
@@ -89,9 +91,8 @@ Habitat_Quality_Pathway_Spring_Chinook = Generate_Habitat_Quality_Output_Table("
 Habitat_Quality_Pathway_Steelhead = Generate_Habitat_Quality_Output_Table("Steelhead", basins_to_include )
 Habitat_Quality_Pathway_Bull_Trout = Generate_Habitat_Quality_Output_Table("Bull Trout", basins_to_include )
 
-View(Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']])
+#View(Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']])
 #View(Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']])
-#unique(Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']]$unacceptable_and_at_risk_1_3_indiv_habitat_attributes)
 
 # ---------------------------------------------------------------------------
 #   Apply Limiting Factor Pathway Filters
@@ -106,8 +107,8 @@ Limiting_Factor_Pathway_Steelhead = Generate_Limiting_Factor_Output_Table("Steel
 Limiting_Factor_Pathway_Bull_Trout = Generate_Limiting_Factor_Output_Table("Bull Trout", basins_to_include)
 
 
-View(Limiting_Factor_Spring_Chinook[['Limiting_Factor_Pathway_Restoration']])
-View(Limiting_Factor_Bull_Trout[['Limiting_Factor_Pathway_Protection']])
+#View(Limiting_Factor_Spring_Chinook[['Limiting_Factor_Pathway_Restoration']])
+#View(Limiting_Factor_Bull_Trout[['Limiting_Factor_Pathway_Protection']])
 #unique(Limiting_Factor_Bull_Trout[['Limiting_Factor_Pathway_Restoration']]$unacceptable_and_at_risk_1_3_indiv_habitat_attributes)
 
 
@@ -183,6 +184,7 @@ output_path_x =  paste(output_path,'Action_Categories_and_Pathways_Restoration_U
 write_xlsx(Restoration_Unaccepable_and_At_Risk,output_path_x )
 
 
+print(paste("Time to complete ENTIRE tool: ", paste(round((proc.time()[3] - time1)/60, 2), " minutes")    ))
 
 
 

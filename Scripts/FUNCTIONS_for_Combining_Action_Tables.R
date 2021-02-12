@@ -1,8 +1,4 @@
 
-
-
-
-
 # ---------------------------------------------------------------------------
 #
 #      SCRIPT: Combine Action Categories across SPECIES and PATHWAYS
@@ -16,8 +12,8 @@
 # ---------------------------------------------------------------------------
 
 
-score_1_or_3 = 1
-restoration_or_protection = 'restoration'
+#score_1_or_3 = 1
+#restoration_or_protection = 'restoration'
 
 FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_or_3,  restoration_or_protection){
   
@@ -258,8 +254,8 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
 
 
 
-HQ_pathway_df = Habitat_Quality_Restoration_Unacceptable
-LF_pathway_df = Limiting_Factor_Restoration_Unacceptable
+#HQ_pathway_df = Habitat_Quality_Restoration_Unacceptable
+#LF_pathway_df = Limiting_Factor_Restoration_Unacceptable
 
 FUNCTION_combine_across_pathways = function(HQ_pathway_df, LF_pathway_df){
   

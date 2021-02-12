@@ -70,7 +70,7 @@ for(habitat_attribute_x in names(Habitat_Quality_Habitat_Attributes_List)){
   # --------------------------------------------------------------------
   if(length(data_sources_list[[1]]) == 1){
     
-    output_x = FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw(data_sources_list[[1]][1])
+    output_x = FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw(habitat_attribute_x, data_sources_list[[1]][1], "HQ")
     
     
     # --------------------------------------------------------------------
@@ -89,7 +89,7 @@ for(habitat_attribute_x in names(Habitat_Quality_Habitat_Attributes_List)){
       if(data_sources_list[[1]][location_x] == "PROFESSIONAL JUDGEMENT"){ next }else{
         # ------------ Generate metric value  AND score (1,3,5) for each habitat attribute -------------------
         # outputs both metric value and score
-        output_x = FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw(data_sources_list[[1]][location_x] )
+        output_x = FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw(habitat_attribute_x,  data_sources_list[[1]][location_x],  "HQ" )
         
         # -------- data frame for this specific reach and habitat attribute --------
         habitat_attribute_x_data_frame = rbind(habitat_attribute_x_data_frame, output_x$score)
@@ -181,7 +181,6 @@ Habitat_Quality_Scores = Habitat_Quality_Scores  %>%
                                              ifelse(HQ_Pct  > Protection_Scoring$Category_Lower[3] & 
                                                       HQ_Pct  <= Protection_Scoring$Category_Upper[3] , Protection_Scoring$Score[3],
                                                     NA))))
-
 
 
 # ------------------ output data -------------------------

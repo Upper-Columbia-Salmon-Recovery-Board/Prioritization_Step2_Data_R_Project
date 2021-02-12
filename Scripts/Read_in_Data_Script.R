@@ -14,8 +14,6 @@
 
 # library(DataEditR) # only use if want to use interactive data editing
 
-library(readxl)
-
 
 # ---------------------------------------------------------------------------
 #
@@ -169,6 +167,10 @@ cols.num = c('NumberofCHaMPDataPoints', 'SlowWater_Pct_Average',	'SlowWater_Pct_
              'SC_Area_Pct_Average',	'GRVL_COBL_UCSRB')
 CHAMP_data_per_reach[cols.num] <- sapply(CHAMP_data_per_reach[cols.num],as.numeric)
 
+# -------------------------- CHAMP data only use 139 reaches, so add reaches not present as NA -------------
+CHAMP_data_Updated =  habitat_raw_data %>% select("ReachName","Basin","Assessment.Unit")
+CHAMP_data_Updated = merge(CHAMP_data_Updated, CHAMP_data_per_reach, by = "ReachName", 
+                         all.x = TRUE, all.y = TRUE)
 
 # ---------------------------------------------------------------------------
 #

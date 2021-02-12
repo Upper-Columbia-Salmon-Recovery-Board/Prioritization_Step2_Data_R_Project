@@ -13,11 +13,9 @@
 # ---------------------------------------------------------------------------
 
 
-Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']]
-
-habitat_attributes_x_column = Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']]$unacceptable_1_indiv_habitat_attributes
-
-data_frame_with_habitat_attributes = Limiting_Factor_Spring_Chinook[['Limiting_Factor_Pathway_Restoration']] 
+#Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']]
+#habitat_attributes_x_column = Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']]$unacceptable_1_indiv_habitat_attributes
+#data_frame_with_habitat_attributes = Limiting_Factor_Pathway_Spring_Chinook[['Limiting_Factor_Pathway_Restoration']] 
 
 # ---------------------------------------------------------------------------
 #

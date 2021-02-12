@@ -63,7 +63,7 @@ Generate_Habitat_Quality_Output_Table = function(species, basins){
                                    ".xlsx", sep="")
     
   }else if(species == "Bull Trout"){
-    # ---------------- species reach ---------------
+  # ---------------- species reach ---------------
   species_reach = 'Bull.Trout.Reach'
   # ---------------- species AU Rank ----------
   AU_rank_name_restoration = 'BTTier_Restoration'
@@ -154,7 +154,7 @@ Generate_Habitat_Quality_Output_Table = function(species, basins){
   #            Filter out to select for Habitat Quality RESTORATION score
   #  ---------------------------------------------------------------------------------
   
-  # ----------------------- filter out for Habitat_Quality_Scores reaches with Habitat Quality Score critera --------------
+  # ----------------------- filter out for Habitat_Quality_Scores reaches with Habitat Quality Score criteria --------------
   Habitat_Quality_Scores_Restoration = Habitat_Quality_Scores %>%  
     filter(HQ_Score_Restoration   >=   SCORE_Criteria_Habitat_Quality_Pathway)
   # ------------------------ identify AUs that pass this filter in reach-based table ----------

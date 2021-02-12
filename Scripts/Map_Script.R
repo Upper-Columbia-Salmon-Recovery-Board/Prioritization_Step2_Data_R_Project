@@ -24,9 +24,9 @@
 library(sp)
 library(raster)
 library(rgdal)
-library(mapview)
 library(leafsync)
 library(RColorBrewer)
+library(mapview)
 
 # INFO about plotting: https://r-spatial.github.io/mapview/articles/
 
@@ -85,9 +85,13 @@ color_palette_x_YES_NO = c("#6C0586", "#FBFF68")
 # THIS prints all the attributes you can map
 print(names(reaches_data))
 
-# -------------------- Print a score or other factor variable --------------------
-# ENTER the attribute to print here
+# ----------------------------------------------------------
+#     plot FACTOR/SCORE variable 
+# ----------------------------------------------------------
+
+# ------ ENTER the attribute to print here ------
 attribute_1 = "Riparian-CanopyCover_score"
+attribute_1 = "Cover-Wood_score"
 
 # --- simple version ---:
 mapview(reaches_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
@@ -97,13 +101,9 @@ mapview(reaches_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("lege
 mapview(reaches_data, zcol = attribute_1,   burst=TRUE,legend = mapviewGetOption("legend"), 
               color = color_palette_x, map.types = c("CartoDB.DarkMatter", "CartoDB.Positron", "Esri.WorldImagery"))
 
-# --------------- plot continuous variable -----
-# ENTER the attribute to print here
-attribute_1 = "HQ_Pct"
-mapview(reaches_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), 
-        color= color_palette_continuous, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
-
-
+# ----------------------------------------------------------
+#     plot TWO FACTOR/SCORE variable 
+# ----------------------------------------------------------
 
 # --- simple version ---:
 attribute_1 = "HQ_Score_Restoration"
@@ -111,9 +111,19 @@ attribute_2 = "HQ_Score_Protection"
 
 mapview(reaches_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
         color= color_palette_x, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap")) +
-mapview(reaches_data, zcol = attribute_2, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
+  mapview(reaches_data, zcol = attribute_2, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
           color= color_palette_x) 
 # Note: helpful for plotting factors: https://github.com/r-spatial/mapview/issues/240
+
+
+# ----------------------------------------------------------
+#     plot CONTINUOUS variable 
+# ----------------------------------------------------------
+# ENTER the attribute to print here
+attribute_1 = "HQ_Pct"
+mapview(reaches_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), 
+        color= color_palette_continuous, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
+
 
 # ---------------------------------------------------------------------------
 #
@@ -121,7 +131,7 @@ mapview(reaches_data, zcol = attribute_2, lwd=4, legend = mapviewGetOption("lege
 #
 # ---------------------------------------------------------------------------
 
-
+# --------------- CHOOSE the four attributres to plot ----------
 attribute_1 = "HQ_Score_Restoration"
 attribute_2 = "HQ_Score_Protection"
 attribute_3 = "Spring.Chinook.Reach"
@@ -142,7 +152,7 @@ print( paste(attribute_3,attribute_4, sep="     "))
 
 sync(m1, m2, m3, m4) # 4 panels synchronised
 
-
+# --------------- CHOOSE the four attributres to plot ----------
 attribute_1 = "CoarseSubstrate_score"
 attribute_2 = "Cover-Wood_score"
 attribute_3 = "PoolQuantity&Quality_score"
@@ -167,11 +177,10 @@ print( paste(attribute_1,attribute_2, sep="     "))
 print( paste(attribute_3,attribute_4, sep="     "))
 
 
-sync(m1, m2, m3, l4) # 4 panels synchronised
+sync(m1, m2, m3, m4) # 4 panels synchronised
 
-
-
- attribute_1 = "CoarseSubstrate_score"
+# --------------- CHOOSE the four attributres to plot ----------
+attribute_1 = "CoarseSubstrate_score"
 attribute_2 = "Cover-Wood_score"
 attribute_3 = "PoolQuantity&Quality_score"
 attribute_4 = "Off-Channel-Floodplain_score"

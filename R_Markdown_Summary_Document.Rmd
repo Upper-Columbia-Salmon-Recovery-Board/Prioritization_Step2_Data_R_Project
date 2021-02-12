@@ -1,0 +1,39 @@
+---
+title: "Step 2 Prioritization Data Summary and Output"
+output: html_document
+author: Ryan Niemeyer, UCSRB
+---
+
+Markdown cheat sheet: https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Prioritization Overview
+
+This is the R Code for the Step 2 of the [UCSRB Habitat Prioritization process](https://www.ucsrb.org/prioritization/). I will endeavor to update the data available on this page, however the most up-to-date results for Step 2 can be found on the Prioritization Products Page. For each script, the last update is listed on the right (e.g. "2 months ago").
+
+## R Code Overview
+
+
+
+
+## Data Overview
+
+(INCLUDE code that outputs the data)
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
