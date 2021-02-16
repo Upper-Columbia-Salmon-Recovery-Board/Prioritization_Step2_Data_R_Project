@@ -191,10 +191,12 @@ Limiting_Factor_Restoration_Unacceptable_and_At_Risk = FUNCTION_combine_Limiting
 
 # ----------------------- combine across pathways -----------------------
 columns_info = c( "ReachName","Basin","Assessment.Unit" )
-columns_to_combine_text = c(  "Pathways" ,  "Impaired_Habitat_Attributes_All_Species" , "Impaired_Habitat_Attributes_SpringChinook", "Action_Categories_All_Species",   "Action_Categories_SpringChinook"    )
+columns_to_combine_text = c(  "Pathways" ,  "Impaired_Habitat_Attributes_All_Species" , "Impaired_Habitat_Attributes_SpringChinook", "Impaired_Habitat_Attributes_Steelhead","Impaired_Habitat_Attributes_BullTrout",
+                              "Action_Categories_All_Species",   "Action_Categories_SpringChinook",  "Action_Categories_Steelhead",  "Action_Categories_BullTrout"    )
 columns_to_combine_text_LF_only = c(   "Life_Stages", "Life_Stages_SpringChinook"   )
 columns_to_combine_yes_no = c( "Spring_Chinook_Actions_Present_Yes_No","SprCh_STLD_BullTr_All_Present_Yes_No" )
-columns_to_combine_count_unique = c( "Impaired_Habitat_Attributes_All_Species", "Impaired_Habitat_Attributes_SpringChinook", "Action_Categories_All_Species",   "Action_Categories_SpringChinook" ) # the unique occurences of these are then counted and a number is produced
+columns_to_combine_count_unique = c( "Impaired_Habitat_Attributes_All_Species", "Impaired_Habitat_Attributes_SpringChinook", "Impaired_Habitat_Attributes_Steelhead", "Impaired_Habitat_Attributes_BullTrout",
+                                     "Action_Categories_All_Species",   "Action_Categories_SpringChinook","Action_Categories_Steelhead",  "Action_Categories_BullTrout" ) # the unique occurences of these are then counted and a number is produced
 columns_to_combine_numeric = c("Number_of_Pathways"  )
 columns_to_combine_numeric_LF_only = c("Number_of_Life_Stages", "Number_Life_Stages_SpringChinook"  )
 
@@ -205,10 +207,12 @@ Restoration_Unacceptable_and_At_Risk = FUNCTION_combine_across_pathways(Habitat_
 # ---------------------------------------------------------------------------
 #  Combine into ONE Data frame across all pathways and scores
 # ---------------------------------------------------------------------------
-Restoration_Prioritization_Output = FUNCTION_combine_across_Unacceptable_and_AtRisk(Restoration_Unacceptable, Restoration_At_Risk, Restoration_Unacceptable_and_At_Risk)
+columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
+Restoration_Prioritization_Output = FUNCTION_combine_across_Unacceptable_and_AtRisk(Restoration_Unacceptable, Restoration_At_Risk, Restoration_Unacceptable_and_At_Risk, columns_info)
 # ---------------------------------------------------------------------------
 #  Add Barrier Prioritization Info
 # ---------------------------------------------------------------------------
+columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
 Restoration_Prioritization_Output = FUNCTION_Add_Barrier_Data(Restoration_Prioritization_Output, Barriers_Pathways_Data)
 
 # ---------------------------------------------------------------------------
