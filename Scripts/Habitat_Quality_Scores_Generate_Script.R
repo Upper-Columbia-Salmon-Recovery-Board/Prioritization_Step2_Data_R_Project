@@ -184,17 +184,20 @@ Habitat_Quality_Scores = Habitat_Quality_Scores  %>%
 
 
 # ------------------ output data -------------------------
-Habitat_Quality_Scores = as.data.frame(Habitat_Quality_Scores)
-output_path_x =  paste(output_path,'Habitat_Quality_Scores.xlsx', sep="")
-write.xlsx(
-  Habitat_Quality_Scores,
-  output_path_x,
-  col.names = TRUE,
-  row.names = FALSE,
-  append = FALSE,
-  showNA = TRUE,
-  password = NULL
-)
+if(output_Habitat_Quality_and_Habitat_Attribute_Scores == "yes"){
+  Habitat_Quality_Scores = as.data.frame(Habitat_Quality_Scores)
+  output_path_x =  paste(output_path,'Habitat_Quality_Scores.xlsx', sep="")
+  write.xlsx(
+    Habitat_Quality_Scores,
+    output_path_x,
+    col.names = TRUE,
+    row.names = FALSE,
+    append = FALSE,
+    showNA = TRUE,
+    password = NULL
+  )
+}
+
 
 
 

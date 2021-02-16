@@ -13,6 +13,8 @@ library(xlsx)
 library(writexl)
 library(readxl)
 
+output_Habitat_Quality_and_Habitat_Attribute_Scores = "no"  # enter "yes" or "no" if you want this output
+
 time1 <- proc.time()[3] # for timing the total time to run the tool
 
 # ---------------------------------------------------------------------------
@@ -37,7 +39,7 @@ output_path = 'Output/'
 #     Read in Data
 #
 # ---------------------------------------------------------------------------
-
+print("----------------------------------------- READ IN THE DATA --------------------------------------------")
 source(paste(script_path, 'Read_in_data_Script.R', sep=""))
 
 # ---------------------------------------------------------------------------
@@ -45,7 +47,7 @@ source(paste(script_path, 'Read_in_data_Script.R', sep=""))
 #      Criteria for Filters   
 #
 # ---------------------------------------------------------------------------
-
+print("----------------------------------------- ASSIGN CRITERIA --------------------------------------------")
 source(paste(script_path, 'Criteria_Script.R', sep=""))
 
 # ---------------------------------------------------------------------------
@@ -57,6 +59,7 @@ source(paste(script_path, 'Criteria_Script.R', sep=""))
 # ---------------------------------------------------------------------------
 #   Generate Habitat Quality Restoration and Protection Score 
 # ---------------------------------------------------------------------------
+print("----------------------------------------- GENERATE HABITA QUALITY SCORES --------------------------------------------")
 
 source(paste(script_path, 'Habitat_Quality_Scores_Generate_Script.R', sep=""))
 # output is Habitat_Quality_Pathway_Output
@@ -65,6 +68,7 @@ source(paste(script_path, 'Habitat_Quality_Scores_Generate_Script.R', sep=""))
 # ---------------------------------------------------------------------------
 #   Generate Habitat Attribute Table (used in Limiting Factor Pathway)
 # ---------------------------------------------------------------------------
+print("----------------------------------------- GENERATE HABITAT ATTRIBUTE SCORES (for Limtiting Factor Pathway) --------------------------------------------")
 
 source(paste(script_path, 'Habitat_Attribute_Scores_Generate_Script.R', sep=""))
 # OUTPUT is Habitat_Attribute_Scores
@@ -79,6 +83,7 @@ source(paste(script_path, 'Habitat_Attribute_Scores_Generate_Script.R', sep=""))
 #   Apply Habitat Quality Pathway Filters
 #     NOTE: the function below runs HQ Pathway for Restoration and Protection
 # ---------------------------------------------------------------------------
+print("----------------------------------------- APPLY HABITAT QUALITY FILTERS FOR PRIORITIZATION --------------------------------------------")
 
 source(paste(script_path, 'Habitat_Quality_Pathway_Filter.R', sep=""))
 
@@ -101,6 +106,7 @@ Habitat_Quality_Pathway_Bull_Trout = Generate_Habitat_Quality_Output_Table("Bull
 #     NOTE: the function below runs LF Pathway for Restoration and Protection
 # ---------------------------------------------------------------------------
 # NOTE: Protection output includes habitat attributes but does not filter based on habitat attributes
+print("----------------------------------------- APPLY LIMITING FACTOR FILTERS FOR PRIORITIZATION --------------------------------------------")
 
 source(paste(script_path, 'Limiting_Factor_Pathway_Filter.R', sep=""))
 
@@ -121,6 +127,7 @@ Limiting_Factor_Pathway_Bull_Trout = Generate_Limiting_Factor_Output_Table("Bull
 
 # NOTE: 1) fix action_categories_output so you can add it to any data frame, 
 #       2) generate outputs for meeting
+print("----------------------------------------- GENERATE ACTIONS CATEGORIES FOR HQ AND LF PATHWAY --------------------------------------------")
 
 source(paste(script_path, 'FUNCTIONS_for_Generating_Action_Categories.R', sep=""))
 
@@ -163,6 +170,8 @@ Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']]  =  
 #  RESTORATION: Summarize Habitat Attributes and Action Categories for each Reach within each Species and Score (Unnacceptable, At Risk, etc.)
 #
 # ---------------------------------------------------------------------------
+
+print("----------------------------------------- COMBINE HQ AND LF OUTPUT --------------------------------------------")
 
 source(paste(script_path, 'FUNCTIONS_for_Combining_Action_Tables.R', sep=""))
 
@@ -208,6 +217,9 @@ Restoration_Prioritization_Output = FUNCTION_Add_Barrier_Data(Restoration_Priori
 #
 # ---------------------------------------------------------------------------
 
+print("----------------------------------------- OUTPUT THE RESULTS --------------------------------------------")
+
+
 source(paste(script_path, 'FUNCTIONS_for_Protection_Output.R', sep=""))
 
 Protection_Prioritization_Output = FUNCTION_Combine_Protection_Output(Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Protection']],
@@ -244,46 +256,5 @@ output_path_x =  paste(output_path,'Reach_Actions_Protection.xlsx', sep="")
 write_xlsx(Protection_Prioritization_Output,output_path_x )
 
 
-
-
-
 print(paste("Time to complete ENTIRE tool: ", paste(round((proc.time()[3] - time1)/60, 2), " minutes")    ))
-
-
-
-
-
-
-
-
-
-
-
-
-plot( Pieces_per_mile_INDICATOR_1  ~  as.factor(Disturbance_CATEGORY_1 ), habitat_raw_data )
-plot( Pieces_per_mile_INDICATOR_1  ~  GravelCobble_UCSRB_pct, habitat_raw_data )
-plot( Pools_deeper_3_ft_per_mile_INDICATOR_4  ~  GravelCobble_UCSRB_pct, habitat_raw_data )
-
-
-hist(as.numeric(habitat_raw_data$Pools_deeper_5_ft_per_mile_INDICATOR_5))
-
- 
-filter(habitat_raw_data,  Pools_deeper_3_ft_per_mile_INDICATOR_4   < 200 )
-
-habitat_raw_data %>%  filter(Pools_deeper_3_ft_per_mile_INDICATOR_4   >10)
-
-habitat_raw_data %>%
-  filter(Basin  == "Wenatchee", ) %>%
-  select(ReachName, Pools_deeper_3_ft_per_mile_INDICATOR_4)
-
-
-habitat_raw_data %>%  select(ReachName, Pools_deeper_3_ft_per_mile_INDICATOR_4 ) %>% head(100)
-
-species_reach = 'Steelhead.Reach'
-species_reaches_true = 'yes'
-
-
-habitat_raw_data %>%
-  filter(ReachName  == "White River Upper 01" ) %>%
-  select(ReachName, PROSER)
 

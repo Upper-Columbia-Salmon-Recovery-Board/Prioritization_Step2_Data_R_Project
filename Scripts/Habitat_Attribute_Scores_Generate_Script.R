@@ -209,16 +209,20 @@ for(habitat_attribute_x in names(Habitat_Attributes_List)){
 # ------------------ output data -------------------------
 Habitat_Attribute_Scores = as.data.frame(Habitat_Attribute_Scores)
 Habitat_Attribute_Scores$Habitat_Attribute_Score = as.numeric(as.character(Habitat_Attribute_Scores$Habitat_Attribute_Score))
-output_path_x =  paste(output_path,'Habitat_Attribute_Scores.xlsx', sep="")
-write.xlsx(
-  Habitat_Attribute_Scores,
-  output_path_x,
-  col.names = TRUE,
-  row.names = FALSE,
-  append = FALSE,
-  showNA = TRUE,
-  password = NULL
-)
 
-print(paste("Time to complete loop: ", paste(round((proc.time()[3] - ptm)/60, 2), " minutes")    ))
+# --------- only write data if "yes" indicated (since this adds ~1 minute to script writing time) ------------
+if(output_Habitat_Quality_and_Habitat_Attribute_Scores == "yes"){
+  output_path_x =  paste(output_path,'Habitat_Attribute_Scores.xlsx', sep="")
+  write.xlsx(
+    Habitat_Attribute_Scores,
+    output_path_x,
+    col.names = TRUE,
+    row.names = FALSE,
+    append = FALSE,
+    showNA = TRUE,
+    password = NULL
+  )
+}
+
+print(paste("Time to complete Habitat Attributes Output: ", paste(round((proc.time()[3] - ptm)/60, 2), " minutes")    ))
 

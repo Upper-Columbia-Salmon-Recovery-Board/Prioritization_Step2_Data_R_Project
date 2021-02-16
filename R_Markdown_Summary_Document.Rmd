@@ -14,9 +14,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 This is the R Code for the Step 2 of the [UCSRB Habitat Prioritization process](https://www.ucsrb.org/prioritization/). I will endeavor to update the data available on this page, however the most up-to-date results for Step 2 can be found on the Prioritization Products Page. For each script, the last update is listed on the right (e.g. "2 months ago").
 
-## R Code Overview
+## Reach and Action Proiritizatoin
 
-
+The RTT decided to use three pathways to develop prioritized reaches and actions: Habitat Quality pathway, Limiting Factors pathway, and fish passage pathway. This python tool deals primarily with the Habitat Quality and Limiting Factors pathway, and the fish passage pathways are uploaded to the action categories manually. The filters and criteria for filters (as of October 14th, 2020) are overview in this [google slides presentation](https://docs.google.com/presentation/d/1dEJ-A_LlW1HkxfIjOfLmjRxS1DRR_nWGOsBlZj5khss/edit?usp=sharing).
 
 
 ## Data Overview
