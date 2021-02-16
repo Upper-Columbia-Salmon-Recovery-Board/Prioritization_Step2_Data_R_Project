@@ -86,17 +86,40 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
     
     if(metric_criteria_x$Category_Type[1]== 'factor'){
       
-      data_output_x = data_output_x  %>%
-        mutate(score = ifelse(metric_data  == metric_criteria_x$Category[1], metric_criteria_x$Score[1],
-                              ifelse(metric_data  == metric_criteria_x$Category[2], metric_criteria_x$Score[2],
-                                     ifelse(metric_data  == metric_criteria_x$Category[3], metric_criteria_x$Score[3],
-                                            ifelse(metric_data  == metric_criteria_x$Category[4], metric_criteria_x$Score[4],
-                                                   ifelse(metric_data  == metric_criteria_x$Category[5], metric_criteria_x$Score[5],
-                                                          ifelse(metric_data  == metric_criteria_x$Category[6], metric_criteria_x$Score[6],
-                                                                 ifelse(metric_data  == metric_criteria_x$Category[7], metric_criteria_x$Score[7],
-                                                                        ifelse(metric_data  == metric_criteria_x$Category[8], metric_criteria_x$Score[8],
-                                                   NA)))))))))
-      
+      # -----------------------------------
+      #    Contaminants ONLY
+      # -----------------------------------
+      # NOTE: if anything is listed, it gets a 1, otherwise a 5
+      if( data_col_name == "Contaminants_303d"  ){
+        
+        data_output_x$score = "NA"
+        # ------ IF ANY contaminant listed - set as 1 ----------
+        data_output_x$score[data_output_x$metric_data != "NA"] = 1
+        # ------ IF no contaminant listed - set as 5 ----------
+        data_output_x$score[data_output_x$metric_data == "NA"] = 5
+
+      # -----------------------------------
+      #    ALL other factors (REI scores mainly)
+      # ----------------------------------- 
+      }else{
+        
+        # ------------ set scores for factor metrics ---------------
+        data_output_x = data_output_x  %>%
+          mutate(score = ifelse(metric_data  == metric_criteria_x$Category[1], metric_criteria_x$Score[1],
+                                ifelse(metric_data  == metric_criteria_x$Category[2], metric_criteria_x$Score[2],
+                                       ifelse(metric_data  == metric_criteria_x$Category[3], metric_criteria_x$Score[3],
+                                              ifelse(metric_data  == metric_criteria_x$Category[4], metric_criteria_x$Score[4],
+                                                     ifelse(metric_data  == metric_criteria_x$Category[5], metric_criteria_x$Score[5],
+                                                            ifelse(metric_data  == metric_criteria_x$Category[6], metric_criteria_x$Score[6],
+                                                                   ifelse(metric_data  == metric_criteria_x$Category[7], metric_criteria_x$Score[7],
+                                                                          ifelse(metric_data  == metric_criteria_x$Category[8], metric_criteria_x$Score[8],
+                                                                                 NA)))))))))
+        
+        
+      }
+        
+        
+
       # -----------------------------------
       #    Generate Score for NUMERIC criteria 
       # -----------------------------------
@@ -279,7 +302,7 @@ data_col_name = 'PROSPER'
 habitat_attribute_x = "Off-Channel- Side-Channels"
 data_col_name = 'Side_Channel_Habitat_Prcnt_INDICATOR_6'
 data_col_name = data_source_x
-x = FUNCTION_generate_habitat_attribute_score_from_CHAMP_or_Channel_Unit(habitat_attribute_x, data_col_name, "LF")
+# x = FUNCTION_generate_habitat_attribute_score_from_CHAMP_or_Channel_Unit(habitat_attribute_x, data_col_name, "LF")
 
 
 FUNCTION_generate_habitat_attribute_score_from_CHAMP_or_Channel_Unit = function(habitat_attribute_x, data_col_name, LF_or_HQ){

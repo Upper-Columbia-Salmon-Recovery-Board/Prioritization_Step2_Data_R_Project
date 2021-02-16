@@ -26,12 +26,15 @@ Reach_Confinement_SCORE_Criteria =  c(5)           # potential: 1, 3, 5; 1 is hi
 Sum_Life_Stage_Criteria = c(4)   # potential: 1,2,3,4,5,6,7
 # ----------------- Habitat Quality Score (data in habitat_attribute_scores) -----------------
 #    this number should be the minimum score, so script pulls all values equal to and greater than the SCORE_Criteria_Habitat_Quality_Pathway for Restoration and Protection
-SCORE_Criteria_Habitat_Quality_Pathway = c(5)      # potential: 1,2,3,4,5; based on "goldilocks method" where 5 is highest priority, 1 is lowest
+SCORE_Criteria_Habitat_Quality_Pathway_Restoration = c(5)      # potential: 1,2,3,4,5; based on "goldilocks method" where 5 is highest priority, 1 is lowest, put the MINIMUM value
+SCORE_Criteria_Habitat_Quality_Pathway_Protection = c(3)      # potential: 1,2,3,4,5; based on "goldilocks method" where 5 is highest priority, 1 is lowest, put the MINIMUM value (so 3 means 3, 4, and 5 pass through)
 # --------------------- Habitat Attribute Scores-- "DRAFT Habitat Attribute..." data (data in Cumul_Habitat_Attribute_Score)
-# NOTE - record invidual habitat attribute so you can filter out 
+# NOTE - record individual habitat attribute so you can filter out 
 # Oct 2020: did [1] (Unacceptable only)   OR [1, 3] (Unacceptable and At Risk)
 Individual_Habitat_Attribute_Score = c(3)   # possible scores - [1,3,5] 1 - unacceptable, 5 - adequate
-
+# NOTE - since we wanted both "At Risk" and "Unacceptable"- I just hard-coded this in the
+#        list_indiv_habitat_attributes_low_FUNCTION the filter generates for scores 1 (Unacceptable)
+#        and scores 2 and 3 (At Risk)
 
 # ----------------------------------------------------------------------------------------------------------------------------
 #

@@ -62,6 +62,16 @@ habitat_raw_data[cols.num] <- sapply(habitat_raw_data[cols.num],as.numeric)
 
 # ---------------------------------------------------------------------------
 #
+#    Barriers Pathways Output 
+#     # these are copied over from output from barrier prioritization
+#
+# ---------------------------------------------------------------------------
+
+Barriers_Pathways_Data = read_excel( paste(data_path,'Barriers_Pathway_Data.xlsx', sep="") )
+
+
+# ---------------------------------------------------------------------------
+#
 #     AU Ranks
 #
 # ---------------------------------------------------------------------------
@@ -180,13 +190,6 @@ CHAMP_data_Updated = merge(CHAMP_data_Updated, CHAMP_data_per_reach, by = "Reach
 
 Reach_Information_data = read_excel( paste(data_path,'ReachInfo.xlsx', sep="") )
 
-# ---------------------------------------------------------------------------
-#
-#   Confinement Scores
-#
-# ---------------------------------------------------------------------------
-
-Confinement_Scores = read_excel( paste(data_path,'Confinement_Scores.xlsx', sep="") )
 
 # ---------------------------------------------------------------------------
 #
@@ -286,6 +289,19 @@ for(rowx in rownames(Habitat_Limiting_Factor_Rating_Criteria)){
   
 }
 
+# ---------------------------------------------------------------------------
+#
+#   Confinement Scores
+#
+# ---------------------------------------------------------------------------
+
+Confinement_Scores = read_excel( paste(data_path,'Confinement_Scores.xlsx', sep="") )
+
+# ------------------- update geomorphic potential/confinement scores with criteria ---------------
+source(paste(script_path, 'FUNCTIONS_for_Reading_Data.R', sep=""))
+
+Geomorphic_Criteria = Habitat_Quality_and_Geomorphic_Potential_Rating_Criteria_Updated[which(Habitat_Quality_and_Geomorphic_Potential_Rating_Criteria_Updated$Habitat_Quality_Scoring_Metric == "Geomorphic Potential"),]
+FUNCTION_update_Confinement_Scores(Confinement_Scores, Geomorphic_Criteria)
 
 # ---------------------------------------------------------------------------
 #

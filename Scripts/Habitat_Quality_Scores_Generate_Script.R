@@ -167,16 +167,16 @@ Habitat_Quality_Scores$HQ_Pct = Habitat_Quality_Scores$HQ_Sum/45
 
 Habitat_Quality_Scores = Habitat_Quality_Scores  %>%
   mutate(HQ_Score_Restoration = ifelse(HQ_Pct  > Restoration_Scoring$Category_Lower[1] & 
-                                         HQ_Pct  <= Restoration_Scoring$Category_Upper[1] , Restoration_Scoring$Score[1],
-                                       ifelse(HQ_Pct  > Restoration_Scoring$Category_Lower[2] & 
+                                         HQ_Pct  < Restoration_Scoring$Category_Upper[1] , Restoration_Scoring$Score[1],
+                                       ifelse(HQ_Pct  >= Restoration_Scoring$Category_Lower[2] & 
                                                 HQ_Pct  <= Restoration_Scoring$Category_Upper[2] , Restoration_Scoring$Score[2],
                                               ifelse(HQ_Pct  > Restoration_Scoring$Category_Lower[3] & 
                                                        HQ_Pct  <= Restoration_Scoring$Category_Upper[3] , Restoration_Scoring$Score[3],
                                                      NA))))
 Habitat_Quality_Scores = Habitat_Quality_Scores  %>%
   mutate(HQ_Score_Protection = ifelse(HQ_Pct  > Protection_Scoring$Category_Lower [1] & 
-                                        HQ_Pct  <= Protection_Scoring$Category_Upper[1] , Protection_Scoring$Score[1],
-                                      ifelse(HQ_Pct  > Protection_Scoring$Category_Lower[2] & 
+                                        HQ_Pct  < Protection_Scoring$Category_Upper[1] , Protection_Scoring$Score[1],
+                                      ifelse(HQ_Pct  >= Protection_Scoring$Category_Lower[2] & 
                                                HQ_Pct  <= Protection_Scoring$Category_Upper[2] , Protection_Scoring$Score[2],
                                              ifelse(HQ_Pct  > Protection_Scoring$Category_Lower[3] & 
                                                       HQ_Pct  <= Protection_Scoring$Category_Upper[3] , Protection_Scoring$Score[3],

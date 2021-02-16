@@ -24,15 +24,20 @@
 # ---------------------------------------------------------------------------
 
 # ------------------------ Function to generate column of action categories for the habitat attributes ---------
-# NOTE: data must have columns with "unacceptable_1_indiv_habitat_attributes" AND "unacceptable_and_at_risk_1_3_indiv_habitat_attributes"
+# NOTE: data must have columns with "unacceptable_1_indiv_habitat_attributes", "at_risk_2_or_3_indiv_habitat_attributes", "unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes"
+data_frame_with_habitat_attributes = Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']]
+data_frame_with_habitat_attributes = Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']]
 FUNCTION_to_generate_Action_Categories = function(data_frame_with_habitat_attributes){
   
   # ------------------ generate action categories for Unacceptable (1) habitat attributes ------------
   data_frame_with_habitat_attributes$unacceptable_1_action_categories = apply(as.matrix(data_frame_with_habitat_attributes$unacceptable_1_indiv_habitat_attributes), MARGIN = 1,
                                    FUNCTION_match_habitat_attributes_and_action_categories)
+  # -------------- generate action categories for Unacceptable and At Risk (1 OR 3) habitat attributes ------------
+  data_frame_with_habitat_attributes$at_risk_2_or_3_action_categories = apply(as.matrix(data_frame_with_habitat_attributes$at_risk_2_or_3_indiv_habitat_attributes), MARGIN = 1,
+                                                                                            FUNCTION_match_habitat_attributes_and_action_categories)
   
   # -------------- generate action categories for Unacceptable and At Risk (1 OR 3) habitat attributes ------------
-  data_frame_with_habitat_attributes$unacceptable_and_at_risk_1_3_action_categories = apply(as.matrix(data_frame_with_habitat_attributes$unacceptable_and_at_risk_1_3_indiv_habitat_attributes), MARGIN = 1,
+  data_frame_with_habitat_attributes$unacceptable_and_at_risk_1_3_action_categories = apply(as.matrix(data_frame_with_habitat_attributes$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes), MARGIN = 1,
                                                                               FUNCTION_match_habitat_attributes_and_action_categories)
   
   return(data_frame_with_habitat_attributes)
@@ -48,7 +53,6 @@ FUNCTION_match_habitat_attributes_and_action_categories = function(row){
   habitat_attributes_row_x2 = unlist(strsplit(row, ","))
   # --------- remove white space ------
   habitat_attributes_row_x2 = gsub(" ", "", habitat_attributes_row_x2, fixed = TRUE)
-  
   
   # --------------- generation action categories -----------
   Action_Categories_Output = c()

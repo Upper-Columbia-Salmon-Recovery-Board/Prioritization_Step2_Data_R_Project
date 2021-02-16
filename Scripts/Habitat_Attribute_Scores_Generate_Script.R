@@ -19,7 +19,6 @@
 #
 # ---------------------------------------------------------------------------
 
-
 source(paste(script_path, 'Data_Sources_List_for_Habitat_Attributes.R', sep=""))
 
 # ---------------------------------------------------------------------------
@@ -28,12 +27,7 @@ source(paste(script_path, 'Data_Sources_List_for_Habitat_Attributes.R', sep=""))
 #
 # ---------------------------------------------------------------------------
 
-
-
 source(paste(script_path, 'FUNCTIONS_for_Habitat_Attribute_Filters.R', sep=""))
-
-
-
 
 # ---------------------------------------------------------------------------
 #
@@ -70,7 +64,7 @@ for(habitat_attribute_x in names(Habitat_Attributes_List)){
   # ------------ data frame to record habitat attributes --------
   habitat_attribute_x_data_frame = data.frame()
   # ------------ prep data source name -----------
-  data_source_output_list_per_row = c('a')
+  data_source_output_list_per_row = c('a') # create a nchar = 1 data frame
   column_names = c("(HabitatAttributeScore1)",	"(HabitatAttributeScore2)",	"(HabitatAttributeScore3)",	"(HabitatAttributeScore4)")
   i = 0
   
@@ -97,7 +91,7 @@ for(habitat_attribute_x in names(Habitat_Attributes_List)){
       colnames(output_x ) = c('metric_data', 'score')
     
     # ------------------ read in from Channel Unit data  -----------
-    }else if( any(Channel_Unit_Raw_data_sources[habitat_attribute_x] == data_source_x ) ){
+    }else if( any(Channel_Unit_Raw_data_sources[habitat_attribute_x] == data_source_x) ){
       
       # ------------ Generate metric value  AND score (1,3,5) for each habitat attribute -------------------
       # outputs both metric value and score
