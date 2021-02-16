@@ -226,7 +226,7 @@ Protection_Prioritization_Output = FUNCTION_Combine_Protection_Output(Habitat_Qu
 # -----------------------------------------------------------------
 #       Restoration
 # -----------------------------------------------------------------
-output_path_x =  paste(output_path,'Reach_Actions_Restoratoin_Unacceptable_and_AtRisk.xlsx', sep="")
+output_path_x =  paste(output_path,'Reach_Actions_Restoration_Unacceptable_and_AtRisk.xlsx', sep="")
 write_xlsx(Restoration_Prioritization_Output,output_path_x )
 
 
