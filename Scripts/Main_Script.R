@@ -196,17 +196,26 @@ Restoration_Unacceptable_and_At_Risk = FUNCTION_combine_across_pathways(Habitat_
 # ---------------------------------------------------------------------------
 #  Combine into ONE Data frame across all pathways and scores
 # ---------------------------------------------------------------------------
-Restoratoin_Simple_Total_Output = FUNCTION_combine_across_Unacceptable_and_AtRisk(Restoration_Unacceptable, Restoration_At_Risk, Restoration_Unacceptable_and_At_Risk)
+Restoration_Prioritization_Output = FUNCTION_combine_across_Unacceptable_and_AtRisk(Restoration_Unacceptable, Restoration_At_Risk, Restoration_Unacceptable_and_At_Risk)
 # ---------------------------------------------------------------------------
 #  Add Barrier Prioritization Info
 # ---------------------------------------------------------------------------
-Restoratoin_Simple_Total_Output = FUNCTION_Add_Barrier_Data(Restoratoin_Simple_Total_Output, Barriers_Pathways_Data)
+Restoration_Prioritization_Output = FUNCTION_Add_Barrier_Data(Restoration_Prioritization_Output, Barriers_Pathways_Data)
 
 # ---------------------------------------------------------------------------
 #
 #  PROTECTION: prep to output
 #
 # ---------------------------------------------------------------------------
+
+source(paste(script_path, 'FUNCTIONS_for_Protection_Output.R', sep=""))
+
+Protection_Prioritization_Output = FUNCTION_Combine_Protection_Output(Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Protection']],
+                                                                      Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Protection']],
+                                                                      Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Protection']],
+                                                                      Limiting_Factor_Pathway_Spring_Chinook[['Limiting_Factor_Pathway_Protection']],
+                                                                      Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']],
+                                                                      Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Protection']] )
 
 # ---------------------------------------------------------------------------
 #
@@ -217,6 +226,10 @@ Restoratoin_Simple_Total_Output = FUNCTION_Add_Barrier_Data(Restoratoin_Simple_T
 # -----------------------------------------------------------------
 #       Restoration
 # -----------------------------------------------------------------
+output_path_x =  paste(output_path,'Reach_Actions_Restoratoin_Unacceptable_and_AtRisk.xlsx', sep="")
+write_xlsx(Restoration_Prioritization_Output,output_path_x )
+
+
 output_path_x =  paste(output_path,'Action_Categories_and_Pathways_Restoration_Unacceptable.xlsx', sep="")
 write_xlsx(Restoration_Unacceptable,output_path_x )
 output_path_x =  paste(output_path,'Action_Categories_and_Pathways_Restoration_At_Risk.xlsx', sep="")
@@ -227,6 +240,9 @@ write_xlsx(Restoration_Unacceptable_and_At_Risk,output_path_x )
 # -----------------------------------------------------------------
 #      Protection
 # -----------------------------------------------------------------
+output_path_x =  paste(output_path,'Reach_Actions_Protection.xlsx', sep="")
+write_xlsx(Protection_Prioritization_Output,output_path_x )
+
 
 
 
