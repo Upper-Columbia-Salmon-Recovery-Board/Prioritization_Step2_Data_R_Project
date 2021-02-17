@@ -233,6 +233,39 @@ Protection_Prioritization_Output = FUNCTION_Combine_Protection_Output(Habitat_Qu
                                                                       Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']],
                                                                       Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Protection']] )
 
+
+# ---------------------------------------------------------------------------
+#
+#  RESTORATION - flat tables for WebMaps of 
+#
+# ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+#  Reach-Habitat Attributes - Life Stage per row
+# ---------------------------------------------------------------------------
+
+source(paste(script_path, 'FUNCTIONS_for_Combining_Reach_Habitat_Attribute_combos.R', sep=""))
+
+columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
+Reach_Habitat_Attribute_Life_Stage_Restoration_Output = FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage(Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']], 
+                                                Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']], 
+                                                Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']], 
+                                                Limiting_Factor_Pathway_Spring_Chinook[['Limiting_Factor_Pathway_Restoration']],
+                                                Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']], 
+                                                Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']], columns_info)
+
+Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output = FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species(Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']], 
+                                                                   Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']], 
+                                                                   Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']], 
+                                                                   Limiting_Factor_Pathway_Spring_Chinook[['Limiting_Factor_Pathway_Restoration']],
+                                                                   Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']], 
+                                                                   Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']], columns_info)
+
+# ---------------------------------------------------------------------------
+#  Reach-Habitat Attributes - Life Stage - Species per row
+# ---------------------------------------------------------------------------
+
+
 # ---------------------------------------------------------------------------
 #
 #  Export the Data
@@ -244,6 +277,9 @@ Protection_Prioritization_Output = FUNCTION_Combine_Protection_Output(Habitat_Qu
 # -----------------------------------------------------------------
 output_path_x =  paste(output_path,'Reach_Actions_Restoration_Unacceptable_and_AtRisk.xlsx', sep="")
 write_xlsx(Restoration_Prioritization_Output,output_path_x )
+
+output_path_x =  paste(output_path,'Reach_Habitat_Attribute_Life_Stage_Restoration_Output.xlsx', sep="")
+write_xlsx(Reach_Habitat_Attribute_Life_Stage_Restoration_Output,output_path_x )
 
 
 output_path_x =  paste(output_path,'Action_Categories_and_Pathways_Restoration_Unacceptable.xlsx', sep="")

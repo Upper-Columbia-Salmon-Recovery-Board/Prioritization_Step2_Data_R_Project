@@ -2,6 +2,7 @@
 # ---------------------------------------------------------------------------
 #
 #      SCRIPT: Combine Action Categories across SPECIES and PATHWAYS
+#           ORGANZIED by Reach (one column per reach)
 #
 #      R Project to generate Priority Action Categories Based on Habitat Quality 
 #          and Limiting Factor Analysis from Step 2 of RTT Prioritization Process
@@ -1222,9 +1223,6 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined, Barriers_Pathways_Data){
 }
   
   
-
-
-
 
 
 

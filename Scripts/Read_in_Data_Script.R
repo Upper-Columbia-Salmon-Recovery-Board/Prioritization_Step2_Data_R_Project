@@ -125,6 +125,7 @@ life_stages_priorities = list("spring_chinook_life_stages" =  spring_chinook_lif
 # ---------------------------------------------------------------------------
 
 Attribute_LifeStage_Crosswalk = read_excel( paste(data_path,'Attribute_LifeStage_Crosswalk.xlsx', sep="") )
+Attribute_LifeStage_Crosswalk$Habitat_Attribute_2 = gsub(" ", "", Attribute_LifeStage_Crosswalk$`Habitat Attribute`, fixed = TRUE)
 
 # ---------------------------------------------------------------------------
 #
