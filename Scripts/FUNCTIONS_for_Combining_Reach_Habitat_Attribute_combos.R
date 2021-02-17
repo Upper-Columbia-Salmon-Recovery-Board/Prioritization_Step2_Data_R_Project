@@ -22,7 +22,7 @@
 
 
 # -------------------  function to take list of habitat attributes to generate action categories ------
-FUNCTION_match__INDIVIDUAL_habitat_attributes_and_action_categories = function(habitat_attribute_x){
+FUNCTION_match_INDIVIDUAL_habitat_attributes_and_action_categories = function(habitat_attribute_x){
 
   # --------- remove white space ------
   habitat_attributes_x2 = gsub(" ", "", habitat_attribute_x, fixed = TRUE)
@@ -38,14 +38,17 @@ FUNCTION_match__INDIVIDUAL_habitat_attributes_and_action_categories = function(h
   
 }
 
+
+
+
 # ----------------- Function to generate whether species - life stage - habitat attribute is a core metric ---------
 species_x2 = species_x
 
-species_x2 = "Spring Chinook"
+species_x2 = "Spring Chinook,Steelhead"
 life_stage_x = "Fry"
-habitat_attribute_x = "Cover- Wood"
+habitat_attribute_x = "Flow-SummerBaseFlow"
 
-FUNCTION_match__INDIVIDUAL_habitat_attributes_and_core_metric = function(species_x2, life_stage_x, habitat_attribute_x){
+FUNCTION_match_INDIVIDUAL_core_metrics_from_habitat_attributes_SPECIES = function(species_x2, life_stage_x, habitat_attribute_x){
   
   # --------- remove white space ------
   habitat_attributes_x2 = gsub(" ", "", habitat_attribute_x, fixed = TRUE)
@@ -55,7 +58,7 @@ FUNCTION_match__INDIVIDUAL_habitat_attributes_and_core_metric = function(species
   # -------------------------------------------------------------
   #    IF ONE species (not individual rows per species)
   # -------------------------------------------------------------
-  if(length(species_x2) == 1){
+  if( length(species_x2) == 1 ){
     
     # ------------- match the habitat attribute to the action category
     Attribute_LifeStage_Crosswalk_INDIVIDUAL= Attribute_LifeStage_Crosswalk %>%
@@ -67,16 +70,21 @@ FUNCTION_match__INDIVIDUAL_habitat_attributes_and_core_metric = function(species
     core_metric_output = Attribute_LifeStage_Crosswalk_INDIVIDUAL$`Life Stage Core Metric?`
 
     # ----------- Yes/No if a Core Metric ----------
-    if( !is.na(core_metric_output) ){
-      core_metric_x = "yes"
-    }else{
+    if( length(core_metric_output) == 0  ){
       core_metric_x = "no"
+    }else{
+      if( !is.na(core_metric_output) ){
+        core_metric_x = "yes"
+      }else{
+        core_metric_x = "no"
+      }
     }
+
     
   # -------------------------------------------------------------
   #    IF multiple species (not individual rows per species)
   # -------------------------------------------------------------
-  }else if(length(species_x2) > 1){
+  }else if( length(species_x2) > 1 ){
     
     core_metric_output = c()
     for(species_xi in unlist(strsplit(species_x2, ","))  ){
@@ -93,20 +101,20 @@ FUNCTION_match__INDIVIDUAL_habitat_attributes_and_core_metric = function(species
       
     }
     core_metric_output = substr(core_metric_output,2,nchar(core_metric_output))   # remove the leading comma
-    if(grepl( "x", core_metric_output, fixed = TRUE)){
-      core_metric_x = "yes"
-    }else{
+    if( length(core_metric_output) == 0 ){
       core_metric_x = "no"
+    }else{
+      if(grepl( "x", core_metric_output, fixed = TRUE)){
+        core_metric_x = "yes"
+      }else{
+        core_metric_x = "no"
+      }
     }
-    
-    
+
   }else{
     print("species entered incorrectly")
   }
 
-  
-
-  
   return(core_metric_x)
   
 }
@@ -292,7 +300,7 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage = function(HQ_spring_
         # ------------------------------------------------------------
         #  Metric a Core metric
         # ------------------------------------------------------------ 
-        HQ_and_LF_combo_x$Core_Metric = FUNCTION_match__INDIVIDUAL_habitat_attributes_and_core_metric(species_x, life_stage_x, habitat_attribute_x )
+        HQ_and_LF_combo_x$Core_Metric = FUNCTION_match_INDIVIDUAL_core_metrics_from_habitat_attributes(species_x, life_stage_x, habitat_attribute_x )
         
         
         # ------------------------------------------------------------
@@ -473,7 +481,7 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ
           # ------------------------------------------------------------
           #    Action Categories
           # ------------------------------------------------------------
-          action_category_x = FUNCTION_match__INDIVIDUAL_habitat_attributes_and_action_categories(habitat_attribute_x)
+          action_category_x = FUNCTION_match_INDIVIDUAL_habitat_attributes_and_action_categories(habitat_attribute_x)
           number_of_actions_x = length(action_category_x)
           action_category_x = paste(action_category_x, collapse=",")
           # ------ add to row ---------
@@ -503,8 +511,7 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ
           # ------------------------------------------------------------
           #  Metric a Core metric
           # ------------------------------------------------------------ 
-          HQ_and_LF_combo_x$Reach_Rank = 1
-          
+          HQ_and_LF_combo_x$Core_Metric = FUNCTION_match_INDIVIDUAL_core_metrics_from_habitat_attributes_SPECIES(species_x, life_stage_x, habitat_attribute_x )
           
           # ------------------------------------------------------------
           #  Reach Rank (FOR NOW just putting a "1")

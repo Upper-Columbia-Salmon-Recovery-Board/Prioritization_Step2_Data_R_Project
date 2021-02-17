@@ -278,9 +278,16 @@ Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output = FUNCTION_combin
 output_path_x =  paste(output_path,'Reach_Actions_Restoration_Unacceptable_and_AtRisk.xlsx', sep="")
 write_xlsx(Restoration_Prioritization_Output,output_path_x )
 
+# ------------- Output for WebMap ------------------
+# ------- change "Habitat_Attribute" name to "Limiting_Factor"
+colnames(Reach_Habitat_Attribute_Life_Stage_Restoration_Output)[colnames(Reach_Habitat_Attribute_Life_Stage_Restoration_Output) == "Habitat_Attribute"] <- "Limiting_Factor"
+
 output_path_x =  paste(output_path,'Reach_Habitat_Attribute_Life_Stage_Restoration_Output.xlsx', sep="")
 write_xlsx(Reach_Habitat_Attribute_Life_Stage_Restoration_Output,output_path_x )
-
+# ------------- Output for WebMap ------------------
+colnames(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output)[colnames(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output) == "Habitat_Attribute"] <- "Limiting_Factor"
+output_path_x =  paste(output_path,'Reach_Habitat_Attribute_Life_Stage_Species_Restoration_Output.xlsx', sep="")
+write_xlsx(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output,output_path_x )
 
 output_path_x =  paste(output_path,'Action_Categories_and_Pathways_Restoration_Unacceptable.xlsx', sep="")
 write_xlsx(Restoration_Unacceptable,output_path_x )
