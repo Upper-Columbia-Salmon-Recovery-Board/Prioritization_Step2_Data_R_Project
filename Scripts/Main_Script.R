@@ -254,6 +254,10 @@ Reach_Habitat_Attribute_Life_Stage_Restoration_Output = FUNCTION_combine_by_Reac
                                                 Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']], 
                                                 Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']], columns_info)
 
+# ---------------------------------------------------------------------------
+#  Reach-Habitat Attributes - Life Stage per row
+# ---------------------------------------------------------------------------
+
 Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output = FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species(Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']], 
                                                                    Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']], 
                                                                    Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']], 
@@ -261,9 +265,6 @@ Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output = FUNCTION_combin
                                                                    Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']], 
                                                                    Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']], columns_info)
 
-# ---------------------------------------------------------------------------
-#  Reach-Habitat Attributes - Life Stage - Species per row
-# ---------------------------------------------------------------------------
 
 
 # ---------------------------------------------------------------------------
@@ -281,13 +282,14 @@ write_xlsx(Restoration_Prioritization_Output,output_path_x )
 # ------------- Output for WebMap ------------------
 # ------- change "Habitat_Attribute" name to "Limiting_Factor"
 colnames(Reach_Habitat_Attribute_Life_Stage_Restoration_Output)[colnames(Reach_Habitat_Attribute_Life_Stage_Restoration_Output) == "Habitat_Attribute"] <- "Limiting_Factor"
-
 output_path_x =  paste(output_path,'Reach_Habitat_Attribute_Life_Stage_Restoration_Output.xlsx', sep="")
 write_xlsx(Reach_Habitat_Attribute_Life_Stage_Restoration_Output,output_path_x )
 # ------------- Output for WebMap ------------------
 colnames(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output)[colnames(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output) == "Habitat_Attribute"] <- "Limiting_Factor"
 output_path_x =  paste(output_path,'Reach_Habitat_Attribute_Life_Stage_Species_Restoration_Output.xlsx', sep="")
 write_xlsx(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output,output_path_x )
+
+
 
 output_path_x =  paste(output_path,'Action_Categories_and_Pathways_Restoration_Unacceptable.xlsx', sep="")
 write_xlsx(Restoration_Unacceptable,output_path_x )
@@ -305,3 +307,6 @@ write_xlsx(Protection_Prioritization_Output,output_path_x )
 
 print(paste("Time to complete ENTIRE tool: ", paste(round((proc.time()[3] - time1)/60, 2), " minutes")    ))
 
+
+
+# MAKING a small change - see if I can push in GitHub via R Studio console
