@@ -1292,6 +1292,10 @@ FUNCTION_prepare_outward_facing_table = function(data_frame_x, colnames_outward_
   # ---------------- if "NA" in a life stage - change it to "multiple ----
   data_frame_x$Life_Stages = gsub("NA", "multiple", data_frame_x$Life_Stages )
   
+  # ---------------- round river mile to decimal place ----
+  data_frame_x$RM_Start = round(data_frame_x$RM_Start, 2)
+  data_frame_x$RM_End = round(data_frame_x$RM_End, 2)
+  
   # ---------------- update the column names as necessary ------------
   
   for(i in 1:length(colnames_outward_facing_WebMap_UPDATED) ){
