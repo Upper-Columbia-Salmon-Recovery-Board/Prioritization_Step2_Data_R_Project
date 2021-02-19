@@ -430,7 +430,7 @@ Generate_individual_life_stage_score = function(species, life_stage){
   # ------------------------------------------------------------------------------------- 
   #                 calculate HQ Restoration and Protection Score
   # ------------------------------------------------------------------------------------- 
-  
+
   # ------------------------------------- Restoration ---------------------------------
   Habitat_Attribute_Scores_for_individual_Life_Stage = Habitat_Attribute_Scores_for_individual_Life_Stage  %>%
     mutate(LF_Score_Restoration = ifelse(LF_Pct  > Restoration_Scoring$Category_Lower[1] & 

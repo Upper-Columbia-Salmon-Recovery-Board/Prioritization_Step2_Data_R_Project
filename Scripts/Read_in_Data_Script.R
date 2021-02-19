@@ -179,7 +179,7 @@ cols.num = c('NumberofCHaMPDataPoints', 'SlowWater_Pct_Average',	'SlowWater_Pct_
 CHAMP_data_per_reach[cols.num] <- sapply(CHAMP_data_per_reach[cols.num],as.numeric)
 
 # -------------------------- CHAMP data only use 139 reaches, so add reaches not present as NA -------------
-CHAMP_data_Updated =  habitat_raw_data %>% select("ReachName","Basin","Assessment.Unit")
+CHAMP_data_Updated =  habitat_raw_data[,c("ReachName","Basin","Assessment.Unit")]
 CHAMP_data_Updated = merge(CHAMP_data_Updated, CHAMP_data_per_reach, by = "ReachName", 
                          all.x = TRUE, all.y = TRUE)
 

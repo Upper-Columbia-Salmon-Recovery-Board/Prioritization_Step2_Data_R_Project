@@ -13,15 +13,22 @@ library(xlsx)
 library(writexl)
 library(readxl)
 
+# ---------------------------------------------------------------------------
+#  simple Criteria for output
+# ---------------------------------------------------------------------------
+
+basins_to_include = c("Methow",  "Entiat","Wenatchee")  # basins to include insimulation
+exclude_bull_trout = "yes"  # if "yes" -> remove bull trout for WebMap applications
 output_Habitat_Quality_and_Habitat_Attribute_Scores = "no"  # enter "yes" or "no" if you want this output
 
-time1 <- proc.time()[3] # for timing the total time to run the tool
 
 # ---------------------------------------------------------------------------
 #
 #      Directories of Input and Output data
 #
 # ---------------------------------------------------------------------------
+
+time1 <- proc.time()[3] # for timing the total time to run the tool
 
 # --------------- directory of scripts -----------
 script_path = 'Scripts/'
@@ -86,8 +93,6 @@ source(paste(script_path, 'Habitat_Attribute_Scores_Generate_Script.R', sep=""))
 print("----------------------------------------- APPLY HABITAT QUALITY FILTERS FOR PRIORITIZATION --------------------------------------------")
 
 source(paste(script_path, 'Habitat_Quality_Pathway_Filter.R', sep=""))
-
-basins_to_include = c("Methow",  "Entiat","Wenatchee")
 
 # ----- set names of Habitat Quality Scores to sum ------
 habitat_quality_scores_colnames_for_sum = c("Stability_Mean" , "CoarseSubstrate_score" ,"Cover-Wood_score", "Flow-SummerBaseFlow_score",
@@ -208,12 +213,26 @@ Restoration_Unacceptable_and_At_Risk = FUNCTION_combine_across_pathways(Habitat_
 #  Combine into ONE Data frame across all pathways and scores
 # ---------------------------------------------------------------------------
 columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
-Restoration_Prioritization_Output = FUNCTION_combine_across_Unacceptable_and_AtRisk(Restoration_Unacceptable, Restoration_At_Risk, Restoration_Unacceptable_and_At_Risk, columns_info)
+Restoration_Prioritization_Output = FUNCTION_combine_across_Unacceptable_and_AtRisk(Restoration_Unacceptable, Restoration_At_Risk, Restoration_Unacceptable_and_At_Risk, columns_info, exclude_bull_trout)
 # ---------------------------------------------------------------------------
 #  Add Barrier Prioritization Info
 # ---------------------------------------------------------------------------
 columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
 Restoration_Prioritization_Output = FUNCTION_Add_Barrier_Data(Restoration_Prioritization_Output, Barriers_Pathways_Data)
+
+# ---------------------------------------------------------------------------
+#  Reduce for "Outward Facing" table in WebMap
+# ---------------------------------------------------------------------------
+
+colnames_outward_facing_WebMap = c("ReachName","Assessment.Unit","Species","Life_Stages","Impaired_Habitat_Attributes_All_Species","Action_Categories_All_Species" )
+colnames_reach_info = c("RM_Start", "RM_End")  # data that is in the reach geospatial layer to add to these data
+colnames_outward_facing_WebMap_ORDER = c("ReachName","RM_Start", "RM_End","Assessment.Unit","Species","Life_Stages","Impaired_Habitat_Attributes_All_Species","Action_Categories_All_Species" )
+# ------- filter out for specific columns ----------
+Restoration_Prioritization_Output_for_WebMap = Restoration_Prioritization_Output[,colnames_outward_facing_WebMap]
+# ----------- add Reach information ------------
+Restoration_Prioritization_Output_for_WebMap  =  FUNCTION_add_reach_information(Restoration_Prioritization_Output_for_WebMap,  colnames_reach_info)
+# ------------ do MISC processing for output ---------
+Restoration_Prioritization_Output_for_WebMap = FUNCTION_prepare_outward_facing_table( Restoration_Prioritization_Output_for_WebMap , colnames_outward_facing_WebMap_ORDER, exclude_bull_trout)
 
 # ---------------------------------------------------------------------------
 #
@@ -307,6 +326,3 @@ write_xlsx(Protection_Prioritization_Output,output_path_x )
 
 print(paste("Time to complete ENTIRE tool: ", paste(round((proc.time()[3] - time1)/60, 2), " minutes")    ))
 
-
-
-# MAKING a small change - see if I can push in GitHub via R Studio console

@@ -42,11 +42,11 @@ FUNCTION_match_INDIVIDUAL_habitat_attributes_and_action_categories = function(ha
 
 
 # ----------------- Function to generate whether species - life stage - habitat attribute is a core metric ---------
-species_x2 = species_x
 
-species_x2 = "Spring Chinook,Steelhead"
-life_stage_x = "Fry"
-habitat_attribute_x = "Flow-SummerBaseFlow"
+# species_x2 = species_x
+# species_x2 = "Spring Chinook,Steelhead"
+# life_stage_x = "Fry"
+# habitat_attribute_x = "Flow-SummerBaseFlow"
 
 FUNCTION_match_INDIVIDUAL_core_metrics_from_habitat_attributes_SPECIES = function(species_x2, life_stage_x, habitat_attribute_x){
   
@@ -130,13 +130,13 @@ FUNCTION_match_INDIVIDUAL_core_metrics_from_habitat_attributes_SPECIES = functio
 
 
 # To Test
- HQ_spring_chinook = Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']]
- HQ_steelhead = Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']]
- HQ_bull_trout = Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']]
- LF_spring_chinook = Limiting_Factor_Pathway_Spring_Chinook[['Limiting_Factor_Pathway_Restoration']]
- LF_steelhead = Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']]
- LF_bull_trout = Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']]
-  columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
+# HQ_spring_chinook = Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']]
+# HQ_steelhead = Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']]
+# HQ_bull_trout = Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']]
+# LF_spring_chinook = Limiting_Factor_Pathway_Spring_Chinook[['Limiting_Factor_Pathway_Restoration']]
+# LF_steelhead = Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']]
+# LF_bull_trout = Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']]
+# columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
 
 FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage = function(HQ_spring_chinook, HQ_steelhead, HQ_bull_trout,  LF_spring_chinook, LF_steelhead, LF_bull_trout, columns_info){
   
@@ -256,7 +256,7 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage = function(HQ_spring_
         # ------------------------------------------------------------
         #    Action Categories
         # ------------------------------------------------------------
-        action_category_x = FUNCTION_match__INDIVIDUAL_habitat_attributes_and_action_categories(habitat_attribute_x)
+        action_category_x = FUNCTION_match_INDIVIDUAL_habitat_attributes_and_action_categories(habitat_attribute_x)
         number_of_actions_x = length(action_category_x)
         action_category_x = paste(action_category_x, collapse=",")
         # ------ add to row ---------
@@ -300,7 +300,7 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage = function(HQ_spring_
         # ------------------------------------------------------------
         #  Metric a Core metric
         # ------------------------------------------------------------ 
-        HQ_and_LF_combo_x$Core_Metric = FUNCTION_match_INDIVIDUAL_core_metrics_from_habitat_attributes(species_x, life_stage_x, habitat_attribute_x )
+        HQ_and_LF_combo_x$Core_Metric = FUNCTION_match_INDIVIDUAL_core_metrics_from_habitat_attributes_SPECIES(species_x, life_stage_x, habitat_attribute_x )
         
         
         # ------------------------------------------------------------
@@ -335,13 +335,13 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage = function(HQ_spring_
 
 
 # To Test
-HQ_spring_chinook = Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']]
-HQ_steelhead = Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']]
-HQ_bull_trout = Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']]
-LF_spring_chinook = Limiting_Factor_Pathway_Spring_Chinook[['Limiting_Factor_Pathway_Restoration']]
-LF_steelhead = Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']]
-LF_bull_trout = Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']]
-columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
+# HQ_spring_chinook = Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']]
+# HQ_steelhead = Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']]
+# HQ_bull_trout = Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']]
+# LF_spring_chinook = Limiting_Factor_Pathway_Spring_Chinook[['Limiting_Factor_Pathway_Restoration']]
+# LF_steelhead = Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']]
+# LF_bull_trout = Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']]
+# columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
 
 FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ_spring_chinook, HQ_steelhead, HQ_bull_trout,  LF_spring_chinook, LF_steelhead, LF_bull_trout, columns_info){
   
@@ -535,11 +535,37 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ
 }
 
 
+# ------------------------------------------------------------------------------------------
+#
+#      Function to add Barriers Prioritization
+#         NOTE: added Species so 
+#
+# ------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ------------------------------------------------------------------------------------------
+#
+#      Function to remove Bull Trout
+#         NOTE: added Species so 
+#
+# ------------------------------------------------------------------------------------------
+
+
 
 
     
-    
-    
+
   
 
 

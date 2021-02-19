@@ -907,7 +907,7 @@ FUNCTION_combine_across_pathways = function(HQ_pathway_df, LF_pathway_df){
 # HQ_LF_Both = Restoration_Unacceptable_and_At_Risk
 #  columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
 
-FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, HQ_LF_At_Risk, HQ_LF_Both, columns_info){
+FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, HQ_LF_At_Risk, HQ_LF_Both, columns_info, exclude_bull_trout){
   
   # ------------------------------------------------------------
   #       Get Unique Reaches
@@ -1077,13 +1077,49 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
     }
     
     
+    # ------------------------------------------------------------
+    #  IF excluding Bull Trout, remove the references and life stages
+    # ------------------------------------------------------------
+    
+    if(exclude_bull_trout == "yes" & 
+       ( HQ_and_LF_combo_x$HabitatQuality_BullTrout_Pathway  == "yes" |  HQ_and_LF_combo_x$LimitingFactor_BullTrout_Pathway == "yes"  )    ){
+      
+      # --------------------- if the only pathway is HQ or LF Bull Trout - remove the row ------------------
+      if(
+        HQ_and_LF_combo_x$HabitatQuality_Spring_Chinook_Pathway == "no" &
+        HQ_and_LF_combo_x$HabitatQuality_Steelhead_Pathway == "no" &
+        HQ_and_LF_combo_x$LimitingFactor_Spring_Chinook_Pathway  == "no" &
+        HQ_and_LF_combo_x$LimitingFactor_Steelhead_Pathway == "no" &
+        HQ_and_LF_combo_x$Barrier_Prioritization_Pathway == "no" 
+      ){
+        do_not_write_row_since_only_bull_trout = "yes"
+      }else{
+        do_not_write_row_since_only_bull_trout = "no"
+      }
+      
+      # --------------------- if bull trout in reach AND other pathways ------------------
+      
+      # ----- Pathways --------
+      
+      
+      # ------ Number of Pathways ------
+      
+      
+      
+      
+    }else{
+      do_not_write_row_since_only_bull_trout = "no"
+    }
     
     
     
     # ------------------------------------------------------------
     #  Add to Output
     # ------------------------------------------------------------
-    Unacceptable_AtRisk_combined_output = rbind(Unacceptable_AtRisk_combined_output, HQ_and_LF_combo_x)
+    # if do_not_write_row_since_only_bull_trout = "yes" - row is ONLY from bull trout
+    if(do_not_write_row_since_only_bull_trout == "no"){
+      Unacceptable_AtRisk_combined_output = rbind(Unacceptable_AtRisk_combined_output, HQ_and_LF_combo_x)
+    }
     
   }
     
@@ -1225,11 +1261,79 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined, Barriers_Pathways_Data){
   
 
 
+# ------------------------------------------------------------
+#
+#   Function to A) remove all Bull Trout, B) make Species Name,
+#
+# ------------------------------------------------------------
+
+# data_frame_x = Restoration_Prioritization_Output_for_WebMap
+# colnames_outward_facing_WebMap_ORDER = c("ReachName","RM_Start", "RM_End","Assessment.Unit","Species","Life_Stages","Impaired_Habitat_Attributes_All_Species","Action_Categories_All_Species" )
+
+FUNCTION_prepare_outward_facing_table = function(data_frame_x, colnames_outward_facing_WebMap_ORDER, exclude_bull_trout){
+  
+  # -------------------- remove Bull Trout rows and instances ----------
+  if(exclude_bull_trout == "yes"){
+    
+    # --------------- identify rows that JUST have Bull Trout and remove -----------
+    rows_only_Bull_Trout = which( data_frame_x$Species == "Bull_Trout"  )
+    data_frame_x = data_frame_x[ -rows_only_Bull_Trout   ,   ]
+    
+    # --------------- remove instances of Bull Trout
+    
+  }
+
+  # -------------- correct column order correct ------------
+  data_frame_x = data_frame_x[,colnames_outward_facing_WebMap_ORDER]
+  
+  # ---------------- remove Under Score ( _ ) from species names
+  data_frame_x$Species = gsub("_", " ", data_frame_x$Species )
+  
+  # ---------------- if "NA" in a life stage - change it to "multiple ----
+  data_frame_x$Life_Stages = gsub("NA", "multiple", data_frame_x$Life_Stages )
+  
+  # ---------------- change column name from Impaired_Habitat_Attributes_All_Species to "Limiting Factors" ----
+  colnames_x = colnames(data_frame_x)
+  colname_rename_x = which(colnames_x == "Impaired_Habitat_Attributes_All_Species")
+  colnames(data_frame_x)[colname_rename_x] <- "Limiting Factors"
+  
+  # ---------------- change column name from Action_Categories_All_Species to "Action Categories" ----
+  colnames_x = colnames(data_frame_x)
+  colname_rename_x = which(colnames_x == "Action_Categories_All_Species")
+  colnames(data_frame_x)[colname_rename_x] <- "Action Categories"
+  
+
+  return(data_frame_x)
+  
+}
 
 
+# ------------------------------------------------------------
+#
+#   Function to add Reach Information
+#
+# ------------------------------------------------------------
 
 
+# data_frame_x = Restoration_Prioritization_Output_for_WebMap
+FUNCTION_add_reach_information = function(data_frame_x, colnames_reach_info){
+  
+  # ------ ADD Reach name -----------
+  colnames_reach_info = c("ReachName",colnames_reach_info)
+  
+  # ---------------------- reaches data ------------
+  reaches_path = "C:/Users/Ryan/Documents/GitHub/Prioritization_Step2_Data_R_Project/Data/Reaches/Reaches.shp"
+  reaches <- sf::st_read(reaches_path) # this shapefile does not show up properly
+  reaches <- sf::st_transform(reaches, 4326)
+  reaches = as.data.frame(reaches)
+  reaches = reaches[,colnames_reach_info]
 
-
+  
+  # -------------------- add the info ---------
+  data_frame_x = merge(data_frame_x, reaches, by="ReachName")
+  
+  return(data_frame_x)
+  
+}
   
   

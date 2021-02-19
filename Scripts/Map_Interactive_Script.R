@@ -34,6 +34,11 @@ library(mapview)
 reaches_path = "C:/Users/Ryan/Documents/GitHub/Prioritization_Step2_Data_R_Project/Data/Reaches/Reaches.shp"
 reaches <- sf::st_read(reaches_path) # this shapefile does not show up properly
 reaches <- sf::st_transform(reaches, 4326)
+
+# ---------------------------------------------------------------------------
+#  Read in Habitat Quality Score
+# ---------------------------------------------------------------------------
+
 # ------------------- combine with Habitat Quality Scores data -----------
 Habitat_Quality_Scores_factors = Habitat_Quality_Scores
 # ------------------- convert scores to factors -----------
@@ -60,17 +65,69 @@ Habitat_Quality_Scores_factors$`Temperature-Rearing_score` = as.factor( Habitat_
 Habitat_Quality_Scores_factors$HQ_Score_Restoration = as.factor( Habitat_Quality_Scores_factors$HQ_Score_Restoration )
 Habitat_Quality_Scores_factors$HQ_Score_Protection = as.factor( Habitat_Quality_Scores_factors$HQ_Score_Protection )
 
+# ---------------------------------------------------------------------------
+#  Read in Habitat Quality Score
+# ---------------------------------------------------------------------------
+habitat_attributes_indiv_x = unique(Habitat_Attribute_Scores$Habitat_Attribute)
+Habitat_Attribute_Scores = as.tibble(Habitat_Attribute_Scores)
+Habitat_Attribute_Score_Final_COMBINE =  Reach_Information_data[,c("ReachName","Basin","Assessment.Unit")]
+for(habitat_attribute_x in habitat_attributes_indiv_x ){
+  
+  habitat_attribute_vector_x = Habitat_Attribute_Scores %>%
+    filter(Habitat_Attribute == habitat_attribute_x) 
+  habitat_attribute_vector_x =  habitat_attribute_vector_x[,c("ReachName", "Habitat_Attribute_Score")]
+  
+  Habitat_Attribute_Score_Final_COMBINE = merge(Habitat_Attribute_Score_Final_COMBINE, 
+                                           habitat_attribute_vector_x, by="ReachName")
+  colnamesx = colnames(Habitat_Attribute_Score_Final_COMBINE)
+  colnamesx[length(colnamesx)] = habitat_attribute_x
+  colnames(Habitat_Attribute_Score_Final_COMBINE) = colnamesx
+  Habitat_Attribute_Score_Final_COMBINE[,habitat_attribute_x] = as.factor(Habitat_Attribute_Score_Final_COMBINE[,habitat_attribute_x])
+}
+
+
+# ---------------------------------------------------------------------------
+#  Merge the data
+# ---------------------------------------------------------------------------
+
+# -------------------------------------
+#  Habitat Quality 
+# -------------------------------------
 # -------- merge reach spatial data with habitat data --------------
-reaches_data = merge(reaches, Habitat_Quality_Scores_factors, by = "ReachName") 
+reaches_HQ_data = merge(reaches, Habitat_Quality_Scores_factors, by = "ReachName") 
 # ------- remove columns we don't want ------
-reaches_data = subset (reaches_data, select = -c(Assessment,RM_Start,RM_End, SpringChin, SteelheadR,BullTroutR,
+reaches_HQ_data = subset (reaches_HQ_data, select = -c(Assessment,RM_Start,RM_End, SpringChin, SteelheadR,BullTroutR,
                                              Length_mi,Length_m,Basin.y))
+
+# -------------------------------------
+#  Habitat Attributes (Limiting Factor) 
+# -------------------------------------
+# -------- merge reach spatial data with habitat data --------------
+reaches_LF_data = merge(reaches, Habitat_Attribute_Score_Final_COMBINE, by = "ReachName") 
+# ------- remove columns we don't want ------
+reaches_LF_data = subset (reaches_LF_data, select = -c(Assessment,RM_Start,RM_End, SpringChin, SteelheadR,BullTroutR,
+                                                 Length_mi,Length_m,Basin.y))
+
+
+# -------------------------------------
+#  Create composite scores
+# -------------------------------------
+floodplain_dif = as.numeric(as.character( reaches_HQ_data$`Off-Channel-Floodplain_score` )) -  as.numeric(as.character( reaches_LF_data$`Off-Channel- Floodplain` ))
+floodplain_dif = as.data.frame(cbind(Habitat_Quality_Scores$ReachName,floodplain_dif ))
+colnames(floodplain_dif) = c("ReachName","Floodplain_Dif")
+floodplain_dif[,2] = as.factor(floodplain_dif[,2])
+reaches_HQ_data = merge(reaches_HQ_data, floodplain_dif, by = "ReachName") 
+
+# ---------------------------------------------------------------------------
+#     Generate the Colors
+# ---------------------------------------------------------------------------
 
 # ---------------------- color palettes for display --------------
 color_palette_x = c("red", "yellow","forestgreen")
 color_palette_continuous = brewer.pal(9, 'YlGnBu')
 color_palette_x_YES_NO = brewer.pal(3, 'BuPu')
 color_palette_x_YES_NO = c("#6C0586", "#FBFF68")
+color_neg_to_pos = brewer.pal(11, 'RdBu')
 
 # ---------------------------------------------------------------------------
 #
@@ -79,22 +136,22 @@ color_palette_x_YES_NO = c("#6C0586", "#FBFF68")
 # ---------------------------------------------------------------------------
 
 # THIS prints all the attributes you can map
-print(names(reaches_data))
+print(names(reaches_HQ_data))
 
 # ----------------------------------------------------------
 #     plot FACTOR/SCORE variable 
 # ----------------------------------------------------------
 
 # ------ ENTER the attribute to print here ------
-attribute_1 = "Riparian-CanopyCover_score"
+attribute_1 = "Off-Channel-Floodplain_score"
 attribute_1 = "Cover-Wood_score"
 
 # --- simple version ---:
-mapview(reaches_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
+mapview(reaches_HQ_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
         color= color_palette_x, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
 
 # --- version where you can turn 1, 3, 5 on and off ---:
-mapview(reaches_data, zcol = attribute_1,   burst=TRUE,legend = mapviewGetOption("legend"), 
+mapview(reaches_HQ_data, zcol = attribute_1,   burst=TRUE,legend = mapviewGetOption("legend"), 
               color = color_palette_x, map.types = c("CartoDB.DarkMatter", "CartoDB.Positron", "Esri.WorldImagery"))
 
 # ----------------------------------------------------------
@@ -105,11 +162,26 @@ mapview(reaches_data, zcol = attribute_1,   burst=TRUE,legend = mapviewGetOption
 attribute_1 = "HQ_Score_Restoration"
 attribute_2 = "HQ_Score_Protection"
 
-mapview(reaches_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
+mapview(reaches_HQ_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
         color= color_palette_x, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap")) +
-  mapview(reaches_data, zcol = attribute_2, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
+  mapview(reaches_HQ_data, zcol = attribute_2, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
           color= color_palette_x) 
 # Note: helpful for plotting factors: https://github.com/r-spatial/mapview/issues/240
+
+# ----------------------------------------------------------
+#     plot TWO FACTOR/SCORE variable - HQ and LF
+# ----------------------------------------------------------
+
+# --- simple version ---:
+attribute_1 = "Off-Channel-Floodplain_score"
+attribute_2 = "Off-Channel- Floodplain"
+
+mapview(reaches_HQ_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
+        color= color_palette_x, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap")) +
+  mapview(reaches_LF_data, zcol = attribute_2, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
+          color= color_palette_x) 
+# Note: helpful for plotting factors: https://github.com/r-spatial/mapview/issues/240
+
 
 
 # ----------------------------------------------------------
@@ -117,7 +189,7 @@ mapview(reaches_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("lege
 # ----------------------------------------------------------
 # ENTER the attribute to print here
 attribute_1 = "HQ_Pct"
-mapview(reaches_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), 
+mapview(reaches_HQ_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), 
         color= color_palette_continuous, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
 
 
@@ -133,13 +205,13 @@ attribute_2 = "HQ_Score_Protection"
 attribute_3 = "Spring.Chinook.Reach"
 attribute_4 = "Steelhead.Reach"
 
-m1 <- mapview(reaches_data, zcol = attribute_1, lwd=5,  burst=TRUE,legend = mapviewGetOption("legend"), 
+m1 <- mapview(reaches_HQ_data, zcol = attribute_1, lwd=5,  burst=TRUE,legend = mapviewGetOption("legend"), 
               color = color_palette_x, map.types = c("CartoDB.DarkMatter", "CartoDB.Positron", "Esri.WorldImagery"))
-m2 <- mapview(reaches_data, zcol = attribute_2,  lwd=5,  burst=TRUE,legend = mapviewGetOption("legend"),
+m2 <- mapview(reaches_HQ_data, zcol = attribute_2,  lwd=5,  burst=TRUE,legend = mapviewGetOption("legend"),
               color = color_palette_x, map.types = c("CartoDB.DarkMatter", "CartoDB.Positron", "Esri.WorldImagery"))
-m3 <- mapview(reaches_data, zcol = attribute_3, burst = TRUE, color = color_palette_x_YES_NO, legend=TRUE,
+m3 <- mapview(reaches_HQ_data, zcol = attribute_3, burst = TRUE, color = color_palette_x_YES_NO, legend=TRUE,
               map.types = c("CartoDB.DarkMatter", "CartoDB.Positron", "Esri.WorldImagery"))
-m4 <- mapview(reaches_data, zcol = attribute_4, burst = TRUE, color = color_palette_x_YES_NO,
+m4 <- mapview(reaches_HQ_data, zcol = attribute_4, burst = TRUE, color = color_palette_x_YES_NO,
               map.types = c("CartoDB.DarkMatter", "CartoDB.Positron", "Esri.WorldImagery")   )
 # -------- orientation of map tiles ------
 print( paste(attribute_1,attribute_2, sep="     "))
@@ -154,16 +226,16 @@ attribute_2 = "Cover-Wood_score"
 attribute_3 = "PoolQuantity&Quality_score"
 attribute_4 = "Off-Channel-Floodplain_score"
 
-m1 <- mapview(reaches_data, zcol = attribute_1,  legend = mapviewGetOption("legend"), 
+m1 <- mapview(reaches_HQ_data, zcol = attribute_1,  legend = mapviewGetOption("legend"), 
               color = color_palette_x, map.types = c("CartoDB.DarkMatter", "CartoDB.Positron", "Esri.WorldImagery"),
               popup = popupTable(reaches_b2, zcol = c("ReachName","Basin.x","Assessment.Unit")))
-m2 <- mapview(reaches_data, zcol = attribute_2,   legend = mapviewGetOption("legend"),
+m2 <- mapview(reaches_HQ_data, zcol = attribute_2,   legend = mapviewGetOption("legend"),
               color = color_palette_x, map.types = c("CartoDB.DarkMatter", "CartoDB.Positron", "Esri.WorldImagery"),
               popup = popupTable(reaches_b2, zcol = c("ReachName","Basin.x","Assessment.Unit")))
-m3 <- mapview(reaches_data, zcol = attribute_3,  legend=TRUE,
+m3 <- mapview(reaches_HQ_data, zcol = attribute_3,  legend=TRUE,
               color = color_palette_x, map.types = c("CartoDB.DarkMatter", "CartoDB.Positron", "Esri.WorldImagery"),
               popup = popupTable(reaches_b2, zcol = c("ReachName","Basin.x","Assessment.Unit")))
-m4 <- mapview(reaches_data, zcol = attribute_4,
+m4 <- mapview(reaches_HQ_data, zcol = attribute_4,
               color = color_palette_x, map.types = c("CartoDB.DarkMatter", "CartoDB.Positron", "Esri.WorldImagery"),
               popup = popupTable(reaches_b2, zcol = c("ReachName","Basin.x","Assessment.Unit")))
 
@@ -181,13 +253,55 @@ attribute_2 = "Cover-Wood_score"
 attribute_3 = "PoolQuantity&Quality_score"
 attribute_4 = "Off-Channel-Floodplain_score"
 
-m1 <- mapview(reaches_data, zcol = attribute_1, lwd=5,  burst=TRUE,legend = mapviewGetOption("legend"), 
+m1 <- mapview(reaches_HQ_data, zcol = attribute_1, lwd=5,  burst=TRUE,legend = mapviewGetOption("legend"), 
               color = color_palette_x, map.types = c("CartoDB.DarkMatter", "CartoDB.Positron", "Esri.WorldImagery"))
-m2 <- mapview(reaches_data, zcol = attribute_2,  lwd=5,  burst=TRUE,legend = mapviewGetOption("legend"),
+m2 <- mapview(reaches_HQ_data, zcol = attribute_2,  lwd=5,  burst=TRUE,legend = mapviewGetOption("legend"),
               color = color_palette_x, map.types = c("CartoDB.DarkMatter", "CartoDB.Positron", "Esri.WorldImagery"))
-m3 <- mapview(reaches_data, zcol = attribute_3, burst = TRUE,  legend=TRUE,
+m3 <- mapview(reaches_HQ_data, zcol = attribute_3, burst = TRUE,  legend=TRUE,
               color = color_palette_x,  map.types = c("CartoDB.DarkMatter", "CartoDB.Positron", "Esri.WorldImagery"))
-m4 <- mapview(reaches_data, zcol = attribute_4,  burst='STUSPS',
+m4 <- mapview(reaches_HQ_data, zcol = attribute_4,  burst='STUSPS',
               color = color_palette_x,  map.types = c("CartoDB.DarkMatter", "CartoDB.Positron", "Esri.WorldImagery")   )
 
 
+# --- simple version ---:
+attribute_1 = "Off-Channel-Floodplain_score"
+attribute_2 = "Off-Channel- Floodplain"
+attribute_3 = "Floodplain_Dif"
+
+m1 <- mapview(reaches_HQ_data, zcol = attribute_1,burst=TRUE, lwd=3, legend = mapviewGetOption("legend"), 
+              color = color_palette_x, map.types = c("CartoDB.DarkMatter", "CartoDB.Positron", "Esri.WorldImagery"))
+m2 <- mapview(reaches_LF_data, zcol = attribute_2, burst=TRUE, lwd=3, legend = mapviewGetOption("legend"),
+              color = color_palette_x, map.types = c("CartoDB.DarkMatter", "CartoDB.Positron", "Esri.WorldImagery"))
+m3 <- mapview(reaches_HQ_data, zcol = attribute_3, burst=TRUE,  lwd=5,  legend = mapviewGetOption("legend"),
+              color = color_neg_to_pos, map.types = c("CartoDB.DarkMatter", "CartoDB.Positron", "Esri.WorldImagery"))
+
+
+
+sync(m1, m2, m3)
+
+reaches_HQ_data$Floodplain_Dif_Continuous = as.numeric(as.character(reaches_HQ_data$Floodplain_Dif))
+color_neg_to_pos = brewer.pal(9, 'RdBu')
+attribute_1 = "Floodplain_Dif_Continuous"
+mapview(reaches_HQ_data, zcol = attribute_1, lwd=2, legend = mapviewGetOption("legend"), 
+        color= color_neg_to_pos, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap")) +
+mapview(reaches_HQ_data, zcol = attribute_1, burst = TRUE, lwd=6, legend = mapviewGetOption("legend"), 
+        color= "white", map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
+
+
+
+# ---------------------------------------------------------------------------
+#
+#  HISTOGRAM Plots
+#
+# ---------------------------------------------------------------------------
+
+hist( as.numeric(as.character(reaches_LF_data$`Off-Channel- Floodplain`) ), col="orange", ylim=c(0,220),
+      main=" ", ylab=" ", xlab=" ")
+par(new=T)
+hist( as.numeric(as.character(reaches_HQ_data$`Off-Channel-Floodplain_score`) ), col="blue", ylim=c(0,220),
+      main=" Histogram of Floodplain scores", xlab="Score")
+legend(1,215, c("Habitat Quality Pathway (REI value)", "Limiting Factor Pathway (lowest of 4 habitat attribute scores)"), col=c("blue", "orange"), pch=15)
+
+
+hist(  as.numeric(as.character(reaches_HQ_data$Floodplain_Dif) )  )
+abline(v = median(as.numeric(as.character(reaches_HQ_data$Floodplain_Dif) ), na.rm=T ), col='red', lwd=3)
