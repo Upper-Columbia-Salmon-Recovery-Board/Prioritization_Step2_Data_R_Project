@@ -115,8 +115,22 @@ reaches_LF_data = subset (reaches_LF_data, select = -c(Assessment,RM_Start,RM_En
 floodplain_dif = as.numeric(as.character( reaches_HQ_data$`Off-Channel-Floodplain_score` )) -  as.numeric(as.character( reaches_LF_data$`Off-Channel- Floodplain` ))
 floodplain_dif = as.data.frame(cbind(Habitat_Quality_Scores$ReachName,floodplain_dif ))
 colnames(floodplain_dif) = c("ReachName","Floodplain_Dif")
-floodplain_dif[,2] = as.factor(floodplain_dif[,2])
+#floodplain_dif[,2] = as.factor(floodplain_dif[,2])
 reaches_HQ_data = merge(reaches_HQ_data, floodplain_dif, by = "ReachName") 
+reaches_HQ_data$Floodplain_Dif = as.factor(reaches_HQ_data$Floodplain_Dif)
+
+x = c(540)
+floodplain_dif_both = cbind(floodplain_dif[,1], 
+                            as.numeric(as.character( reaches_HQ_data$`Off-Channel-Floodplain_score` )), 
+                            as.numeric(as.character( reaches_LF_data$`Off-Channel- Floodplain` )),
+                            floodplain_dif[,2],
+                            as.data.frame(as.numeric(as.character( reaches_HQ_data$`Off-Channel-Floodplain_score` )) -  as.numeric(as.character( reaches_LF_data$`Off-Channel- Floodplain` ))) )  
+colnames(floodplain_dif_both) = c("ReachName", "HQ_score(REI)","LF_score_old","difference","difference_calc")
+
+x = which(reaches_HQ_data$ReachName = "Peshastin Creek Lower 03")
+as.numeric(as.character( reaches_HQ_data$`Off-Channel-Floodplain_score` ))[x]
+as.numeric(as.character( reaches_LF_data$`Off-Channel- Floodplain` ))[x]
+as.numeric(as.character( reaches_HQ_data$`Off-Channel-Floodplain_score` ))[x] -  as.numeric(as.character( reaches_LF_data$`Off-Channel- Floodplain` ))[x]
 
 # ---------------------------------------------------------------------------
 #     Generate the Colors

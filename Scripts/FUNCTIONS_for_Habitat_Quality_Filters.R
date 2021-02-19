@@ -44,9 +44,10 @@ reach_name_x  = "Big Meadow Creek 01"
 #   'Temperature- Adult Spawning' = c('NORWEST_Temperature', '305bListings_Temperature', 'RAWatershed_Rating_Temp' ), 
 habitat_attribute_x = "Temperature- Adult Spawning"
 data_col_name = 'NORWEST_Temperature'
-LF_or_HQ = "LF"
+LF_or_HQ = "HQ"
 
 data_col_name = data_source_x
+data_col_name = data_sources_list[[1]][1]
 
 
 FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habitat_attribute_x, data_col_name, LF_or_HQ){
@@ -77,7 +78,8 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
   
   }else{
     data_output_x = habitat_raw_data %>%
-      select(ReachName,data_col_name)
+      dplyr::select(ReachName,data_col_name)
+    
     colnames(data_output_x) = c("ReachName",  "metric_data")
     
     # -----------------------------------
@@ -135,7 +137,7 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
         
         # ----------- pull stream width for this reach -------------
         stream_width_m = Reach_Information_data %>%
-          select(Length_AvgWettedWidth_Meters)
+          dplyr::select(Length_AvgWettedWidth_Meters)
         
         # --------- create blank NA column ------
         data_output_x$score = NA
@@ -331,7 +333,7 @@ FUNCTION_generate_habitat_attribute_score_from_CHAMP_or_Channel_Unit = function(
   if( any(CHAMP_data_per_reach_data_sources[habitat_attribute_x] == data_col_name ) ){
     
     data_output_x = CHAMP_data_Updated %>%
-      select(ReachName,data_col_name)
+      dplyr::select(ReachName,data_col_name)
     colnames(data_output_x) = c("ReachName", "metric_data")
     
   }
@@ -342,7 +344,7 @@ FUNCTION_generate_habitat_attribute_score_from_CHAMP_or_Channel_Unit = function(
   if( any(Channel_Unit_Raw_data_sources[habitat_attribute_x] == data_col_name )  ){
     
     data_output_x = Channel_Unit_Raw %>%
-      select(ReachName,data_col_name)
+      dplyr::select(ReachName,data_col_name)
     colnames(data_output_x) = c("ReachName", "metric_data")
   } 
   

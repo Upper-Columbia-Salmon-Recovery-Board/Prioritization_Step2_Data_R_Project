@@ -272,7 +272,8 @@ Reach_Habitat_Attribute_Life_Stage_Restoration_Output = FUNCTION_combine_by_Reac
                                                 Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']], 
                                                 Limiting_Factor_Pathway_Spring_Chinook[['Limiting_Factor_Pathway_Restoration']],
                                                 Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']], 
-                                                Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']], columns_info)
+                                                Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']], columns_info, exclude_bull_trout)
+
 
 # ---------------------------------------------------------------------------
 #  Reach-Habitat Attributes - Life Stage per row
@@ -283,7 +284,7 @@ Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output = FUNCTION_combin
                                                                    Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']], 
                                                                    Limiting_Factor_Pathway_Spring_Chinook[['Limiting_Factor_Pathway_Restoration']],
                                                                    Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']], 
-                                                                   Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']], columns_info)
+                                                                   Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']], columns_info, exclude_bull_trout)
 
 
 

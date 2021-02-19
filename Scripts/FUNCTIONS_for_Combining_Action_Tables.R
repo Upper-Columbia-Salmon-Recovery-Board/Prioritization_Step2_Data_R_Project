@@ -1260,6 +1260,135 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined, Barriers_Pathways_Data){
   
   
 
+# ------------------------------------------------------------
+#
+#   Function to add Barrier Prioritization info to Flat Tables for Web Map
+#
+# ------------------------------------------------------------
+
+# HQ_LF_Combined = Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output
+
+FUNCTION_Add_Barrier_Data_to_WebMap_Flat_Tables = function(HQ_LF_Combined, Barriers_Pathways_Data){
+  
+  
+  for(reach_x in unique(Barriers_Pathways_Data$ReachName) ){
+    
+    HQ_LF_index = which(HQ_LF_Combined$ReachName == reach_x)
+    barrier_index = which(Barriers_Pathways_Data$ReachName == reach_x)
+    
+    # ------------------------------------------------------------
+    #   IF the barriers reach is in the existing list of prioritized reaches
+    # ------------------------------------------------------------
+    
+    if( length(HQ_LF_index) > 0){
+      
+      # ---------------------------------------------------------------------------
+      #    Update Pathways, Action Categories, and Habitat Attributes
+      # ---------------------------------------------------------------------------
+      
+      # ---------------- make barrier pathway a yes --------------
+      HQ_LF_Combined$Barrier_Prioritization_Pathway[HQ_LF_index] = "yes"
+      
+      # ------------- add pathway info -----------
+      HQ_LF_Combined$Pathways[HQ_LF_index] = paste(HQ_LF_Combined$Pathways[HQ_LF_index] ,"Barriers_pathway",sep=",")
+      HQ_LF_Combined$Number_of_Pathways[HQ_LF_index] = HQ_LF_Combined$Number_of_Pathways[HQ_LF_index] + 1
+      
+      # ----------------- add Action Categories  ------------
+      HQ_LF_Combined$Action_Categories_All_Species[HQ_LF_index] = paste( HQ_LF_Combined$Action_Categories_All_Species[HQ_LF_index], Barriers_Pathways_Data$`Action Category`[barrier_index], sep=",")
+      HQ_LF_Combined$Number_Action_Categories_All_Species[HQ_LF_index] = HQ_LF_Combined$Number_Action_Categories_All_Species[HQ_LF_index] + 1
+      
+      # -------------- add Habitat Attributes ------------
+      HQ_LF_Combined$Impaired_Habitat_Attributes_All_Species[HQ_LF_index] = paste( HQ_LF_Combined$Impaired_Habitat_Attributes_All_Species[HQ_LF_index], Barriers_Pathways_Data$Habitat_Attributes[barrier_index], sep=",")    
+      HQ_LF_Combined$Number_Impaired_Habitat_Attributes_All_Species[HQ_LF_index] = HQ_LF_Combined$Number_Action_Categories_All_Species[HQ_LF_index] + 1
+      
+      
+      # ------------------------------------------------------------
+      #   IF the barriers reach DOES NOT exist in prioritized reach list
+      # ------------------------------------------------------------
+      
+    }else{
+      
+      barrier_index = which(Barriers_Pathways_Data$ReachName == reach_x)
+      # ------------- add reach information --------------------
+      HQ_and_LF_combo_x = as.data.frame( Barriers_Pathways_Data[barrier_index, columns_info]  )
+      
+      # ------------- add pathway info -----------
+      HQ_and_LF_combo_x$Pathways = "Barriers_pathway"
+      HQ_and_LF_combo_x$Number_of_Pathways = 1
+      
+      # ------------ yes or no pathways --------
+      HQ_and_LF_combo_x$HabitatQuality_Spring_Chinook_Pathway = "no"
+      HQ_and_LF_combo_x$HabitatQuality_Steelhead_Pathway= "no"
+      HQ_and_LF_combo_x$HabitatQuality_BullTrout_Pathway= "no"
+      HQ_and_LF_combo_x$LimitingFactor_Spring_Chinook_Pathway= "no"	
+      HQ_and_LF_combo_x$LimitingFactor_Steelhead_Pathway= "no"	
+      HQ_and_LF_combo_x$LimitingFactor_BullTrout_Pathway= "no"
+      
+      # ----------- add "no" to barrier -----
+      HQ_and_LF_combo_x$Barrier_Prioritization_Pathway = "yes"
+      
+      # ------------- misc other ----------
+      HQ_and_LF_combo_x$Species = NA
+      HQ_and_LF_combo_x$SprCh_STLD_BullTr_All_Benefit = NA
+      HQ_and_LF_combo_x$Spring_Chinook_Benefit = NA
+      HQ_and_LF_combo_x$Spring_Chinook_Habitat_Attributes = NA                    
+      HQ_and_LF_combo_x$Spring_Chinook_Actions = NA                                       
+      HQ_and_LF_combo_x$Steelhead_Habitat_Attributes = NA                               
+      HQ_and_LF_combo_x$Steelhead_Actions = NA 
+      HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes = NA                             
+      HQ_and_LF_combo_x$Bull_Trout_Actions = NA
+      HQ_and_LF_combo_x$Life_Stages = NA
+      
+      # ----------------- add Action Categories  ------------
+      HQ_and_LF_combo_x$Action_Categories_All_Species = Barriers_Pathways_Data$`Action Category`[barrier_index]
+      HQ_and_LF_combo_x$Number_Action_Categories_All_Species = 1
+      
+      # -------------- add Habitat Attributes ------------
+      HQ_and_LF_combo_x$Impaired_Habitat_Attributes_All_Species = Barriers_Pathways_Data$Habitat_Attributes[barrier_index]
+      HQ_and_LF_combo_x$Number_Impaired_Habitat_Attributes_All_Species = 1
+      
+      # ------ more misc -------
+      HQ_and_LF_combo_x$Unacceptable_Habitat_Attributes_Presence = NA
+      HQ_and_LF_combo_x$Unacceptable_Impaired_Habitat_Attributes_All_Species = NA
+      HQ_and_LF_combo_x$Unacceptable_Number_Impaired_Habitat_Attributes_All_Species = NA
+      
+      HQ_and_LF_combo_x$At_Risk_Habitat_Attributes_Presence = NA
+      HQ_and_LF_combo_x$At_Risk_Impaired_Habitat_Attributes_All_Species = NA
+      HQ_and_LF_combo_x$At_Risk_Number_Impaired_Habitat_Attributes_All_Species = NA
+      
+      # ------ Add another row to output ------
+      colnames(HQ_and_LF_combo_x) = colnames(HQ_LF_Combined)
+      HQ_LF_Combined = rbind(HQ_LF_Combined, HQ_and_LF_combo_x)
+      
+      
+    }
+    
+  }
+  
+  # ----------------------------------------- convert lists that are blank to NA --------------
+  HQ_LF_Combined$Species[ which( is.na(HQ_LF_Combined$Species) ) ] = "NA"
+  HQ_LF_Combined$SprCh_STLD_BullTr_All_Benefit[ which( is.na(HQ_LF_Combined$SprCh_STLD_BullTr_All_Benefit) ) ] = "NA"
+  HQ_LF_Combined$Spring_Chinook_Benefit[ which( is.na(HQ_LF_Combined$Spring_Chinook_Benefit) ) ] = "NA"
+  HQ_LF_Combined$Life_Stages[ which( is.na(HQ_LF_Combined$Life_Stages) ) ] = "NA"
+  
+  HQ_LF_Combined$Unacceptable_Habitat_Attributes_Presence[ which( is.na(HQ_LF_Combined$Unacceptable_Habitat_Attributes_Presence) ) ] = "NA"
+  HQ_LF_Combined$Unacceptable_Impaired_Habitat_Attributes_All_Species[ which( is.na(HQ_LF_Combined$Unacceptable_Impaired_Habitat_Attributes_All_Species) ) ] = "NA"
+  
+  HQ_LF_Combined$At_Risk_Habitat_Attributes_Presence[ which( is.na(HQ_LF_Combined$At_Risk_Habitat_Attributes_Presence) ) ] = "NA"
+  HQ_LF_Combined$At_Risk_Impaired_Habitat_Attributes_All_Species[ which( is.na(HQ_LF_Combined$At_Risk_Impaired_Habitat_Attributes_All_Species) ) ] = "NA"
+  
+  
+  
+  # ------------------- convert NAs in numeric to 0 -------------
+  HQ_LF_Combined$Unacceptable_Number_Impaired_Habitat_Attributes_All_Species[ which( is.na(HQ_LF_Combined$Unacceptable_Number_Impaired_Habitat_Attributes_All_Species) ) ] = 0
+  
+  HQ_LF_Combined$At_Risk_Number_Impaired_Habitat_Attributes_All_Species[ which( is.na(HQ_LF_Combined$At_Risk_Number_Impaired_Habitat_Attributes_All_Species) ) ] = 0
+  
+  
+  return(HQ_LF_Combined)
+  
+}
+
 
 # ------------------------------------------------------------
 #

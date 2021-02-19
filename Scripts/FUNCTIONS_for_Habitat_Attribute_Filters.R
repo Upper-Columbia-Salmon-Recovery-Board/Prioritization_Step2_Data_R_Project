@@ -83,8 +83,8 @@ FUNCTION_Return_Habitat_Data = function(habitat_attribute_x, location_x, reach_n
     #    Generate Metric value from Raw (primary) data table
     # -----------------------------------
     data_output_x = habitat_raw_data %>%
-      filter(ReachName   == reach_name_x, ) %>%
-      select(data_col_name)
+      dplyr::filter(ReachName   == reach_name_x, ) %>%
+      dplyr::select(data_col_name)
     
   }else if( !is.null(Channel_Unit_Raw_data_use[habitat_attribute_x][[1]])  &
             Channel_Unit_Raw_data_use_location_x == location_x  ){
@@ -92,8 +92,8 @@ FUNCTION_Return_Habitat_Data = function(habitat_attribute_x, location_x, reach_n
     # ------------ pull vector data --------
     #data_vector_x = Channel_Unit_Raw[data_col_name]
     data_output_x = Channel_Unit_Raw %>%
-      filter(ReachName   == reach_name_x, ) %>%
-      select(data_col_name)
+      dplyr::filter(ReachName   == reach_name_x, ) %>%
+      dplyr::select(data_col_name)
     # if no value, make value NA
     if( nrow(data_output_x) == 0 ){
       data_output_x = NA
@@ -110,8 +110,8 @@ FUNCTION_Return_Habitat_Data = function(habitat_attribute_x, location_x, reach_n
     
     # data_vector_x = Channel_Unit_Raw[data_col_name]
     data_output_x = CHAMP_data_per_reach %>%
-      filter(ReachName   == reach_name_x, ) %>%
-      select(data_col_name)
+      dplyr::filter(ReachName   == reach_name_x, ) %>%
+      dplyr::select(data_col_name)
     # if no value, make value NA
     if( nrow(data_output_x) == 0 ){
       data_output_x = NA
@@ -207,8 +207,8 @@ FUNCTION_Return_Habitat_Data = function(habitat_attribute_x, location_x, reach_n
             
             # ----------- pull stream width for this reach -------------
             stream_width_m = Reach_Information_data %>%
-              filter(ReachName == reach_x) %>%
-              select(Length_AvgWettedWidth_Meters)
+              dplyr::filter(ReachName == reach_x) %>%
+              dplyr::select(Length_AvgWettedWidth_Meters)
             
             # ----------------- identify criteria based on stream width --------
             metric_criteria_UPDATED_x = metric_criteria_x %>%
@@ -285,11 +285,11 @@ FUNCTION_Return_Habitat_Data = function(habitat_attribute_x, location_x, reach_n
   
   # --------- get Basin and Assessment Unit name --------
   basin_x = Reach_Information_data %>%
-    filter(ReachName == reach_name_x) %>%
-    select(Basin)
+    dplyr::filter(ReachName == reach_name_x) %>%
+    dplyr::select(Basin)
   AU_x = Reach_Information_data %>%
-    filter(ReachName == reach_name_x) %>%
-    select(Assessment.Unit)
+    dplyr::filter(ReachName == reach_name_x) %>%
+    dplyr::select(Assessment.Unit)
   
   output_all = t( as.data.frame(c(reach_name_x, basin_x, AU_x, habitat_attribute_x, data_col_name, data_output_x[[1]], score_output_x ) )  )
   if(nrow(output_all)>1){
@@ -356,13 +356,13 @@ FUNCTION_Update_REI_value_OR_Profession_Judgment = function(habitat_attribute_x)
     
     # ------------ get metric values (Unacceptable, At Risk, or Adequate) for each row in data_rei_x ------
     metric_value_x = habitat_raw_data %>%
-      filter(ReachName   %in% data_rei_x$ReachName ) %>%
-      select(c("ReachName",data_col_name))
+      dplyr::filter(ReachName   %in% data_rei_x$ReachName ) %>%
+      dplyr::select(c("ReachName",data_col_name))
     colnames(metric_value_x) = c("ReachName", "metric_data")
     
     # -------------------- Identify rows with the data source (will be multiple if multiple criteria) -----
     metric_criteria_x = Habitat_Limiting_Factor_Rating_Criteria_Updated %>%
-      filter(Data_Sources   == data_col_name) 
+      dplyr::filter(Data_Sources   == data_col_name) 
     
     # ------------------- identify specific score for the metric -----------
     metric_value_x = metric_value_x  %>%
