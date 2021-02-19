@@ -227,12 +227,13 @@ Restoration_Prioritization_Output = FUNCTION_Add_Barrier_Data(Restoration_Priori
 colnames_outward_facing_WebMap = c("ReachName","Assessment.Unit","Species","Life_Stages","Impaired_Habitat_Attributes_All_Species","Action_Categories_All_Species" )
 colnames_reach_info = c("RM_Start", "RM_End")  # data that is in the reach geospatial layer to add to these data
 colnames_outward_facing_WebMap_ORDER = c("ReachName","RM_Start", "RM_End","Assessment.Unit","Species","Life_Stages","Impaired_Habitat_Attributes_All_Species","Action_Categories_All_Species" )
+colnames_outward_facing_WebMap_UPDATED = c("Reach Name","River Mile - Start", "River Mile - End","Assessment Unit","Species","Life Stages","Limiting Factor","Action Categories" )
 # ------- filter out for specific columns ----------
 Restoration_Prioritization_Output_for_WebMap = Restoration_Prioritization_Output[,colnames_outward_facing_WebMap]
 # ----------- add Reach information ------------
 Restoration_Prioritization_Output_for_WebMap  =  FUNCTION_add_reach_information(Restoration_Prioritization_Output_for_WebMap,  colnames_reach_info)
 # ------------ do MISC processing for output ---------
-Restoration_Prioritization_Output_for_WebMap = FUNCTION_prepare_outward_facing_table( Restoration_Prioritization_Output_for_WebMap , colnames_outward_facing_WebMap_ORDER, exclude_bull_trout)
+Restoration_Prioritization_Output_for_WebMap = FUNCTION_prepare_outward_facing_table( Restoration_Prioritization_Output_for_WebMap , colnames_outward_facing_WebMap_ORDER, colnames_outward_facing_WebMap_UPDATED, exclude_bull_trout)
 
 # ---------------------------------------------------------------------------
 #
@@ -307,6 +308,10 @@ write_xlsx(Reach_Habitat_Attribute_Life_Stage_Restoration_Output,output_path_x )
 colnames(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output)[colnames(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output) == "Habitat_Attribute"] <- "Limiting_Factor"
 output_path_x =  paste(output_path,'Reach_Habitat_Attribute_Life_Stage_Species_Restoration_Output.xlsx', sep="")
 write_xlsx(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output,output_path_x )
+# ----------- Outward Facing Table (pops up when reach is clicked on) -----------
+output_path_x =  paste(output_path,'Restoration_Prioritization_Output_for_WebMap_Table.xlsx', sep="")
+write_xlsx(Restoration_Prioritization_Output_for_WebMap,output_path_x )
+
 
 
 

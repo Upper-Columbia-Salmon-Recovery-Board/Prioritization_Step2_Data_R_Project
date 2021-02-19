@@ -1269,8 +1269,8 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined, Barriers_Pathways_Data){
 
 # data_frame_x = Restoration_Prioritization_Output_for_WebMap
 # colnames_outward_facing_WebMap_ORDER = c("ReachName","RM_Start", "RM_End","Assessment.Unit","Species","Life_Stages","Impaired_Habitat_Attributes_All_Species","Action_Categories_All_Species" )
-
-FUNCTION_prepare_outward_facing_table = function(data_frame_x, colnames_outward_facing_WebMap_ORDER, exclude_bull_trout){
+# colnames_outward_facing_WebMap_UPDATED = c("Reach Name","River Mile - Start", "River Mile - End","Assessment Unit","Species","Life Stages","Limiting Factor","Action Categories" )
+FUNCTION_prepare_outward_facing_table = function(data_frame_x, colnames_outward_facing_WebMap_ORDER, colnames_outward_facing_WebMap_UPDATED, exclude_bull_trout){
   
   # -------------------- remove Bull Trout rows and instances ----------
   if(exclude_bull_trout == "yes"){
@@ -1292,16 +1292,15 @@ FUNCTION_prepare_outward_facing_table = function(data_frame_x, colnames_outward_
   # ---------------- if "NA" in a life stage - change it to "multiple ----
   data_frame_x$Life_Stages = gsub("NA", "multiple", data_frame_x$Life_Stages )
   
-  # ---------------- change column name from Impaired_Habitat_Attributes_All_Species to "Limiting Factors" ----
-  colnames_x = colnames(data_frame_x)
-  colname_rename_x = which(colnames_x == "Impaired_Habitat_Attributes_All_Species")
-  colnames(data_frame_x)[colname_rename_x] <- "Limiting Factors"
+  # ---------------- update the column names as necessary ------------
   
-  # ---------------- change column name from Action_Categories_All_Species to "Action Categories" ----
-  colnames_x = colnames(data_frame_x)
-  colname_rename_x = which(colnames_x == "Action_Categories_All_Species")
-  colnames(data_frame_x)[colname_rename_x] <- "Action Categories"
-  
+  for(i in 1:length(colnames_outward_facing_WebMap_UPDATED) ){
+    
+    # ---------------- change column name to be more readable ----
+    colnames(data_frame_x)[i] <- colnames_outward_facing_WebMap_UPDATED[i]
+    
+  }
+
 
   return(data_frame_x)
   
