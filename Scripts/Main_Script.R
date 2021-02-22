@@ -21,7 +21,6 @@ basins_to_include = c("Methow",  "Entiat","Wenatchee")  # basins to include insi
 exclude_bull_trout = "yes"  # if "yes" -> remove bull trout for WebMap applications
 output_Habitat_Quality_and_Habitat_Attribute_Scores = "no"  # enter "yes" or "no" if you want this output
 
-
 # ---------------------------------------------------------------------------
 #
 #      Directories of Input and Output data
@@ -231,7 +230,7 @@ Restoration_Prioritization_Output = FUNCTION_Add_Barrier_Data(Restoration_Priori
 colnames_outward_facing_WebMap = c("ReachName","Assessment.Unit","Species","Life_Stages","Impaired_Habitat_Attributes_All_Species","Action_Categories_All_Species" )
 colnames_reach_info = c("RM_Start", "RM_End")  # data that is in the reach geospatial layer to add to these data
 colnames_outward_facing_WebMap_ORDER = c("ReachName","RM_Start", "RM_End","Assessment.Unit","Species","Life_Stages","Impaired_Habitat_Attributes_All_Species","Action_Categories_All_Species" )
-colnames_outward_facing_WebMap_UPDATED = c("Reach Name","River Mile - Start", "River Mile - End","Assessment Unit","Species","Life Stages","Limiting Factor","Action Categories" )
+colnames_outward_facing_WebMap_UPDATED = c("Reach Name","River Mile - Start", "River Mile - End","Assessment Unit","Species","Priority Life Stages","Limiting Factor","Action Categories" )
 # ------- filter out for specific columns ----------
 Restoration_Prioritization_Output_for_WebMap = Restoration_Prioritization_Output[,colnames_outward_facing_WebMap]
 # ----------- add Reach information ------------
@@ -290,15 +289,38 @@ Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output = FUNCTION_combin
 
 
 
-reach_test = "Methow River Fawn 09"
+reach_test = "Twisp River Lower 01"
 strsplit(Restoration_Prioritization_Output_for_WebMap[which(Restoration_Prioritization_Output_for_WebMap$`Reach Name` == reach_test),]$`Limiting Factor`, ",")
 unique(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output[which(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output$ReachName == reach_test),]$Habitat_Attribute)
 
 strsplit(Restoration_Prioritization_Output_for_WebMap[which(Restoration_Prioritization_Output_for_WebMap$`Reach Name` == reach_test),]$`Species`, ",")
 unique(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output[which(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output$ReachName == reach_test),]$Species)
 
-strsplit(Restoration_Prioritization_Output_for_WebMap[which(Restoration_Prioritization_Output_for_WebMap$`Reach Name` == reach_test),]$`Life Stages`, ",")
+strsplit(Restoration_Prioritization_Output_for_WebMap[which(Restoration_Prioritization_Output_for_WebMap$`Reach Name` == reach_test),]$`Priority Life Stages`, ",")
 unique(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output[which(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output$ReachName == reach_test),]$Life_Stage)
+
+# ---------------------------------------------------------------------------
+#
+#  Output of all reaches with habitat data
+#
+# ---------------------------------------------------------------------------
+ 
+# ---------------------------------------------------------------------------
+#    Habitat Quality Pathway
+# ---------------------------------------------------------------------------
+
+
+
+
+# ---------------------------------------------------------------------------
+#    Limiting Factors Pathway
+# ---------------------------------------------------------------------------
+
+
+
+
+
+
 
 # ---------------------------------------------------------------------------
 #

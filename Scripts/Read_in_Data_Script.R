@@ -356,7 +356,8 @@ Habitat_Attribute_Notes_and_Professional_Judgement = read_excel( paste(data_path
 Crosswalk_Habitat_Attributes_and_Actions = read_excel( paste(data_path,'Crosswalk_Habitat_Attributes_and_Actions.xlsx', sep="/"), 
                                                        sheet = 'Sheet1')
 Crosswalk_Habitat_Attributes_and_Actions$Habitat_Attribute_2 = gsub(" ", "", Crosswalk_Habitat_Attributes_and_Actions$`Habitat Attribute`, fixed = TRUE)
-  
+Crosswalk_Habitat_Attributes_and_Actions$Action_Category_2 = gsub(" ", "", Crosswalk_Habitat_Attributes_and_Actions$`Action Category`, fixed = TRUE) # get action category without spaces
+
 Reach_Asessment_Project_Data = read_excel( paste(data_path,'Reach_Assessments_Projects_Table_05052020.xlsx', sep="/"), 
                                                         sheet = 'Data_Entry')
 

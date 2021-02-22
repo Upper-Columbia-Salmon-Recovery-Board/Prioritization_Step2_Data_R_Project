@@ -901,7 +901,6 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ
     
   }
   
-  
   # ------------------------------------------------------------
   #    Remove Bull Trout Rows (if exclude_bull_trout is "yes") 
   # ------------------------------------------------------------
@@ -927,6 +926,7 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ
   # -------------------- Entrainment and Stranding ------------------
   rename_rows = which(Reach_Habitat_Attribute_combined_output$Habitat_Attribute == "Entrainment/Stranding" )
   Reach_Habitat_Attribute_combined_output$Habitat_Attribute[rename_rows] = "Entrainment and Stranding"
+
   
   return(Reach_Habitat_Attribute_combined_output)
 }

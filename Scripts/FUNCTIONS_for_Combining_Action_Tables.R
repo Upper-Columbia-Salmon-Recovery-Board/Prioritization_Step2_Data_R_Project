@@ -1723,7 +1723,7 @@ FUNCTION_Add_Barrier_Data_to_WebMap_Flat_Tables = function(HQ_LF_Combined, Barri
 
 # data_frame_x = Restoration_Prioritization_Output_for_WebMap
 # colnames_outward_facing_WebMap_ORDER = c("ReachName","RM_Start", "RM_End","Assessment.Unit","Species","Life_Stages","Impaired_Habitat_Attributes_All_Species","Action_Categories_All_Species" )
-# colnames_outward_facing_WebMap_UPDATED = c("Reach Name","River Mile - Start", "River Mile - End","Assessment Unit","Species","Life Stages","Limiting Factor","Action Categories" )
+# colnames_outward_facing_WebMap_UPDATED = c("Reach Name","River Mile - Start", "River Mile - End","Assessment Unit","Species","Priority Life Stages","Limiting Factor","Action Categories" )
 FUNCTION_prepare_outward_facing_table = function(data_frame_x, colnames_outward_facing_WebMap_ORDER, colnames_outward_facing_WebMap_UPDATED, exclude_bull_trout){
   
   # -------------------- remove Bull Trout rows and instances ----------
@@ -1761,14 +1761,39 @@ FUNCTION_prepare_outward_facing_table = function(data_frame_x, colnames_outward_
   data_frame_x$Impaired_Habitat_Attributes_All_Species = gsub("PoolQuantity&Quality", "Pool Quantity and Quality", data_frame_x$Impaired_Habitat_Attributes_All_Species )
   # -------------------- Entrainment and Stranding ------------------
   data_frame_x$Impaired_Habitat_Attributes_All_Species = gsub("Entrainment/Stranding", "Entrainment and Stranding", data_frame_x$Impaired_Habitat_Attributes_All_Species )
-
   # ---------------- update the column names as necessary ------------
-  
+  data_frame_x$Impaired_Habitat_Attributes_All_Species = gsub("CoarseSubstrate", "Coarse Substrate", data_frame_x$Impaired_Habitat_Attributes_All_Species )
+  data_frame_x$Impaired_Habitat_Attributes_All_Species = gsub("Cover-Wood", "Cover- Wood", data_frame_x$Impaired_Habitat_Attributes_All_Species )
+  data_frame_x$Impaired_Habitat_Attributes_All_Species = gsub("Off-Channel-Floodplain", "Off-Channel- Floodplain", data_frame_x$Impaired_Habitat_Attributes_All_Species )
+  data_frame_x$Impaired_Habitat_Attributes_All_Species = gsub("Off-Channel-Side-Channels", "Off-Channel- Side-Channels", data_frame_x$Impaired_Habitat_Attributes_All_Species )
+  data_frame_x$Impaired_Habitat_Attributes_All_Species = gsub("Cover-Undercut Banks", "Cover- Undercut Banks", data_frame_x$Impaired_Habitat_Attributes_All_Species )
+  data_frame_x$Impaired_Habitat_Attributes_All_Species = gsub("Cover-UndercutBanks", "Cover- Undercut Banks", data_frame_x$Impaired_Habitat_Attributes_All_Species )
+  data_frame_x$Impaired_Habitat_Attributes_All_Species = gsub("Temperature-AdultSpawning", "Temperature- Adult Spawning", data_frame_x$Impaired_Habitat_Attributes_All_Species )
+  data_frame_x$Impaired_Habitat_Attributes_All_Species = gsub("Temperature-Rearing", "Temperature- Rearing", data_frame_x$Impaired_Habitat_Attributes_All_Species )
+  data_frame_x$Impaired_Habitat_Attributes_All_Species = gsub("Flow-SummerBaseFlow", "Flow- Summer Base Flow", data_frame_x$Impaired_Habitat_Attributes_All_Species )
+  data_frame_x$Impaired_Habitat_Attributes_All_Species = gsub("Cover-Boulders", "Cover- Boulders", data_frame_x$Impaired_Habitat_Attributes_All_Species )
+  data_frame_x$Impaired_Habitat_Attributes_All_Species = gsub("BrookTrout", "Brook Trout", data_frame_x$Impaired_Habitat_Attributes_All_Species )
+
   for(i in 1:length(colnames_outward_facing_WebMap_UPDATED) ){
     
     # ---------------- change column name to be more readable ----
     colnames(data_frame_x)[i] <- colnames_outward_facing_WebMap_UPDATED[i]
     
+  }
+  
+  
+  # ------------------------------------------------------------
+  #   Update Action Category Names (add spaces)
+  # ------------------------------------------------------------
+  unique_action_categories = unique(Crosswalk_Habitat_Attributes_and_Actions$Action_Category_2)
+  for(i in 1:length(unique_action_categories)){
+    
+    # ----------- old (no space) action category name -------
+    old_action_category_x = unique_action_categories[i]
+    # ------------ updated action category name ---------
+    updated_action_category_x = Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[which(Crosswalk_Habitat_Attributes_and_Actions$Action_Category_2 ==old_action_category_x )][1]
+    # ------ update names -------------
+    data_frame_x$`Action Categories` = gsub(old_action_category_x, updated_action_category_x, data_frame_x$`Action Categories`)
   }
   
 
