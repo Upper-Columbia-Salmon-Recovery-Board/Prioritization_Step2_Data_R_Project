@@ -100,7 +100,7 @@ Life_Stage_Priorities_AU_only_data = read_excel( paste(data_path,'LifeStagePrior
 
 Life_Stage_Priorities_AU_and_Reach_data = read_excel( paste(data_path,'LifeStagePriorities_AUandReach.xlsx', sep=""), skip=1 )
 
-# ---------------------- match column names to life stages - 
+# ---------------------- match column names to life stages ------------------------------ 
 spring_chinook_life_stages = list("Adult Migration" = "SPCH Adult Migration  AU LS Priority",	  "Holding"=	"SPCH Holding  AU LS Priority",
                                 "Spawning and Incubation" = "SPCH Spawning AU LS Priority",	"Fry Colonization" = "SPCH Fry Colonization  AU LS Priority", 	
                                 "Summer Rearing"  = "SPCH Summer Rearing  AU LS Priority", 	"Winter Rearing" = "SPCH Winter Rearing  AU LS Priority",
@@ -117,6 +117,25 @@ bull_trout_life_stages = list("Adult Migration"  = "BT Adult Migration  AU LS Pr
 life_stages_priorities = list("spring_chinook_life_stages" =  spring_chinook_life_stages,  
                               "steelhead_life_stages" = steelhead_life_stages, 
                               "bull_trout_life_stages" = bull_trout_life_stages )
+
+# ---------------------- match column names to life stages ------------------------------ 
+spring_chinook_life_stages_presence = list("Adult Migration" = "SPCH Adult Migration",	  "Holding"=	"SPCH Holding",
+                                  "Spawning and Incubation" = "SPCH Spawning",	"Fry Colonization" = "SPCH Fry Colonization", 	
+                                  "Summer Rearing"  = "SPCH Summer Rearing", 	"Winter Rearing" = "SPCH Winter Rearing",
+                                  "Smolt Outmigration"= "SPCH Smolt Emigration")	
+steelhead_life_stages_presence =     life_stage_priority_list = list("Adult Migration"  = "SH Adult Migration",
+                                                            "Holding and Maturation"  =  "SH Holding",	"Spawning and Incubation" ="SH Spawning", 
+                                                            "Fry" = "SH Fry Colonization", "Spawning and Incubation" = "SH Summer Rearing",
+                                                            "Winter Rearing"  = "SH Winter Rearing",	"Smolt Outmigration" = "SH Smolt Emigration")
+
+bull_trout_life_stages_presence = list("Adult Migration"  = "BT Adult Spawning Migration",	"Holding and Maturation"= 	"BT Holding and Maturation",
+                                       "Spawning and Incubation" =	"BT Spawning",	"BT Natal Rearing" =  "BT Natal Rearing",
+                                       "Adult Non-Spawning" = "BT_AdultNonspawning", "BT Subadult Rearing"=  "BT Subadult Rearing")
+
+
+life_stages_prescence = list("spring_chinook_life_stages" =  spring_chinook_life_stages_presence,  
+                              "steelhead_life_stages" = steelhead_life_stages_presence, 
+                              "bull_trout_life_stages" = bull_trout_life_stages_presence )
 
 # ---------------------------------------------------------------------------
 #

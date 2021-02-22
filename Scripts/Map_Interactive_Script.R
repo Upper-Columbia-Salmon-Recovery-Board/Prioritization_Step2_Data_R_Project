@@ -119,7 +119,7 @@ colnames(floodplain_dif) = c("ReachName","Floodplain_Dif")
 reaches_HQ_data = merge(reaches_HQ_data, floodplain_dif, by = "ReachName") 
 reaches_HQ_data$Floodplain_Dif = as.factor(reaches_HQ_data$Floodplain_Dif)
 
-x = c(540)
+
 floodplain_dif_both = cbind(floodplain_dif[,1], 
                             as.numeric(as.character( reaches_HQ_data$`Off-Channel-Floodplain_score` )), 
                             as.numeric(as.character( reaches_LF_data$`Off-Channel- Floodplain` )),

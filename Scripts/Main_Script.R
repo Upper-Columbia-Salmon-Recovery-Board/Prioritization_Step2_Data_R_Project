@@ -180,6 +180,9 @@ print("----------------------------------------- COMBINE HQ AND LF OUTPUT ------
 
 source(paste(script_path, 'FUNCTIONS_for_Combining_Action_Tables.R', sep=""))
 
+source(paste(script_path, 'FUNCTIONS_for_Combining_Reach_Habitat_Attribute_combos.R', sep=""))
+
+
 # ----------------------- summarize within a single pathway AND score category (Unacceptable, At Risk -----------------------
 
 Habitat_Quality_Restoration_Unacceptable = FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH("one", "restoration")
@@ -212,18 +215,19 @@ Restoration_Unacceptable_and_At_Risk = FUNCTION_combine_across_pathways(Habitat_
 # ---------------------------------------------------------------------------
 #  Combine into ONE Data frame across all pathways and scores
 # ---------------------------------------------------------------------------
+HQ_add_life_stage = "yes"   # IF generate life stages for HQ pathway based on life stage presence in reaches
 columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
-Restoration_Prioritization_Output = FUNCTION_combine_across_Unacceptable_and_AtRisk(Restoration_Unacceptable, Restoration_At_Risk, Restoration_Unacceptable_and_At_Risk, columns_info, exclude_bull_trout)
+# Note - only include the Habitat_Quality_Restoration_Unacceptable_and_At_Risk 
+Restoration_Prioritization_Output = FUNCTION_combine_across_Unacceptable_and_AtRisk(Restoration_Unacceptable, Restoration_At_Risk, Restoration_Unacceptable_and_At_Risk, Habitat_Quality_Restoration_Unacceptable_and_At_Risk, columns_info, exclude_bull_trout, HQ_add_life_stage)
 # ---------------------------------------------------------------------------
 #  Add Barrier Prioritization Info
 # ---------------------------------------------------------------------------
 columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
-Restoration_Prioritization_Output = FUNCTION_Add_Barrier_Data(Restoration_Prioritization_Output, Barriers_Pathways_Data)
+Restoration_Prioritization_Output = FUNCTION_Add_Barrier_Data(Restoration_Prioritization_Output, Barriers_Pathways_Data, exclude_bull_trout)
 
 # ---------------------------------------------------------------------------
 #  Reduce for "Outward Facing" table in WebMap
 # ---------------------------------------------------------------------------
-
 colnames_outward_facing_WebMap = c("ReachName","Assessment.Unit","Species","Life_Stages","Impaired_Habitat_Attributes_All_Species","Action_Categories_All_Species" )
 colnames_reach_info = c("RM_Start", "RM_End")  # data that is in the reach geospatial layer to add to these data
 colnames_outward_facing_WebMap_ORDER = c("ReachName","RM_Start", "RM_End","Assessment.Unit","Species","Life_Stages","Impaired_Habitat_Attributes_All_Species","Action_Categories_All_Species" )
@@ -264,8 +268,6 @@ Protection_Prioritization_Output = FUNCTION_Combine_Protection_Output(Habitat_Qu
 #  Reach-Habitat Attributes - Life Stage per row
 # ---------------------------------------------------------------------------
 
-source(paste(script_path, 'FUNCTIONS_for_Combining_Reach_Habitat_Attribute_combos.R', sep=""))
-
 columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
 Reach_Habitat_Attribute_Life_Stage_Restoration_Output = FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage(Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']], 
                                                 Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']], 
@@ -278,15 +280,25 @@ Reach_Habitat_Attribute_Life_Stage_Restoration_Output = FUNCTION_combine_by_Reac
 # ---------------------------------------------------------------------------
 #  Reach-Habitat Attributes - Life Stage per row
 # ---------------------------------------------------------------------------
-
-Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output = FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species(Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']], 
+HQ_life_stages = "yes"  # "yes" if use AU Life stages reach layer to generate life stages for habitat quality pathway
+Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output = FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species( Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']], 
                                                                    Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']], 
                                                                    Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']], 
                                                                    Limiting_Factor_Pathway_Spring_Chinook[['Limiting_Factor_Pathway_Restoration']],
                                                                    Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']], 
-                                                                   Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']], columns_info, exclude_bull_trout)
+                                                                   Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']], columns_info, exclude_bull_trout, HQ_life_stages)
 
 
+
+reach_test = "Methow River Fawn 09"
+strsplit(Restoration_Prioritization_Output_for_WebMap[which(Restoration_Prioritization_Output_for_WebMap$`Reach Name` == reach_test),]$`Limiting Factor`, ",")
+unique(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output[which(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output$ReachName == reach_test),]$Habitat_Attribute)
+
+strsplit(Restoration_Prioritization_Output_for_WebMap[which(Restoration_Prioritization_Output_for_WebMap$`Reach Name` == reach_test),]$`Species`, ",")
+unique(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output[which(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output$ReachName == reach_test),]$Species)
+
+strsplit(Restoration_Prioritization_Output_for_WebMap[which(Restoration_Prioritization_Output_for_WebMap$`Reach Name` == reach_test),]$`Life Stages`, ",")
+unique(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output[which(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output$ReachName == reach_test),]$Life_Stage)
 
 # ---------------------------------------------------------------------------
 #

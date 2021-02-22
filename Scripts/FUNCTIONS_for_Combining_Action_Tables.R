@@ -265,6 +265,34 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
     }else{ all_species_present = "no" }
     
     # -----------------------------------------
+    #   Add life stage ( Life_Stage_Priorities_AU_and_Reach_data has 0 and 1 for life stage presence )
+    # ----------------------------------------- 
+    life_stage_list = c()
+    if(!is.null(spring_chinook_habitat_attributes)){
+      life_stages_present = FUNCTION_life_stage_presence("spring_chinook", reachname_x)
+      life_stage_list = paste(life_stage_list, life_stages_present, sep="," )
+      life_stage_spring_chinook_output = life_stages_present
+    }else{
+      life_stage_spring_chinook_output = "NA"
+    }
+    if(!is.null(steelhead_habitat_attributes)){
+      life_stages_present = FUNCTION_life_stage_presence("steelhead", reachname_x)
+      life_stage_list = paste(life_stage_list, life_stages_present, sep="," )
+      life_stage_steelhead_output = life_stages_present
+    }else{
+      life_stage_steelhead_output = "NA"
+    }
+    if(!is.null(bull_trout_habitat_attributes) & exclude_bull_trout != "yes"){
+      life_stages_present = FUNCTION_life_stage_presence("bull_trout", reachname_x)
+      life_stage_list = paste(life_stage_list, life_stages_present, sep="," )
+      life_stage_bull_trout_output = life_stages_present
+    }else{
+      life_stage_bull_trout_output = "NA"
+    }
+    # ---------------- remove leading comma -------
+    life_stage_list = substr(life_stage_list,2,nchar(life_stage_list))
+    
+    # -----------------------------------------
     #     combine and output
     # -----------------------------------------
     
@@ -277,7 +305,8 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
                                       action_categories_x, number_of_action_categories_x,
                                       spring_chinook_actions, number_of_spring_chinook_actions,
                                       steelhead_actions, number_of_steelhead_actions,
-                                      bull_trout_actions, number_of_bull_trout_actions )  )  )
+                                      bull_trout_actions, number_of_bull_trout_actions, 
+                                      life_stage_list, life_stage_spring_chinook_output, life_stage_steelhead_output, life_stage_bull_trout_output )  )  )
     colnames(output_row_x) = c("Spring_Chinook_Actions_Present_Yes_No", "SprCh_STLD_BullTr_All_Present_Yes_No",
                                "Pathways","Number_of_Pathways", 
                                "Impaired_Habitat_Attributes_All_Species","Number_Impaired_Habitat_Attributes_All_Species",
@@ -287,7 +316,8 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
                                "Action_Categories_All_Species", "Number_Action_Categories_All_Species",
                                "Action_Categories_SpringChinook", "Number_Action_Categories_SpringChinook",
                                "Action_Categories_Steelhead", "Number_Action_Categories_Steelhead",
-                               "Action_Categories_BullTrout", "Number_Action_Categories_BullTrout")
+                               "Action_Categories_BullTrout", "Number_Action_Categories_BullTrout", "Life_Stage_All",
+                               "Life_Stage_Spring_Chinook", "Life_Stage_Steelhead", "Life_Stage_Bull_Trout")
     Pathway_Output_x = rbind(Pathway_Output_x, output_row_x)
   }
   
@@ -305,7 +335,29 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
 }
 
 
+# ---------------------------------------------------------------------------
+#
+#    Function to Life Stage Presence
+#
+# ---------------------------------------------------------------------------
 
+FUNCTION_life_stage_presence= function(species_x, reachname_x){
+  
+  # ------------- pull life stage names -------
+  names_x = paste(species_x,"_life_stages",sep="")
+  life_stage_presence_x = c("ReachName", as.vector( unlist(life_stages_prescence[[names_x]]) )   )
+  # -------- life stage presence row ------------   life_stage_presence_x
+  life_stage_presence = Life_Stage_Priorities_AU_and_Reach_data[ life_stage_presence_x    ]
+  life_stage_presence = life_stage_presence[ which(life_stage_presence$ReachName == reachname_x) ,  ]
+  # ------------ merge the layers -----------
+  life_stages_presence_reach = colnames(life_stage_presence)[ which( life_stage_presence == 1   )  ]
+  if(species_x == "spring_chinook"){
+    life_stages_output = paste( substr(life_stages_presence_reach, 6, nchar(life_stages_presence_reach) ), collapse=",")
+  }else{
+    life_stages_output = paste( substr(life_stages_presence_reach, 4, nchar(life_stages_presence_reach) ), collapse=",")
+  }
+  return(life_stages_output)
+}
 
 # ---------------------------------------------------------------------------
 #
@@ -905,9 +957,10 @@ FUNCTION_combine_across_pathways = function(HQ_pathway_df, LF_pathway_df){
 # HQ_LF_Unacceptable = Restoration_Unacceptable
 # HQ_LF_At_Risk = Restoration_At_Risk
 # HQ_LF_Both = Restoration_Unacceptable_and_At_Risk
+# HQ_Both = Habitat_Quality_Restoration_Unacceptable_and_At_Risk
 #  columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
 
-FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, HQ_LF_At_Risk, HQ_LF_Both, columns_info, exclude_bull_trout){
+FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, HQ_LF_At_Risk, HQ_LF_Both, HQ_both, columns_info, exclude_bull_trout, HQ_add_life_stage){
   
   # ------------------------------------------------------------
   #       Get Unique Reaches
@@ -924,18 +977,37 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
     HQ_LF_Both_index = which(HQ_LF_Both$ReachName == reach_x)
     if(any(HQ_LF_Unacceptable$ReachName == reach_x)){ HQ_LF_Unacceptable_index = which(HQ_LF_Unacceptable$ReachName == reach_x) }
     if(any(HQ_LF_At_Risk$ReachName == reach_x)){ HQ_LF_At_Risk_index = which(HQ_LF_At_Risk$ReachName == reach_x) }
+    HQ_Both_index  = which(HQ_Both$ReachName == reach_x) # data frame with just HQ pathway 
+
+    # ----------- IF excluding bull trout and only bull trout pathway - SKIP this ---------
+    if(exclude_bull_trout == "yes" & (HQ_LF_Both[HQ_LF_Both_index,"Pathways"] == "HQ_bull_trout" |   HQ_LF_Both[HQ_LF_Both_index,"Pathways"] == "LF_bull_trout" )  ){
+      next
+    }
     
     # ------------------------------------------------------------
     #     Add Reach Information Data 
     # ------------------------------------------------------------
     HQ_and_LF_combo_x = as.data.frame(HQ_LF_Both[HQ_LF_Both_index, columns_info])
-
+    
     # ------------------------------------------------------------
     #    Pathways (list and yes/no)
     # ------------------------------------------------------------
     
     # ------------- get pathways --------
-    HQ_and_LF_combo_x$Pathways = HQ_LF_Both[HQ_LF_Both_index, "Pathways"]
+    pathway_output = HQ_LF_Both[HQ_LF_Both_index, "Pathways"]
+    # ----- if excluding bull trout -------
+    if(exclude_bull_trout == "yes"){
+      pathway_output = gsub("HQ_bull_trout","",pathway_output)
+      pathway_output = gsub("LF_bull_trout","",pathway_output)
+      if(substr(pathway_output, nchar(pathway_output), nchar(pathway_output)) == ","){
+        pathway_output = substr(pathway_output,1,nchar(pathway_output)-1)
+      }
+      if(substr(pathway_output, 1, 1) == ","){
+        pathway_output = substr(pathway_output,2,nchar(pathway_output))
+      }
+      pathway_output = gsub(",,",",",pathway_output)
+    }
+    HQ_and_LF_combo_x$Pathways = pathway_output
     HQ_and_LF_combo_x$Number_of_Pathways = HQ_LF_Both[HQ_LF_Both_index, "Number_of_Pathways"]
     
     pathways_x =  unique( unlist(strsplit(HQ_and_LF_combo_x$Pathways, ",")) )
@@ -946,9 +1018,14 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
     if(  grepl( "LF_spring_chinook", HQ_and_LF_combo_x$Pathways, fixed = TRUE)  ){ LF_spring_chinook_yesno = "yes" }else{ LF_spring_chinook_yesno = "no" }
     if(  grepl( "LF_steelhead", HQ_and_LF_combo_x$Pathways, fixed = TRUE)  ){ LF_steelhead_yesno = "yes" }else{ LF_steelhead_yesno = "no" }
     if(  grepl( "LF_bull_trout", HQ_and_LF_combo_x$Pathways, fixed = TRUE)  ){ LF_bull_trout_yesno = "yes" }else{ LF_bull_trout_yesno = "no" }
+    # ----- if excluding bull trout --------
+    if(exclude_bull_trout == "yes"){
+      HQ_bull_trout_yesno = "no"
+      LF_bull_trout_yesno = "no"
+    }
     
     pathway_yes_no_df = t(  as.data.frame( c(HQ_spring_chinook_yesno, HQ_steelhead_yesno, HQ_bull_trout_yesno,
-                                         LF_spring_chinook_yesno, LF_steelhead_yesno, LF_bull_trout_yesno)  ) )
+                                             LF_spring_chinook_yesno, LF_steelhead_yesno, LF_bull_trout_yesno)  ) )
     colnames(pathway_yes_no_df) = c(  "HabitatQuality_Spring_Chinook_Pathway",	"HabitatQuality_Steelhead_Pathway",	"HabitatQuality_BullTrout_Pathway",
                                       "LimitingFactor_Spring_Chinook_Pathway",	"LimitingFactor_Steelhead_Pathway",	"LimitingFactor_BullTrout_Pathway" )
     row.names(pathway_yes_no_df) = row.names(HQ_and_LF_combo_x)
@@ -966,8 +1043,12 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
       species_x = paste(species_x, "Spring_Chinook", sep=",") }
     if(  grepl( "HQ_steelhead", HQ_and_LF_combo_x$Pathways, fixed = TRUE) |  grepl( "LF_steelhead", HQ_and_LF_combo_x$Pathways, fixed = TRUE) ){ 
       species_x = paste(species_x, "Steelhead", sep=",") }
-    if(  grepl( "HQ_bull_trout", HQ_and_LF_combo_x$Pathways, fixed = TRUE) |  grepl( "LF_bull_trout", HQ_and_LF_combo_x$Pathways, fixed = TRUE) ){ 
-      species_x = paste(species_x, "Bull_Trout", sep=",") }
+    # ---- only write if bull trout not excluded ------
+    if(exclude_bull_trout == "no"){
+      if(  grepl( "HQ_bull_trout", HQ_and_LF_combo_x$Pathways, fixed = TRUE) |  grepl( "LF_bull_trout", HQ_and_LF_combo_x$Pathways, fixed = TRUE) ){ 
+        species_x = paste(species_x, "Bull_Trout", sep=",") }
+    }
+    
     species_x = substr(species_x,2,nchar(species_x))   # remove the leading comma
     # ------- add to output --------------
     HQ_and_LF_combo_x$Species = species_x
@@ -994,8 +1075,13 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
     HQ_and_LF_combo_x$Steelhead_Actions = HQ_LF_Both$Action_Categories_Steelhead[HQ_LF_Both_index]
     
     # ---------- Bull Trout ----------------
-    HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes = HQ_LF_Both$Impaired_Habitat_Attributes_BullTrout[HQ_LF_Both_index]
-    HQ_and_LF_combo_x$Bull_Trout_Actions = HQ_LF_Both$Action_Categories_BullTrout[HQ_LF_Both_index]
+    if(exclude_bull_trout == "no"){
+      HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes = HQ_LF_Both$Impaired_Habitat_Attributes_BullTrout[HQ_LF_Both_index]
+      HQ_and_LF_combo_x$Bull_Trout_Actions = HQ_LF_Both$Action_Categories_BullTrout[HQ_LF_Both_index]
+    }else{
+      HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes = NA
+      HQ_and_LF_combo_x$Bull_Trout_Actions = NA
+    }
     
     # ------------------------------------------------------------
     #   List all life stages
@@ -1097,20 +1183,50 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
         do_not_write_row_since_only_bull_trout = "no"
       }
       
-      # --------------------- if bull trout in reach AND other pathways ------------------
-      
-      # ----- Pathways --------
-      
-      
-      # ------ Number of Pathways ------
-      
-      
-      
-      
     }else{
       do_not_write_row_since_only_bull_trout = "no"
     }
     
+    # ------------------------------------------------------------
+    #   add HQ life stages (if HQ_add_life_stage is yes)
+    # ------------------------------------------------------------
+    if(HQ_add_life_stage  == "yes"){
+      # ---- pull the reach's row in HQ Pathway data frame ---------
+      HQ_Both_row = HQ_Both[HQ_Both_index, ]
+      # --------------------- Pathways------------------
+      pathways_x_list = unlist(strsplit(HQ_and_LF_combo_x$Pathways, ","))
+      pathway_list_letters = substr(pathways_x_list, 1, 2)
+      # ------------- unique species ---------
+      species_list = substr(pathways_x_list, 4, nchar(pathways_x_list)) # unique species
+      
+      # ------------ IF Habitat Quality Pathways presence -------------------
+      if( any(pathway_list_letters == "HQ") ){
+        
+        # ---------- loop through each species in HQ pathway ---------
+        life_stages_all_output = c()
+        for(species_x_HQ in species_list){
+          life_stages_all = FUNCTION_output_life_stages_based_on_species_and_life_stage_presence(species_x_HQ, reach_x, HQ_Both_row)
+          life_stages_all_output = paste(life_stages_all_output,life_stages_all, sep="," )
+        }
+        life_stages_all_output = substr(life_stages_all_output, 2, nchar(life_stages_all_output))
+        life_stages_all_output = unique(unlist(strsplit(life_stages_all_output, ",")))
+        life_stages_all_output = paste(life_stages_all_output, collapse=",")
+      }
+      
+      # --------------- update life stages ----------------
+      
+      # ------ if life stages list is NA ------
+      if(is.na(HQ_and_LF_combo_x$Life_Stages)){
+        HQ_and_LF_combo_x$Life_Stages = life_stages_all_output
+        
+        # ------- if life stages exist already -----
+      }else{
+        life_stages_updated = paste(HQ_and_LF_combo_x$Life_Stages,life_stages_all_output, sep="," )
+        life_stages_updated = unique(unlist(strsplit(life_stages_updated, ",")))
+        life_stages_updated = paste(life_stages_updated, collapse=",")
+        HQ_and_LF_combo_x$Life_Stages =  life_stages_updated
+      }
+    }
     
     
     # ------------------------------------------------------------
@@ -1122,12 +1238,220 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
     }
     
   }
+
     
   return(Unacceptable_AtRisk_combined_output)
   
 }
 
+
+
+
+
+# ------------------------------------------------------------------------------------------
+#
+#      Generate life stages based on A) presence of impaired habitat attributes in HQ pathway and B) life stage presence in reach
+#
+# ------------------------------------------------------------------------------------------
+
+FUNCTION_output_life_stages_based_on_species_and_life_stage_presence = function(species_x_HQ, reach_x, HQ_Both_row){
+  
+  # ------------------- generate life stage list for this species (from reach presence data ) ------------------
+  life_stages_species_presence_list = FUNCTION_generate_life_stage_list_for_species_reach_FLAT_TABLE(species_x_HQ, reach_x)
+  life_stages_species_presence_list = unlist(strsplit(life_stages_species_presence_list, ","))
+  
+  # ------------ convert species name AND generate habitat attributes from impaired list -----------
+  if(species_x_HQ == "spring_chinook"){
+    species_x_HQ2 = "Spring Chinook"
+    habitat_attributes_species = HQ_Both_row$Impaired_Habitat_Attributes_SpringChinook
+    }
+  if(species_x_HQ == "steelhead"){
+    species_x_HQ2 = "Steelhead"
+    habitat_attributes_species = HQ_Both_row$Impaired_Habitat_Attributes_Steelhead
+  }
+  if(species_x_HQ == "bull_trout"){
+    species_x_HQ2 = "Bull Trout"
+    habitat_attributes_species = HQ_Both_row$Impaired_Habitat_Attributes_BullTrout
+  }
+  habitat_attributes_species = unlist(strsplit(habitat_attributes_species, ","))
+
+    
+  # ------------------------------------------------------------
+  #    Habitat Quality Pathways
+  # ------------------------------------------------------------
+  life_stages_list_output = c()
+  for(life_stage_x_HQ in life_stages_species_presence_list){
+    
+    # ------------------------------------------------------------
+    #  Match Impaired Habitat Attributes to Life Stage Habitat Attributes
+    # ------------------------------------------------------------
+    
+    # ---------=-------------------------
+    #  Pull Life Stage habitat attributes
+    # ---------=-------------------------
+    life_stage_habitat_attributes = Attribute_LifeStage_Crosswalk %>%
+      filter( `Life Stage` %in% life_stage_x_HQ) %>%
+      filter( Species %in% species_x_HQ2 ) %>%
+      dplyr::select(`Habitat Attribute`)
+    life_stage_habitat_attributes = as.data.frame(life_stage_habitat_attributes)
+    life_stage_habitat_attributes = life_stage_habitat_attributes$`Habitat Attribute`
+    # ------------- remove the blank space ---------------
+    life_stage_habitat_attributes = gsub(" ","",life_stage_habitat_attributes)
+    
+    # -----------------------------------
+    #  Pull Life Stage habitat attributes
+    # -----------------------------------
+    
+    # ----------------------------------
+    #  Overlap between life stage presence w/ habitat attributes for that life stage (life_stage_habitat_attributes) 
+    #         and HQ pathway impaired list (habitat_attributes_species)
+    # ----------------------------------
+    habitat_attributes_all = intersect(life_stage_habitat_attributes, habitat_attributes_species)
+    
+    # ---------- include life stage if intersection betweeh HQ patwhway impaired attributes AND life stage presence -----
+    if(length(habitat_attributes_all)>0){
+      life_stages_list_output = paste(life_stages_list_output, life_stage_x_HQ, sep=",")
+    }
+      
+  
+  }
+  life_stages_list_output = substr(life_stages_list_output, 2, nchar(life_stages_list_output))
+  return(life_stages_list_output)
+}
+
+
+
+
+# ------------------------------------------------------------------------------------------
+#
+#      Generate life stages AND species for Fish Barriers
+#
+# ------------------------------------------------------------------------------------------
+
+FUNCTION_output_life_stages_based_on_species_and_life_stage_presence_FISH_BARRIERs = function(reach_x, exclude_bull_trout){
+  
+  # --------------- Prep Output -----------
+  species_x_output = c()
+  life_stage_output = c()
+  
+  # ------------------- generate life stage list for this species (from reach presence data ) ------------------
+  Life_Stage_Priorities_AU_and_Reach_data_REACH_X = Life_Stage_Priorities_AU_and_Reach_data[ which(Life_Stage_Priorities_AU_and_Reach_data$ReachName == reach_x), ] 
+  
+  
+  # --------------- spring chinook -----------
+  spring_chinook_col_names = unlist( spring_chinook_life_stages_presence[names(spring_chinook_life_stages_presence)] )
+  life_stage_names = names(spring_chinook_col_names)
+  life_stage_presence_numbers = Life_Stage_Priorities_AU_and_Reach_data_REACH_X[ spring_chinook_col_names ]
+  if(any(life_stage_presence_numbers == 1)){
+    species_x_output = paste(species_x_output, "Spring Chinook", sep=",")
+    columns_presence = which(life_stage_presence_numbers == 1)
+    life_stages_x = life_stage_names[columns_presence]
+    life_stages_x = paste(life_stages_x, collapse=",")
+    life_stage_output = paste(life_stage_output,life_stages_x, sep="," )
+  }
+  
+  # --------------- steelhead -----------
+  steelhead_col_names = unlist( steelhead_life_stages_presence[names(steelhead_life_stages_presence)] )
+  life_stage_names = names(steelhead_col_names)
+  life_stage_presence_numbers = Life_Stage_Priorities_AU_and_Reach_data_REACH_X[ steelhead_col_names ]
+  if(any(life_stage_presence_numbers == 1)){
+    species_x_output = paste(species_x_output, "Steelhead", sep=",")
+    columns_presence = which(life_stage_presence_numbers == 1)
+    life_stages_x = life_stage_names[columns_presence]
+    life_stages_x = paste(life_stages_x, collapse=",")
+    life_stage_output = paste(life_stage_output,life_stages_x, sep="," )
+  }
+  
+  # --------------- bull trout -----------
+  if(exclude_bull_trout == "no"){
+    
+    bull_trout_col_names = unlist( bull_trout_life_stages_presence[names(bull_trout_life_stages_presence)] )
+    life_stage_names = names(bull_trout_col_names)
+    life_stage_presence_numbers = Life_Stage_Priorities_AU_and_Reach_data_REACH_X[ bull_trout_col_names ]
+    if(any(life_stage_presence_numbers == 1)){
+      species_x_output = paste(species_x_output, "Bull Trout", sep=",")
+      columns_presence = which(life_stage_presence_numbers == 1)
+      life_stages_x = life_stage_names[columns_presence]
+      life_stages_x = paste(life_stages_x, collapse=",")
+      life_stage_output = paste(life_stage_output,life_stages_x, sep="," )
+    }
+    
+  }
+
+  
+  species_x_output = substr(species_x_output, 2, nchar(species_x_output))
+  life_stage_output = substr(life_stage_output, 2, nchar(life_stage_output))
+  life_stage_output = paste(unique(unlist(strsplit(life_stage_output, ","))), collapse=",")
+  
+  return(c(species_x_output, life_stage_output))
+}
+
+
+
 # datax = FUNCTION_combine_across_Unacceptable_and_AtRisk(HQ_LF_Unacceptable, HQ_LF_At_Risk, HQ_LF_Both)
+# ------------------------------------------------------------------------------------------
+#
+#      Generate life stages for HQ pathway for specific reach (based on life stage presence data)
+#
+# ------------------------------------------------------------------------------------------
+
+FUNCTION_generate_life_stage_list_for_species_reach_FLAT_TABLE = function(species_x, reach_x){
+  
+  # ----------------------- filter by reach ------
+  Life_Stage_Priorities_AU_and_Reach_data_REACH_X = Life_Stage_Priorities_AU_and_Reach_data[ which(Life_Stage_Priorities_AU_and_Reach_data$ReachName == reach_x), ] 
+  colnames_alternate = gsub(" ","", names(Life_Stage_Priorities_AU_and_Reach_data_REACH_X))
+  
+  life_stage_list_x = c()
+  
+  # --------- Spring Chinook --------
+  if(species_x == "spring_chinook"){
+    
+    for(life_stage_i in names(spring_chinook_life_stages_presence)){
+      # ------- generate name of column for this life stage --------
+      life_stage_i2 = spring_chinook_life_stages_presence[[life_stage_i]]
+      # -------------- pull the value -------
+      life_stage_presence_0_1 = Life_Stage_Priorities_AU_and_Reach_data_REACH_X[[life_stage_i2]]
+      # -------- add life stage name -------
+      if(life_stage_presence_0_1 == 1){ life_stage_list_x = paste(life_stage_list_x,life_stage_i, sep="," ) }
+    }
+  }
+  
+  
+  # --------- Steelhead --------
+  if(species_x == "steelhead"){
+    
+    for(life_stage_i in names(steelhead_life_stages_presence)){
+      # ------- generate name of column for this life stage --------
+      life_stage_i2 = steelhead_life_stages_presence[[life_stage_i]]
+      # -------------- pull the value -------
+      life_stage_presence_0_1 = Life_Stage_Priorities_AU_and_Reach_data_REACH_X[[life_stage_i2]]
+      # -------- add life stage name -------
+      if(life_stage_presence_0_1 == 1){ life_stage_list_x = paste(life_stage_list_x,life_stage_i, sep="," ) }
+    }
+  }
+  
+  # --------- Bull Trout -------- grep
+  if(species_x == "bull_trout"){
+    
+    for(life_stage_i in names(bull_trout_life_stages_presence)){
+      # ------- generate name of column for this life stage --------
+      life_stage_i2 = bull_trout_life_stages_presence[[life_stage_i]]
+      # -------------- pull the value -------
+      life_stage_presence_0_1 = Life_Stage_Priorities_AU_and_Reach_data_REACH_X[[life_stage_i2]]
+      # -------- add life stage name -------
+      if(life_stage_presence_0_1 == 1){ life_stage_list_x = paste(life_stage_list_x,life_stage_i, sep="," ) }
+    }
+  }
+  
+  # --------- remove the leading comma ------
+  if(!is.null(life_stage_list_x)){
+    life_stage_list_x  = substr(life_stage_list_x,2,nchar(life_stage_list_x))
+  }
+  
+  return(life_stage_list_x)
+  
+  
+}
 
 # ------------------------------------------------------------
 #
@@ -1137,9 +1461,9 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
 
 # HQ_LF_Combined = Restoration_Prioritization_Output
 
-FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined, Barriers_Pathways_Data){
+FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined,  Barriers_Pathways_Data,  exclude_bull_trout){
   
-  
+  # ------------------- get the reaches ------------------
   for(reach_x in unique(Barriers_Pathways_Data$ReachName) ){
     
     HQ_LF_index = which(HQ_LF_Combined$ReachName == reach_x)
@@ -1197,7 +1521,8 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined, Barriers_Pathways_Data){
       HQ_and_LF_combo_x$Barrier_Prioritization_Pathway = "yes"
       
       # ------------- misc other ----------
-      HQ_and_LF_combo_x$Species = NA
+      species_and_life_stages = FUNCTION_output_life_stages_based_on_species_and_life_stage_presence_FISH_BARRIERs(reach_x, exclude_bull_trout)
+      HQ_and_LF_combo_x$Species = species_and_life_stages[1]
       HQ_and_LF_combo_x$SprCh_STLD_BullTr_All_Benefit = NA
       HQ_and_LF_combo_x$Spring_Chinook_Benefit = NA
       HQ_and_LF_combo_x$Spring_Chinook_Habitat_Attributes = NA                    
@@ -1206,7 +1531,7 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined, Barriers_Pathways_Data){
       HQ_and_LF_combo_x$Steelhead_Actions = NA 
       HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes = NA                             
       HQ_and_LF_combo_x$Bull_Trout_Actions = NA
-      HQ_and_LF_combo_x$Life_Stages = NA
+      HQ_and_LF_combo_x$Life_Stages = species_and_life_stages[2]
       
       # ----------------- add Action Categories  ------------
       HQ_and_LF_combo_x$Action_Categories_All_Species = Barriers_Pathways_Data$`Action Category`[barrier_index]
@@ -1402,7 +1727,7 @@ FUNCTION_Add_Barrier_Data_to_WebMap_Flat_Tables = function(HQ_LF_Combined, Barri
 FUNCTION_prepare_outward_facing_table = function(data_frame_x, colnames_outward_facing_WebMap_ORDER, colnames_outward_facing_WebMap_UPDATED, exclude_bull_trout){
   
   # -------------------- remove Bull Trout rows and instances ----------
-  if(exclude_bull_trout == "yes"){
+  if(exclude_bull_trout == "yes" & any( data_frame_x$Species == "Bull_Trout" ) ){
     
     # --------------- identify rows that JUST have Bull Trout and remove -----------
     rows_only_Bull_Trout = which( data_frame_x$Species == "Bull_Trout"  )
@@ -1412,6 +1737,8 @@ FUNCTION_prepare_outward_facing_table = function(data_frame_x, colnames_outward_
     
   }
 
+
+  
   # -------------- correct column order correct ------------
   data_frame_x = data_frame_x[,colnames_outward_facing_WebMap_ORDER]
   
@@ -1425,6 +1752,16 @@ FUNCTION_prepare_outward_facing_table = function(data_frame_x, colnames_outward_
   data_frame_x$RM_Start = round(data_frame_x$RM_Start, 2)
   data_frame_x$RM_End = round(data_frame_x$RM_End, 2)
   
+  # ------------------------------------------------------------
+  #   Update References for WebMap: PRCT (%), AND (&), and the "/" as a space
+  # ------------------------------------------------------------
+  # -------------------- Fines/Embeddedness ------------------
+  data_frame_x$Impaired_Habitat_Attributes_All_Species  = gsub("%Fines/Embeddedness", "PRCNT Fines and Embeddedness", data_frame_x$Impaired_Habitat_Attributes_All_Species )
+  # -------------------- Pool Quantity and Quality ------------------
+  data_frame_x$Impaired_Habitat_Attributes_All_Species = gsub("PoolQuantity&Quality", "Pool Quantity and Quality", data_frame_x$Impaired_Habitat_Attributes_All_Species )
+  # -------------------- Entrainment and Stranding ------------------
+  data_frame_x$Impaired_Habitat_Attributes_All_Species = gsub("Entrainment/Stranding", "Entrainment and Stranding", data_frame_x$Impaired_Habitat_Attributes_All_Species )
+
   # ---------------- update the column names as necessary ------------
   
   for(i in 1:length(colnames_outward_facing_WebMap_UPDATED) ){
@@ -1433,11 +1770,19 @@ FUNCTION_prepare_outward_facing_table = function(data_frame_x, colnames_outward_
     colnames(data_frame_x)[i] <- colnames_outward_facing_WebMap_UPDATED[i]
     
   }
-
+  
 
   return(data_frame_x)
   
 }
+
+
+# ------------------------------------------------------------
+#
+#   Function to update Reach Information
+#
+# ------------------------------------------------------------
+
 
 
 # ------------------------------------------------------------
