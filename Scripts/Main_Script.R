@@ -301,10 +301,9 @@ unique(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output[which(Reac
 
 # ---------------------------------------------------------------------------
 #
-#  Output of all reaches with habitat data
+#  Output of all reaches with habitat data (to include in Webmap)
 #
 # ---------------------------------------------------------------------------
-
 
 
 Habitat_Attribute_Scores_columns_to_pull  = c("% Fines/Embeddedness", "Brook Trout", "Coarse Substrate" ,"Contaminants",
@@ -360,7 +359,7 @@ write_xlsx(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output,output
 output_path_x =  paste(output_path,'Restoration_Prioritization_Output_for_WebMap_Table.xlsx', sep="")
 write_xlsx(Restoration_Prioritization_Output_for_WebMap,output_path_x )
 
-# ----------- Outward Facing Table (pops up when reach is clicked on) -----------
+# ----------- Habitat Attributes Table w/ Ratings (to put in WebMap) -----------
 output_path_x =  paste(output_path,'Habitat_Attributes_Ratings_Table.xlsx', sep="")
 write_xlsx(Habitat_Attributes_Ratings_Table,output_path_x )
 
