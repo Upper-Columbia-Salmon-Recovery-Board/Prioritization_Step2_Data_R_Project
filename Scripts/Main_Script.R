@@ -304,17 +304,30 @@ unique(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output[which(Reac
 #  Output of all reaches with habitat data
 #
 # ---------------------------------------------------------------------------
- 
-# ---------------------------------------------------------------------------
-#    Habitat Quality Pathway
-# ---------------------------------------------------------------------------
 
 
 
+Habitat_Attribute_Scores_columns_to_pull  = c("% Fines/Embeddedness", "Brook Trout", "Coarse Substrate" ,"Contaminants",
+                                           "Cover- Boulders", "Cover- Undercut Banks", "Cover- Wood", "Entrainment/Stranding", "Flow- Scour",
+                                           "Flow- Summer Base Flow", "Food- Food Web Resources", "Harassment", "Icing", "Off-Channel- Floodplain",
+                                           "Off-Channel- Side-Channels","Pool Quantity & Quality" , "Pools- Deep Pools", "Predators- Adults", "Predators- Juveniles",
+                                           "Superimposition", "Temperature- Adult Holding", "Temperature- Adult Spawning", "Temperature- Rearing")
+Habitat_Quality_Scores_columns_to_pull = c("BankStability_score","ChannelStability_score","Stability_Mean","CoarseSubstrate_score","Cover-Wood_score","Flow-SummerBaseFlow_score",
+                                             "Off-Channel-Floodplain_score","Off-Channel-Side-Channels_score","PoolQuantity&Quality_score","Riparian-Disturbance_score",
+                                             "Riparian-CanopyCover_score","Riparian_Mean","Temperature-Rearing_score")
+# ORDER: REI ratings -> core metrics -> then the rest of them
+Order_of_Habitat_Attribute_Rating_Table_Columns = c("Coarse Substrate","% Fines/Embeddedness", "Cover- Wood","Pool Quantity & Quality", # <- REI Values
+                                                    "Off-Channel- Floodplain", "Off-Channel- Side-Channels", "Cover- Undercut Banks", #  <- REI Values
+                                                    "ChannelStability_score", "Stability_Mean", "Riparian-Disturbance_score",         # <- HQ scores based on REI Values
+                                                    "Riparian-CanopyCover_score", "Riparian_Mean",                                   # <- HQ scores based on REI Values
+                                                    "Contaminants","Entrainment/Stranding","Predators- Juveniles",                  # <- Spr Chn and STLDH core metrics
+                                                    "Cover- Boulders", "Flow- Scour", "Flow- Summer Base Flow","Food- Food Web Resources",  # <- one species core metric
+                                                    "Harassment", "Icing", "Superimposition", "Temperature- Adult Holding",               # <- one species core metric
+                                                    "Temperature- Adult Spawning", "Temperature- Rearing",                              # <- one species core metric
+                                                    "Brook Trout", "Pools- Deep Pools", "Predators- Adults")                           # <- not a core metric
 
-# ---------------------------------------------------------------------------
-#    Limiting Factors Pathway
-# ---------------------------------------------------------------------------
+# just runs script - output is Habitat_Attributes_Ratings_Table
+source(paste(script_path, "FUNCTIONS_for_Habitat_Attribute_Rating_Table_for_WebMap.R", sep=""))
 
 
 
@@ -347,6 +360,9 @@ write_xlsx(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output,output
 output_path_x =  paste(output_path,'Restoration_Prioritization_Output_for_WebMap_Table.xlsx', sep="")
 write_xlsx(Restoration_Prioritization_Output_for_WebMap,output_path_x )
 
+# ----------- Outward Facing Table (pops up when reach is clicked on) -----------
+output_path_x =  paste(output_path,'Habitat_Attributes_Ratings_Table.xlsx', sep="")
+write_xlsx(Habitat_Attributes_Ratings_Table,output_path_x )
 
 
 
