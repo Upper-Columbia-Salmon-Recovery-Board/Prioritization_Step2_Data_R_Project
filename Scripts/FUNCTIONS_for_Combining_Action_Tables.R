@@ -1010,6 +1010,17 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
     HQ_and_LF_combo_x$Pathways = pathway_output
     HQ_and_LF_combo_x$Number_of_Pathways = HQ_LF_Both[HQ_LF_Both_index, "Number_of_Pathways"]
     
+    # ---------------- Generate General "Actions" list ------------------
+    general_actions = c()
+    if( length(grep("HQ",HQ_and_LF_combo_x$Pathways)) > 0){
+      general_actions = paste( general_actions , "Restore Reach Function", sep=", ")
+    }
+    if( length(grep("LF",HQ_and_LF_combo_x$Pathways)) > 0){
+      general_actions = paste( general_actions , "Address Limiting Factors", sep=", ")
+    }
+    general_actions = substr(general_actions,2,nchar(general_actions)) # remove leading comma
+    HQ_and_LF_combo_x$Actions = general_actions
+    
     pathways_x =  unique( unlist(strsplit(HQ_and_LF_combo_x$Pathways, ",")) )
     # ------------- do yes no for pathways --------
     if(  grepl( "HQ_spring_chinook", HQ_and_LF_combo_x$Pathways, fixed = TRUE)  ){ HQ_spring_chinook_yesno = "yes" }else{ HQ_spring_chinook_yesno = "no" }
@@ -1494,7 +1505,10 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined,  Barriers_Pathways_Data,  e
         HQ_LF_Combined$Impaired_Habitat_Attributes_All_Species[HQ_LF_index] = paste( HQ_LF_Combined$Impaired_Habitat_Attributes_All_Species[HQ_LF_index], Barriers_Pathways_Data$Habitat_Attributes[barrier_index], sep=",")    
         HQ_LF_Combined$Number_Impaired_Habitat_Attributes_All_Species[HQ_LF_index] = HQ_LF_Combined$Number_Action_Categories_All_Species[HQ_LF_index] + 1
   
-      
+        # -------------- add General Action ------------
+        HQ_LF_Combined$Actions[HQ_LF_index] = paste( HQ_LF_Combined$Actions[HQ_LF_index], "Restore Fish Passage", sep=", ")    
+        
+        
     # ------------------------------------------------------------
     #   IF the barriers reach DOES NOT exist in prioritized reach list
     # ------------------------------------------------------------
@@ -1508,6 +1522,8 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined,  Barriers_Pathways_Data,  e
       # ------------- add pathway info -----------
       HQ_and_LF_combo_x$Pathways = "Barriers_pathway"
       HQ_and_LF_combo_x$Number_of_Pathways = 1
+      # --------- add General Actions column --------
+      HQ_and_LF_combo_x$Actions = "Restore Fish Passage"
       
       # ------------ yes or no pathways --------
       HQ_and_LF_combo_x$HabitatQuality_Spring_Chinook_Pathway = "no"
@@ -1722,8 +1738,8 @@ FUNCTION_Add_Barrier_Data_to_WebMap_Flat_Tables = function(HQ_LF_Combined, Barri
 # ------------------------------------------------------------
 
 # data_frame_x = Restoration_Prioritization_Output_for_WebMap
-# colnames_outward_facing_WebMap_ORDER = c("ReachName","RM_Start", "RM_End","Assessment.Unit","Species","Life_Stages","Impaired_Habitat_Attributes_All_Species","Action_Categories_All_Species" )
-# colnames_outward_facing_WebMap_UPDATED = c("Reach Name","River Mile - Start", "River Mile - End","Assessment Unit","Species","Priority Life Stages","Limiting Factor","Action Categories" )
+# colnames_outward_facing_WebMap_ORDER = c("ReachName","RM_Start", "RM_End","Assessment.Unit","Species","Actions", "Life_Stages","Impaired_Habitat_Attributes_All_Species","Action_Categories_All_Species" )
+# colnames_outward_facing_WebMap_UPDATED = c("Reach Name","River Mile - Start", "River Mile - End","Assessment Unit","Species","Action","Priority Life Stages","Limiting Factor","Action Categories" )
 FUNCTION_prepare_outward_facing_table = function(data_frame_x, colnames_outward_facing_WebMap_ORDER, colnames_outward_facing_WebMap_UPDATED, exclude_bull_trout){
   
   # -------------------- remove Bull Trout rows and instances ----------

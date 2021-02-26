@@ -395,8 +395,9 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ
   
   for(reach_x in unique_reaches){
     
+    
     # --------------------- generate HQ and LF index ----------
-    if( any(HQ_spring_chinook$ReachName == reach_x)){ HQ_spring_chinook_index = which(HQ_spring_chinook$ReachName == reach_x) }else{HQ_spring_chinook_index = NA}
+    if( any(HQ_spring_chinook$ReachName == reach_x)){ HQ_spring_chinook_index = which(HQ_spring_chinook$ReachName == reach_x) }else{HQ_spring_chinook_index = NA }
     if( any(HQ_steelhead$ReachName == reach_x)){ HQ_steelhead_index = which(HQ_steelhead$ReachName == reach_x) }else{HQ_steelhead_index = NA}
     if( any(HQ_bull_trout$ReachName == reach_x)){ HQ_bull_trout_index = which(HQ_bull_trout$ReachName == reach_x) }else{HQ_bull_trout_index = NA}
     if( any(LF_spring_chinook$ReachName == reach_x)){ LF_spring_chinook_index = which(LF_spring_chinook$ReachName == reach_x) }else{LF_spring_chinook_index = NA}
@@ -584,6 +585,11 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ
             HQ_and_LF_combo_x$Life_Stage = life_stage_x 
             
             # ------------------------------------------------------------
+            #     Add Pathway 
+            # ------------------------------------------------------------
+            HQ_and_LF_combo_x$Action = "Restore Reach Function" 
+            
+            # ------------------------------------------------------------
             #    Action Categories
             # ------------------------------------------------------------
             action_category_x = FUNCTION_match_INDIVIDUAL_habitat_attributes_and_action_categories(habitat_attribute_x)
@@ -719,6 +725,10 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ
             # ------------------------------------------------------------
             HQ_and_LF_combo_x$Life_Stage = life_stage_x 
             
+            # ------------------------------------------------------------
+            #     Add Pathway 
+            # ------------------------------------------------------------
+            HQ_and_LF_combo_x$Action = "Address Limiting Factors" 
             
             # ------------------------------------------------------------
             #    Action Categories
@@ -842,7 +852,10 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ
         # ------------------------------------------------------------
         HQ_and_LF_combo_x$Life_Stage = life_stage_x 
         
-
+        # ------------------------------------------------------------
+        #     Add Action pathway
+        # ------------------------------------------------------------
+        HQ_and_LF_combo_x$Action = "Restore Fish Passage"
         
         # ------------------------------------------------------------
         #    Action Categories

@@ -227,10 +227,10 @@ Restoration_Prioritization_Output = FUNCTION_Add_Barrier_Data(Restoration_Priori
 # ---------------------------------------------------------------------------
 #  Reduce for "Outward Facing" table in WebMap
 # ---------------------------------------------------------------------------
-colnames_outward_facing_WebMap = c("ReachName","Assessment.Unit","Species","Life_Stages","Impaired_Habitat_Attributes_All_Species","Action_Categories_All_Species" )
+colnames_outward_facing_WebMap = c("ReachName","Assessment.Unit","Species","Actions", "Life_Stages","Impaired_Habitat_Attributes_All_Species","Action_Categories_All_Species" )
 colnames_reach_info = c("RM_Start", "RM_End")  # data that is in the reach geospatial layer to add to these data
-colnames_outward_facing_WebMap_ORDER = c("ReachName","RM_Start", "RM_End","Assessment.Unit","Species","Life_Stages","Impaired_Habitat_Attributes_All_Species","Action_Categories_All_Species" )
-colnames_outward_facing_WebMap_UPDATED = c("Reach Name","River Mile - Start", "River Mile - End","Assessment Unit","Species","Priority Life Stages","Limiting Factor","Action Categories" )
+colnames_outward_facing_WebMap_ORDER = c("ReachName","RM_Start", "RM_End","Assessment.Unit","Species","Actions", "Life_Stages","Impaired_Habitat_Attributes_All_Species","Action_Categories_All_Species" )
+colnames_outward_facing_WebMap_UPDATED = c("Reach Name","River Mile - Start", "River Mile - End","Assessment Unit","Species","Action","Priority Life Stages","Limiting Factor","Action Categories" )
 # ------- filter out for specific columns ----------
 Restoration_Prioritization_Output_for_WebMap = Restoration_Prioritization_Output[,colnames_outward_facing_WebMap]
 # ----------- add Reach information ------------
@@ -403,6 +403,8 @@ write_xlsx(Restoration_Unacceptable_and_At_Risk,output_path_x )
 
 output_path_x =  paste(output_path,'Reach_Assessment_Project_Data_Habitat_Attributes.xlsx', sep="")
 write_xlsx(Reach_Assessment_Project_Data_Habitat_Attributes,output_path_x )
+output_path_x =  paste(output_path,'Reach_Assessment_Project_Data_per_Reach.xlsx', sep="")
+write_xlsx(Reach_Assessment_Project_Data_per_Reach,output_path_x )
 output_path_x =  paste(output_path,'Reach_Assessment_Project_Data_Habitat_Attributes_Priority_Reaches.xlsx', sep="")
 write_xlsx(Reach_Assessment_Project_Data_Habitat_Attributes_Priority_Reaches,output_path_x )
 
