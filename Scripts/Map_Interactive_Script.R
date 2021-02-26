@@ -108,6 +108,14 @@ reaches_LF_data = merge(reaches, Habitat_Attribute_Score_Final_COMBINE, by = "Re
 reaches_LF_data = subset (reaches_LF_data, select = -c(Assessment,RM_Start,RM_End, SpringChin, SteelheadR,BullTroutR,
                                                  Length_mi,Length_m,Basin.y))
 
+# -------------------------------------
+# Add Projects
+# -------------------------------------
+# -------- merge reach spatial data with habitat data --------------
+reaches_Projects = merge(reaches, Reach_Asessment_Project_Data, by = "ReachName") 
+#----------------- make reach assessment a factor -----------
+colnames(reaches_Projects)[colnames(reaches_Projects) == "Reach Assessment"] = "Reach_Assessment"
+reaches_Projects$Reach_Assessment = as.factor(reaches_Projects$Reach_Assessment)
 
 # -------------------------------------
 #  Create composite scores
@@ -142,6 +150,7 @@ color_palette_continuous = brewer.pal(9, 'YlGnBu')
 color_palette_x_YES_NO = brewer.pal(3, 'BuPu')
 color_palette_x_YES_NO = c("#6C0586", "#FBFF68")
 color_neg_to_pos = brewer.pal(11, 'RdBu')
+color_qualitative = brewer.pal(9, 'Set1')
 
 # ---------------------------------------------------------------------------
 #
@@ -167,6 +176,14 @@ mapview(reaches_HQ_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("l
 # --- version where you can turn 1, 3, 5 on and off ---:
 mapview(reaches_HQ_data, zcol = attribute_1,   burst=TRUE,legend = mapviewGetOption("legend"), 
               color = color_palette_x, map.types = c("CartoDB.DarkMatter", "CartoDB.Positron", "Esri.WorldImagery"))
+
+# ----------------------------------------------------------
+#     plot Qualitative
+# ----------------------------------------------------------
+
+# ---------------- Just map the reaches
+mapview(reaches_Projects, zcol="Action_Category" ,lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
+        color= color_qualitative, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
 
 # ----------------------------------------------------------
 #     plot TWO FACTOR/SCORE variable 

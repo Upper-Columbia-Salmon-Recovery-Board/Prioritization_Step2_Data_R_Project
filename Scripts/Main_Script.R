@@ -3,7 +3,7 @@
 #      R Script to generate Priority Action Categories Based on Habitat Quality 
 #          and Limiting Factor Analysis from Step 2 of RTT Prioritization Process
 #
-#          Author: Ryan Niemeyer, Upper Columbia Salmon Recovery Board
+#          Auth++or: Ryan Niemeyer, Upper Columbia Salmon Recovery Board
 #          For more information, see https://www.ucsrb.org/prioritization/
 #
 # ---------------------------------------------------------------------------
@@ -330,8 +330,25 @@ source(paste(script_path, "FUNCTIONS_for_Habitat_Attribute_Rating_Table_for_WebM
 
 
 
+# ---------------------------------------------------------------------------
+#
+#  PROJETS - generate project layer - both for all projects and for project benefiting priority reaches
+#
+# ---------------------------------------------------------------------------
 
+source(paste(script_path, "FUNCTIONS_for_Reach_Assessment_Projects_Processing.R", sep=""))
 
+# ---------------------------------------------------------------------------
+#       Generate List of Projects, Action Categories, and Habitat Attributes for All Reaches
+# ---------------------------------------------------------------------------
+
+column_order = c("ReachName", "Reach Assessment", "ProjectName", "Reach_ID_in_assessment","Action_Type","Action_Category", "Habitat_Attribute", "Action_Description")
+Reach_Assessment_Project_Data_Habitat_Attributes = FUNCTION_add_habitat_attributes_to_Projects(Crosswalk_Habitat_Attributes_and_Actions, Reach_Assessment_Project_Data, column_order)
+
+# ---------------------------------------------------------------------------
+#   Generate List of Projects, Action Categories, and Habitat Attributes for Prioritized Reaches
+# ---------------------------------------------------------------------------
+Reach_Assessment_Project_Data_Habitat_Attributes_Priority_Reaches = FUNCTION_output_actions_for_priority_reaches(Reach_Assessment_Project_Data_Habitat_Attributes, Restoration_Prioritization_Output_for_WebMap )
 
 
 # ---------------------------------------------------------------------------

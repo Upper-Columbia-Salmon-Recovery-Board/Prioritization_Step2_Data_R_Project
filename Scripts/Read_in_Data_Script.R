@@ -358,17 +358,18 @@ Crosswalk_Habitat_Attributes_and_Actions = read_excel( paste(data_path,'Crosswal
 Crosswalk_Habitat_Attributes_and_Actions$Habitat_Attribute_2 = gsub(" ", "", Crosswalk_Habitat_Attributes_and_Actions$`Habitat Attribute`, fixed = TRUE)
 Crosswalk_Habitat_Attributes_and_Actions$Action_Category_2 = gsub(" ", "", Crosswalk_Habitat_Attributes_and_Actions$`Action Category`, fixed = TRUE) # get action category without spaces
 
-Reach_Asessment_Project_Data = read_excel( paste(data_path,'Reach_Assessments_Projects_Table_05052020.xlsx', sep="/"), 
+Reach_Assessment_Project_Data = read_excel( paste(data_path,'Reach_Assessments_Projects_Table_05052020.xlsx', sep="/"), 
                                                         sheet = 'Data_Entry')
+colnames(Reach_Assessment_Project_Data)[colnames(Reach_Assessment_Project_Data) == "Reach_UCSRB"] <- "ReachName" # update ReachName to be consisten with code
 
-Reach_Asessment_Projects_Actions_List = read_excel( paste(data_path,'Reach_Assessments_Projects_Table_05052020.xlsx', sep="/"), 
+Action_Category_Name_Crosswalk = read_excel( paste(data_path,'Reach_Assessments_Projects_Table_05052020.xlsx', sep="/"), 
                                            sheet = 'Action_Lists')
-
-Reach_Assessment_Check_List = read_excel( paste(data_path,'Reach_Assessments_Projects_Table_05052020.xlsx', sep="/"), 
-                                                    sheet = 'Reach_Assessment_Check_List')
-
-
-
+# ------ generate list with two types of Action Category list ------
+Action_Category_Name_Crosswalk_Simple = c()
+for(i in 1:nrow(Action_Category_Name_Crosswalk)){
+  Action_Category_Name_Crosswalk_Simple[as.character(Action_Category_Name_Crosswalk$Action_Category_from_Rating_Table[i])] =
+    Action_Category_Name_Crosswalk$Action_Category_List[i]
+}
 
 # ---------------------------------------------------------------------------
 #
