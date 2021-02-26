@@ -346,6 +346,12 @@ column_order = c("ReachName", "Reach Assessment", "ProjectName", "Reach_ID_in_as
 Reach_Assessment_Project_Data_Habitat_Attributes = FUNCTION_add_habitat_attributes_to_Projects(Crosswalk_Habitat_Attributes_and_Actions, Reach_Assessment_Project_Data, column_order)
 
 # ---------------------------------------------------------------------------
+#       Generate List of Projects, Action Categories, and Habitat Attributes for EACH Reach
+# ---------------------------------------------------------------------------
+
+Reach_Assessment_Project_Data_per_Reach = FUNCTION_projects_one_row_per_reach(Reach_Assessment_Project_Data_Habitat_Attributes)
+
+# ---------------------------------------------------------------------------
 #   Generate List of Projects, Action Categories, and Habitat Attributes for Prioritized Reaches
 # ---------------------------------------------------------------------------
 Reach_Assessment_Project_Data_Habitat_Attributes_Priority_Reaches = FUNCTION_output_actions_for_priority_reaches(Reach_Assessment_Project_Data_Habitat_Attributes, Restoration_Prioritization_Output_for_WebMap )
@@ -388,6 +394,19 @@ output_path_x =  paste(output_path,'Action_Categories_and_Pathways_Restoration_A
 write_xlsx(Restoration_At_Risk,output_path_x )
 output_path_x =  paste(output_path,'Action_Categories_and_Pathways_Restoration_Unacceptable_and_At_Risk.xlsx', sep="")
 write_xlsx(Restoration_Unacceptable_and_At_Risk,output_path_x )
+
+
+
+# -----------------------------------------------------------------
+#     Actions
+# -----------------------------------------------------------------
+
+output_path_x =  paste(output_path,'Reach_Assessment_Project_Data_Habitat_Attributes.xlsx', sep="")
+write_xlsx(Reach_Assessment_Project_Data_Habitat_Attributes,output_path_x )
+output_path_x =  paste(output_path,'Reach_Assessment_Project_Data_Habitat_Attributes_Priority_Reaches.xlsx', sep="")
+write_xlsx(Reach_Assessment_Project_Data_Habitat_Attributes_Priority_Reaches,output_path_x )
+
+
 
 # -----------------------------------------------------------------
 #      Protection

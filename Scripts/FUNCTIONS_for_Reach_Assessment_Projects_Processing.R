@@ -65,7 +65,55 @@ FUNCTION_add_habitat_attributes_to_Projects = function(crosswalk_df, project_df,
 
 
 
+# ---------------------------------------------------------------------------
+#
+#      FUNCTION to Combine all the Projects into one row per reach
+#
+# ---------------------------------------------------------------------------
+# actions_df = Reach_Assessment_Project_Data_Habitat_Attributes
 
+FUNCTION_projects_one_row_per_reach = function(actions_df){
+  
+  unique_reaches = unique(actions_df$ReachName)
+  
+  # -----------------------------------------
+  #  Loop through each row
+  # -----------------------------------------
+  reaches_combined_projects_list = c()
+  for(reach_x in unique_reaches){
+    
+    # ----------------- rows with this reach ----------------
+    project_rows_with_habitat_attributes_x = which(actions_df$ReachName == reach_x)
+    # ------------ reach assessment -----------
+    reach_assessment_x = paste( unique( as.vector(t(actions_df[project_rows_with_habitat_attributes_x,'Reach Assessment']  )) ), collapse=", ")
+    
+    # -----------------------------------------
+    #  Loop through unique rows
+    # -----------------------------------------
+    projects_combined_x = c()
+    i = 0
+    for(project_row_x in project_rows_with_habitat_attributes_x){
+      i = i + 1
+      proj_output_x = paste(actions_df[project_row_x, c("ProjectName","Action_Type","Action_Category","Action_Description")], collapse=", ")
+      proj_output_x = paste(paste(as.character(i), ")", sep=""),proj_output_x)
+      projects_combined_x = rbind(projects_combined_x, proj_output_x)
+    }
+    projects_combined_x = paste(projects_combined_x, collapse=",  ")
+    
+    df_output_x = t( as.data.frame( c(reach_x, reach_assessment_x, projects_combined_x ) ) )
+    reaches_combined_projects_list = rbind(reaches_combined_projects_list, df_output_x)
+    
+  }
+  
+  # ------------------------- prepare the output data frame ----------
+  colnames(reaches_combined_projects_list) = c("Reach Name","Reach Assessment", "List of Projects in this Reach")
+  rownames(reaches_combined_projects_list) = c(seq(1,nrow(reaches_combined_projects_list)))
+  reaches_combined_projects_list = as.data.frame(reaches_combined_projects_list)
+  
+  return(reaches_combined_projects_list)
+  
+  
+}
 
 # ---------------------------------------------------------------------------
 #
@@ -97,7 +145,7 @@ FUNCTION_output_actions_for_priority_reaches = function(actions_df, priority_rea
       # ------------- data frame in Action/Projects table for this reach
       df_projects_habitat_attribute = actions_df[ which(actions_df$ReachName == reach_x), ]
       # ------------ reach assessment -----------
-      reach_assessment_x = paste(unique(df_projects_habitat_attribute$`Reach Assessment`), collapse=",")
+      reach_assessment_x = paste( unique( as.vector(t(actions_df[project_rows_with_habitat_attributes_x,'Reach Assessment']  )) ), collapse=", ")
       
       # ---------- get unique habitat attributes in project list for this reach -----------
       projects_unique_habitat_attributes = df_projects_habitat_attribute$Habitat_Attribute
