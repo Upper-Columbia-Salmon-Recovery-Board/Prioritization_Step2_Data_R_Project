@@ -1018,7 +1018,7 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
     if( length(grep("LF",HQ_and_LF_combo_x$Pathways)) > 0){
       general_actions = paste( general_actions , "Address Limiting Factors", sep=", ")
     }
-    general_actions = substr(general_actions,2,nchar(general_actions)) # remove leading comma
+    general_actions = substr(general_actions,3,nchar(general_actions)) # remove leading comma and space
     HQ_and_LF_combo_x$Actions = general_actions
     
     pathways_x =  unique( unlist(strsplit(HQ_and_LF_combo_x$Pathways, ",")) )
