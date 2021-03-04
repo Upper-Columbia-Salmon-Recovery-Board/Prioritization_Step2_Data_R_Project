@@ -960,7 +960,7 @@ FUNCTION_combine_across_pathways = function(HQ_pathway_df, LF_pathway_df){
 # HQ_Both = Habitat_Quality_Restoration_Unacceptable_and_At_Risk
 #  columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
 
-FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, HQ_LF_At_Risk, HQ_LF_Both, HQ_both, columns_info, exclude_bull_trout, HQ_add_life_stage){
+FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, HQ_LF_At_Risk, HQ_LF_Both, HQ_Both, columns_info, exclude_bull_trout, HQ_add_life_stage){
   
   # ------------------------------------------------------------
   #       Get Unique Reaches
