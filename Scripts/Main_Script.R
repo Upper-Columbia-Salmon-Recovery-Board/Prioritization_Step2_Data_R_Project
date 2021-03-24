@@ -18,7 +18,7 @@ library(readxl)
 # ---------------------------------------------------------------------------
 
 basins_to_include = c("Methow",  "Entiat","Wenatchee")  # basins to include insimulation
-exclude_bull_trout = "yes"  # if "yes" -> remove bull trout for WebMap applications
+exclude_bull_trout = "no"  # if "yes" -> remove bull trout for WebMap applications
 output_Habitat_Quality_and_Habitat_Attribute_Scores = "no"  # enter "yes" or "no" if you want this output
 
 # ---------------------------------------------------------------------------
@@ -63,21 +63,21 @@ source(paste(script_path, 'Criteria_Script.R', sep=""))
 # ---------------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------
-#   Generate Habitat Quality Restoration and Protection Score 
-# ---------------------------------------------------------------------------
-print("----------------------------------------- GENERATE HABITA QUALITY SCORES --------------------------------------------")
-
-source(paste(script_path, 'Habitat_Quality_Scores_Generate_Script.R', sep=""))
-# output is Habitat_Quality_Pathway_Output
-# View(Habitat_Quality_Pathway_Output[['Habitat_Quality_Pathway_Protection']])
-
-# ---------------------------------------------------------------------------
 #   Generate Habitat Attribute Table (used in Limiting Factor Pathway)
 # ---------------------------------------------------------------------------
 print("----------------------------------------- GENERATE HABITAT ATTRIBUTE SCORES (for Limtiting Factor Pathway) --------------------------------------------")
 
 source(paste(script_path, 'Habitat_Attribute_Scores_Generate_Script.R', sep=""))
 # OUTPUT is Habitat_Attribute_Scores
+
+# ---------------------------------------------------------------------------
+#   Generate Habitat Quality Restoration and Protection Score 
+# ---------------------------------------------------------------------------
+print("----------------------------------------- GENERATE HABITA QUALITY SCORES --------------------------------------------")
+
+source( paste(script_path, 'Habitat_Quality_Scores_Generate_Script.R', sep="") )
+# output is Habitat_Quality_Pathway_Output
+# View(Habitat_Quality_Pathway_Output[['Habitat_Quality_Pathway_Protection']])
 
 # ---------------------------------------------------------------------------
 #
@@ -102,8 +102,9 @@ Habitat_Quality_Pathway_Spring_Chinook = Generate_Habitat_Quality_Output_Table("
 Habitat_Quality_Pathway_Steelhead = Generate_Habitat_Quality_Output_Table("Steelhead", basins_to_include, habitat_quality_scores_colnames_for_sum )
 Habitat_Quality_Pathway_Bull_Trout = Generate_Habitat_Quality_Output_Table("Bull Trout", basins_to_include, habitat_quality_scores_colnames_for_sum )
 
-#View(Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']])
-#View(Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']])
+# View(Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']])
+# View(Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Protection']])
+# View(Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']])
 
 # ---------------------------------------------------------------------------
 #   Apply Limiting Factor Pathway Filters
@@ -118,8 +119,9 @@ Limiting_Factor_Pathway_Spring_Chinook = Generate_Limiting_Factor_Output_Table("
 Limiting_Factor_Pathway_Steelhead = Generate_Limiting_Factor_Output_Table("Steelhead", basins_to_include)
 Limiting_Factor_Pathway_Bull_Trout = Generate_Limiting_Factor_Output_Table("Bull Trout", basins_to_include)
 
-#View(Limiting_Factor_Spring_Chinook[['Limiting_Factor_Pathway_Restoration']])
-#View(Limiting_Factor_Bull_Trout[['Limiting_Factor_Pathway_Protection']])
+# View(Limiting_Factor_Spring_Chinook[['Limiting_Factor_Pathway_Restoration']])
+# View(Limiting_Factor_Spring_Chinook[['Limiting_Factor_Pathway_Protection']])
+#View(Limiting_Factor_Spring_Chinook[['Limiting_Factor_Pathway_Protection']][c('ReachName','LF_Sum','LF_Pct','LF_Score_Protection')])
 #unique(Limiting_Factor_Bull_Trout[['Limiting_Factor_Pathway_Restoration']]$unacceptable_and_at_risk_1_3_indiv_habitat_attributes)
 
 # ---------------------------------------------------------------------------
@@ -156,18 +158,6 @@ Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']]  =  
 #                     PROTECTION
 # -----------------------------------------------------------------------------------
 # NOTE - DO NOT need to generate action categories since no specific actions for protection
-
-# ----------------------------------------
-#    Habitat Quality Pathway  
-# ----------------------------------------
-
-#Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Protection']]  =  FUNCTION_to_generate_Action_Categories(Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Protection']])
-#Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Protection']]  =  FUNCTION_to_generate_Action_Categories(Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Protection']])
-#Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Protection']]  =  FUNCTION_to_generate_Action_Categories(Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Protection']])
-#
-#Limiting_Factor_Pathway_Spring_Chinook[['Limiting_Factor_Pathway_Protection']]  =  FUNCTION_to_generate_Action_Categories(Limiting_Factor_Pathway_Spring_Chinook[['Limiting_Factor_Pathway_Protection']])
-#Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']]  =  FUNCTION_to_generate_Action_Categories(Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']])
-#Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Protection']]  =  FUNCTION_to_generate_Action_Categories(Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Protection']])
 
 # ---------------------------------------------------------------------------
 #
@@ -269,12 +259,13 @@ Protection_Prioritization_Output = FUNCTION_Combine_Protection_Output(Habitat_Qu
 # ---------------------------------------------------------------------------
 
 columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
+HQ_life_stages = "yes"  # "yes" if use AU Life stages reach layer to generate life stages for habitat quality pathway
 Reach_Habitat_Attribute_Life_Stage_Restoration_Output = FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage(Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']], 
                                                 Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']], 
                                                 Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']], 
                                                 Limiting_Factor_Pathway_Spring_Chinook[['Limiting_Factor_Pathway_Restoration']],
                                                 Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']], 
-                                                Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']], columns_info, exclude_bull_trout)
+                                                Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']], columns_info, exclude_bull_trout, HQ_life_stages)
 
 
 # ---------------------------------------------------------------------------
@@ -289,7 +280,7 @@ Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output = FUNCTION_combin
                                                                    Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']], columns_info, exclude_bull_trout, HQ_life_stages)
 
 
-
+# ------------------ just test output --------------
 reach_test = "Twisp River Lower 01"
 strsplit(Restoration_Prioritization_Output_for_WebMap[which(Restoration_Prioritization_Output_for_WebMap$`Reach Name` == reach_test),]$`Limiting Factor`, ",")
 unique(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output[which(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output$ReachName == reach_test),]$Habitat_Attribute)
@@ -357,6 +348,13 @@ Reach_Assessment_Project_Data_per_Reach = FUNCTION_projects_one_row_per_reach(Re
 # ---------------------------------------------------------------------------
 Reach_Assessment_Project_Data_Habitat_Attributes_Priority_Reaches = FUNCTION_output_actions_for_priority_reaches(Reach_Assessment_Project_Data_Habitat_Attributes, Restoration_Prioritization_Output_for_WebMap )
 
+# ---------------------------------------------------------------------------
+#
+#   Generate Restoration Score
+#
+# ---------------------------------------------------------------------------
+
+
 
 # ---------------------------------------------------------------------------
 #
@@ -416,6 +414,15 @@ write_xlsx(Reach_Assessment_Project_Data_Habitat_Attributes_Priority_Reaches,out
 # -----------------------------------------------------------------
 output_path_x =  paste(output_path,'Reach_Actions_Protection.xlsx', sep="")
 write_xlsx(Protection_Prioritization_Output,output_path_x )
+
+# -----------------------------------------------------------------
+#      Combine into one MASTER excel
+# -----------------------------------------------------------------
+
+output_path_x =  paste(output_path,'Step2_Prioritization_Output.xlsx', sep="")
+
+
+write.xlsx(data_output_x,   file = output_path_x,  sheetName = sheet_name ,  append = TRUE)
 
 
 print(paste("Time to complete ENTIRE tool: ", paste(round((proc.time()[3] - time1)/60, 2), " minutes")    ))

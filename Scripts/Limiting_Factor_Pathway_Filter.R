@@ -27,7 +27,7 @@ for(habitat_attribute_x in unique(Attribute_LifeStage_Crosswalk$`Habitat Attribu
   }
 }
 
-print( "WALK TRHOUGH habitat attributes from data and see which are not prese in the life stage-habitat attributes crosswalk")
+print( "WALK TRHOUGH habitat attributes from data and see which are not present in the life stage-habitat attributes crosswalk")
 for(habitat_attribute_x in unique(Habitat_Attribute_Scores$Habitat_Attribute)[order(unique(Habitat_Attribute_Scores$Habitat_Attribute))]    ){
   if( any(unique(Attribute_LifeStage_Crosswalk$`Habitat Attribute`) == habitat_attribute_x)){
     print(paste(habitat_attribute_x, " is in Habitat_Attribute_Scores(data)", sep=" "))

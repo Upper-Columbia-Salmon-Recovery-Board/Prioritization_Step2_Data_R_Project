@@ -73,7 +73,7 @@ for(habitat_attribute_x in names(Habitat_Attributes_List)){
     
     # --------------- generate data source name --------------
     i = i + 1
-    if(nchar(data_source_output_list_per_row) == 1){
+    if( nchar(data_source_output_list_per_row) == 1){
       data_source_output_list_per_row = paste(data_source_x, column_names[i], sep=" ")
     }else{
       data_source_output_list_per_row = paste(data_source_output_list_per_row,
@@ -82,7 +82,7 @@ for(habitat_attribute_x in names(Habitat_Attributes_List)){
 
     
     # ------------------- skip reading PROFESSOINAL JUDGEMENT -------------
-    if(data_source_x== "PROFESSIONAL JUDGEMENT"){ 
+    if( data_source_x== "PROFESSIONAL JUDGEMENT" ){ 
       
       # ------------ Professional judgment gets "5" unless dictated otherwise -----------
       output_x = cbind( as.data.frame( habitat_raw_data$ReachName ),

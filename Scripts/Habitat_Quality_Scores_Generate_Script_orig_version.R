@@ -2,6 +2,8 @@
 # ---------------------------------------------------------------------------
 #
 #      SCRIPT: Generate Habitat Quality Scores for Restoration AND Protection
+#             NOTE - this original version pulled single or multiple data sources
+#                   but new version just pulls habitat attribute
 #
 #      R Project to generate Priority Action Categories Based on Habitat Quality 
 #          and Limiting Factor Analysis from Step 2 of RTT Prioritization Process
@@ -56,80 +58,62 @@ Habitat_Quality_Scores = as.tibble(Reach_Information_data[,c('ReachName','Basin'
 colnames(Habitat_Quality_Scores) = c('ReachName','Basin', 'Assessment.Unit',
                                      'Spring.Chinook.Reach','Steelhead.Reach','Bull.Trout.Reach')
 
-ptm <- proc.time()[3]
+#ptm <- proc.time()[3]
 for(habitat_attribute_x in names(Habitat_Quality_Habitat_Attributes_List)){
   print(habitat_attribute_x)
   
   # --------------------------------------------------------------------
-  #   Pull Habitat Attribute Score from Habitat Attributes
+  #   Loop through each Data Source for this specific habitat attribute
   # --------------------------------------------------------------------
-  output_x = Habitat_Attribute_Scores[which(Habitat_Attribute_Scores$Habitat_Attribute == habitat_attribute_x),]
+  data_sources_list =  Habitat_Quality_Habitat_Attributes_List[habitat_attribute_x]
   
   # --------------------------------------------------------------------
-  #   IF Score for Habitat Attribute is present in Habitat_Attribute_Scores
+  #   Only one data source for this habitat attribute
   # --------------------------------------------------------------------
-  
-  if(nrow(output_x) > 0){
-    output_x_add_to_HQ = output_x[  , "Habitat_Attribute_Score"]
+  if(length(data_sources_list[[1]]) == 1){
+    
+    output_x = FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw(habitat_attribute_x, data_sources_list[[1]][1], "HQ")
     
     
-  # --------------------------------------------------------------------
-  #   IF NO Score for Habitat Attribute is present in Habitat_Attribute_Scores
-  # --------------------------------------------------------------------
+    # --------------------------------------------------------------------
+    #  MULTIPLE data source for this habitat attribute (need to get optimum)
+    # --------------------------------------------------------------------
+    # NOTE this is only true for Temperature- Rearing AND	Flow- Summer Base Flow
+    
   }else{
     
-    # --------------------------------------------------------------------
-    #   Loop through each Data Source for this specific habitat attribute
-    # --------------------------------------------------------------------
-    data_sources_list =  Habitat_Quality_Habitat_Attributes_List[habitat_attribute_x]
+    # ------------ data frame to record habitat attributes --------
+    habitat_attribute_x_data_frame = data.frame()
     
-    # --------------------------------------------------------------------
-    #   Only one data source for this habitat attribute
-    # --------------------------------------------------------------------
-    if(length(data_sources_list[[1]]) == 1){
+    for( location_x in 1:length(data_sources_list[[1]]) ){
       
-      output_x = FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw(habitat_attribute_x, data_sources_list[[1]][1], "HQ")
-      
-      
-      # --------------------------------------------------------------------
-      #  MULTIPLE data source for this habitat attribute (need to get optimum)
-      # --------------------------------------------------------------------
-      # NOTE this is only true for Temperature- Rearing AND	Flow- Summer Base Flow
-      
-    }else{
-      
-      # ------------ data frame to record habitat attributes --------
-      habitat_attribute_x_data_frame = data.frame()
-      for( location_x in 1:length(data_sources_list[[1]]) ){
+      # ------------------- skip reading PROFESSOINAL JUDGEMENT -------------
+      if(data_sources_list[[1]][location_x] == "PROFESSIONAL JUDGEMENT"){ next }else{
+        # ------------ Generate metric value  AND score (1,3,5) for each habitat attribute -------------------
+        # outputs both metric value and score
+        output_x = FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw(habitat_attribute_x,  data_sources_list[[1]][location_x],  "HQ" )
         
-        # ------------------- skip reading PROFESSOINAL JUDGEMENT -------------
-        if(data_sources_list[[1]][location_x] == "PROFESSIONAL JUDGEMENT"){ next }else{
-          # ------------ Generate metric value  AND score (1,3,5) for each habitat attribute -------------------
-          # outputs both metric value and score
-          output_x = FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw(habitat_attribute_x,  data_sources_list[[1]][location_x],  "HQ" )
-          
-          # -------- data frame for this specific reach and habitat attribute --------
-          habitat_attribute_x_data_frame = rbind(habitat_attribute_x_data_frame, output_x$score)
-        }
+        # -------- data frame for this specific reach and habitat attribute --------
+        habitat_attribute_x_data_frame = rbind(habitat_attribute_x_data_frame, output_x$score)
       }
       
-      # ------------ data frame to record habitat attributes --------
-      habitat_attribute_x_data_frame = t(habitat_attribute_x_data_frame)
-      habitat_attribute_x_data_frame = as_data_frame(habitat_attribute_x_data_frame)
       
-      # ------------------- get minimum score for each row ----------
-      habitat_attribute_x_data_frame = habitat_attribute_x_data_frame%>%
-        rowwise() %>%
-        mutate(minimum_score = min(c_across(), na.rm=T) )
-      
-      # -------- adding NA column (for metric colum, it needs to be NA to be multiple) ------
-      habitat_attribute_x_data_frame$na_column = NA
-      output_x =  habitat_attribute_x_data_frame[,c("na_column","minimum_score")]
-      colnames(output_x) = c("metric_data", "score")
-      # ------ generate output to add to HQ Score data frames -------
-      output_x_add_to_HQ = output_x$score
     }
-
+    
+    
+    # ------------ data frame to record habitat attributes --------
+    habitat_attribute_x_data_frame = t(habitat_attribute_x_data_frame)
+    habitat_attribute_x_data_frame = as_data_frame(habitat_attribute_x_data_frame)
+    
+    # ------------------- get minimum score for each row ----------
+    habitat_attribute_x_data_frame = habitat_attribute_x_data_frame%>%
+      rowwise() %>%
+      mutate(minimum_score = min(c_across(), na.rm=T) )
+    
+    # -------- adding NA column (for metric colum, it needs to be NA to be multiple) ------
+    habitat_attribute_x_data_frame$na_column = NA
+    output_x =  habitat_attribute_x_data_frame[,c("na_column","minimum_score")]
+    colnames(output_x) = c("metric_data", "score")
   }
   
   # --------------------------------------------------------------------
@@ -137,16 +121,15 @@ for(habitat_attribute_x in names(Habitat_Quality_Habitat_Attributes_List)){
   # --------------------------------------------------------------------
   
   # ---------------------------- add new columns to summary data frame -----------
-  # ------ generate data frame -------
-  output_x_add_to_HQ = as.data.frame(output_x_add_to_HQ)
-  # --------- generate column name ---------
+  #column_metric = paste(gsub(" ", "", habitat_attribute_x, fixed = TRUE), "metric", sep="_")
   column_score = paste(gsub(" ", "", habitat_attribute_x, fixed = TRUE), "score", sep="_")
-  # ---------- add to HQ score ------------
-  Habitat_Quality_Scores[, column_score] = output_x_add_to_HQ
+  #Habitat_Quality_Scores[,column_metric] = output_x$metric_data
+  Habitat_Quality_Scores[,column_score] = as.numeric(output_x$score)
   
   # --------------------------------------------------------------------
   #      Add Riparian Mean score
   # --------------------------------------------------------------------
+  
   if(habitat_attribute_x == 'Riparian- Canopy Cover'){
     Habitat_Quality_Scores = Habitat_Quality_Scores%>%
       rowwise() %>%
@@ -157,13 +140,13 @@ for(habitat_attribute_x in names(Habitat_Quality_Habitat_Attributes_List)){
   # --------------------------------------------------------------------
   #      Add Stability mean score
   # --------------------------------------------------------------------
+  
   if(habitat_attribute_x == 'Channel Stability'){
     Habitat_Quality_Scores = Habitat_Quality_Scores%>%
       rowwise() %>%
       mutate(Stability_Mean = mean(c_across(c('BankStability_score',
                                               'ChannelStability_score')), na.rm=T) )
   }
-  
 }
 print(paste("Time to complete loop: ", paste(round((proc.time()[3] - ptm)/60, 2), " minutes")    ))
 

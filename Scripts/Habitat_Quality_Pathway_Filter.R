@@ -99,7 +99,6 @@ Generate_Habitat_Quality_Output_Table = function(species, basins, habitat_qualit
   #  ---------------------------------------------------------------------------------
   #            Filter out to only have Species-specific reaches   
   #  ---------------------------------------------------------------------------------
-  
   # -------------------- add additional column for this particular species reach presence ---------------
   Species_Reach_Information_data$Species_Reaches = Species_Reach_Information_data[species_reach]
   # ----------------------- filter out for only reaches with this species --------------
@@ -187,7 +186,7 @@ Generate_Habitat_Quality_Output_Table = function(species, basins, habitat_qualit
   #           Reach Confinement (NOT - only used for Restoration, not for Protection)
   #  ---------------------------------------------------------------------------------
   
-  # ----------------------- filter out for Habitat_Quality_Scores reaches with Habitat Quality Score critera --------------
+  # ----------------------- filter out for Habitat_Quality_Scores reaches with Habitat Quality Score criteria --------------
   Confinement_Scores_Restoration = Confinement_Scores %>%  
     filter(Score   >=   Reach_Confinement_SCORE_Criteria)
   # ------------------------ identify AUs that pass this filter in reach-based table ----------
@@ -205,7 +204,6 @@ Generate_Habitat_Quality_Output_Table = function(species, basins, habitat_qualit
   # ----------------------- filter out for Habitat_Quality_Scores reaches with Habitat Quality Score criteria --------------
   Life_Stage_Priorities_AU_and_Reach_data_FILTERED = Life_Stage_Priorities_AU_and_Reach_data %>%  
     filter(Life_Stage_Sum_Column   >=   Sum_Life_Stage_Criteria)
-  
   
   # ------------------------ identify reaches that pass through the RESTORATION filter ----------
   Habitat_Quality_Pathway_Restoration = Habitat_Quality_Pathway_Restoration %>%  
