@@ -52,7 +52,9 @@ cols.num <- c( 'Sand_occular_prcnt_INDICATOR_1',	'Gravel_occular_prcnt_INDICATOR
               'Structure_tall_grass_short_Shrub_prcnt_INDICATOR_7',	'Structure_grass_prcnt_INDICATOR_8',	'Structure_orchard_prcnt_INDICATOR_9',
               'Structure_bare_ground_prcnt_INDICATOR_10','PROSPER',	'NORWEST_Temperature','Canopy_Cover_NORWEST',
               'Undercut_Area_Pct_CHAMP',	'SubEstBldr_CHAMP',	'SubEstSandFines_CHAMP',	'LWFreq_Bf_CHAMP',
-              'SC_Area_Pct_Average_CHAMP',	'FishCovNone_Average_CHAMP',	'GRVL_COBL_UCSRB_CHAMP',	'SubEmbed_Avg_Average_CHAMP')
+              'SC_Area_Pct_Average_CHAMP',	'FishCovNone_Average_CHAMP',	'GRVL_COBL_UCSRB_CHAMP',	'SubEmbed_Avg_Average_CHAMP', 
+              'UCSRB_CanopyCoverPct',	'UCSRB_RiparianDisturbancePct',
+              'UCSRB_OffChannel_Floodplain', 'UCSRB_OffChannel_SideChannels', 'UCSRB_ChannelStability', 'UCSRB_BankStability')
               
 habitat_raw_data[cols.num] <- sapply(habitat_raw_data[cols.num],as.numeric)
 
@@ -94,20 +96,21 @@ Life_Stage_Priorities_AU_only_data = read_excel( paste(data_path,'LifeStagePrior
 
 # ---------------------------------------------------------------------------
 #
-#     Life Stage Priorities - only AU level
+#     Life Stage Priorities - AU and Reach
 #
 # ---------------------------------------------------------------------------
 
 Life_Stage_Priorities_AU_and_Reach_data = read_excel( paste(data_path,'LifeStagePriorities_AUandReach.xlsx', sep=""), skip=1 )
 
 # ---------------------- match column names to life stages ------------------------------ 
-spring_chinook_life_stages = list("Adult Migration" = "SPCH Adult Migration  AU LS Priority",	  "Holding"=	"SPCH Holding  AU LS Priority",
-                                "Spawning and Incubation" = "SPCH Spawning AU LS Priority",	"Fry Colonization" = "SPCH Fry Colonization  AU LS Priority", 	
+spring_chinook_life_stages = list("Adult Migration" = "SPCH Adult Migration  AU LS Priority",	  "Holding"=	"SPCH Holding  AU LS Priority", "Holding and Maturation"=	"SPCH Holding  AU LS Priority",
+                                "Spawning and Incubation" = "SPCH Spawning AU LS Priority",	"Fry Colonization" = "SPCH Fry Colonization  AU LS Priority", "Fry" = "SPCH Fry Colonization  AU LS Priority",
                                 "Summer Rearing"  = "SPCH Summer Rearing  AU LS Priority", 	"Winter Rearing" = "SPCH Winter Rearing  AU LS Priority",
-                                "Smolt Outmigration"="SPCH Smolt Emigration  AU LS Priority")	
-steelhead_life_stages =     life_stage_priority_list = list("Adult Migration"  = "SH Adult Migration  AU LS Priority",
+                                "Smolt Outmigration"="SPCH Smolt Emigration  AU LS Priority", "Holding and Maturation" = "SPCH Holding")
+
+steelhead_life_stages =     life_stage_priority_list = list("Adult Migration"  = "SH Adult Migration  AU LS Priority","Holding"  =  "SH Holding  AU LS Priority",
                                                             "Holding and Maturation"  =  "SH Holding  AU LS Priority",	"Spawning and Incubation" ="SH Spawning AU LS Priority", 
-                                                            "Fry" = "SH Fry Colonization  AU LS Priority", "Spawning and Incubation" = "SH Summer Rearing  AU LS Priority",
+                                                            "Fry" = "SH Fry Colonization  AU LS Priority", "Fry Colonization" = "SH Fry Colonization  AU LS Priority","Spawning and Incubation" = "SH Summer Rearing  AU LS Priority",
                                                             "Winter Rearing"  = "SH Winter Rearing  AU LS Priority",	"Smolt Outmigration" = "SH Smolt Emigration  AU LS Priority")
 
 bull_trout_life_stages = list("Adult Migration"  = "BT Adult Migration  AU LS Priority",	"Holding and Maturation"= 	"BT Holding  AU LS Priority",
@@ -119,13 +122,14 @@ life_stages_priorities = list("spring_chinook_life_stages" =  spring_chinook_lif
                               "bull_trout_life_stages" = bull_trout_life_stages )
 
 # ---------------------- match column names to life stages ------------------------------ 
-spring_chinook_life_stages_presence = list("Adult Migration" = "SPCH Adult Migration",	  "Holding"=	"SPCH Holding",
-                                  "Spawning and Incubation" = "SPCH Spawning",	"Fry Colonization" = "SPCH Fry Colonization", 	
-                                  "Summer Rearing"  = "SPCH Summer Rearing", 	"Winter Rearing" = "SPCH Winter Rearing",
-                                  "Smolt Outmigration"= "SPCH Smolt Emigration")	
-steelhead_life_stages_presence =     life_stage_priority_list = list("Adult Migration"  = "SH Adult Migration",
+spring_chinook_life_stages_presence = list("Adult Migration" = "SPCH Adult Migration",	  "Holding"=	"SPCH Holding", "Holding and Maturation"=	"SPCH Holding",
+                                  "Spawning and Incubation" = "SPCH Spawning",	"Fry Colonization" = "SPCH Fry Colonization", 	"Fry" = "SPCH Fry Colonization", 
+                                  "Summer Rearing"  = "SPCH Summer Rearing", 	"Winter Rearing" = "SPCH Winter Rearing", 
+                                  "Smolt Outmigration"= "SPCH Smolt Emigration"  )	
+steelhead_life_stages_presence =     life_stage_priority_list = list("Adult Migration"  = "SH Adult Migration","Holding"  =  "SH Holding",
                                                             "Holding and Maturation"  =  "SH Holding",	"Spawning and Incubation" ="SH Spawning", 
-                                                            "Fry" = "SH Fry Colonization", "Spawning and Incubation" = "SH Summer Rearing",
+                                                            "Fry" = "SH Fry Colonization","Fry Colonization" = "SH Fry Colonization",
+                                                            "Spawning and Incubation" = "SH Spawning", "Summer Rearing" =  "SH Summer Rearing",
                                                             "Winter Rearing"  = "SH Winter Rearing",	"Smolt Outmigration" = "SH Smolt Emigration")
 
 bull_trout_life_stages_presence = list("Adult Migration"  = "BT Adult Spawning Migration",	"Holding and Maturation"= 	"BT Holding and Maturation",
@@ -331,12 +335,32 @@ FUNCTION_update_Confinement_Scores(Confinement_Scores, Geomorphic_Criteria)
 
 Habitat_Quality_Restoration_and_Protection_Scoring = read_excel( paste(data_path,'Habitat_Quality_Restoration_and_Protection_Scoring.xlsx', sep="") )
 
-# --------------- divide up into Restoration and Protectoin -------------------------
+# --------------- divide up into Restoration and Protection -------------------------
 Restoration_Scoring = Habitat_Quality_Restoration_and_Protection_Scoring %>%
   filter(Habitat_Quality_Score_Metric == 'Habitat Quality Scoring- Restoration')
 
 Protection_Scoring = Habitat_Quality_Restoration_and_Protection_Scoring %>%
   filter(Habitat_Quality_Score_Metric == 'Habitat Quality Scoring- Protection')
+
+# ---------------------------------------------------------------------------
+#
+#   Restoration and Protection Reach Scoring Criteria 
+#
+# ---------------------------------------------------------------------------
+
+Reach_Scoring_Restoration_and_Protection_Scoring = read_excel( paste(data_path,'Criteria_Reach_Scoring_Restoration_and_Protection.xlsx', sep="") )
+
+# ----------- update columns that are numeric to numeric ------------
+cols.num <- c( 'Category_lower_limit',	'Category_upper_limit',	'Score')
+Reach_Scoring_Restoration_and_Protection_Scoring[cols.num] <- sapply(Reach_Scoring_Restoration_and_Protection_Scoring[cols.num],as.numeric)
+
+
+# --------------- divide up into Restoration and Protection -------------------------
+Restoration_Reach_Scoring = Reach_Scoring_Restoration_and_Protection_Scoring %>%
+  filter(Pathway == 'Restoration')
+
+Protection_Reach_Scoring = Reach_Scoring_Restoration_and_Protection_Scoring %>%
+  filter(Pathway == 'Protection')
 
 # ---------------------------------------------------------------------------
 #

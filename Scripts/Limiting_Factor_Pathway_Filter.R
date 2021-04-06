@@ -42,8 +42,12 @@ for(habitat_attribute_x in unique(Habitat_Attribute_Scores$Habitat_Attribute)[or
 #
 # ---------------------------------------------------------------------------
 
-# species = "Spring Chinook"
-# basins = c("Methow",  "Entiat","Wenatchee")
+test = TRUE
+if(test){
+  species = "Spring Chinook"
+  basins = c("Methow",  "Entiat","Wenatchee")
+}
+
 
 
 Generate_Limiting_Factor_Output_Table = function(species, basins){

@@ -55,9 +55,10 @@ Habitat_Quality_Scores = as.tibble(Reach_Information_data[,c('ReachName','Basin'
                                                              'Spring.Chinook.Reach','Steelhead.Reach','Bull.Trout.Reach')])
 colnames(Habitat_Quality_Scores) = c('ReachName','Basin', 'Assessment.Unit',
                                      'Spring.Chinook.Reach','Steelhead.Reach','Bull.Trout.Reach')
+habitat_attribute_x = names(Habitat_Quality_Habitat_Attributes_List)[1]
 
 ptm <- proc.time()[3]
-for(habitat_attribute_x in names(Habitat_Quality_Habitat_Attributes_List)){
+for( habitat_attribute_x in names(Habitat_Quality_Habitat_Attributes_List) ){
   print(habitat_attribute_x)
   
   # --------------------------------------------------------------------
@@ -69,7 +70,7 @@ for(habitat_attribute_x in names(Habitat_Quality_Habitat_Attributes_List)){
   #   IF Score for Habitat Attribute is present in Habitat_Attribute_Scores
   # --------------------------------------------------------------------
   
-  if(nrow(output_x) > 0){
+  if( nrow(output_x) > 0 ){
     output_x_add_to_HQ = output_x[  , "Habitat_Attribute_Score"]
     
     
@@ -78,6 +79,8 @@ for(habitat_attribute_x in names(Habitat_Quality_Habitat_Attributes_List)){
   # --------------------------------------------------------------------
   }else{
     
+    print("--------- (for above and below attribute) No habitat attribute in Habitat_Attribute_Scores (calculate from HQ Pathway) --------")
+    print(habitat_attribute_x)
     # --------------------------------------------------------------------
     #   Loop through each Data Source for this specific habitat attribute
     # --------------------------------------------------------------------
@@ -121,6 +124,8 @@ for(habitat_attribute_x in names(Habitat_Quality_Habitat_Attributes_List)){
       habitat_attribute_x_data_frame = habitat_attribute_x_data_frame%>%
         rowwise() %>%
         mutate(minimum_score = min(c_across(), na.rm=T) )
+      # ------- convert minimum score to 3 ---------------
+      habitat_attribute_x_data_frame$minimum_score = as.numeric(habitat_attribute_x_data_frame$minimum_score) 
       
       # -------- adding NA column (for metric colum, it needs to be NA to be multiple) ------
       habitat_attribute_x_data_frame$na_column = NA
@@ -150,8 +155,8 @@ for(habitat_attribute_x in names(Habitat_Quality_Habitat_Attributes_List)){
   if(habitat_attribute_x == 'Riparian- Canopy Cover'){
     Habitat_Quality_Scores = Habitat_Quality_Scores%>%
       rowwise() %>%
-      mutate(Riparian_Mean = mean(c_across(c('Riparian-Disturbance_score',
-                                             'Riparian-CanopyCover_score')), na.rm=T) )
+      mutate(Riparian_Mean = mean( c_across(c('Riparian-Disturbance_score',
+                                             'Riparian-CanopyCover_score')),  na.rm=T)   )
   }
   
   # --------------------------------------------------------------------

@@ -118,6 +118,41 @@ colnames(reaches_Projects)[colnames(reaches_Projects) == "Reach Assessment"] = "
 reaches_Projects$Reach_Assessment = as.factor(reaches_Projects$Reach_Assessment)
 
 # -------------------------------------
+#   Reach Restoration Scores
+# -------------------------------------
+# -------- merge reach spatial data with habitat data --------------
+reaches_reach_ranks_data = merge(reaches, Restoration_Scores_Output, by = "ReachName") 
+# ------- remove columns we don't want ------
+reaches_reach_ranks_data = subset (reaches_reach_ranks_data, select = -c(Assessment,RM_Start,RM_End, SpringChin, SteelheadR,BullTroutR,
+                                                       Length_mi,Length_m,Basin.y))
+# ------------------- make it numeric ---------------
+reaches_reach_ranks_data$Score_Total = as.numeric(as.character(reaches_reach_ranks_data$Score_Total))
+reaches_reach_ranks_data$Rank_Total = as.numeric(as.character(reaches_reach_ranks_data$Rank_Total))
+reaches_reach_ranks_data$Rank_AUs = as.numeric(as.character(reaches_reach_ranks_data$Rank_AUs))
+
+
+# --------------------------------
+#   PROTECTION (read in)
+# --------------------------------------
+
+# -------- merge reach spatial data with habitat data --------------
+reaches_PROTECTOIN_data = merge(reaches, Protection_Prioritization_Output, by = "ReachName") 
+# ------- remove columns we don't want ------
+reaches_PROTECTOIN_data = subset (reaches_PROTECTOIN_data, select = -c(Assessment,RM_Start,RM_End, SpringChin, SteelheadR,BullTroutR,
+                                                                         Length_mi,Length_m,Basin.y))
+# --------------------------------
+#   WebMap output (read in)
+# --------------------------------------
+Restoration_Prioritization_Output_for_WebMap_updated = Restoration_Prioritization_Output_for_WebMap
+Restoration_Prioritization_Output_for_WebMap_updated$ReachName = Restoration_Prioritization_Output_for_WebMap_updated$'Reach Name'
+# -------- merge reach spatial data with habitat data --------------
+reaches_Restoration_WebMap_data = merge(reaches, Restoration_Prioritization_Output_for_WebMap_updated, by = "ReachName") 
+# ------- remove columns we don't want ------
+reaches_Restoration_WebMap_data = subset(reaches_Restoration_WebMap_data, select = -c(Assessment,RM_Start,RM_End, SpringChin, SteelheadR,BullTroutR,
+                                                                                      Length_mi,Length_m))
+
+
+# -------------------------------------
 #  Create composite scores
 # -------------------------------------
 floodplain_dif = as.numeric(as.character( reaches_HQ_data$`Off-Channel-Floodplain_score` )) -  as.numeric(as.character( reaches_LF_data$`Off-Channel- Floodplain` ))
@@ -166,8 +201,11 @@ print(names(reaches_HQ_data))
 # ----------------------------------------------------------
 
 # ------ ENTER the attribute to print here ------
-attribute_1 = "Off-Channel-Floodplain_score"
-attribute_1 = "Cover-Wood_score"
+attribute_1 = "Riparian-CanopyCover_score"
+attribute_1 = "Riparian-Disturbance_score"
+attribute_1 = "Off-Channel-Side-Channels_score"
+attribute_1 = "HQ_Score_Restoration"
+attribute_1 = "HQ_Score_Protection"
 
 # --- simple version ---:
 mapview(reaches_HQ_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
@@ -222,6 +260,53 @@ mapview(reaches_HQ_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("l
 attribute_1 = "HQ_Pct"
 mapview(reaches_HQ_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), 
         color= color_palette_continuous, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
+
+# ----------------------------------------------------------
+#     plot CONTINUOUS variable : Reach Ranks
+# ----------------------------------------------------------
+
+# ------------- for total score -------------
+attribute_1 = "Score_Total"
+color_palette_continuous = brewer.pal(6, 'YlGnBu')
+
+mapview(reaches_reach_ranks_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), 
+        color= color_palette_continuous, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
+
+# ------------- for Reach Ranks -------------
+attribute_1 = "Rank_AUs"
+color_palette_continuous = rev(brewer.pal(5, 'YlGnBu'))
+
+mapview(reaches_reach_ranks_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), 
+        color= color_palette_continuous, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
+
+# ------------- for Reach Ranks -------------
+attribute_1 = "Score_Total"
+color_palette_continuous = brewer.pal(10, 'YlGnBu')
+
+mapview(reaches_reach_ranks_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), 
+        color= color_palette_continuous, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
+
+
+
+# ----------------------------------------------------------
+#     plot PROTECTION
+# ----------------------------------------------------------
+
+mapview(reaches_PROTECTOIN_data, lwd=4, legend = mapviewGetOption("legend"), 
+        color= 'blue', map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
+
+attribute_1 = "HQ_Score_Protection"
+mapview(reaches_HQ_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), 
+        color= color_palette_x, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
+
+
+# ----------------------------------------------------------
+#     plot WebMap Output
+# ----------------------------------------------------------
+
+mapview(reaches_Restoration_WebMap_data, lwd=4, legend = mapviewGetOption("legend"), 
+        color= 'blue', map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
+
 
 
 # ---------------------------------------------------------------------------

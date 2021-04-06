@@ -18,7 +18,7 @@ library(readxl)
 # ---------------------------------------------------------------------------
 
 basins_to_include = c("Methow",  "Entiat","Wenatchee")  # basins to include insimulation
-exclude_bull_trout = "no"  # if "yes" -> remove bull trout for WebMap applications
+exclude_bull_trout = "yes"  # if "yes" -> remove bull trout for WebMap applications
 output_Habitat_Quality_and_Habitat_Attribute_Scores = "no"  # enter "yes" or "no" if you want this output
 
 # ---------------------------------------------------------------------------
@@ -73,7 +73,7 @@ source(paste(script_path, 'Habitat_Attribute_Scores_Generate_Script.R', sep=""))
 # ---------------------------------------------------------------------------
 #   Generate Habitat Quality Restoration and Protection Score 
 # ---------------------------------------------------------------------------
-print("----------------------------------------- GENERATE HABITA QUALITY SCORES --------------------------------------------")
+print("----------------------------------------- GENERATE HABITAT QUALITY SCORES --------------------------------------------")
 
 source( paste(script_path, 'Habitat_Quality_Scores_Generate_Script.R', sep="") )
 # output is Habitat_Quality_Pathway_Output
@@ -259,13 +259,12 @@ Protection_Prioritization_Output = FUNCTION_Combine_Protection_Output(Habitat_Qu
 # ---------------------------------------------------------------------------
 
 columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
-HQ_life_stages = "yes"  # "yes" if use AU Life stages reach layer to generate life stages for habitat quality pathway
-Reach_Habitat_Attribute_Life_Stage_Restoration_Output = FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage(Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']], 
+Reach_Habitat_Attribute_Life_Stage_Restoration_Output = FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage(  Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']], 
                                                 Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']], 
                                                 Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']], 
                                                 Limiting_Factor_Pathway_Spring_Chinook[['Limiting_Factor_Pathway_Restoration']],
                                                 Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']], 
-                                                Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']], columns_info, exclude_bull_trout, HQ_life_stages)
+                                                Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']], columns_info, exclude_bull_trout)
 
 
 # ---------------------------------------------------------------------------
@@ -281,6 +280,7 @@ Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output = FUNCTION_combin
 
 
 # ------------------ just test output --------------
+# note these should be the same - except som eof the HQ output is different (Stability, Riparian)
 reach_test = "Twisp River Lower 01"
 strsplit(Restoration_Prioritization_Output_for_WebMap[which(Restoration_Prioritization_Output_for_WebMap$`Reach Name` == reach_test),]$`Limiting Factor`, ",")
 unique(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output[which(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output$ReachName == reach_test),]$Habitat_Attribute)
@@ -324,7 +324,7 @@ source(paste(script_path, "FUNCTIONS_for_Habitat_Attribute_Rating_Table_for_WebM
 
 # ---------------------------------------------------------------------------
 #
-#  PROJETS - generate project layer - both for all projects and for project benefiting priority reaches
+#  PROJECTS - generate project layer - both for all projects and for project benefiting priority reaches
 #
 # ---------------------------------------------------------------------------
 
@@ -350,11 +350,17 @@ Reach_Assessment_Project_Data_Habitat_Attributes_Priority_Reaches = FUNCTION_out
 
 # ---------------------------------------------------------------------------
 #
-#   Generate Restoration Score
+#   Generate Reach Ranking Score
 #
 # ---------------------------------------------------------------------------
 
+source(paste(script_path, "Reach_Rankings_Restoration_and_Protection.R", sep=""))
 
+Restoration_Scores_Output = Generate_Restoration_or_Protection_Reach_Rankings_Table()
+
+# ----- but in export section -----------
+output_path_x =  paste(output_path,'Reach_Rankings_Restoration.xlsx', sep="")
+write_xlsx(Restoration_Scores_Output,output_path_x )
 
 # ---------------------------------------------------------------------------
 #

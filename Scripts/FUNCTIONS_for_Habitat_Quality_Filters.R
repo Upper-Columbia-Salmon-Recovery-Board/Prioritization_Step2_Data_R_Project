@@ -42,8 +42,8 @@ reach_name_x  = "Big Meadow Creek 01"
 #        habitat_attribute list of data source (1, 2, 3, or 4)
 #  'Pool Quantity & Quality' = c( 'Pools_CATEGORY_1', 'Pool_Habitat_Prcnt_INDICATOR_4', 'Pools_per_mile_INDICATOR_2'), 
 #   'Temperature- Adult Spawning' = c('NORWEST_Temperature', '305bListings_Temperature', 'RAWatershed_Rating_Temp' ), 
-habitat_attribute_x = "Temperature- Adult Spawning"
-data_col_name = 'NORWEST_Temperature'
+habitat_attribute_x = "Riparian-Disturbance"
+data_col_name = 'UCSRB_RiparianDisturbancePct'
 LF_or_HQ = "HQ"
 
 data_col_name = data_source_x
@@ -69,7 +69,7 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
   # -----------------------------------
   #    Generate Metric value from Raw (primary) data table
   # -----------------------------------
-  if(nrow(metric_criteria_x) == 0){
+  if( nrow(metric_criteria_x) == 0 ){
     print("no data")
     data_output_x = cbind(  habitat_raw_data$ReachName,
                             as.data.frame(rep(NA, length.out = nrow(habitat_raw_data))),
@@ -86,7 +86,7 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
     #    Generate Score for FACTOR criteria
     # -----------------------------------
     
-    if(metric_criteria_x$Category_Type[1]== 'factor'){
+    if( metric_criteria_x$Category_Type[1]== 'factor' ){
       
       # -----------------------------------
       #    Contaminants ONLY
@@ -125,7 +125,7 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
       # -----------------------------------
       #    Generate Score for NUMERIC criteria 
       # -----------------------------------
-    }else if(metric_criteria_x$Category_Type[1]== 'numeric'){
+    }else if( metric_criteria_x$Category_Type[1]== 'numeric' ){
       
       
       # -----------------------------
@@ -247,7 +247,6 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
         
         data_output_x = cbind(  as.data.frame(rep(NA, length.out = nrow(habitat_raw_data))),as.data.frame(rep(NA, length.out = nrow(habitat_raw_data)))  )
         colnames(data_output_x) = c("metric_data", "score")
-        
         
       }
       

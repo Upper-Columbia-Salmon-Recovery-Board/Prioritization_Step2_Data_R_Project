@@ -38,8 +38,8 @@ Habitat_Attributes_List = list(
   'Food- Food Web Resources' = c( 'PROFESSIONAL JUDGEMENT'), 
   'Harassment' = c('PROFESSIONAL JUDGEMENT' ), 
   'Icing' = c( 'PROFESSIONAL JUDGEMENT'), 
-  'Off-Channel- Floodplain' = c( 'Floodplain_Connectivity_CATEGORY_1', 'Entrenchment_CATEGORY_2', 'Channel_Confinementor_or_Entrenchment_Ratio_INDICATOR_9' ),   # Data Sources listes first HabAtr as Floodplain_Connectivity_CATEGORY_1
-  'Off-Channel- Side-Channels' = c('Connectivity_CATEGORY_1', 'Side_Channel_Habitat_Prcnt_INDICATOR_6', 'WetSC_Pct_Average'  ),
+  'Off-Channel- Floodplain' = c( 'Floodplain_Connectivity_CATEGORY_1', 'Entrenchment_CATEGORY_2', 'Channel_Confinementor_or_Entrenchment_Ratio_INDICATOR_9', 'UCSRB_OffChannel_Floodplain' ),   # Data Sources listes first HabAtr as Floodplain_Connectivity_CATEGORY_1
+  'Off-Channel- Side-Channels' = c('Connectivity_CATEGORY_1', 'Side_Channel_Habitat_Prcnt_INDICATOR_6', 'WetSC_Pct_Average', 'UCSRB_OffChannel_SideChannels'  ),
   'Pool Quantity & Quality' = c( 'Pools_CATEGORY_1', 'Pool_Habitat_Prcnt_INDICATOR_4', 'Pools_per_mile_INDICATOR_2'), 
   'Pools- Deep Pools' = c('Pools_deeper_3_ft_prcnt_INDICATOR_3', 'Pools_deeper_3_ft_per_mile_INDICATOR_4'  ), 
   'Predators- Adults' = c( 'PROFESSIONAL JUDGEMENT'), 
@@ -85,22 +85,24 @@ habitat_quality_scores_colnames_ALL = c("BankStability_score", "ChannelStability
 # ---------------------------------------------------------------------------
 
 # ----------------------- list of habitat attribute names in habitat raw data data frame --------------
+# NOTE: as of March 2021 - R Code pulls habitat attribute (limiting factor) scores for this HQ pathway, unless
+#               a paritcular attribute is not present in the habitat attribute scores
 # a few data sources are in the Channel_Unit_Raw or CHAMP_data_per_reach data frames, see list below
 # data frame: habitat_raw_data (each of these data sources is a column in habitat_raw_data)
 # NOTE: order of the list is order data are pulled - so the first data source listed for each habitat attribute
 #       is the first data source pulled for each reach
 # 
 Habitat_Quality_Habitat_Attributes_List = list(
-  'Bank Stability' = c('Bank_Stability_CATEGORY_1'), 
-  'Channel Stability' = c('Vertical_Channel_Stability_CATEGORY_1'),
+  'Bank Stability' = c('Bank_Stability_CATEGORY_1', 'UCSRB_BankStability'), 
+  'Channel Stability' = c('Vertical_Channel_Stability_CATEGORY_1', 'UCSRB_ChannelStability'),
   'Coarse Substrate' = c('Dominant_Substrate_CATEGORY_1'),
   'Cover- Wood' = c('Pieces_per_mile_CATEGORY_1' ), 
   'Flow- Summer Base Flow' = c( 'RAWatershed_Rating_Flow', 'Flow_305bList', 'PROSPER', 'PROFESSIONAL JUDGEMENT'), 
   'Off-Channel- Floodplain' = c( 'Floodplain_Connectivity_CATEGORY_1' ),  
   'Off-Channel- Side-Channels' = c('Connectivity_CATEGORY_1'  ),
   'Pool Quantity & Quality' = c( 'Pools_CATEGORY_1'), 
-  'Riparian-Disturbance'  = c( 'Disturbance_CATEGORY_1'), 
-  'Riparian- Canopy Cover' = c('Canopy_Cover_CATEGORY_1'),
+  'Riparian-Disturbance'  = c( 'Disturbance_CATEGORY_1', 'UCSRB_RiparianDisturbancePct'), 
+  'Riparian- Canopy Cover' = c('Canopy_Cover_CATEGORY_1', 'UCSRB_CanopyCoverPct'),
   'Temperature- Rearing'  = c('NORWEST_Temperature', '305bListings_Temperature', 'RAWatershed_Rating_Temp' )
 )
 

@@ -130,13 +130,18 @@ FUNCTION_match_INDIVIDUAL_core_metrics_from_habitat_attributes_SPECIES = functio
 
 
 # To Test
-# HQ_spring_chinook = Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']]
-# HQ_steelhead = Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']]
-# HQ_bull_trout = Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']]
-# LF_spring_chinook = Limiting_Factor_Pathway_Spring_Chinook[['Limiting_Factor_Pathway_Restoration']]
-# LF_steelhead = Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']]
-# LF_bull_trout = Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']]
-# columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
+test = TRUE
+if(test){
+  HQ_spring_chinook = Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']]
+  HQ_steelhead = Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']]
+  HQ_bull_trout = Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']]
+  LF_spring_chinook = Limiting_Factor_Pathway_Spring_Chinook[['Limiting_Factor_Pathway_Restoration']]
+  LF_steelhead = Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']]
+  LF_bull_trout = Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']]
+  columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
+  exclude_bull_trout = "no"
+}
+
 
 FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage = function(HQ_spring_chinook, HQ_steelhead, HQ_bull_trout,  LF_spring_chinook, LF_steelhead, LF_bull_trout, columns_info, exclude_bull_trout){
   
@@ -151,7 +156,7 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage = function(HQ_spring_
   Reach_Habitat_Attribute_combined_output = c()
   
   for(reach_x in unique_reaches){
-    
+    print(reach_x)
     # --------------------- generate HQ and LF index ----------
     if( any(HQ_spring_chinook$ReachName == reach_x)){ HQ_spring_chinook_index = which(HQ_spring_chinook$ReachName == reach_x) }else{HQ_spring_chinook_index = NA}
     if( any(HQ_steelhead$ReachName == reach_x)){ HQ_steelhead_index = which(HQ_steelhead$ReachName == reach_x) }else{HQ_steelhead_index = NA}
