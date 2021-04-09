@@ -28,7 +28,7 @@
 #
 # ---------------------------------------------------------------------------
 
-habitat_raw_data = read_excel(  paste(data_path,'Habitat_Data_Raw.xlsx', sep="") ,   skip=1  )
+habitat_raw_data = read_excel(  paste(data_path,'Habitat_Data_Raw.xlsx', sep="")   )
 
 # ----------- update columns that are numeric to numeric ------------
 cols.num <- c( 'Sand_occular_prcnt_INDICATOR_1',	'Gravel_occular_prcnt_INDICATOR_2',
@@ -361,6 +361,24 @@ Restoration_Reach_Scoring = Reach_Scoring_Restoration_and_Protection_Scoring %>%
 
 Protection_Reach_Scoring = Reach_Scoring_Restoration_and_Protection_Scoring %>%
   filter(Pathway == 'Protection')
+
+# ---------------------------------------------------------------------------
+#
+#  Okanogan EDT data
+#
+# ---------------------------------------------------------------------------
+
+path_EDT = paste(data_path,'Okanogan_EDT/', sep="")
+# --------------- EDT Habitat Attribute Crosswalk --------------------
+AttributeCrosswalk = read_excel( paste(path_EDT,'AttributeCrosswalk.xlsx', sep="") )
+
+# --------------- EDT Habitat Attribute Crosswalk --------------------
+HabitatAttribute_Ratings = read_excel( paste(path_EDT,'HabitatAttribute_Ratings.xlsx', sep="") )
+
+# --------------- EDT Habitat Attribute Crosswalk --------------------
+LifeStageCrosswalk2 = read_excel( paste(path_EDT,'LifeStageCrosswalk.xlsx', sep="") )
+
+
 
 # ---------------------------------------------------------------------------
 #
