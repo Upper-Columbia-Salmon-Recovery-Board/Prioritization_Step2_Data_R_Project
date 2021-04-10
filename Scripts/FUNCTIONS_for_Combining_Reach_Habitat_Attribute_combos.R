@@ -237,6 +237,10 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage = function(HQ_spring_
     ) 
     life_stages_bull_trout = unique( unlist(strsplit(paste(life_stages_bull_trout, collapse=","), ",")) )
     
+    # -------- get life stages all ------------
+    life_stages_all = unique(c( life_stages_spring_chinook, life_stages_steelhead, life_stages_bull_trout) )
+    
+    
     # ------------------------------------------------------------
     #    Loop through Each Habitat Attribute 
     # ------------------------------------------------------------

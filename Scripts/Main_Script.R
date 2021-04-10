@@ -17,9 +17,10 @@ library(readxl)
 #  simple Criteria for output
 # ---------------------------------------------------------------------------
 
-basins_to_include = c("Methow",  "Entiat","Wenatchee")  # basins to include insimulation
+basins_to_include = c("Methow",  "Entiat","Wenatchee" )  # basins to include in simulation    "OKanogan"
 exclude_bull_trout = "yes"  # if "yes" -> remove bull trout for WebMap applications
-output_Habitat_Quality_and_Habitat_Attribute_Scores = "no"  # enter "yes" or "no" if you want this output
+output_Habitat_Quality_and_Habitat_Attribute_Scores = "no"  # enter "yes" or "no" if you want the "flat table" Habitat Attribute output (doubles time to run script)
+update_Okanogan_reach_names = "no"  # if "yes" - update Okanogan reach names (should not have to run again - since on 5.Apr.2021 Ryan updated names)
 
 # ---------------------------------------------------------------------------
 #
@@ -33,7 +34,13 @@ time1 <- proc.time()[3] # for timing the total time to run the tool
 script_path = 'Scripts/'
 
 # ----------- directory of data -------------------
-data_path = 'Data/'
+master_path = 'Data/'
+habitat_data_path = paste(master_path,"Habitat_Data/", sep="")
+ranking_data_path = paste(master_path,"Ranking_Data/", sep="")
+crosswalks_path = paste(master_path,"Crosswalks/", sep="")
+criteria_and_scoring_path = paste(master_path,"Criteria_and_Scoring/", sep="")
+Okanogan_EDT_path = paste(master_path,'Okanogan_EDT/', sep="")
+reach_assessment_projects_path = paste(master_path,'Reach_Assessment_Projects/', sep="")
 
 # ----------- directory for output ---------
 output_path = 'Output/'
@@ -48,7 +55,11 @@ output_path = 'Output/'
 print("----------------------------------------- READ IN THE DATA --------------------------------------------")
 source(paste(script_path, 'Read_in_data_Script.R', sep=""))
 
-
+print("----------------------------------------- Update Okanogan Reach Names (if necessary) --------------------------------------------")
+if(update_Okanogan_reach_names == "yes"){
+  source(paste(script_path, 'FUNCTION_update_names_in_data_frames.R', sep=""))
+}
+  
 # ---------------------------------------------------------------------------
 #
 #      Criteria for Filters   
@@ -67,6 +78,7 @@ source(paste(script_path, 'Criteria_Script.R', sep=""))
 #   Generate Habitat Attribute Table (used in Limiting Factor Pathway)
 # ---------------------------------------------------------------------------
 print("----------------------------------------- GENERATE HABITAT ATTRIBUTE SCORES (for Limtiting Factor Pathway) --------------------------------------------")
+source( paste(script_path, 'FUNCTIONS_for_Habitat_Quality_Filters.R', sep="")  )
 
 source(paste(script_path, 'Habitat_Attribute_Scores_Generate_Script.R', sep=""))
 # OUTPUT is Habitat_Attribute_Scores

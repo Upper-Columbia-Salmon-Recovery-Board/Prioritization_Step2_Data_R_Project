@@ -42,12 +42,18 @@ source(paste(script_path, 'FUNCTIONS_for_Habitat_Attribute_Filters.R', sep=""))
 #
 # ---------------------------------------------------------------------------
 
-Habitat_Attribute_Scores = data.frame()
-# --------------------------------------
+# -------------- to test ------------------------
+test = FALSE
+if(test){
+  habitat_attribute_x = names(Habitat_Attributes_List)[3]
+  data_sources_list =  Habitat_Attributes_List[habitat_attribute_x]
+  data_source_x = data_sources_list[[1]][1]
+}
 
-#habitat_attribute_x = names(Habitat_Attributes_List)[3]
-#data_sources_list =  Habitat_Attributes_List[habitat_attribute_x]
-#data_source_x = data_sources_list[[1]][1]
+
+# ----- empty data frame to write to -----------
+Habitat_Attribute_Scores = data.frame()
+
 
 ptm <- proc.time()[3]
 for(habitat_attribute_x in names(Habitat_Attributes_List)){
@@ -123,7 +129,6 @@ for(habitat_attribute_x in names(Habitat_Attributes_List)){
     }
     
   }
-  
 
   # -------------- add NA columns so there are four columns -----------------
   na_column = as.data.frame(rep(NA, length.out=nrow(habitat_attribute_x_data_frame)))
@@ -131,7 +136,7 @@ for(habitat_attribute_x in names(Habitat_Attributes_List)){
     for(i in 1:(5-ncol(habitat_attribute_x_data_frame) ) )
       habitat_attribute_x_data_frame = cbind(habitat_attribute_x_data_frame, na_column)
   }
-
+  
   # --------------------------------------------------------------------
   #  Prepare Habitat data frame 
   # --------------------------------------------------------------------
@@ -156,8 +161,11 @@ for(habitat_attribute_x in names(Habitat_Attributes_List)){
   habitat_attribute_name = as.data.frame(habitat_attribute_name)
   # -------------------- match Basin and Assessment Unit ----------------
   habitat_attribute_x_data_frame_Reach_Name = habitat_attribute_x_data_frame[,"ReachName"]
+  habitat_attribute_x_data_frame_Reach_Name = as.data.frame(habitat_attribute_x_data_frame_Reach_Name)
+  colnames(habitat_attribute_x_data_frame_Reach_Name) = "ReachName"
   habitat_attribute_x_data_frame = merge(habitat_attribute_x_data_frame_Reach_Name, Reach_Information_data[, c("ReachName","Basin","Assessment.Unit")],
                                          by="ReachName")
+  
   habitat_attribute_x_data_frame = cbind(habitat_attribute_x_data_frame,habitat_attribute_name, data_source_output_list_per_row,habitat_attribute_x_data_frame_CALC)
   colnames(habitat_attribute_x_data_frame) = c('ReachName',	'Basin',	'Assessment.Unit',	'Habitat_Attribute',	'Data_Sources',	'HabitatAttributeScore1',
                                                'HabitatAttributeScore2',	'HabitatAttributeScore3',	'HabitatAttributeScore4',	'Habitat_Attribute_Score')

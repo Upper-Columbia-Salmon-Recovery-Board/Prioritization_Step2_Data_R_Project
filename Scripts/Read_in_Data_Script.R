@@ -28,7 +28,7 @@
 #
 # ---------------------------------------------------------------------------
 
-habitat_raw_data = read_excel(  paste(data_path,'Habitat_Data_Raw.xlsx', sep="")   )
+habitat_raw_data = read_excel(  paste(habitat_data_path,'Habitat_Data_Raw.xlsx', sep="")   )
 
 # ----------- update columns that are numeric to numeric ------------
 cols.num <- c( 'Sand_occular_prcnt_INDICATOR_1',	'Gravel_occular_prcnt_INDICATOR_2',
@@ -69,7 +69,7 @@ habitat_raw_data[cols.num] <- sapply(habitat_raw_data[cols.num],as.numeric)
 #
 # ---------------------------------------------------------------------------
 
-Barriers_Pathways_Data = read_excel( paste(data_path,'Barriers_Pathway_Data.xlsx', sep="") )
+Barriers_Pathways_Data = read_excel( paste(habitat_data_path,'Barriers_Pathway_Data.xlsx', sep="") )
 
 
 # ---------------------------------------------------------------------------
@@ -78,7 +78,7 @@ Barriers_Pathways_Data = read_excel( paste(data_path,'Barriers_Pathway_Data.xlsx
 #
 # ---------------------------------------------------------------------------
 
-AU_Ranks_data = read_excel( paste(data_path,'AU_Ranks.xlsx', sep="") )
+AU_Ranks_data = read_excel( paste(ranking_data_path,'AU_Ranks.xlsx', sep="") )
 
 # ----------- update columns that are numeric to numeric ------------
 cols.num = c('Spring Chinook_Restoration',	'SPCHNTier_Restoration',	'Steelhead_Restoration',	'STLTier_Restoration',
@@ -92,7 +92,7 @@ AU_Ranks_data[cols.num] <- sapply(AU_Ranks_data[cols.num],as.numeric)
 #
 # ---------------------------------------------------------------------------
 
-Life_Stage_Priorities_AU_only_data = read_excel( paste(data_path,'LifeStagePriorities.xlsx', sep=""), skip=1 )
+Life_Stage_Priorities_AU_only_data = read_excel( paste(ranking_data_path,'LifeStagePriorities.xlsx', sep=""), skip=1 )
 
 # ---------------------------------------------------------------------------
 #
@@ -100,7 +100,7 @@ Life_Stage_Priorities_AU_only_data = read_excel( paste(data_path,'LifeStagePrior
 #
 # ---------------------------------------------------------------------------
 
-Life_Stage_Priorities_AU_and_Reach_data = read_excel( paste(data_path,'LifeStagePriorities_AUandReach.xlsx', sep=""), skip=1 )
+Life_Stage_Priorities_AU_and_Reach_data = read_excel( paste(ranking_data_path,'LifeStagePriorities_AUandReach.xlsx', sep="") )
 
 # ---------------------- match column names to life stages ------------------------------ 
 spring_chinook_life_stages = list("Adult Migration" = "SPCH Adult Migration  AU LS Priority",	  "Holding"=	"SPCH Holding  AU LS Priority", "Holding and Maturation"=	"SPCH Holding  AU LS Priority",
@@ -147,7 +147,7 @@ life_stages_prescence = list("spring_chinook_life_stages" =  spring_chinook_life
 #
 # ---------------------------------------------------------------------------
 
-Attribute_LifeStage_Crosswalk = read_excel( paste(data_path,'Attribute_LifeStage_Crosswalk.xlsx', sep="") )
+Attribute_LifeStage_Crosswalk = read_excel( paste(crosswalks_path,'Attribute_LifeStage_Crosswalk.xlsx', sep="") )
 Attribute_LifeStage_Crosswalk$Habitat_Attribute_2 = gsub(" ", "", Attribute_LifeStage_Crosswalk$`Habitat Attribute`, fixed = TRUE)
 
 # ---------------------------------------------------------------------------
@@ -156,7 +156,7 @@ Attribute_LifeStage_Crosswalk$Habitat_Attribute_2 = gsub(" ", "", Attribute_Life
 #
 # ---------------------------------------------------------------------------
 
-Channel_Unit_Raw = read_excel( paste(data_path,'Channel_Unit_Raw.xlsx', sep="") )
+Channel_Unit_Raw = read_excel( paste(habitat_data_path,'Channel_Unit_Raw.xlsx', sep="") )
 
 # ----------- update columns that are numeric to numeric ------------
 cols.num = c('Riffle_Habitat_Prcnt_INDICATOR_1' , 'Rapid_Habitat_Prcnt_INDICATOR_2' , 'Glide_Habitat_Prcnt_INDICATOR_3',
@@ -170,7 +170,7 @@ Channel_Unit_Raw[cols.num] <- sapply(Channel_Unit_Raw[cols.num],as.numeric)
 #
 # ---------------------------------------------------------------------------
 
-CHAMP_data_per_reach = read_excel( paste(data_path,'CHAMP_data_per_reach.xlsx', sep="") )
+CHAMP_data_per_reach = read_excel( paste(habitat_data_path,'CHAMP_data_per_reach.xlsx', sep="") )
 
 # ----------- update columns that are numeric to numeric ------------
 cols.num = c('NumberofCHaMPDataPoints', 'SlowWater_Pct_Average',	'SlowWater_Pct_StandardDeviation',	'FstTurb_Pct_Average',
@@ -212,7 +212,7 @@ CHAMP_data_Updated = merge(CHAMP_data_Updated, CHAMP_data_per_reach, by = "Reach
 #
 # ---------------------------------------------------------------------------
 
-Reach_Information_data = read_excel( paste(data_path,'ReachInfo.xlsx', sep="") )
+Reach_Information_data = read_excel( paste(habitat_data_path,'ReachInfo.xlsx', sep="") )
 
 
 # ---------------------------------------------------------------------------
@@ -225,7 +225,7 @@ Reach_Information_data = read_excel( paste(data_path,'ReachInfo.xlsx', sep="") )
 #    Read in main data
 # ---------------------------------------------------------------------------
 
-Habitat_Quality_and_Geomorphic_Potential_Rating_Criteria = read_excel( paste(data_path,'Habitat_Quality_and_Geomorphic_Potential_Rating_Criteria.xlsx', sep="") )
+Habitat_Quality_and_Geomorphic_Potential_Rating_Criteria = read_excel( paste(criteria_and_scoring_path,'Habitat_Quality_and_Geomorphic_Potential_Rating_Criteria.xlsx', sep="") )
 # ----------- update columns that are numeric to numeric ------------
 cols.num = c('Category_lower', 'Category_upper')
 Habitat_Quality_and_Geomorphic_Potential_Rating_Criteria[cols.num] <- sapply(Habitat_Quality_and_Geomorphic_Potential_Rating_Criteria[cols.num],as.numeric)
@@ -274,7 +274,7 @@ for(rowx in rownames(Habitat_Quality_and_Geomorphic_Potential_Rating_Criteria)){
 #    Read in main data
 # ---------------------------------------------------------------------------
 
-Habitat_Limiting_Factor_Rating_Criteria = read_excel( paste(data_path,'Habitat_Limiting_Factor_Rating_Criteria.xlsx', sep="") )
+Habitat_Limiting_Factor_Rating_Criteria = read_excel( paste(criteria_and_scoring_path,'Habitat_Limiting_Factor_Rating_Criteria.xlsx', sep="") )
 
 # ----------- update columns that are numeric to numeric ------------
 cols.num = c('Category_lower', 'Category_upper', 'Filter_value_lower_meters', 'Filter_value_upper_meters')
@@ -319,7 +319,7 @@ for(rowx in rownames(Habitat_Limiting_Factor_Rating_Criteria)){
 #
 # ---------------------------------------------------------------------------
 
-Confinement_Scores = read_excel( paste(data_path,'Confinement_Scores.xlsx', sep="") )
+Confinement_Scores = read_excel( paste(habitat_data_path,'Confinement_Scores.xlsx', sep="") )
 
 # ------------------- update geomorphic potential/confinement scores with criteria ---------------
 source(paste(script_path, 'FUNCTIONS_for_Reading_Data.R', sep=""))
@@ -333,7 +333,7 @@ FUNCTION_update_Confinement_Scores(Confinement_Scores, Geomorphic_Criteria)
 #
 # ---------------------------------------------------------------------------
 
-Habitat_Quality_Restoration_and_Protection_Scoring = read_excel( paste(data_path,'Habitat_Quality_Restoration_and_Protection_Scoring.xlsx', sep="") )
+Habitat_Quality_Restoration_and_Protection_Scoring = read_excel( paste(criteria_and_scoring_path,'Habitat_Quality_Restoration_and_Protection_Scoring.xlsx', sep="") )
 
 # --------------- divide up into Restoration and Protection -------------------------
 Restoration_Scoring = Habitat_Quality_Restoration_and_Protection_Scoring %>%
@@ -348,7 +348,7 @@ Protection_Scoring = Habitat_Quality_Restoration_and_Protection_Scoring %>%
 #
 # ---------------------------------------------------------------------------
 
-Reach_Scoring_Restoration_and_Protection_Scoring = read_excel( paste(data_path,'Criteria_Reach_Scoring_Restoration_and_Protection.xlsx', sep="") )
+Reach_Scoring_Restoration_and_Protection_Scoring = read_excel( paste(criteria_and_scoring_path,'Criteria_Reach_Scoring_Restoration_and_Protection.xlsx', sep="") )
 
 # ----------- update columns that are numeric to numeric ------------
 cols.num <- c( 'Category_lower_limit',	'Category_upper_limit',	'Score')
@@ -368,16 +368,23 @@ Protection_Reach_Scoring = Reach_Scoring_Restoration_and_Protection_Scoring %>%
 #
 # ---------------------------------------------------------------------------
 
-path_EDT = paste(data_path,'Okanogan_EDT/', sep="")
 # --------------- EDT Habitat Attribute Crosswalk --------------------
-AttributeCrosswalk = read_excel( paste(path_EDT,'AttributeCrosswalk.xlsx', sep="") )
+AttributeCrosswalk = read_excel( paste(Okanogan_EDT_path,'AttributeCrosswalk_Okanogan_EDT.xlsx', sep="") )
 
 # --------------- EDT Habitat Attribute Crosswalk --------------------
-HabitatAttribute_Ratings = read_excel( paste(path_EDT,'HabitatAttribute_Ratings.xlsx', sep="") )
+HabitatAttribute_Ratings = read_excel( paste(Okanogan_EDT_path,'HabitatAttribute_Ratings_Okanogan_EDT.xlsx', sep="") )
 
 # --------------- EDT Habitat Attribute Crosswalk --------------------
-LifeStageCrosswalk2 = read_excel( paste(path_EDT,'LifeStageCrosswalk.xlsx', sep="") )
+LifeStageCrosswalk2 = read_excel( paste(Okanogan_EDT_path,'LifeStageCrosswalk_Okanogan_EDT.xlsx', sep="") )
 
+# ---------------------------------------------------------------------------
+#
+#  Okanogan Criteria Data
+#
+# ---------------------------------------------------------------------------
+
+# --------------- Okanogan Criteria for scoring --------------------
+Criteria_Okanogan_EDT_Scoring = read_excel( paste(criteria_and_scoring_path,'Criteria_Okanogan_EDT_Scoring.xlsx', sep="") )
 
 
 # ---------------------------------------------------------------------------
@@ -386,7 +393,7 @@ LifeStageCrosswalk2 = read_excel( paste(path_EDT,'LifeStageCrosswalk.xlsx', sep=
 #
 # ---------------------------------------------------------------------------
 
-Habitat_Attribute_Notes_and_Professional_Judgement = read_excel( paste(data_path,'Habitat_Attribute_Notes_and_Professional_Judgement.xlsx', sep="") )
+Habitat_Attribute_Notes_and_Professional_Judgement = read_excel( paste(habitat_data_path,'Habitat_Attribute_Notes_and_Professional_Judgement.xlsx', sep="") )
 
 
 # ---------------------------------------------------------------------------
@@ -395,16 +402,16 @@ Habitat_Attribute_Notes_and_Professional_Judgement = read_excel( paste(data_path
 #
 # ---------------------------------------------------------------------------
 
-Crosswalk_Habitat_Attributes_and_Actions = read_excel( paste(data_path,'Crosswalk_Habitat_Attributes_and_Actions.xlsx', sep="/"), 
+Crosswalk_Habitat_Attributes_and_Actions = read_excel( paste(crosswalks_path,'Crosswalk_Habitat_Attributes_and_Actions.xlsx', sep="/"), 
                                                        sheet = 'Sheet1')
 Crosswalk_Habitat_Attributes_and_Actions$Habitat_Attribute_2 = gsub(" ", "", Crosswalk_Habitat_Attributes_and_Actions$`Habitat Attribute`, fixed = TRUE)
 Crosswalk_Habitat_Attributes_and_Actions$Action_Category_2 = gsub(" ", "", Crosswalk_Habitat_Attributes_and_Actions$`Action Category`, fixed = TRUE) # get action category without spaces
 
-Reach_Assessment_Project_Data = read_excel( paste(data_path,'Reach_Assessments_Projects_Table_05052020.xlsx', sep="/"), 
+Reach_Assessment_Project_Data = read_excel( paste(reach_assessment_projects_path,'Reach_Assessments_Projects_Table_05052020.xlsx', sep=""), 
                                                         sheet = 'Data_Entry')
 colnames(Reach_Assessment_Project_Data)[colnames(Reach_Assessment_Project_Data) == "Reach_UCSRB"] <- "ReachName" # update ReachName to be consisten with code
 
-Action_Category_Name_Crosswalk = read_excel( paste(data_path,'Reach_Assessments_Projects_Table_05052020.xlsx', sep="/"), 
+Action_Category_Name_Crosswalk = read_excel( paste(reach_assessment_projects_path,'Reach_Assessments_Projects_Table_05052020.xlsx', sep=""), 
                                            sheet = 'Action_Lists')
 # ------ generate list with two types of Action Category list ------
 Action_Category_Name_Crosswalk_Simple = c()

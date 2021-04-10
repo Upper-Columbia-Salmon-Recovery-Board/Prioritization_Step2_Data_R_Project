@@ -65,8 +65,6 @@ Life_Stage_Priority = c("High Priority") # potential: ["Life Stage Not Supported
 #
 # ----------------------------------------------------------------------------------------------------------------------------
 
-
-
 # ----------------------------- Habitat Quality Criteria ---------------------------
 # ---------- put the minimum allowable score -----------
 # cut off value for actions to include for individual habitat attributes in Habitat Quality analysis
@@ -83,4 +81,11 @@ indiv_habitat_attribute_score = c(1) # for pulling actions JUST from
 
 Reach_Confinement_Limiting_Factors = list('Floodplain Reconnection' = 5) 
 
+# ----------------------------------------------------------------------------------------------------------------------------
+#
+#             Criteria: Okanogan EDT
+#
+# ----------------------------------------------------------------------------------------------------------------------------
+
+# criteria read into data:  Criteria_Okanogan_EDT_Scoring
 

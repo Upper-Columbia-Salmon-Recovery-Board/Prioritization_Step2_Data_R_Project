@@ -35,7 +35,7 @@
 
 # Channel_Unit_Raw_data_use[habitat_attribute_x]
 
-habitat_attribute_x = "Bank Stability"
+habitat_attribute_x = "Coarse Substrate"
 habitat_attribute_x = "Pool Quantity & Quality"
 reach_name_x  = "Big Meadow Creek 01"
 # NOTE: "location_x" is merely the numeric location of data source in the individual
@@ -43,8 +43,8 @@ reach_name_x  = "Big Meadow Creek 01"
 #  'Pool Quantity & Quality' = c( 'Pools_CATEGORY_1', 'Pool_Habitat_Prcnt_INDICATOR_4', 'Pools_per_mile_INDICATOR_2'), 
 #   'Temperature- Adult Spawning' = c('NORWEST_Temperature', '305bListings_Temperature', 'RAWatershed_Rating_Temp' ), 
 habitat_attribute_x = "Riparian-Disturbance"
-data_col_name = 'UCSRB_RiparianDisturbancePct'
-LF_or_HQ = "HQ"
+data_col_name = 'Dominant_Substrate_CATEGORY_1'
+LF_or_HQ = "LF"
 
 data_col_name = data_source_x
 data_col_name = data_sources_list[[1]][1]
