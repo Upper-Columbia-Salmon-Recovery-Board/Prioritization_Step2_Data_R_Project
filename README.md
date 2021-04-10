@@ -10,11 +10,11 @@ The RTT decided to use three pathways to develop prioritized reaches and actions
 
 ## Downloading and Running the R Tool
 This R code tool is written with [R Studio](https://rstudio.com/products/rstudio/), which make the code easier to understand and track. For an overview how to install R Studio (which allows you to run this tool), [this page](https://www.r-bloggers.com/2020/08/tutorial-getting-started-with-r-and-rstudio/) overviews how to get R and R Studio installed. Once that is done, simply download the Github repository. To do this, on this page on the upper right, click on the green "Code" button, then click "Download ZIP".
-<img src="https://github.com/Upper-Columbia-Salmon-Recovery-Board/Prioritization_Step2_Data_R_Project/blob/main/Data/Screenshot_GitHub_Page_to_download.png?raw=true" width="800">
+<img src="https://github.com/Upper-Columbia-Salmon-Recovery-Board/Prioritization_Step2_Data_R_Project/blob/main/Data/Screenshots_for_GitHub/Screenshot_GitHub_Page_to_download.png?raw=true" width="800">
 
 Once you do this, unzip the folder and click on the **Step2_Prioritization_R_Project** which (if R and R Studio are installed) will open R Studio. To run the tool, click **Source** (circled in red below) and the code will run (it should take about one minute). The prioritized reaches and action categories will be written to the "Output" folder. The versions of those output here on Github can be found [here for Restoration](https://github.com/Upper-Columbia-Salmon-Recovery-Board/Prioritization_Step2_Data_R_Project/blob/main/Output/Reach_Actions_Restoration_Unacceptable_and_AtRisk.xlsx?raw=true) and [here for Protection](https://github.com/Upper-Columbia-Salmon-Recovery-Board/Prioritization_Step2_Data_R_Project/blob/main/Output/Reach_Actions_Protection.xlsx?raw=true).
 
-<img src="https://github.com/Upper-Columbia-Salmon-Recovery-Board/Prioritization_Step2_Data_R_Project/blob/main/Data/Screenshot_R_Studio_page.png?raw=true" width="800">
+<img src="https://github.com/Upper-Columbia-Salmon-Recovery-Board/Prioritization_Step2_Data_R_Project/blob/main/Data/Screenshots_for_GitHub/Screenshot_R_Studio_page.png?raw=true" width="800">
 
 If you have any issues with this - please feel free to send me an email with any questions.
 
@@ -26,10 +26,10 @@ If you have any questions, please feel to reach out to me at ryan.niemeyer@ucsrb
 ## Prioritization Sponsors
 **Of course - a huge thanks to our sponsors in this process!**
 
-<img src="https://www.ucsrb.org/wp-content/uploads/2020/05/GSRO-300x98.jpg" width="300">
-<img src="https://www.ucsrb.org/wp-content/uploads/2020/05/BEF-300x121.jpg" width="250">
-<img src="https://www.ucsrb.org/wp-content/uploads/2020/05/BPA-300x194.jpg" width="250">
-<img src="https://www.ucsrb.org/wp-content/uploads/2020/05/yakama_logo_color_PLATINUM-300x187.png" width="200">
+<img src="https://www.ucsrb.org/wp-content/uploads/2021/02/salmonrecoveryfundingboard.jpg" width="200">
+<img src="https://www.ucsrb.org/wp-content/uploads/2021/02/bonneville-environmental-foundation-vector-logo.png" width="250">
+<img src="https://www.ucsrb.org/wp-content/uploads/2021/02/BPA.png" width="250">
+<img src="https://www.ucsrb.org/wp-content/uploads/2021/02/yakama_logo_color.png" width="200">
 
 
 ## Upper Columbia Salmon Recovery Board region
