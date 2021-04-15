@@ -375,8 +375,26 @@ AttributeCrosswalk = read_excel( paste(Okanogan_EDT_path,'AttributeCrosswalk_Oka
 HabitatAttribute_Ratings = read_excel( paste(Okanogan_EDT_path,'HabitatAttribute_Ratings_Okanogan_EDT.xlsx', sep="") )
 
 # --------------- EDT Habitat Attribute Crosswalk --------------------
-LifeStageCrosswalk2 = read_excel( paste(Okanogan_EDT_path,'LifeStageCrosswalk_Okanogan_EDT.xlsx', sep="") )
+LifeStageCrosswalk_EDT = read_excel( paste(Okanogan_EDT_path,'LifeStageCrosswalk_Okanogan_EDT.xlsx', sep="") )
 
+# ------------------ Limiting Factors Okanogan EDT -----------
+Limiting_Factors_Okanogan_EDT = read_excel( paste(Okanogan_EDT_path,'Limiting_Factors_Okanogan_EDT.xlsx', sep="") )
+
+# ------------------ Limiting Factors Okanogan EDT -----------
+PRCNT_Habitat_Quality_Okanogan_EDT = read_excel( paste(Okanogan_EDT_path,'PRCNT_Habitat_Quality_Okanogan_EDT.xlsx', sep="") )
+
+# ------------------------------- AU Ranks for Okanogan ----------------------------------
+AU_Ranks_Okanogan = read_excel( paste(Okanogan_EDT_path,'AU_Ranks_Okanogan_EDT.xlsx', sep="") )
+# ----------- update columns that are numeric to numeric ------------
+cols.num = c('AU Restoration Rank',	'AU Protection Rank')
+AU_Ranks_Okanogan[cols.num] <- sapply(AU_Ranks_Okanogan[cols.num],as.numeric)
+
+
+# ----------------- just to compare habitat attribute listed --------
+# unique(AttributeCrosswalk$`RTT Habitat Attributes`)[order(unique(AttributeCrosswalk$`RTT Habitat Attributes`))]
+# unique(HabitatAttribute_Ratings$`RTT Habitat Attribute`)[order(unique(HabitatAttribute_Ratings$`RTT Habitat Attribute`))]
+# unique(Limiting_Factors_Okanogan_EDT$)
+# missing from HabitatAttribute_Ratings: "Off-Channel- Floodplain"    "Off-Channel- Side-Channels" "Pool Quantity & Quality"
 # ---------------------------------------------------------------------------
 #
 #  Okanogan Criteria Data
@@ -386,6 +404,10 @@ LifeStageCrosswalk2 = read_excel( paste(Okanogan_EDT_path,'LifeStageCrosswalk_Ok
 # --------------- Okanogan Criteria for scoring --------------------
 Criteria_Okanogan_EDT_Scoring = read_excel( paste(criteria_and_scoring_path,'Criteria_Okanogan_EDT_Scoring.xlsx', sep="") )
 
+# ------- generate specific criteria --------
+Criteria_Okanogan_EDT_Scoring_Level_2 = Criteria_Okanogan_EDT_Scoring[  which(Criteria_Okanogan_EDT_Scoring$Indicator == "Level 2 Attribute Functional Condition Selector") ,  ]
+Criteria_Okanogan_EDT_Scoring_Level_3 = Criteria_Okanogan_EDT_Scoring[  which(Criteria_Okanogan_EDT_Scoring$Indicator == "Level 3 Attribute Functional Condition Selector") ,  ]
+Criteria_Okanogan_EDT_Scoring_Limiting_Factor_Level_3 = Criteria_Okanogan_EDT_Scoring[  which(Criteria_Okanogan_EDT_Scoring$Indicator == "Level 3 Life Stage Performance Effect Scoring") ,  ]
 
 # ---------------------------------------------------------------------------
 #
@@ -426,3 +448,20 @@ for(i in 1:nrow(Action_Category_Name_Crosswalk)){
 #
 # ---------------------------------------------------------------------------
 
+
+
+# --------------- just a loop to comprae EDT-RTT crosswalk habitat attributes and original habitat attribute-action categories attributes 00000
+RTT_EDT_habitat_attributes = unique(AttributeCrosswalk$`RTT Habitat Attributes`)
+RTT_EDT_habitat_attributes = RTT_EDT_habitat_attributes[-2]
+
+RTT_orig_habitat_attributes = unique(Crosswalk_Habitat_Attributes_and_Actions$`Habitat Attribute`)
+
+for(hab_x in RTT_EDT_habitat_attributes){
+  
+  
+  if( any(RTT_orig_habitat_attributes == hab_x) ){
+    print(paste("RTT_EDT in orig RTT: ", hab_x))
+  }else{
+    print(paste("-------- RTT_EDT NOT orig RTT: ", hab_x))
+  }
+}

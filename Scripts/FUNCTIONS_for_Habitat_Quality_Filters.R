@@ -46,8 +46,12 @@ habitat_attribute_x = "Riparian-Disturbance"
 data_col_name = 'Dominant_Substrate_CATEGORY_1'
 LF_or_HQ = "LF"
 
-data_col_name = data_source_x
-data_col_name = data_sources_list[[1]][1]
+test_x = FALSE
+if(test_x){
+  data_col_name = data_source_x
+  data_col_name = data_sources_list[[1]][1]
+}
+
 
 
 FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habitat_attribute_x, data_col_name, LF_or_HQ){

@@ -56,7 +56,7 @@ Habitat_Attribute_Scores = data.frame()
 
 
 ptm <- proc.time()[3]
-for(habitat_attribute_x in names(Habitat_Attributes_List)){
+for(habitat_attribute_x in names(Habitat_Attributes_List) ){
   print(paste("-----------------Habitat Attribute----------------------: ", habitat_attribute_x,sep="") )
   
   # --------------------------------------------------------------------

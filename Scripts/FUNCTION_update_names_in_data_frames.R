@@ -12,7 +12,7 @@
 #
 # -------------------------------------------------------------------
 
-Okanogan_Crosswalk =  read_excel(  paste(Okanogan_EDT_path,'Okanogan_AU_Reach_Crosswalk.xlsx', sep="")  )
+Okanogan_Reach_Crosswalk =  read_excel(  paste(Okanogan_EDT_path,'Okanogan_AU_Reach_Crosswalk.xlsx', sep="")  )
 
 
 # ------------------------------------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ input_data_frame = habitat_raw_data
 input_column = as.data.frame(habitat_raw_data[,"ReachName"])
 #input_column = input_column[,1]
 input_column_name = "ReachName"
-new_and_old_data_frame = Okanogan_Reach_Crosswalk[,c("ReachName_Old", "ReachName_New", "Duplicate_RTT_Names")]
+new_and_old_data_frame = Okanogan_Reach_Crosswalk[,c("ReachName_Old", "ReachName_New")]
 output_path_x = paste(Okanogan_EDT_path,'Habitat_Data_Raw.xlsx', sep="")
 
 # -------------- the Function -----------------
@@ -74,6 +74,17 @@ FUNCTION_read_in_and_update_file_reach_names = function(input_data_frame, input_
 # -------------------------------------------------------------------
 #    Read and Write Data - FIRST time updating
 # -------------------------------------------------------------------
+
+
+# ---------------- ATLAS data ------------
+
+path_x = paste('C:/Users/Ryan/Documents/2_Habitat_Prioritzation/Prioritization/Data/','ATLAS_flowIMPORT_Habitat_Data_Raw_032921.xlsx', sep="")
+path_x2 = paste('C:/Users/Ryan/Documents/2_Habitat_Prioritzation/Prioritization/Data/','ATLAS_flowIMPORT_Habitat_Data_Raw_032921_updated_names.xlsx', sep="")
+ATLAS_flow_data = read_excel( path_x )
+
+FUNCTION_read_in_and_update_file_reach_names( ATLAS_flow_data, as.data.frame(ATLAS_flow_data[,"ReachName"]), "ReachName", 
+                                              Okanogan_Reach_Crosswalk[,c("ReachName_Old", "ReachName_New")], 
+                                              path_x2  )
 
 # --------------- Habitat_Data_Raw ---------
 FUNCTION_read_in_and_update_file_reach_names(habitat_raw_data, as.data.frame(habitat_raw_data[,"ReachName"]), "ReachName", 

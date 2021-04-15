@@ -35,6 +35,12 @@ Individual_Habitat_Attribute_Score = c(3)   # possible scores - [1,3,5] 1 - unac
 # NOTE - since we wanted both "At Risk" and "Unacceptable"- I just hard-coded this in the
 #        list_indiv_habitat_attributes_low_FUNCTION the filter generates for scores 1 (Unacceptable)
 #        and scores 2 and 3 (At Risk)
+# -------------- Habitat Attribute Score (RTT Limiting Factor Score) -    for now
+Okanogan_Individual_Habitat_Attribute_Score = Individual_Habitat_Attribute_Score
+
+# --------- Okanogan EDT: "% of Template" ---------------
+PRCNT_of_Template_Restoration_Score = 0.8  # THIS PERCENT and below pass through filter for Okanogan EDT Restoration
+PRCNT_of_Template_Protection_Score = 0.8  # THIS PERCENT and above pass through filter for Okanogan EDT Protection
 
 # ----------------------------------------------------------------------------------------------------------------------------
 #
@@ -87,5 +93,6 @@ Reach_Confinement_Limiting_Factors = list('Floodplain Reconnection' = 5)
 #
 # ----------------------------------------------------------------------------------------------------------------------------
 
+EDT_leves_use = c(2)  # levels of EDT to use (options are 2 or 3 - as of 1.April.2021 - only using level 2)
 # criteria read into data:  Criteria_Okanogan_EDT_Scoring
 

@@ -224,5 +224,3 @@ if(output_Habitat_Quality_and_Habitat_Attribute_Scores == "yes"){
 
 
 
-
-
