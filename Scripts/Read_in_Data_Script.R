@@ -465,3 +465,31 @@ for(hab_x in RTT_EDT_habitat_attributes){
     print(paste("-------- RTT_EDT NOT orig RTT: ", hab_x))
   }
 }
+
+
+
+
+
+# ---------------- comparing Reach layer and habitat_raw_data -------------
+
+reaches_GIS = read_csv( 'C:/Users/Ryan/Downloads/Reaches_March_2021/Reaches_0.csv')
+
+reaches_in_GIS_not_in_habitat_raw_data = c()
+for(reach_x in reaches_GIS$ReachName){
+  
+  if( any(habitat_raw_data$ReachName == reach_x) ){
+  }else{
+    
+    #print("this reach is not in habitat raw data:")
+    x = which(reaches_GIS$ReachName == reach_x)
+    basin_x = reaches_GIS$Basin[x]
+    if(basin_x != "Okanogan"){
+      print(reach_x) 
+      row_x = t(as.data.frame(c(basin_x, reach_x)))
+      reaches_in_GIS_not_in_habitat_raw_data = rbind(reaches_in_GIS_not_in_habitat_raw_data,   row_x)
+    }
+  }
+}
+
+rownames(reaches_in_GIS_not_in_habitat_raw_data) = seq(1,nrow(reaches_in_GIS_not_in_habitat_raw_data))
+
