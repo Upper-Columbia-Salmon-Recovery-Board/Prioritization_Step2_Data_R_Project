@@ -27,7 +27,7 @@ library(readxl)
 # ---------------------------------------------------------------------------
 #  Script Criteria for output
 # ---------------------------------------------------------------------------
-basins_to_include = c("Methow",  "Entiat","Wenatchee", "OKanogan" )  # basins to include in simulation    
+basins_to_include = c("Methow",  "Entiat","Wenatchee" )  # basins to include in simulation    
 exclude_bull_trout = "yes"  # if "yes" -> remove bull trout for WebMap applications
 output_Habitat_Quality_and_Habitat_Attribute_Scores = "no"  # enter "yes" or "no" if you want the "flat table" Habitat Attribute output (doubles time to run script)
 update_Okanogan_reach_names = "no"  # if "yes" - update Okanogan reach names (should not have to run again - since on 5.Apr.2021 Ryan updated names)
@@ -87,6 +87,8 @@ source(paste(script_path, 'Criteria_Script.R', sep=""))
 print("----------------------------------------- Prepare Okanogan EDT prep --------------------------------------------")
 source(paste(script_path, 'Okanogan_EDT_data_input_prep.R', sep=""))
 
+
+
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #
 #
@@ -119,6 +121,8 @@ source( paste(script_path, 'Habitat_Quality_Scores_Generate_Script.R', sep="") )
 # output is Habitat_Quality_Pathway_Output
 # View(Habitat_Quality_Pathway_Output[['Habitat_Quality_Pathway_Restoration']])
 # View(Habitat_Quality_Pathway_Output[['Habitat_Quality_Pathway_Protection']])
+
+
 
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #
@@ -180,6 +184,8 @@ Limiting_Factor_Pathway_Bull_Trout = Generate_Limiting_Factor_Output_Table("Bull
 # View(Limiting_Factor_Spring_Chinook[['Limiting_Factor_Pathway_Protection']])
 #View(Limiting_Factor_Spring_Chinook[['Limiting_Factor_Pathway_Protection']][c('ReachName','LF_Sum','LF_Pct','LF_Score_Protection')])
 #unique(Limiting_Factor_Bull_Trout[['Limiting_Factor_Pathway_Restoration']]$unacceptable_and_at_risk_1_3_indiv_habitat_attributes)
+
+
 
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #
@@ -274,10 +280,12 @@ Restoration_Prioritization_Output_for_WebMap  =  FUNCTION_add_reach_information(
 # ------------ do MISC processing for output ---------
 Restoration_Prioritization_Output_for_WebMap = FUNCTION_prepare_outward_facing_table( Restoration_Prioritization_Output_for_WebMap , colnames_outward_facing_WebMap_ORDER, colnames_outward_facing_WebMap_UPDATED, exclude_bull_trout)
 
+
+
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #
 #
-#   - - - - - - - - -  Protection: Prep Output  - - - - - - - - - 
+#   - - - - - - - - -  PROTECTION: Prep Output  - - - - - - - - - 
 #  
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------------
@@ -294,6 +302,8 @@ Protection_Prioritization_Output = FUNCTION_Combine_Protection_Output(Habitat_Qu
                                                                       Limiting_Factor_Pathway_Spring_Chinook[['Limiting_Factor_Pathway_Protection']],
                                                                       Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']],
                                                                       Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Protection']] )
+
+
 
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #
@@ -340,6 +350,8 @@ unique(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output[which(Reac
 strsplit(Restoration_Prioritization_Output_for_WebMap[which(Restoration_Prioritization_Output_for_WebMap$`Reach Name` == reach_test),]$`Priority Life Stages`, ",")
 unique(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output[which(Reach_Habitat_Attribute_Life_Stage__Species_Restoration_Output$ReachName == reach_test),]$Life_Stage)
 
+
+
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #
 #
@@ -371,10 +383,12 @@ Order_of_Habitat_Attribute_Rating_Table_Columns = c("Coarse Substrate","% Fines/
 source(paste(script_path, "FUNCTIONS_for_Habitat_Attribute_Rating_Table_for_WebMap.R", sep=""))
 
 
+
+
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #
 #
-#   - - - - - - - - - PROJECTS - generate project layer - both for all projects and for project benefiting priority reaches  - - - - - - - - - 
+#   - - - - - - - - - PROJECTS: generate project layer - both for all projects and for project benefiting priority reaches  - - - - - - - - - 
 #  
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------------
@@ -399,6 +413,8 @@ Reach_Assessment_Project_Data_per_Reach = FUNCTION_projects_one_row_per_reach(Re
 # ---------------------------------------------------------------------------
 Reach_Assessment_Project_Data_Habitat_Attributes_Priority_Reaches = FUNCTION_output_actions_for_priority_reaches(Reach_Assessment_Project_Data_Habitat_Attributes, Restoration_Prioritization_Output_for_WebMap )
 
+
+
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #
 #
@@ -408,12 +424,10 @@ Reach_Assessment_Project_Data_Habitat_Attributes_Priority_Reaches = FUNCTION_out
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 
 source(paste(script_path, "Reach_Rankings_Restoration_and_Protection.R", sep=""))
+# ------  run the function to generate restoration rankings -------
+Restoration_Scores_Output = Generate_Restoration_or_Protection_Reach_Rankings_Table(basins_to_include )
 
-Restoration_Scores_Output = Generate_Restoration_or_Protection_Reach_Rankings_Table()
 
-# ----- but in export section -----------
-output_path_x =  paste(output_path,'Reach_Rankings_Restoration.xlsx', sep="")
-write_xlsx(Restoration_Scores_Output,output_path_x )
 
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #
@@ -472,6 +486,13 @@ write_xlsx(Reach_Assessment_Project_Data_Habitat_Attributes_Priority_Reaches,out
 # -----------------------------------------------------------------
 output_path_x =  paste(output_path,'Reach_Actions_Protection.xlsx', sep="")
 write_xlsx(Protection_Prioritization_Output,output_path_x )
+
+# -----------------------------------------------------------------
+#     Reach Rankings
+# -----------------------------------------------------------------
+output_path_x =  paste(output_path,'Reach_Rankings_Restoration.xlsx', sep="")
+write_xlsx(Restoration_Scores_Output,output_path_x )
+
 
 # -----------------------------------------------------------------
 #      Combine into one MASTER excel

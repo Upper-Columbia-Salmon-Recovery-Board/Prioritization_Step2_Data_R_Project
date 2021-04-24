@@ -1,6 +1,9 @@
 ---
 title: "Step 2 Prioritization Data Summary and Output"
-output: html_document
+output:
+  pdf_document:
+    toc: true
+    toc_depth: 2
 author: Ryan Niemeyer, UCSRB
 ---
 

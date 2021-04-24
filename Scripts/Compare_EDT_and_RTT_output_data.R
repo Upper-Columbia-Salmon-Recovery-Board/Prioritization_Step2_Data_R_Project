@@ -15,7 +15,7 @@
 
 # ------------------------------------------------------------------------------------ 
 #
-#                           compare EDT flow and RTT data 
+#                          Compare EDT flow and RTT data 
 #
 # ------------------------------------------------------------------------------------ 
 
@@ -67,6 +67,10 @@ for(reach_x in unique(HabitatAttribute_Ratings_level_2$Reach)){
     print("EDT Flow- Summer Base Flow: ")
     EDT_flow_base_flow
     
+    EDT_flow_water_withdrawls = EDT_reach_x$Function_Condition[EDT_reach_x$`EDT Attribute` == "Water Withdrawals"]
+    print("EDT Flow- Water Withdrawls: ")
+    EDT_flow_water_withdrawls
+    
     RTT_flow_base_flow = RTT_reach_x$Habitat_Attribute_Score[ RTT_reach_x$Habitat_Attribute   == "Flow- Summer Base Flow"]
     print("RTT Flow- Summer Base Flow: ")
     RTT_flow_base_flow
@@ -77,6 +81,10 @@ for(reach_x in unique(HabitatAttribute_Ratings_level_2$Reach)){
     EDT_food = EDT_reach_x$Function_Condition[EDT_reach_x$`RTT Habitat Attribute` == "Food- Food Web Resources"]
     print("EDT Food- Food Web Resources: ")
     EDT_food
+    
+    EDT_salmon_carcass = EDT_reach_x$Function_Condition[EDT_reach_x$`EDT Attribute` == "Salmon Carcasses"]
+    print("EDT Food- Salmon Carcasses: ")
+    EDT_salmon_carcass
     
     RTT_food = RTT_reach_x$Habitat_Attribute_Score[ RTT_reach_x$Habitat_Attribute   == "Food- Food Web Resources"]
     print("RTT Food- Food Web Resources: ")
@@ -109,8 +117,8 @@ for(reach_x in unique(HabitatAttribute_Ratings_level_2$Reach)){
     # ------------------- combine into one row ----------
     x_row = t( as.data.frame(c(reach_x, EDT_contaminants, RTT_contaminants, contaminants_dif,
                                EDT_flow_scour, RTT_flow_scour, flow_scour_dif,
-                               EDT_flow_base_flow, RTT_flow_base_flow, flow_base_flow_dif,
-                               EDT_food, RTT_food,  food_dif,
+                               EDT_flow_base_flow, EDT_flow_water_withdrawls, RTT_flow_base_flow, flow_base_flow_dif,
+                               EDT_food, EDT_salmon_carcass, RTT_food,  food_dif,
                                EDT_temp,  RTT_temp, temp_dif,
                                EDT_riparian, RTT_riparian, riparian_dif
     )) )

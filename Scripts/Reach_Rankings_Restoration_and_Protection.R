@@ -29,7 +29,7 @@ if(test){
 
 
 
-Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins, habitat_quality_scores_colnames_for_sum ){
+Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   
   # ------------------------------------------------------------------------------
   #       Establish species-specific variable names

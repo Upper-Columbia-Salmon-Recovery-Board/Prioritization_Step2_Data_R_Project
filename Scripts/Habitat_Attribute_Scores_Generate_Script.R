@@ -45,7 +45,7 @@ source(paste(script_path, 'FUNCTIONS_for_Habitat_Attribute_Filters.R', sep=""))
 # -------------- to test ------------------------
 test = FALSE
 if(test){
-  habitat_attribute_x = names(Habitat_Attributes_List)[3]
+  habitat_attribute_x = names(Habitat_Attributes_List)[10]
   data_sources_list =  Habitat_Attributes_List[habitat_attribute_x]
   data_source_x = data_sources_list[[1]][1]
 }
@@ -71,7 +71,8 @@ for(habitat_attribute_x in names(Habitat_Attributes_List) ){
   habitat_attribute_x_data_frame = data.frame()
   # ------------ prep data source name -----------
   data_source_output_list_per_row = c('a') # create a nchar = 1 data frame
-  column_names = c("(HabitatAttributeScore1)",	"(HabitatAttributeScore2)",	"(HabitatAttributeScore3)",	"(HabitatAttributeScore4)")
+  column_names = c("(HabitatAttributeScore1)",	"(HabitatAttributeScore2)",	"(HabitatAttributeScore3)",
+                   "(HabitatAttributeScore4)", "(HabitatAttributeScore5)", "(HabitatAttributeScore6)")
   i = 0
   
   for( data_source_x in data_sources_list[[1]] ){
@@ -132,8 +133,8 @@ for(habitat_attribute_x in names(Habitat_Attributes_List) ){
 
   # -------------- add NA columns so there are four columns -----------------
   na_column = as.data.frame(rep(NA, length.out=nrow(habitat_attribute_x_data_frame)))
-  if( ncol(habitat_attribute_x_data_frame) < 5){
-    for(i in 1:(5-ncol(habitat_attribute_x_data_frame) ) )
+  if( ncol(habitat_attribute_x_data_frame) < 7){
+    for(i in 1:(7-ncol(habitat_attribute_x_data_frame) ) )
       habitat_attribute_x_data_frame = cbind(habitat_attribute_x_data_frame, na_column)
   }
   
@@ -142,13 +143,14 @@ for(habitat_attribute_x in names(Habitat_Attributes_List) ){
   # --------------------------------------------------------------------
   
   # ---------------------------  prepare habitat data frame ----------------
-  colnames(habitat_attribute_x_data_frame) = c("ReachName", "HabitatAttributeScore1",	"HabitatAttributeScore2",	"HabitatAttributeScore3",	"HabitatAttributeScore4")
+  colnames(habitat_attribute_x_data_frame) = c("ReachName", "HabitatAttributeScore1",	"HabitatAttributeScore2",	"HabitatAttributeScore3",	"HabitatAttributeScore4",
+                                               "HabitatAttributeScore5","HabitatAttributeScore6")
   habitat_attribute_x_data_frame = as.tibble(habitat_attribute_x_data_frame)
-  cols.num <- c("HabitatAttributeScore1",	"HabitatAttributeScore2",	"HabitatAttributeScore3",	"HabitatAttributeScore4")
+  cols.num <- c("HabitatAttributeScore1",	"HabitatAttributeScore2",	"HabitatAttributeScore3",	"HabitatAttributeScore4",  "HabitatAttributeScore5",  "HabitatAttributeScore6")
   habitat_attribute_x_data_frame[cols.num] <- sapply(habitat_attribute_x_data_frame[cols.num],as.numeric)
   
   # ------------------- get minimum score for each row ----------
-  habitat_attribute_x_data_frame_CALC = habitat_attribute_x_data_frame[,c("HabitatAttributeScore1",	"HabitatAttributeScore2",	"HabitatAttributeScore3",	"HabitatAttributeScore4")]
+  habitat_attribute_x_data_frame_CALC = habitat_attribute_x_data_frame[,c("HabitatAttributeScore1",	"HabitatAttributeScore2",	"HabitatAttributeScore3",	"HabitatAttributeScore4", "HabitatAttributeScore5", "HabitatAttributeScore6")]
   habitat_attribute_x_data_frame_CALC = habitat_attribute_x_data_frame_CALC %>% 
     rowwise() %>%
     mutate(minimum_score = min(c_across(), na.rm=T) )
@@ -168,7 +170,8 @@ for(habitat_attribute_x in names(Habitat_Attributes_List) ){
   
   habitat_attribute_x_data_frame = cbind(habitat_attribute_x_data_frame,habitat_attribute_name, data_source_output_list_per_row,habitat_attribute_x_data_frame_CALC)
   colnames(habitat_attribute_x_data_frame) = c('ReachName',	'Basin',	'Assessment.Unit',	'Habitat_Attribute',	'Data_Sources',	'HabitatAttributeScore1',
-                                               'HabitatAttributeScore2',	'HabitatAttributeScore3',	'HabitatAttributeScore4',	'Habitat_Attribute_Score')
+                                               'HabitatAttributeScore2',	'HabitatAttributeScore3',	'HabitatAttributeScore4',
+                                               'HabitatAttributeScore5',	'HabitatAttributeScore6', 'Habitat_Attribute_Score')
   habitat_attribute_x_data_frame$Notes_or_Professional_Judgement = NA
   
   # --------------------------------------------------------------------
@@ -194,10 +197,12 @@ for(habitat_attribute_x in names(Habitat_Attributes_List) ){
     
     # -------------------- generate new habitat_attribute_x_data_frame ---------
     habitat_attribute_x_data_frame = habitat_attribute_x_data_frame_Merge[, c("ReachName" , "Basin","Assessment.Unit", "Habitat_Attribute", "Data_Sources" ,"HabitatAttributeScore1",           
-                                  "HabitatAttributeScore2","HabitatAttributeScore3","HabitatAttributeScore4" ,          
+                                  "HabitatAttributeScore2","HabitatAttributeScore3","HabitatAttributeScore4" ,
+                                  'HabitatAttributeScore5',	'HabitatAttributeScore6',          
                                    "Habitat_Attribute_Score" , "Notes_or_Professional_Judgement.x")]
     colnames(habitat_attribute_x_data_frame) = c("ReachName" , "Basin","Assessment.Unit", "Habitat_Attribute", "Data_Sources" ,"HabitatAttributeScore1",           
-                                                 "HabitatAttributeScore2","HabitatAttributeScore3","HabitatAttributeScore4" ,          
+                                                 "HabitatAttributeScore2","HabitatAttributeScore3","HabitatAttributeScore4" ,
+                                                 'HabitatAttributeScore5',	'HabitatAttributeScore6',          
                                                  "Habitat_Attribute_Score" , "Notes_or_Professional_Judgement")
   }
   

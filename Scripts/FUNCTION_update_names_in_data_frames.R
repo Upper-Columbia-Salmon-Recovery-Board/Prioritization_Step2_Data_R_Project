@@ -14,6 +14,7 @@
 
 Okanogan_Reach_Crosswalk =  read_excel(  paste(Okanogan_EDT_path,'Okanogan_AU_Reach_Crosswalk.xlsx', sep="")  )
 
+Crosswalk_to_use = Okanogan_Reach_Crosswalk
 
 # ------------------------------------------------------------------------------------------------------------
 #
@@ -28,7 +29,7 @@ input_data_frame = habitat_raw_data
 input_column = as.data.frame(habitat_raw_data[,"ReachName"])
 #input_column = input_column[,1]
 input_column_name = "ReachName"
-new_and_old_data_frame = Okanogan_Reach_Crosswalk[,c("ReachName_Old", "ReachName_New")]
+new_and_old_data_frame = Crosswalk_to_use[,c("ReachName_Old", "ReachName_New")]
 output_path_x = paste(Okanogan_EDT_path,'Habitat_Data_Raw.xlsx', sep="")
 
 # -------------- the Function -----------------
@@ -83,12 +84,12 @@ path_x2 = paste('C:/Users/Ryan/Documents/2_Habitat_Prioritzation/Prioritization/
 ATLAS_flow_data = read_excel( path_x )
 
 FUNCTION_read_in_and_update_file_reach_names( ATLAS_flow_data, as.data.frame(ATLAS_flow_data[,"ReachName"]), "ReachName", 
-                                              Okanogan_Reach_Crosswalk[,c("ReachName_Old", "ReachName_New")], 
+                                              Crosswalk_to_use[,c("ReachName_Old", "ReachName_New")], 
                                               path_x2  )
 
 # --------------- Habitat_Data_Raw ---------
 FUNCTION_read_in_and_update_file_reach_names(habitat_raw_data, as.data.frame(habitat_raw_data[,"ReachName"]), "ReachName", 
-                                             Okanogan_Reach_Crosswalk[,c("ReachName_Old", "ReachName_New")], 
+                                             Crosswalk_to_use[,c("ReachName_Old", "ReachName_New")], 
                                              paste(habitat_data_path,'Habitat_Data_Raw.xlsx', sep="") )
 
 # --------------- Channel_Unit_Raw ---------
@@ -235,7 +236,7 @@ FUNCTION_read_in_and_update_file_reach_names_already_updated_once = function(inp
 
 # --------------- Habitat_Data_Raw ---------
 FUNCTION_read_in_and_update_file_reach_names_already_updated_once(habitat_raw_data, as.data.frame(habitat_raw_data[,"ReachName"]), "ReachName", 
-                                             Okanogan_Reach_Crosswalk[,c("ReachName_Old", "ReachName_New")], 
+                                             Crosswalk_to_use[,c("ReachName_Old", "ReachName_New")], 
                                              paste(habitat_data_path,'Habitat_Data_Raw.xlsx', sep="") )
 
 # --------------- Channel_Unit_Raw ---------

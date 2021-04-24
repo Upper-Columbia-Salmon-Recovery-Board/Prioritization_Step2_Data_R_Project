@@ -35,6 +35,11 @@ reaches_path = "C:/Users/Ryan/Documents/GitHub/Prioritization_Step2_Data_R_Proje
 reaches <- sf::st_read(reaches_path) # this shapefile does not show up properly
 reaches <- sf::st_transform(reaches, 4326)
 
+# ---------------- Reaches from Jan 2021 ------------
+#reaches_path = "C:/Users/Ryan/Downloads/Reaches_(All_Jan2021)/Reaches_(All).shp"
+#reaches_jan2021 <- sf::st_read(reaches_path) # this shapefile does not show up properly
+#reaches_jan2021 <- sf::st_transform(reaches_jan2021, 4326)
+
 # ---------------------------------------------------------------------------
 #  Read in Habitat Quality Score
 # ---------------------------------------------------------------------------
@@ -120,6 +125,8 @@ reaches_Projects$Reach_Assessment = as.factor(reaches_Projects$Reach_Assessment)
 # -------------------------------------
 #   Reach Restoration Scores
 # -------------------------------------
+Restoration_Scores_Output = read.csv( 'C:/Users/Ryan/Documents/GitHub/Prioritization_Step2_Data_R_Project/Output/Reach_Rankings_Restoration.csv', nrows=134, header=T )
+
 # -------- merge reach spatial data with habitat data --------------
 reaches_reach_ranks_data = merge(reaches, Restoration_Scores_Output, by = "ReachName") 
 # ------- remove columns we don't want ------
@@ -182,6 +189,7 @@ as.numeric(as.character( reaches_HQ_data$`Off-Channel-Floodplain_score` ))[x] - 
 # ---------------------- color palettes for display --------------
 color_palette_x = c("red", "yellow","forestgreen")
 color_palette_continuous = brewer.pal(9, 'YlGnBu')
+color_palette_continuous_LARGE = brewer.pal(9, 'Set1')
 color_palette_x_YES_NO = brewer.pal(3, 'BuPu')
 color_palette_x_YES_NO = c("#6C0586", "#FBFF68")
 color_neg_to_pos = brewer.pal(11, 'RdBu')
@@ -189,23 +197,30 @@ color_qualitative = brewer.pal(9, 'Set1')
 
 # ---------------------------------------------------------------------------
 #
-#  PLOT SINGLE Plots 
+#  PLOT SINGLE Plots (single window)
 #
 # ---------------------------------------------------------------------------
 
 # THIS prints all the attributes you can map
 print(names(reaches_HQ_data))
 
+reaches_HQ_data$random_number = round(runif(nrow(reaches_HQ_data),1,9))
+
+# --- simple version ---:
+mapview(reaches_HQ_data, zcol= "random_number", lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
+        color= color_palette_continuous_LARGE, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
+
+
 # ----------------------------------------------------------
 #     plot FACTOR/SCORE variable 
 # ----------------------------------------------------------
 
 # ------ ENTER the attribute to print here ------
-attribute_1 = "Riparian-CanopyCover_score"
 attribute_1 = "Riparian-Disturbance_score"
 attribute_1 = "Off-Channel-Side-Channels_score"
 attribute_1 = "HQ_Score_Restoration"
 attribute_1 = "HQ_Score_Protection"
+attribute_1 = "Riparian-CanopyCover_score"
 
 # --- simple version ---:
 mapview(reaches_HQ_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
@@ -281,7 +296,7 @@ mapview(reaches_reach_ranks_data, zcol = attribute_1, lwd=4, legend = mapviewGet
 
 # ------------- for Reach Ranks -------------
 attribute_1 = "Score_Total"
-color_palette_continuous = brewer.pal(10, 'YlGnBu')
+color_palette_continuous = brewer.pal(7, 'YlGnBu')
 
 mapview(reaches_reach_ranks_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), 
         color= color_palette_continuous, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
@@ -311,11 +326,11 @@ mapview(reaches_Restoration_WebMap_data, lwd=4, legend = mapviewGetOption("legen
 
 # ---------------------------------------------------------------------------
 #
-#  PLOT Multiple Plots and Compare
+#  PLOT Multiple Plots and Compare (multiple windows)
 #
 # ---------------------------------------------------------------------------
 
-# --------------- CHOOSE the four attributres to plot ----------
+# --------------- CHOOSE the four attributes to plot ----------
 attribute_1 = "HQ_Score_Restoration"
 attribute_2 = "HQ_Score_Protection"
 attribute_3 = "Spring.Chinook.Reach"

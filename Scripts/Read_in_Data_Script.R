@@ -319,7 +319,12 @@ for(rowx in rownames(Habitat_Limiting_Factor_Rating_Criteria)){
 #
 # ---------------------------------------------------------------------------
 
+# -------------------- Confinement Excel ------------------
 Confinement_Scores = read_excel( paste(habitat_data_path,'Confinement_Scores.xlsx', sep="") )
+# --------------------- Read in Confinement Scores -----------------
+Confinement_Scores_Criteria = read_excel( paste(habitat_data_path,'Confinement_Scores.xlsx', sep="") )
+# ----------------- Update Scores -------------
+
 
 # ------------------- update geomorphic potential/confinement scores with criteria ---------------
 source(paste(script_path, 'FUNCTIONS_for_Reading_Data.R', sep=""))
@@ -458,12 +463,14 @@ RTT_orig_habitat_attributes = unique(Crosswalk_Habitat_Attributes_and_Actions$`H
 
 for(hab_x in RTT_EDT_habitat_attributes){
   
-  
-  if( any(RTT_orig_habitat_attributes == hab_x) ){
-    print(paste("RTT_EDT in orig RTT: ", hab_x))
-  }else{
-    print(paste("-------- RTT_EDT NOT orig RTT: ", hab_x))
+  if(!is.na(hab_x)){
+    if( any(RTT_orig_habitat_attributes == hab_x) ){
+      print(paste("RTT_EDT in orig RTT: ", hab_x))
+    }else{
+      print(paste("-------- RTT_EDT NOT orig RTT: ", hab_x))
+    }
   }
+
 }
 
 
@@ -492,4 +499,4 @@ for(reach_x in reaches_GIS$ReachName){
 }
 
 rownames(reaches_in_GIS_not_in_habitat_raw_data) = seq(1,nrow(reaches_in_GIS_not_in_habitat_raw_data))
-
+colnames(reaches_in_GIS_not_in_habitat_raw_data) = c("Basin","ReachName")
