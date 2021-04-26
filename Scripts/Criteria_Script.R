@@ -1,6 +1,6 @@
 # ---------------------------------------------------------------------------
 #
-#      SCRIPT: Establish Critiera for Filters 
+#      SCRIPT: Establish Criteria for Filters 
 #
 #      R Project to generate Priority Action Categories Based on Habitat Quality 
 #          and Limiting Factor Analysis from Step 2 of RTT Prioritization Process

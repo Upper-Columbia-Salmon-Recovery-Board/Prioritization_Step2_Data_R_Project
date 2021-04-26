@@ -394,12 +394,12 @@ AU_Ranks_Okanogan = read_excel( paste(Okanogan_EDT_path,'AU_Ranks_Okanogan_EDT.x
 cols.num = c('AU Restoration Rank',	'AU Protection Rank')
 AU_Ranks_Okanogan[cols.num] <- sapply(AU_Ranks_Okanogan[cols.num],as.numeric)
 
-
 # ----------------- just to compare habitat attribute listed --------
 # unique(AttributeCrosswalk$`RTT Habitat Attributes`)[order(unique(AttributeCrosswalk$`RTT Habitat Attributes`))]
 # unique(HabitatAttribute_Ratings$`RTT Habitat Attribute`)[order(unique(HabitatAttribute_Ratings$`RTT Habitat Attribute`))]
 # unique(Limiting_Factors_Okanogan_EDT$)
 # missing from HabitatAttribute_Ratings: "Off-Channel- Floodplain"    "Off-Channel- Side-Channels" "Pool Quantity & Quality"
+
 # ---------------------------------------------------------------------------
 #
 #  Okanogan Criteria Data
@@ -449,54 +449,63 @@ for(i in 1:nrow(Action_Category_Name_Crosswalk)){
 
 # ---------------------------------------------------------------------------
 #
-#    END
+#      Reading in data to do comparisons 
 #
 # ---------------------------------------------------------------------------
 
-
-
-# --------------- just a loop to comprae EDT-RTT crosswalk habitat attributes and original habitat attribute-action categories attributes 00000
-RTT_EDT_habitat_attributes = unique(AttributeCrosswalk$`RTT Habitat Attributes`)
-RTT_EDT_habitat_attributes = RTT_EDT_habitat_attributes[-2]
-
-RTT_orig_habitat_attributes = unique(Crosswalk_Habitat_Attributes_and_Actions$`Habitat Attribute`)
-
-for(hab_x in RTT_EDT_habitat_attributes){
+# --------------- just a loop to comprae EDT-RTT crosswalk habitat attributes and original habitat attribute-action categories attributes -------
+compare_RTT_and_EDT_habitat_attributes_True_False = FALSE
+if(compare_RTT_and_EDT_habitat_attributes_True_False){
   
-  if(!is.na(hab_x)){
-    if( any(RTT_orig_habitat_attributes == hab_x) ){
-      print(paste("RTT_EDT in orig RTT: ", hab_x))
-    }else{
-      print(paste("-------- RTT_EDT NOT orig RTT: ", hab_x))
+  RTT_EDT_habitat_attributes = unique(AttributeCrosswalk$`RTT Habitat Attributes`)
+  RTT_EDT_habitat_attributes = RTT_EDT_habitat_attributes[-2]
+  
+  RTT_orig_habitat_attributes = unique(Crosswalk_Habitat_Attributes_and_Actions$`Habitat Attribute`)
+  
+  for(hab_x in RTT_EDT_habitat_attributes){
+    
+    if(!is.na(hab_x)){
+      if( any(RTT_orig_habitat_attributes == hab_x) ){
+        print(paste("RTT_EDT in orig RTT: ", hab_x))
+      }else{
+        print(paste("-------- RTT_EDT NOT orig RTT: ", hab_x))
+      }
     }
+    
   }
-
+  
+  
+  
 }
-
-
 
 
 
 # ---------------- comparing Reach layer and habitat_raw_data -------------
 
-reaches_GIS = read_csv( 'C:/Users/Ryan/Downloads/Reaches_March_2021/Reaches_0.csv')
+comparing_habitat_raw_data_and_reach_layer_T_F = FALSE
+if(comparing_habitat_raw_data_and_reach_layer_T_F){
 
-reaches_in_GIS_not_in_habitat_raw_data = c()
-for(reach_x in reaches_GIS$ReachName){
+  reaches_GIS = read_csv( 'C:/Users/Ryan/Downloads/Reaches_March_2021/Reaches_0.csv')
   
-  if( any(habitat_raw_data$ReachName == reach_x) ){
-  }else{
+  reaches_in_GIS_not_in_habitat_raw_data = c()
+  for(reach_x in reaches_GIS$ReachName){
     
-    #print("this reach is not in habitat raw data:")
-    x = which(reaches_GIS$ReachName == reach_x)
-    basin_x = reaches_GIS$Basin[x]
-    if(basin_x != "Okanogan"){
-      print(reach_x) 
-      row_x = t(as.data.frame(c(basin_x, reach_x)))
-      reaches_in_GIS_not_in_habitat_raw_data = rbind(reaches_in_GIS_not_in_habitat_raw_data,   row_x)
+    if( any(habitat_raw_data$ReachName == reach_x) ){
+    }else{
+      
+      #print("this reach is not in habitat raw data:")
+      x = which(reaches_GIS$ReachName == reach_x)
+      basin_x = reaches_GIS$Basin[x]
+      if(basin_x != "Okanogan"){
+        print(reach_x) 
+        row_x = t(as.data.frame(c(basin_x, reach_x)))
+        reaches_in_GIS_not_in_habitat_raw_data = rbind(reaches_in_GIS_not_in_habitat_raw_data,   row_x)
+      }
     }
   }
-}
+  
+  rownames(reaches_in_GIS_not_in_habitat_raw_data) = seq(1,nrow(reaches_in_GIS_not_in_habitat_raw_data))
+  colnames(reaches_in_GIS_not_in_habitat_raw_data) = c("Basin","ReachName")
 
-rownames(reaches_in_GIS_not_in_habitat_raw_data) = seq(1,nrow(reaches_in_GIS_not_in_habitat_raw_data))
-colnames(reaches_in_GIS_not_in_habitat_raw_data) = c("Basin","ReachName")
+    
+}

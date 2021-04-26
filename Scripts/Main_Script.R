@@ -3,11 +3,11 @@
 #      R Script to generate Priority Action Categories Based on Habitat Quality 
 #          and Limiting Factor Analysis from Step 2 of RTT Prioritization Process
 #
-#          Auth++or: Ryan Niemeyer, Upper Columbia Salmon Recovery Board
+#          Author: Ryan Niemeyer, Upper Columbia Salmon Recovery Board
 #          For more information, see https://www.ucsrb.org/prioritization/
 #
 # ---------------------------------------------------------------------------
-# Test text here!
+
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #
 #
@@ -109,7 +109,8 @@ source(paste(script_path, 'Habitat_Attribute_Scores_Generate_Script.R', sep="") 
 # OUTPUT is Habitat_Attribute_Scores
 
 # script to add habitat attribute scores from EDT 
-source( paste(script_path, 'FUNCTIONS_Okanogan_EDT_Habitat_Attribute_Habitat_Quality_Scripts.R', sep="") )
+#   As of now (April 23) not using Okanogan_EDT_data_input_prep.R
+# source( paste(script_path, 'FUNCTIONS_Okanogan_EDT_Habitat_Attribute_Habitat_Quality_Scripts.R', sep="") )
 
 
 # ---------------------------------------------------------------------------
@@ -137,8 +138,11 @@ source( paste(script_path, 'Habitat_Quality_Scores_Generate_Script.R', sep="") )
 # ---------------------------------------------------------------------------
 # NOTE: the function below runs HQ Pathway for Restoration and Protection
 print("----------------------------------------- APPLY HABITAT QUALITY FILTERS FOR PRIORITIZATION --------------------------------------------")
-
+# ------- Habitat Quality Pathway Filter for the Methow-Entiat-Wenatchee ---------------
 source(paste(script_path, 'Habitat_Quality_Pathway_Filter.R', sep=""))  # for Methow-Wenatchee-Entiat AND Okanogan functions
+# ------- Habitat Quality Pathway Filter for the Okanogan ---------------
+source(paste(script_path, 'Habitat_Quality_Pathway_Filter_OKANOGAN.R', sep=""))  # for Methow-Wenatchee-Entiat AND Okanogan functions
+
 
 # ----- set names of Habitat Quality Scores to sum ------
 habitat_quality_scores_colnames_for_sum = c("Stability_Mean" , "CoarseSubstrate_score" ,"Cover-Wood_score", "Flow-SummerBaseFlow_score",
@@ -154,14 +158,14 @@ Habitat_Quality_Pathway_Steelhead_OKANOGAN = Generate_Habitat_Quality_Output_Tab
 
 # ---------------- add Okanogan to Methow-Wenatchee-Okanogan HQ Output ------------
 habitat_quality_scores_colnames_for_combo = colnames(Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']])[7:(ncol(Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']])-7)]
-Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']] = Combine_MetEntWen_and_Okanogan_Output(Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']],
+Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']] = Combine_MetEntWen_and_Okanogan_Habitat_Quality_Output(Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']],
                                       Habitat_Quality_Pathway_Steelhead_OKANOGAN[['Habitat_Quality_Pathway_Restoration']],  
                                       habitat_quality_scores_colnames_for_combo)
 
 # ------------------- Compare EDT and RTT Output ----------------------
 source(paste(script_path, 'Compare_EDT_and_RTT_output_data.R', sep=""))  # for Methow-Wenatchee-Entiat AND Okanogan functions
 
-
+# Use these to View the various outputs
 # View(Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']])
 # View(Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Protection']])
 # View(Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']])
@@ -172,12 +176,17 @@ source(paste(script_path, 'Compare_EDT_and_RTT_output_data.R', sep=""))  # for M
 # ---------------------------------------------------------------------------
 # NOTE: Protection output includes habitat attributes but does not filter based on habitat attributes
 print("----------------------------------------- APPLY LIMITING FACTOR FILTERS FOR PRIORITIZATION --------------------------------------------")
-
+# ------- Limiting Factor Pathway Filter for the Methow-Entiat-Wenatchee ---------------
 source(paste(script_path, 'Limiting_Factor_Pathway_Filter.R', sep=""))
+# ------- Limiting Factor Pathway Filter for the Okanogan ---------------
+source(paste(script_path, 'Limiting_Factor_Pathway_Filter_OKANOGAN.R', sep=""))
 
+# ---------------- Generate Limiting Factor Output for Each Species ----------------
 Limiting_Factor_Pathway_Spring_Chinook = Generate_Limiting_Factor_Output_Table("Spring Chinook", basins_to_include)
 Limiting_Factor_Pathway_Steelhead = Generate_Limiting_Factor_Output_Table("Steelhead", basins_to_include)
 Limiting_Factor_Pathway_Bull_Trout = Generate_Limiting_Factor_Output_Table("Bull Trout", basins_to_include)
+# --------------- generate for Okanogan ---------------
+Limiting_Factor_Pathway_Steelhead_OKANOGAN = Generate_Limiting_Factor_Output_Table_Okanogan("Steelhead" )
 
 # -- for viewing data -----
 # View(Limiting_Factor_Spring_Chinook[['Limiting_Factor_Pathway_Restoration']])
