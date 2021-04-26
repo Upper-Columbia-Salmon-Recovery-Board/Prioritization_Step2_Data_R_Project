@@ -29,7 +29,7 @@ If you have any questions, please feel to reach out to me at ryan.niemeyer@ucsrb
 <img src="https://www.ucsrb.org/wp-content/uploads/2021/02/salmonrecoveryfundingboard.jpg" width="200">
 <img src="https://www.ucsrb.org/wp-content/uploads/2021/02/bonneville-environmental-foundation-vector-logo.png" width="250">
 <img src="https://www.ucsrb.org/wp-content/uploads/2021/02/BPA.png" width="250">
-<img src="https://www.ucsrb.org/wp-content/uploads/2021/02/yakama_logo_color.png" width="200">
+<img src="https://github.com/Upper-Columbia-Salmon-Recovery-Board/Prioritization_Step2_Data_R_Project/blob/main/Data/Screenshots_for_GitHub/Yakama_Nation_Fisheries_Logo.PNG" width="200">
 
 
 ## Upper Columbia Salmon Recovery Board region
