@@ -18,7 +18,7 @@
 #
 # ---------------------------------------------------------------------------
 
-test_x = TRUE
+test_x = FALSE
 if(test_x){
   species = "Steelhead"
 }
@@ -42,6 +42,8 @@ Generate_Limiting_Factor_Output_Table_Okanogan = function(species, basins){
     life_stage_sum_column = 'SH_Life_Stage_Sum'
     # ---------------- life stage priority names ---------
     life_stages_priorities_species_specific =  life_stages_priorities[['steelhead_life_stages']]
+    # ----------------------- life stage presence in reach -------------
+    reach_life_stage_presence = steelhead_life_stages_presence
     # ------------------- output names ----------------------
     restoration_output_name = paste(paste("Steelhead_Limiting_Factors_RESTORATOIN_Okanogan" , 
                                           paste(basins_to_include, collapse = "_"), sep="_"),
@@ -128,78 +130,52 @@ Generate_Limiting_Factor_Output_Table_Okanogan = function(species, basins){
   print(paste("Protection - total after AU rank filter: ", nrow(Species_Reach_Information_data_protection), sep=""))
   
   #  ---------------------------------------------------------------------------------
-  #          Generate Life Stage Tables and Score for Restoration and Protection (not considering filters above)
+  #
+  #          Finalize Restoration 
+  #
   #  ---------------------------------------------------------------------------------
   
-  Reaches_Limiting_Factor_Pathway_FILTERED = Generate_EDT_Output_for_Limiting_Factor(species)
-  # NOTE: Reaches_Limiting_Factor_Pathway_FILTERED will potentially have duplicated reaches 
-  #        since a reach could be priority for multiple life stages
-  # NOTE: above function filters based on life stage priority at AU level as well
-  # --------------- remove all the NAs and trailing commas ----------------------
-  Reaches_Limiting_Factor_Pathway_FILTERED[,'unacceptable_1_indiv_habitat_attributes'] = str_remove(Reaches_Limiting_Factor_Pathway_FILTERED[,'unacceptable_1_indiv_habitat_attributes'], ",NA")
-  Reaches_Limiting_Factor_Pathway_FILTERED[,'at_risk_2_or_3_indiv_habitat_attributes'] = str_remove(Reaches_Limiting_Factor_Pathway_FILTERED[,'at_risk_2_or_3_indiv_habitat_attributes'], ",NA")
-  Reaches_Limiting_Factor_Pathway_FILTERED[,'unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes'] = str_remove(Reaches_Limiting_Factor_Pathway_FILTERED[,'unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes'], ",NA")
-  # ---------------- remove NA ------------
-  Reaches_Limiting_Factor_Pathway_FILTERED[,'unacceptable_1_indiv_habitat_attributes'] = str_remove(Reaches_Limiting_Factor_Pathway_FILTERED[,'unacceptable_1_indiv_habitat_attributes'], "NA")
-  Reaches_Limiting_Factor_Pathway_FILTERED[,'at_risk_2_or_3_indiv_habitat_attributes'] = str_remove(Reaches_Limiting_Factor_Pathway_FILTERED[,'at_risk_2_or_3_indiv_habitat_attributes'], "NA")
-  Reaches_Limiting_Factor_Pathway_FILTERED[,'unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes'] = str_remove(Reaches_Limiting_Factor_Pathway_FILTERED[,'unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes'], "NA")
-  # ----------------- remove commas -------------
-  Reaches_Limiting_Factor_Pathway_FILTERED[,'unacceptable_1_indiv_habitat_attributes'] = (gsub("^\\,|\\,$", "", Reaches_Limiting_Factor_Pathway_FILTERED[,'unacceptable_1_indiv_habitat_attributes']))
-  Reaches_Limiting_Factor_Pathway_FILTERED[,'at_risk_2_or_3_indiv_habitat_attributes'] = (gsub("^\\,|\\,$", "", Reaches_Limiting_Factor_Pathway_FILTERED[,'at_risk_2_or_3_indiv_habitat_attributes']))
-  Reaches_Limiting_Factor_Pathway_FILTERED[,'unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes'] = (gsub("^\\,|\\,$", "", Reaches_Limiting_Factor_Pathway_FILTERED[,'unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes']))
-  # ------------------ remove _score ---------------
-  Reaches_Limiting_Factor_Pathway_FILTERED[,'unacceptable_1_indiv_habitat_attributes'] =  (  gsub('_score','',Reaches_Limiting_Factor_Pathway_FILTERED[,'unacceptable_1_indiv_habitat_attributes']) )
-  Reaches_Limiting_Factor_Pathway_FILTERED[,'at_risk_2_or_3_indiv_habitat_attributes'] = (  gsub('_score','',Reaches_Limiting_Factor_Pathway_FILTERED[,'at_risk_2_or_3_indiv_habitat_attributes']) )
-  Reaches_Limiting_Factor_Pathway_FILTERED[,'unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes'] = (  gsub('_score','',Reaches_Limiting_Factor_Pathway_FILTERED[,'unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes']) )
-  #  ----------------------- remove _Mean -----------------------
-  Reaches_Limiting_Factor_Pathway_FILTERED[,'unacceptable_1_indiv_habitat_attributes'] =  (  gsub('_Mean','',Reaches_Limiting_Factor_Pathway_FILTERED[,'unacceptable_1_indiv_habitat_attributes']) )
-  Reaches_Limiting_Factor_Pathway_FILTERED[,'at_risk_2_or_3_indiv_habitat_attributes'] = (  gsub('_Mean','',Reaches_Limiting_Factor_Pathway_FILTERED[,'at_risk_2_or_3_indiv_habitat_attributes']) )
-  Reaches_Limiting_Factor_Pathway_FILTERED[,'unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes'] = (  gsub('_Mean','',Reaches_Limiting_Factor_Pathway_FILTERED[,'unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes']) )
-  
-  print(paste("TOTAL reaches passing through life stage (without applying above filters): ", length(unique(Reaches_Limiting_Factor_Pathway_FILTERED$ReachName)), sep=""))
-  
-  
   #  ---------------------------------------------------------------------------------
-  #            Filter out to select for Habitat Quality RESTORATION score
-  #  ---------------------------------------------------------------------------------
-  
-  # ----------------------- filter out for Habitat_Quality_Scores reaches with Habitat Quality Score criteria --------------
-  Limiting_Factor_Scores_Restoration = Reaches_Limiting_Factor_Pathway_FILTERED %>%  
-    filter(LF_Score_Restoration   >=   SCORE_Criteria_Habitat_Quality_Pathway_Restoration)
-  # ------------------------ identify AUs that pass this filter in reach-based table ----------
-  Limiting_Factor_Pathway_Restoration = Limiting_Factor_Scores_Restoration %>%  
-    filter(ReachName   %in%   Species_Reach_Information_data_restoration$`ReachName`)
-  
-  print(paste("Restoration - total after HQ score filter: ", length(unique(Limiting_Factor_Pathway_Restoration$ReachName)), sep=""))
-  
-  #  ---------------------------------------------------------------------------------
-  #            Filter out to select for Habitat Quality PROTECTION score
-  #  ---------------------------------------------------------------------------------
-  
-  # ----------------------- filter out for Habitat_Quality_Scores reaches with Habitat Quality Score critera --------------
-  Limiting_Factor_Scores_Protection = Reaches_Limiting_Factor_Pathway_FILTERED %>%  
-    filter(LF_Score_Protection   >=   SCORE_Criteria_Habitat_Quality_Pathway_Protection)
-  # ------------------------ identify AUs that pass this filter in reach-based table ----------
-  Limiting_Factor_Pathway_Protection = Limiting_Factor_Scores_Protection %>%  
-    filter(ReachName   %in%   Species_Reach_Information_data_protection$`ReachName`)
-  
-  print(paste("Protection - total after HQ score filter: ", length(unique(Limiting_Factor_Pathway_Protection$ReachName)), sep=""))
-  
-  
-  
-  #  ---------------------------------------------------------------------------------
-  #           Only pull 1 (unacceptable) and 3 (at risk) from the 
+  #           Only pull 1 (unacceptable) and 3 (at risk) from the RTT Limiting Factor Score 
   #  ---------------------------------------------------------------------------------
   Limiting_Factors_Okanogan_EDT_filtered = Limiting_Factors_Okanogan_EDT[Limiting_Factors_Okanogan_EDT$RTT_Limiting_Factor_Score <= Individual_Habitat_Attribute_Score,]
   
+  #  ---------------------------------------------------------------------------------
+  #          Generate Life Stage Tables and Score for Restoration and Protection (not considering filters above)
+  #  ---------------------------------------------------------------------------------
+  
+  Limiting_Factor_Pathway_Restoration = Generate_Species_Output_Table_Okanogan(species)
+  
+
+  
+  
+  #  ---------------------------------------------------------------------------------
+  #          Generate Life Stage Tables and Score for Restoration and Protection (not considering filters above)
+  #  ---------------------------------------------------------------------------------
+  
+  print(paste("TOTAL reaches passing through life stage (without applying above filters): ", length(unique(Reaches_Limiting_Factor_Pathway_FILTERED$ReachName)), sep=""))
+  
+  #  ---------------------------------------------------------------------------------
+  #
+  #          Finalize Protection 
+  #
+  #  ---------------------------------------------------------------------------------
+  
+  # !!!!!! NOTE !!!!!!!!!!!! As of now - not doing protection for the Okanogan with the Limiting Factor Pathway (just for the HQ pathway)
+  
+  # ----------------------- filter out for Habitat_Quality_Scores reaches with Habitat Quality Score critera --------------
+
+  
+  # print(paste("Protection - total after HQ score filter: ", length(unique(Limiting_Factor_Pathway_Protection$ReachName)), sep=""))
+  
+  
+
   
   
   
-  
-  # --------------------- but Restoration and Protectoin into a list --------------
+  # --------------------- but Restoration and Protection into a list --------------
   Limiting_Factor_Pathway_Output = list( 
-    "Limiting_Factor_Pathway_Restoration" = Limiting_Factor_Pathway_Restoration,
-    "Limiting_Factor_Pathway_Protection" = Limiting_Factor_Pathway_Protection
+    "Limiting_Factor_Pathway_Restoration" = Limiting_Factor_Pathway_Restoration
   )
   
   return(Limiting_Factor_Pathway_Output)
@@ -210,179 +186,169 @@ Generate_Limiting_Factor_Output_Table_Okanogan = function(species, basins){
 
 
 
+# What output should look like View(Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']])
+
+
 # ---------------------------------------------------------------------------
 #
 #   Function to generate Life Stage Tables (all the habitat attributes and scores)
 #
 # ---------------------------------------------------------------------------
 
-Generate_EDT_Output_for_Limiting_Factor = function(species){
+Generate_Species_Output_Table_Okanogan = function(species){
+  
   
   # -------------------------------------------------------
-  #     Generate list of life stages for this species
+  #
+  #     Loop Through Life Stages 
+  #
   #--------------------------------------------------------
   
-  # -------------------- pull habitat attributes/life stages JUST for this species ---------
-  Attribute_LifeStage_Crosswalk_Life_Stage = Attribute_LifeStage_Crosswalk %>%
-    filter(Species  %in% species  )
+  # -------------------------------------------------------
+  #     Loop through each life stage and get habitat attribute scores
+  #--------------------------------------------------------
   
-
+  # -------------------------- get list of life stages --------------------
+  life_stages = unique(Limiting_Factors_Okanogan_EDT_filtered$`RTT Life Stage`)
   
-  return(Reaches_Limiting_Factor_Pathway_FILTERED)
+  #Life_Stages_Habitat_Priorities_ALL= list()
+  #Life_Stages_Habitat_Priorities_FILTERED = list()
+  Reaches_Limiting_Factor_Pathway_FILTERED_Okanogan = c()
+  # ---------------------------- generate the scores for all the life stages -----------------
+  print("...processing the following life stages")
+  for(life_stage_x in life_stages){
+    print(paste("     ....",life_stage_x, sep=""))
+    
+    # --------------------------------------------------------------------
+    #     Get reaches/habitat attributes with this life stage
+    #  ------------------------------------------------------------------
+    Limiting_Factors_Okanogan_EDT_filtered_life_stage_x = Limiting_Factors_Okanogan_EDT_filtered[which(Limiting_Factors_Okanogan_EDT_filtered$`RTT Life Stage` == life_stage_x), ]
+    
+    # --------------------------------------------------------------------
+    #     Filter out to only include AU with life stage priority AND reach life stage presence 
+    #  ------------------------------------------------------------------
+    Limiting_Factors_Okanogan_EDT_filtered_life_stage_updated = Life_Stage_Priority_Filter_Function_Okanogan(life_stage_x, Limiting_Factors_Okanogan_EDT_filtered_life_stage_x, Life_Stage_Priority)
+    
+    
+    # --------------------------------------------------------------------
+    #     Filter for only Level 3s with Level 2 Crosswalks (and therefore RTT habitat)
+    # ------------------------------------------------------------------
+    Limiting_Factors_Okanogan_EDT_filtered_life_stage_updated = Limiting_Factors_Okanogan_EDT_filtered_life_stage_updated[ which( !is.na( Limiting_Factors_Okanogan_EDT_filtered_life_stage_updated$EDT_Attribute_Level_2 ) ),  ]
+    
+    
+    # --------------------------------------------------------------------
+    #    Pull only 1s (Unacceptable) and 3s (At Risk) and prep to combine with Wenatchee, Entiat, and Methow output
+    # ------------------------------------------------------------------
+    
+    Limiting_Factor_Okanogan_At_Risk_and_Unacceptable = pull_Level2_1s_and_3s_from_Level3(Limiting_Factors_Okanogan_EDT_filtered_life_stage_updated, life_stage_x)
+      
+      
+      
+    Reaches_Limiting_Factor_Pathway_FILTERED_Okanogan = rbind(Reaches_Limiting_Factor_Pathway_FILTERED_Okanogan,
+                                                              Limiting_Factor_Okanogan_At_Risk_and_Unacceptable )
+      
+  }
+  
+  return(Reaches_Limiting_Factor_Pathway_FILTERED_Okanogan)
   
 }
 
 
-
 # -----------------------------------------------------------------------------------------
-#     Function to pull ALL habitat attributes for each life stage, calculate Restoration
-#         and Protection scores, list all 1 or 3 habitat attributes        
-# -----------------------------------------------------------------------------------------
-# attributes not in data: Entrainment - Fry OR Entrainment- Summer Rearing (Entrainment/Stranding) is present AND Predators- Adults are misspelled
-
-Generate_individual_life_stage_score = function(species, life_stage){
-  
-  # -------------------- pull habitat attributes/life stages JUST for this species ---------
-  Attribute_LifeStage_Crosswalk_Life_Stage = Attribute_LifeStage_Crosswalk %>%
-    filter(Species  %in% species  )
-  
-  # ------------------ pull habitat attributes JUST for this life stage -------------------
-  habitat_attributes_life_stage_list = Attribute_LifeStage_Crosswalk_Life_Stage %>%
-    filter(Attribute_LifeStage_Crosswalk_Life_Stage$'Life Stage'  %in%  life_stage  )
-  
-  # --------------------------------------------------------------------------------
-  #         generate all the scores for all the habitat attributes for EVERY reach in basin(s)
-  # --------------------------------------------------------------------------------
-  
-  Habitat_Attribute_Scores_for_individual_Life_Stage = c()
-  
-  for(habitat_attribute_x in habitat_attributes_life_stage_list$'Habitat Attribute'){
-    
-    # --------------------- generate Habitat Attribute scores for this life stage -------
-    Habitat_Attribute_Scores_Life_Stage = Habitat_Attribute_Scores %>%
-      filter(Habitat_Attribute %in% habitat_attribute_x)
-    # -----------------------pull only the habitat attribute score ---------
-    Habitat_Attribute_Score_x = Habitat_Attribute_Scores_Life_Stage$Habitat_Attribute_Score
-    # --------------- convert to a data frame and add column name-----------
-    Habitat_Attribute_Score_x = as.data.frame(Habitat_Attribute_Score_x)
-    colnames(Habitat_Attribute_Score_x) = habitat_attribute_x
-    
-    # -------------- combine with other habitat attributes for this life stage ------------
-    # -------- if it's the first habitat attribute -----
-    if( is.null(nrow(Habitat_Attribute_Scores_for_individual_Life_Stage)) ){
-      Habitat_Attribute_Scores_for_Life_Stages_REACHES_BASINS = Habitat_Attribute_Scores_Life_Stage[,c("ReachName","Basin")]
-      Habitat_Attribute_Scores_for_individual_Life_Stage = Habitat_Attribute_Score_x
-      #------- if it's not the first habitat attribute -----
-    }else if( nrow(Habitat_Attribute_Score_x) > 0 ){
-      Habitat_Attribute_Scores_for_individual_Life_Stage = cbind(Habitat_Attribute_Scores_for_individual_Life_Stage, Habitat_Attribute_Score_x)
-    }
-  }
-  
-  # --------------- convert to data frame ----------------
-  Habitat_Attribute_Scores_for_individual_Life_Stage = as.data.frame(Habitat_Attribute_Scores_for_individual_Life_Stage)
-  #print( " -----------------------------------------------------------------------------------------------------------------------")
-  
-  #print(Habitat_Attribute_Scores_for_individual_Life_Stage[which(Habitat_Attribute_Scores_for_Life_Stages_REACHES_BASINS$ReachName == 'Nason Creek Lower 07'), ])
-  #print(" --- --- ---")
-  #print(which(Habitat_Attribute_Scores_for_Life_Stages_REACHES_BASINS$ReachName == 'Nason Creek Lower 07'))
-  # -------------------------------------------------------
-  #         identify all individual habitat attribute scores at 3 (or lower) and 1 in EACH Reach
-  # -------------------------------------------------------
-  # NOTE: these two columns are added at the very end 
-  
-  colnames_x = colnames(Habitat_Attribute_Scores_for_individual_Life_Stage)
-  # NOTE - this way might work - I changed the Function list_indiv_habitat_attributes_low_FUNCTION
-  #indiv_habitat_attributes_impaired = apply(as.matrix(Habitat_Attribute_Scores_for_individual_Life_Stage), 
-  #                                          MARGIN = 1, list_indiv_habitat_attributes_low_FUNCTION)
-  #indiv_habitat_attributes_impaired = t(as.data.frame(indiv_habitat_attributes_impaired))
-  
-  indiv_habitat_attributes_impaired = c()
-  for(rowx in 1:nrow(Habitat_Attribute_Scores_for_individual_Life_Stage)){
-    three_scores_output = list_indiv_habitat_attributes_low_FUNCTION(Habitat_Attribute_Scores_for_individual_Life_Stage[rowx,], colnames_x)
-    indiv_habitat_attributes_impaired = rbind(indiv_habitat_attributes_impaired,three_scores_output )
-  }
-  
-  colnames(indiv_habitat_attributes_impaired) = c("unacceptable_1_indiv_habitat_attributes","at_risk_2_or_3_indiv_habitat_attributes",  "unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes")
-  
-  #print(" ----- -  ------------------- - - -------")
-  #print(indiv_habitat_attributes_impaired[439,])
-  #print(" ----- -  ------------------- - - -------")
-  
-  # -------------------------------------------------------
-  #         generate a single score SUM and PERCENT value for ALL reaches across all basin(s)
-  # -------------------------------------------------------
-  
-  # ----------- total number of habitat attributes ------
-  number_habitat_attributes = ncol(Habitat_Attribute_Scores_for_individual_Life_Stage)
-  # ---------- Summation of Habitat Attributes ---------
-  Habitat_Attribute_Scores_for_individual_Life_Stage$LF_Sum = rowSums(Habitat_Attribute_Scores_for_individual_Life_Stage)
-  # -------- add Reach Names and Basin to beginning of data frame -----
-  Habitat_Attribute_Scores_for_individual_Life_Stage = cbind(Habitat_Attribute_Scores_for_Life_Stages_REACHES_BASINS, Habitat_Attribute_Scores_for_individual_Life_Stage)
-  # ----------------- Percent of Habitat Attributes ------------
-  Habitat_Attribute_Scores_for_individual_Life_Stage$LF_Pct = Habitat_Attribute_Scores_for_individual_Life_Stage$LF_Sum/(number_habitat_attributes*5)
-  
-  
-  # ------------------------------------------------------------------------------------- 
-  #                 calculate HQ Restoration and Protection Score
-  # ------------------------------------------------------------------------------------- 
-  
-  # ------------------------------------- Restoration ---------------------------------
-  Habitat_Attribute_Scores_for_individual_Life_Stage = Habitat_Attribute_Scores_for_individual_Life_Stage  %>%
-    mutate(LF_Score_Restoration = ifelse(LF_Pct  > Restoration_Scoring$Category_Lower[1] & 
-                                           LF_Pct  <= Restoration_Scoring$Category_Upper[1] , Restoration_Scoring$Score[1],
-                                         ifelse(LF_Pct  > Restoration_Scoring$Category_Lower[2] & 
-                                                  LF_Pct  <= Restoration_Scoring$Category_Upper[2] , Restoration_Scoring$Score[2],
-                                                ifelse(LF_Pct  > Restoration_Scoring$Category_Lower[3] & 
-                                                         LF_Pct  <= Restoration_Scoring$Category_Upper[3] , Restoration_Scoring$Score[3],
-                                                       NA))))
-  
-  # ------------------------------------- Protection ---------------------------------
-  Habitat_Attribute_Scores_for_individual_Life_Stage = Habitat_Attribute_Scores_for_individual_Life_Stage  %>%
-    mutate(LF_Score_Protection = ifelse(LF_Pct  > Protection_Scoring$Category_Lower [1] & 
-                                          LF_Pct  <= Protection_Scoring$Category_Upper[1] , Protection_Scoring$Score[1],
-                                        ifelse(LF_Pct  > Protection_Scoring$Category_Lower[2] & 
-                                                 LF_Pct  <= Protection_Scoring$Category_Upper[2] , Protection_Scoring$Score[2],
-                                               ifelse(LF_Pct  > Protection_Scoring$Category_Lower[3] & 
-                                                        LF_Pct  <= Protection_Scoring$Category_Upper[3] , Protection_Scoring$Score[3],
-                                                      NA))))
-  # -------------------- add columns with which habitat attributes are impaired -------
-  Habitat_Attribute_Scores_for_individual_Life_Stage = cbind(Habitat_Attribute_Scores_for_individual_Life_Stage, indiv_habitat_attributes_impaired)
-  
-  # --------------- transform into a tibble -------
-  Habitat_Attribute_Scores_for_individual_Life_Stage = as_data_frame(Habitat_Attribute_Scores_for_individual_Life_Stage)
-  
-  #print(Habitat_Attribute_Scores_for_individual_Life_Stage[which(Habitat_Attribute_Scores_for_individual_Life_Stage$ReachName == "Nason Creek Lower 07"),])
-  #print( " -----------------------------------------------------------------------------------------------------------------------")
-  return(Habitat_Attribute_Scores_for_individual_Life_Stage) 
-}
-
-
-# -----------------------------------------------------------------------------------------
-#     Function to list all the rows (rows/reaches of habitat attributes) below individual habitat criteria
+#
+#     Function to A) generate list of Level 2 habitat attribute 1s and 3s
+#                 B) prepare output to merge with other Limiting Factor Pathway 
 #                 
 # -----------------------------------------------------------------------------------------
 
-# habitat_row = Habitat_Attribute_Scores_for_individual_Life_Stage[439,]
-# colnames_x = colnames(Habitat_Attribute_Scores_for_individual_Life_Stage)
-list_indiv_habitat_attributes_low_FUNCTION <- function(habitat_row, colnames_x){
+
+pull_Level2_1s_and_3s_from_Level3 <- function(Limiting_Factors_Okanogan_EDT_filtered_life_stage_updated,  life_stage_x){
   
-  # ---------------- Individual Habitat Attribute Score: 1  --------
-  columns_impaired_x = which(habitat_row <= 1)
-  columns_impaired_x = colnames_x[columns_impaired_x]
-  habitat_attributes_impaired_1 = paste(columns_impaired_x, collapse=',' )
   
-  # ---------------- Individual Habitat Attribute Score: 3 or lower  --------
-  columns_impaired_x = which(habitat_row <= 3 & habitat_row > 1)
-  columns_impaired_x = colnames_x[columns_impaired_x]
-  habitat_attributes_impaired_2_or_3 = paste(columns_impaired_x, collapse=',' )
+  # -----------------------------------------------------------------------------------
+  #         Start Output Data Frame
+  # -----------------------------------------------------------------------------------
+
+  # -----------------------------------------------------------------------------------
+  #         Loop through each reach, Pull 1s and 3s (from Level 2 Habitat Attribute) for each Level 2 Habitat Attribute
+  # -----------------------------------------------------------------------------------
   
-  # ---------------- Individual Habitat Attribute Score: 3 or lower  --------
-  columns_impaired_x = which(habitat_row <= 3)
-  columns_impaired_x = colnames_x[columns_impaired_x]
-  habitat_attributes_impaired_3_or_lower = paste(columns_impaired_x, collapse=',' )
+  # ------------------- data frame to combine output for all reaches ---------
+  output_for_LF_pathway_combined = c()
+  unique_reaches_x = unique(Limiting_Factors_Okanogan_EDT_filtered_life_stage_updated$Reach)
+  
+  for(reach_x in unique_reaches_x){
+    
+    # ----------------- pull all the habitat attributes for that reach ------------
+    reach_data_x = Limiting_Factors_Okanogan_EDT_filtered_life_stage_updated[ which(Limiting_Factors_Okanogan_EDT_filtered_life_stage_updated$Reach == reach_x), ]
+    
+    # ---------------- combine all the Level 2 habitat attributes (with RTT Crosswalk) -----
+    level_2_attributes_x = paste(reach_data_x$EDT_Attribute_Level_2_with_RTT_attribute_crosswalk, collapse=",")
+    
+    # ----------------- get the unique Level 2 habitat attributes --------
+    level_2_attributes_x = unlist(strsplit(level_2_attributes_x, ","))
+    level_2_attributes_x = unique(level_2_attributes_x)
+    level_2_attributes_x = level_2_attributes_x[order(level_2_attributes_x)]
+    
+    # ----------------- pull level 2 scores for these attributes ------------
+    level_2_attributes_x_df = tibble(level_2_attributes_x)
+    colnames(level_2_attributes_x_df) = c("EDT Attribute")
+    
+    # ------------- data frame for Level 2 Habitat Ratings with just the ReachName -------
+    HabitatAttribute_Ratings_Level2_updated_SINGLE_REACH = HabitatAttribute_Ratings_Level2_updated[ 
+      which(HabitatAttribute_Ratings_Level2_updated$Reach == reach_x), c("EDT Attribute","Level 2 Functional Condition")]
+    
+    # ------------------------ Pull Level 2 Habitat Attribute scores  --------------------
+    level_2_attributes_x_df_merged =  merge(level_2_attributes_x_df, HabitatAttribute_Ratings_Level2_updated_SINGLE_REACH, by = "EDT Attribute") 
+  
+    # ------------------- just pull the 1s and 3s ----------
+    level_2_attributes_x_df_merged = level_2_attributes_x_df_merged[which(level_2_attributes_x_df_merged$`Level 2 Functional Condition` <= Individual_Habitat_Attribute_Score),  ]
+    
+    # -------------- crosswalk to RTT Habitat Attribute ----------------
+    level_2_attributes_x_df_merged = merge(  level_2_attributes_x_df_merged , AttributeCrosswalk_simple, by = "EDT Attribute")
+    
+    
+    # ---------------------------------------
+    #    Create Data Frame to merge
+    # ---------------------------------------
+    if(nrow(level_2_attributes_x_df_merged) > 0){
+      
+      # --------- Reach Names ---------
+      output_for_LF_pathway_x = as.data.frame(reach_x)
+      colnames(output_for_LF_pathway_x) = "ReachName"
+      # -------------- Basin, species, life stage -------
+      output_for_LF_pathway_x$Basin = "Okanogan"
+      output_for_LF_pathway_x$species = species
+      output_for_LF_pathway_x$life_stage = life_stage_x
+      # ---------------- LF scores (these are blank since this analysis is not done in the Okanogan) --------
+      output_for_LF_pathway_x$LF_Sum = NA
+      output_for_LF_pathway_x$LF_Pct = NA
+      output_for_LF_pathway_x$LF_Score_Restoration = NA
+      output_for_LF_pathway_x$LF_Score_Protection = NA
+      # ----------- list all the habitat attributes that are 1) Unacceptable, 2) At-Risk, 3) Both ------------------
+      # ----------- Unacceptable ------------
+      unacceptable_attributes_x = level_2_attributes_x_df_merged$RTT_Habitat_Attribute[level_2_attributes_x_df_merged$`Level 2 Functional Condition` == 1]
+      unacceptable_attributes_x = paste(unacceptable_attributes_x, collapse = ",")
+      output_for_LF_pathway_x$unacceptable_1_indiv_habitat_attributes = unacceptable_attributes_x
+      # ------------ At Risk -----------------
+      at_risk_attributes_x = level_2_attributes_x_df_merged$RTT_Habitat_Attribute[level_2_attributes_x_df_merged$`Level 2 Functional Condition` > 1 &
+                                                                              level_2_attributes_x_df_merged$`Level 2 Functional Condition` <= 3 ]
+      at_risk_attributes_x = paste(at_risk_attributes_x, collapse = ",")
+      output_for_LF_pathway_x$at_risk_2_or_3_indiv_habitat_attributes = at_risk_attributes_x
+      # -------------- Both - Unacceptable and At Risk ----------------
+      both_attributes_x = level_2_attributes_x_df_merged$RTT_Habitat_Attribute
+      both_attributes_x = paste(both_attributes_x, collapse = ",")
+      output_for_LF_pathway_x$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes = both_attributes_x
+      
+      # ---------------- combine with other reaches-life stages --------
+      output_for_LF_pathway_combined = rbind(output_for_LF_pathway_combined,output_for_LF_pathway_x )
+      
+    }
+    
+  }
   
   # ------- output -----------
-  return(c(habitat_attributes_impaired_1,habitat_attributes_impaired_2_or_3, habitat_attributes_impaired_3_or_lower  ))
+  return(output_for_LF_pathway_combined)
   
 }
 
@@ -396,8 +362,8 @@ list_indiv_habitat_attributes_low_FUNCTION <- function(habitat_row, colnames_x){
 #     Function to apply the AU life stage priority as a filter
 # -----------------------------------------------------------------------------------------
 
-# life_stage = "Fry"
-Life_Stage_Priority_Filter_Function = function(life_stage, Habitat_Attribute_Scores_for_individual_Life_Stage, Life_Stage_Priority){
+ 
+Life_Stage_Priority_Filter_Function_Okanogan = function(life_stage_x, Limiting_Factors_Okanogan_EDT_filtered_life_stage_x, Life_Stage_Priority){
   
   # -------------------------------------------------------
   #     Get reaches with this life stage as the specified life stage priority
@@ -406,34 +372,158 @@ Life_Stage_Priority_Filter_Function = function(life_stage, Habitat_Attribute_Sco
   # -------- ONE Life_Stage_Priority -----------
   if(length(Life_Stage_Priority) == 1){
     life_stages_priorities_species_specific_list = Life_Stage_Priorities_AU_and_Reach_data %>%
-      filter(Life_Stage_Priorities_AU_and_Reach_data[life_stages_priorities_species_specific[[life_stage]]] ==  Life_Stage_Priority)   # 
+      filter(Life_Stage_Priorities_AU_and_Reach_data[life_stages_priorities_species_specific[[life_stage_x]]] ==  Life_Stage_Priority)   # 
     
     # -------- TWO Life_Stage_Priority -----------
   }else if(length(Life_Stage_Priority) == 2){
     
     life_stages_priorities_species_specific_list = Life_Stage_Priorities_AU_and_Reach_data %>%
-      filter(Life_Stage_Priorities_AU_and_Reach_data[life_stages_priorities_species_specific[[life_stage]]] ==  Life_Stage_Priority[1]  |
-               Life_Stage_Priorities_AU_and_Reach_data[life_stages_priorities_species_specific[[life_stage]]] ==  Life_Stage_Priority[2] )   # 
+      filter(Life_Stage_Priorities_AU_and_Reach_data[life_stages_priorities_species_specific[[life_stage_x]]] ==  Life_Stage_Priority[1]  |
+               Life_Stage_Priorities_AU_and_Reach_data[life_stages_priorities_species_specific[[life_stage_x]]] ==  Life_Stage_Priority[2] )   # 
     
     # -------- THREE Life_Stage_Priority -----------
   }else if(length(Life_Stage_Priority) == 3){
     
     life_stages_priorities_species_specific_list = Life_Stage_Priorities_AU_and_Reach_data %>%
-      filter(Life_Stage_Priorities_AU_and_Reach_data[life_stages_priorities_species_specific[[life_stage]]] ==  Life_Stage_Priority[1]  |
-               Life_Stage_Priorities_AU_and_Reach_data[life_stages_priorities_species_specific[[life_stage]]] ==  Life_Stage_Priority[2]  | 
-               Life_Stage_Priorities_AU_and_Reach_data[life_stages_priorities_species_specific[[life_stage]]] ==  Life_Stage_Priority[3] )   # 
+      filter(Life_Stage_Priorities_AU_and_Reach_data[life_stages_priorities_species_specific[[life_stage_x]]] ==  Life_Stage_Priority[1]  |
+               Life_Stage_Priorities_AU_and_Reach_data[life_stages_priorities_species_specific[[life_stage_x]]] ==  Life_Stage_Priority[2]  | 
+               Life_Stage_Priorities_AU_and_Reach_data[life_stages_priorities_species_specific[[life_stage_x]]] ==  Life_Stage_Priority[3] )   # 
   }
   
   # -------------------------------------------------------
-  #     Filter Reaches from Life stage analysis
+  #     Pull just Okanogan 
   # -------------------------------------------------------
-  Habitat_Attribute_Scores_for_individual_Life_Stage_Filtered = Habitat_Attribute_Scores_for_individual_Life_Stage %>%  
-    filter(Habitat_Attribute_Scores_for_individual_Life_Stage$ReachName   %in%   life_stages_priorities_species_specific_list$ReachName)
   
+  life_stages_priorities_species_specific_list = life_stages_priorities_species_specific_list[which(life_stages_priorities_species_specific_list$Basin == "Okanogan"),]
   
-  return(Habitat_Attribute_Scores_for_individual_Life_Stage_Filtered)
+  # -------------------------------------------------------
+  #     Pull Reaches with this life stage present
+  # -------------------------------------------------------
+  life_stages_priorities_species_specific_list = life_stages_priorities_species_specific_list %>%
+    filter(life_stages_priorities_species_specific_list[reach_life_stage_presence[[life_stage_x]]] ==  1)   # 
+  
+  # -------------------------------------------------------
+  #    Filter out Limiting Factor data frame to include reaches that made through priority and life stage presence filter
+  # -------------------------------------------------------
+  Limiting_Factors_Okanogan_EDT_filtered_life_stage_x_2 = as.data.frame(Limiting_Factors_Okanogan_EDT_filtered_life_stage_x) # convert to data frame
+  # ------ filter out reaches -----------
+  Limiting_Factors_Okanogan_EDT_filtered_life_stage_updated_x = Limiting_Factors_Okanogan_EDT_filtered_life_stage_x_2 %>%  
+    filter(Limiting_Factors_Okanogan_EDT_filtered_life_stage_x_2$Reach   %in%   life_stages_priorities_species_specific_list$ReachName)
+
+  
+  return(Limiting_Factors_Okanogan_EDT_filtered_life_stage_updated_x)
   
 }
 
 
 
+
+# ----------------------------- compare Limiting Factor AND HabitatAttribute scores for same reach and habitat attribute -------
+test_x = FALSE
+if(test_x){
+  
+  unique_reaches_x = unique(Limiting_Factors_Okanogan_EDT_filtered_life_stage_x$Reach)
+  
+  habitat_attribute_x = "Temperature"
+  df_compare_LF_HQ = c()
+  for(reach_x in unique_reaches_x){
+    
+    #print(paste("--------------------------- REACH: ", reach_x))
+    
+    xLF = which(Limiting_Factors_Okanogan_EDT$Reach == reach_x &
+                  Limiting_Factors_Okanogan_EDT$Attribute == habitat_attribute_x)
+    #print("LF minimum score: ", min(Limiting_Factors_Okanogan_EDT$RTT_Limiting_Factor_Score[xLF]))
+    
+    xHQ = which(HabitatAttribute_Ratings_Level3$Reach == reach_x &
+                  HabitatAttribute_Ratings_Level3$`EDT Attribute` == habitat_attribute_x)
+    #print("HQ score: ", HabitatAttribute_Ratings_Level3$`Level 3 Functional Condition`[xHQ])
+    
+    df_x = t(as.data.frame(c(reach_x,
+                             min(Limiting_Factors_Okanogan_EDT$RTT_Limiting_Factor_Score[xLF], na.rm=T),
+                             min(HabitatAttribute_Ratings_Level3$`Level 3 Functional Condition`[xHQ], na.rm=T)    )   )  )
+    colnames(df_x) = c('Reach','Limiting_Factors_Okanogan_EDT_min_score','Habitat_Attribute_Rating_Level_3_score')
+    rownames(df_x) = reach_x
+    df_compare_LF_HQ = rbind(df_compare_LF_HQ,  df_x)
+    
+  } 
+  
+  
+  
+}
+
+#  ---------------------------------------------------------------------------------
+#
+#           FUNCTION to combine main (Methow, Entiat, and Wenatchee) and Okanogan LF Output
+#
+#  ---------------------------------------------------------------------------------
+
+test_x = TRUE
+if(test_x){
+  MetEntWen_data_frame = Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']]
+  Okanogan_data_frame = Limiting_Factor_Pathway_Steelhead_OKANOGAN[['Limiting_Factor_Pathway_Restoration']]
+}
+
+Combine_MetEntWen_and_Okanogan_Limiting_Factor_Output = function(MetEntWen_data_frame, Okanogan_data_frame){
+  
+  # -------------- update "Riparian_Mean" name ---------------
+  x = which(habitat_quality_scores_colnames_for_combo == "Riparian_Mean")
+  habitat_quality_scores_colnames_for_combo[x] = "Riparian_Mean_score"
+  
+  # -------------- start with basic info --------------
+  df_add_to_MetEntWen = Okanogan_data_frame[,1:6]
+  
+  # ---------------- loop through all the habitat attributes ----------
+  for(colx in habitat_quality_scores_colnames_for_combo){
+    
+    # ------- if column is in Okanogan data -----
+    if( any(colnames(Okanogan_data_frame) == colx) ){
+      df_add_to_MetEntWen[,colx] = Okanogan_data_frame[,colx]
+      # ------- if column not in Okanogan data ------
+    }else{
+      df_add_to_MetEntWen[,colx] = NA
+    }
+  }
+  
+  # --------------- HQ_Sum is NA (for now) -----------
+  df_add_to_MetEntWen$HQ_Sum = NA
+  
+  # ----------------- add HQ_Pct, HQ Restoration and Protection, and unacceptable/at risk attributes ----
+  # ---------- truncate the HQ Score data frame -----------
+  PRCNT_Habitat_Quality_Okanogan_EDT_Truncated = PRCNT_Habitat_Quality_Okanogan_EDT[,c("ReachName","HQ_Score")]
+  # -------- merge HQ Score -----
+  df_add_to_MetEntWen = merge(df_add_to_MetEntWen, PRCNT_Habitat_Quality_Okanogan_EDT_Truncated, by="ReachName")
+  colnames(df_add_to_MetEntWen)[length(colnames(df_add_to_MetEntWen))] = "HQ_Pct"
+  
+  # ------------------------------ HQ Restoration Score ------------------------
+  df_add_to_MetEntWen = df_add_to_MetEntWen  %>%
+    mutate(HQ_Score_Restoration = ifelse(HQ_Pct  > Restoration_Scoring$Category_Lower[1] & 
+                                           HQ_Pct  < Restoration_Scoring$Category_Upper[1] , Restoration_Scoring$Score[1],
+                                         ifelse(HQ_Pct  >= Restoration_Scoring$Category_Lower[2] & 
+                                                  HQ_Pct  <= Restoration_Scoring$Category_Upper[2] , Restoration_Scoring$Score[2],
+                                                ifelse(HQ_Pct  > Restoration_Scoring$Category_Lower[3] & 
+                                                         HQ_Pct  <= Restoration_Scoring$Category_Upper[3] , Restoration_Scoring$Score[3],
+                                                       NA))))
+  # ------------------------------ HQ Protection Score ------------------------
+  df_add_to_MetEntWen = df_add_to_MetEntWen  %>%
+    mutate(HQ_Score_Protection = ifelse(HQ_Pct  > Protection_Scoring$Category_Lower [1] & 
+                                          HQ_Pct  < Protection_Scoring$Category_Upper[1] , Protection_Scoring$Score[1],
+                                        ifelse(HQ_Pct  >= Protection_Scoring$Category_Lower[2] & 
+                                                 HQ_Pct  <= Protection_Scoring$Category_Upper[2] , Protection_Scoring$Score[2],
+                                               ifelse(HQ_Pct  > Protection_Scoring$Category_Lower[3] & 
+                                                        HQ_Pct  <= Protection_Scoring$Category_Upper[3] , Protection_Scoring$Score[3],
+                                                      NA))))
+  
+  # --------------------- add At Risk and Unnacceptable habitat attributes -----------------
+  df_add_to_MetEntWen[,colnames(Okanogan_data_frame)[(length(colnames(Okanogan_data_frame))-2):length(colnames(Okanogan_data_frame))]] =
+    Okanogan_data_frame[,colnames(Okanogan_data_frame)[(length(colnames(Okanogan_data_frame))-2):length(colnames(Okanogan_data_frame))]]
+  
+  # ---------------- update Riparian column name -----------
+  x = which(colnames(df_add_to_MetEntWen) == "Riparian_Mean_score")
+  colnames(df_add_to_MetEntWen)[x] = "Riparian_Mean"
+  
+  # ----------------- combine prepared Okanogan data frame with MetEntWen data frame -----
+  MetEntWen_data_frame_updated = rbind(MetEntWen_data_frame,  df_add_to_MetEntWen)
+  
+  # ------------------ Return ---------------
+  return(MetEntWen_data_frame_updated)
+}

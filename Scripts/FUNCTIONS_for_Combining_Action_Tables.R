@@ -1599,7 +1599,7 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined,  Barriers_Pathways_Data,  e
 
 }
   
-  
+
 
 # ------------------------------------------------------------
 #

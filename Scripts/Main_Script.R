@@ -27,7 +27,7 @@ library(readxl)
 # ---------------------------------------------------------------------------
 #  Script Criteria for output
 # ---------------------------------------------------------------------------
-basins_to_include = c("Methow",  "Entiat","Wenatchee" )  # basins to include in simulation    
+basins_to_include = c("Methow",  "Entiat","Wenatchee" , "Okanogan")  # basins to include in simulation    
 exclude_bull_trout = "yes"  # if "yes" -> remove bull trout for WebMap applications
 output_Habitat_Quality_and_Habitat_Attribute_Scores = "no"  # enter "yes" or "no" if you want the "flat table" Habitat Attribute output (doubles time to run script)
 update_Okanogan_reach_names = "no"  # if "yes" - update Okanogan reach names (should not have to run again - since on 5.Apr.2021 Ryan updated names)
@@ -38,19 +38,19 @@ update_Okanogan_reach_names = "no"  # if "yes" - update Okanogan reach names (sh
 
 time1 <- proc.time()[3] # for timing the total time to run the tool
 
-# --------------- directory of scripts -----------
+# --------------- directory of scripts (where all the R scripts are located) -----------
 script_path = 'Scripts/'
 
 # ----------- directory of data -------------------
 master_path = 'Data/'
 habitat_data_path = paste(master_path,"Habitat_Data/", sep="")
 ranking_data_path = paste(master_path,"Ranking_Data/", sep="")
-crosswalks_path = paste(master_path,"Crosswalks/", sep="")
-criteria_and_scoring_path = paste(master_path,"Criteria_and_Scoring/", sep="")
-Okanogan_EDT_path = paste(master_path,'Okanogan_EDT/', sep="")
-reach_assessment_projects_path = paste(master_path,'Reach_Assessment_Projects/', sep="")
+crosswalks_path = paste(master_path,"Crosswalks/", sep="")  # various crosswalks 
+criteria_and_scoring_path = paste(master_path,"Criteria_and_Scoring/", sep="") # Criteria and Scores for prioritization (Restoration and Protection)
+Okanogan_EDT_path = paste(master_path,'Okanogan_EDT/', sep="")   # Data from Okanogan EDT results
+reach_assessment_projects_path = paste(master_path,'Reach_Assessment_Projects/', sep="")  # data for projects from Reach Assessments
 
-# ----------- directory for output ---------
+# ----------- directory for output (where results are saved) ---------
 output_path = 'Output/'
 
 # Old location of the reach attribute (NOT Raw) data:  'Y:/UCRTT/Prioritization/Tables for Tools/'
@@ -186,10 +186,14 @@ Limiting_Factor_Pathway_Spring_Chinook = Generate_Limiting_Factor_Output_Table("
 Limiting_Factor_Pathway_Steelhead = Generate_Limiting_Factor_Output_Table("Steelhead", basins_to_include)
 Limiting_Factor_Pathway_Bull_Trout = Generate_Limiting_Factor_Output_Table("Bull Trout", basins_to_include)
 # --------------- generate for Okanogan ---------------
-Limiting_Factor_Pathway_Steelhead_OKANOGAN = Generate_Limiting_Factor_Output_Table_Okanogan("Steelhead" )
+Limiting_Factor_Pathway_Steelhead_OKANOGAN = Generate_Limiting_Factor_Output_Table_Okanogan("Steelhead", "Okanogan" )
+# ------------------- combine -------------------
+Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']] = rbind( Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']],
+                                                                                   Limiting_Factor_Pathway_Steelhead_OKANOGAN[['Limiting_Factor_Pathway_Restoration']] )
+
 
 # -- for viewing data -----
-# View(Limiting_Factor_Spring_Chinook[['Limiting_Factor_Pathway_Restoration']])
+# View(Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']])
 # View(Limiting_Factor_Spring_Chinook[['Limiting_Factor_Pathway_Protection']])
 #View(Limiting_Factor_Spring_Chinook[['Limiting_Factor_Pathway_Protection']][c('ReachName','LF_Sum','LF_Pct','LF_Score_Protection')])
 #unique(Limiting_Factor_Bull_Trout[['Limiting_Factor_Pathway_Restoration']]$unacceptable_and_at_risk_1_3_indiv_habitat_attributes)
@@ -480,7 +484,7 @@ write_xlsx(Restoration_Unacceptable_and_At_Risk,output_path_x )
 
 
 # -----------------------------------------------------------------
-#     Actions
+#     Projects Output
 # -----------------------------------------------------------------
 
 output_path_x =  paste(output_path,'Reach_Assessment_Project_Data_Habitat_Attributes.xlsx', sep="")

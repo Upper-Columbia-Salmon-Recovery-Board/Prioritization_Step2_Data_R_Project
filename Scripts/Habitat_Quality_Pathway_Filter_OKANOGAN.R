@@ -178,16 +178,17 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species ){
     
     # -------------------- Restoration -----------
     # --------------- identify habitat attributes at 1 (Unacceptable) OR 3 (At Risk) -----------------------
-    # HabitatAttribute_Ratings_level_2
+    # HabitatAttribute_Ratings_Level2_updated
     indiv_habitat_attributes_impaired_restoration = c() 
     
     # ------ list column names/all habitat attributes -----------------
-    colnames_restoration_x = unique(HabitatAttribute_Ratings_level_2$`RTT Habitat Attribute`)
+    colnames_restoration_x = unique(HabitatAttribute_Ratings_Level2_updated$`RTT Habitat Attribute`)
     colnames_restoration_x = colnames_restoration_x[order(colnames_restoration_x)]
+    colnames_restoration_x = colnames_restoration_x[-which(is.na(colnames_restoration_x))]
     
     for(rowx in 1:nrow(Habitat_Quality_Pathway_Restoration)){
       # --------------------- pull habitat attributes for this reach -----------------
-      habitat_attributes_output_x = HabitatAttribute_Ratings_level_2[which(HabitatAttribute_Ratings_level_2$Reach ==  Habitat_Quality_Pathway_Restoration$ReachName[rowx] ), ]
+      habitat_attributes_output_x = HabitatAttribute_Ratings_Level2_updated[which(HabitatAttribute_Ratings_Level2_updated$Reach ==  Habitat_Quality_Pathway_Restoration$ReachName[rowx] ), ]
       # ------------ function to identify habitat attributes at 1 and 3 (and list for each reach) ---------
       output_row_x = list_indiv_habitat_attributes_low_FUNCTION_OKANOGAN(habitat_attributes_output_x, colnames_restoration_x)
       # ------------------ combine row -------------------
@@ -262,7 +263,7 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species ){
 test_x = FALSE
 if(test_x){
   reach_okanogan_data_frame = habitat_attributes_output_x
-  colnames_x = unique(HabitatAttribute_Ratings_level_2$`RTT Habitat Attribute`)
+  colnames_x = unique(HabitatAttribute_Ratings_Level2_updated$`RTT Habitat Attribute`)
   colnames_x = colnames_x[order(colnames_x)]
 }
 
@@ -285,12 +286,12 @@ list_indiv_habitat_attributes_low_FUNCTION_OKANOGAN <- function(reach_okanogan_d
     # -------- if multiple RTT habitat attributes for a single EDT habitat attribute -----------
     if( length(habitat_attribute_x_i) > 1){
       # ----------------- get lowest Function Conditoin (habitat attribute) score ------------
-      score_x = min(reach_okanogan_data_frame$Function_Condition[habitat_attribute_x_i])
+      score_x = min(reach_okanogan_data_frame$`Level 2 Functional Condition`[habitat_attribute_x_i])
       # row_x_i = which( reach_okanogan_data_frame$Function_Condition[habitat_attribute_x_i] == score_x )
       
       # ------------- if RTT and EDT attributes are 1:1 (one RTT attribute for one EDT attribute) -----
     }else{
-      score_x = min(reach_okanogan_data_frame$Function_Condition[habitat_attribute_x_i])
+      score_x = min(reach_okanogan_data_frame$`Level 2 Functional Condition`[habitat_attribute_x_i])
     }
     
     # -------------- insert score in correct column --------------

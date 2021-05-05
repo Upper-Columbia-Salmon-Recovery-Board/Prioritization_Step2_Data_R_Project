@@ -55,11 +55,10 @@ cols.num <- c( 'Sand_occular_prcnt_INDICATOR_1',	'Gravel_occular_prcnt_INDICATOR
               'SC_Area_Pct_Average_CHAMP',	'FishCovNone_Average_CHAMP',	'GRVL_COBL_UCSRB_CHAMP',	'SubEmbed_Avg_Average_CHAMP', 
               'UCSRB_CanopyCoverPct',	'UCSRB_RiparianDisturbancePct',
               'UCSRB_OffChannel_Floodplain', 'UCSRB_OffChannel_SideChannels', 'UCSRB_ChannelStability', 'UCSRB_BankStability')
-              
+# ---- convert all columns listed above to numeric ----------              
 habitat_raw_data[cols.num] <- sapply(habitat_raw_data[cols.num],as.numeric)
 
-
-# USE for interactive (COULD just have a person edit a CSV)
+# ONLY for USE for interactive (COULD just have a person edit a CSV)
 # habitat_raw_data_new <- data_edit(habitat_raw_data, save_as = "habitat_raw_data_updated.csv")
 
 # ---------------------------------------------------------------------------
@@ -199,6 +198,7 @@ cols.num = c('NumberofCHaMPDataPoints', 'SlowWater_Pct_Average',	'SlowWater_Pct_
              'UcutLgth_Pct_Average',	'UcutLgth_Pct_StandardDeviation',	'UcutArea_Pct_Average',	
              'UcutArea_Pct_StandardDeviation',	'SC_Area_Average',	'SC_Area_StandardDeviation',
              'SC_Area_Pct_Average',	'GRVL_COBL_UCSRB')
+# ---- convert all columns listed above to numeric ----------              
 CHAMP_data_per_reach[cols.num] <- sapply(CHAMP_data_per_reach[cols.num],as.numeric)
 
 # -------------------------- CHAMP data only use 139 reaches, so add reaches not present as NA -------------
@@ -372,15 +372,32 @@ Protection_Reach_Scoring = Reach_Scoring_Restoration_and_Protection_Scoring %>%
 #  Okanogan EDT data
 #
 # ---------------------------------------------------------------------------
+# NOTE: additional data processing/prep for Okanogan EDT data is done in the Okanogan_EDT_data_input_prep.R script
 
 # --------------- EDT Habitat Attribute Crosswalk --------------------
 AttributeCrosswalk = read_excel( paste(Okanogan_EDT_path,'AttributeCrosswalk_Okanogan_EDT.xlsx', sep="") )
+# --------------- simplify and prep for Limiting Factor Pathway -------
+AttributeCrosswalk_simple = AttributeCrosswalk[,c("Level 2 Attribute", "RTT Habitat Attributes")]
+colnames(AttributeCrosswalk_simple) = c("EDT Attribute", "RTT_Habitat_Attribute")
 
 # --------------- EDT Habitat Attribute Crosswalk --------------------
-HabitatAttribute_Ratings = read_excel( paste(Okanogan_EDT_path,'HabitatAttribute_Ratings_Okanogan_EDT.xlsx', sep="") )
+# same data as below HabitatAttribute_Ratings_Level2 and HabitatAttribute_Ratings_Level3 (but the former were split out by levels)
+# HabitatAttribute_Ratings = read_excel( paste(Okanogan_EDT_path,'HabitatAttribute_Ratings_Okanogan_EDT.xlsx', sep="") )
+
+# --------------- EDT Habitat Attribute Crosswalk --------------------
+HabitatAttribute_Ratings_Level2 = read_excel( paste(Okanogan_EDT_path,'HabitatAttribute_Ratings_Level2.xlsx', sep="") )
+
+# --------------- EDT Habitat Attribute Crosswalk --------------------
+HabitatAttribute_Ratings_Level3 = read_excel( paste(Okanogan_EDT_path,'HabitatAttribute_Ratings_Level3.xlsx', sep="") )
+
+# --------------- EDT Habitat Attribute Crosswalk --------------------
+Barriers_Okanogan_EDT = read_excel( paste(Okanogan_EDT_path,'Barriers_Okanogan_EDT.xlsx', sep="") )
 
 # --------------- EDT Habitat Attribute Crosswalk --------------------
 LifeStageCrosswalk_EDT = read_excel( paste(Okanogan_EDT_path,'LifeStageCrosswalk_Okanogan_EDT.xlsx', sep="") )
+
+# ------------- EDT Crosswalk between Level 2 and Level 3 EDT habitat attribute names --------
+Level2_Level3_EDT_Crosswalk = read_excel( paste(Okanogan_EDT_path,'Level2_Level3_EDT_Crosswalk.xlsx', sep="") )
 
 # ------------------ Limiting Factors Okanogan EDT -----------
 Limiting_Factors_Okanogan_EDT = read_excel( paste(Okanogan_EDT_path,'Limiting_Factors_Okanogan_EDT.xlsx', sep="") )
@@ -413,6 +430,7 @@ Criteria_Okanogan_EDT_Scoring = read_excel( paste(criteria_and_scoring_path,'Cri
 Criteria_Okanogan_EDT_Scoring_Level_2 = Criteria_Okanogan_EDT_Scoring[  which(Criteria_Okanogan_EDT_Scoring$Indicator == "Level 2 Attribute Functional Condition Selector") ,  ]
 Criteria_Okanogan_EDT_Scoring_Level_3 = Criteria_Okanogan_EDT_Scoring[  which(Criteria_Okanogan_EDT_Scoring$Indicator == "Level 3 Attribute Functional Condition Selector") ,  ]
 Criteria_Okanogan_EDT_Scoring_Limiting_Factor_Level_3 = Criteria_Okanogan_EDT_Scoring[  which(Criteria_Okanogan_EDT_Scoring$Indicator == "Level 3 Life Stage Performance Effect Scoring") ,  ]
+Criteria_Okanogan_EDT_Scoring_Barrires = Criteria_Okanogan_EDT_Scoring[  which(Criteria_Okanogan_EDT_Scoring$Indicator == "Level 3 Attribute - Obstructoins (Barrires)") ,  ]
 
 # ---------------------------------------------------------------------------
 #

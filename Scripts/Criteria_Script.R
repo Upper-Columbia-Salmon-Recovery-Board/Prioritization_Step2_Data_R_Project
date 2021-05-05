@@ -19,15 +19,19 @@
 
 # -------- Assessment Unit (AU) (HUC12) Tier rank (data in habitat_attribute_scores) ----------------
 AU_Rank = c(1)                       # potential: 1, 2, or 3; 1 is high priority, 3 is low priority
+
 # --------------- Reach Confinement (data in confinement_scores) --------------------------------
 Reach_Confinement_SCORE_Criteria =  c(5)           # potential: 1, 3, 5; 1 is higher % confined, 5 is higher % unconfined, based on USGS Valley Confinment Algorithm
+
 # --------------- Sum Life Stage (sum of all the life stages present in reach) ---------------------
-# this is the minimum value, so reaches with this number or greater of life stages will pass through the filter
+# this is the MINIMUM value, so reaches with this number or greater of life stages will pass through the filter
 Sum_Life_Stage_Criteria = c(4)   # potential: 1,2,3,4,5,6,7
+
 # ----------------- Habitat Quality Score (data in habitat_attribute_scores) -----------------
 #    this number should be the minimum score, so script pulls all values equal to and greater than the SCORE_Criteria_Habitat_Quality_Pathway for Restoration and Protection
 SCORE_Criteria_Habitat_Quality_Pathway_Restoration = c(5)      # potential: 1,2,3,4,5; based on "goldilocks method" where 5 is highest priority, 1 is lowest, put the MINIMUM value
 SCORE_Criteria_Habitat_Quality_Pathway_Protection = c(3)      # potential: 1,2,3,4,5; based on "goldilocks method" where 5 is highest priority, 1 is lowest, put the MINIMUM value (so 3 means 3, 4, and 5 pass through)
+
 # --------------------- Habitat Attribute Scores-- "DRAFT Habitat Attribute..." data (data in Cumul_Habitat_Attribute_Score)
 # NOTE - record individual habitat attribute so you can filter out 
 # Oct 2020: did [1] (Unacceptable only)   OR [1, 3] (Unacceptable and At Risk)
@@ -35,7 +39,8 @@ Individual_Habitat_Attribute_Score = c(3)   # possible scores - [1,3,5] 1 - unac
 # NOTE - since we wanted both "At Risk" and "Unacceptable"- I just hard-coded this in the
 #        list_indiv_habitat_attributes_low_FUNCTION the filter generates for scores 1 (Unacceptable)
 #        and scores 2 and 3 (At Risk)
-# -------------- Habitat Attribute Score (RTT Limiting Factor Score) -    for now
+
+# -------------- Habitat Attribute Score (RTT Limiting Factor Score) - for now
 Okanogan_Individual_Habitat_Attribute_Score = Individual_Habitat_Attribute_Score
 
 # --------- Okanogan EDT: "% of Template" ---------------
@@ -95,4 +100,5 @@ Reach_Confinement_Limiting_Factors = list('Floodplain Reconnection' = 5)
 
 EDT_leves_use = c(2)  # levels of EDT to use (options are 2 or 3 - as of 1.April.2021 - only using level 2)
 # criteria read into data:  Criteria_Okanogan_EDT_Scoring
+
 
