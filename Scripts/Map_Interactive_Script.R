@@ -35,10 +35,23 @@ reaches_path = "C:/Users/Ryan/Documents/GitHub/Prioritization_Step2_Data_R_Proje
 reaches <- sf::st_read(reaches_path) # this shapefile does not show up properly
 reaches <- sf::st_transform(reaches, 4326)
 
+# -------------- update reach names ------------
+Okanogan_Reach_Crosswalk =  read_excel(  paste(Okanogan_EDT_path,'Okanogan_AU_Reach_Crosswalk.xlsx', sep="")  )
+for(reach_x in reaches$ReachName){
+  if(any(Okanogan_Reach_Crosswalk$ReachName_Old == reach_x)){
+    x_old = which(reaches$ReachName == reach_x)
+    x_new = which(Okanogan_Reach_Crosswalk$ReachName_Old == reach_x)
+    reaches$ReachName[x_old]  = Okanogan_Reach_Crosswalk$ReachName_New[x_new]
+  }
+}
+
+
 # ---------------- Reaches from Jan 2021 ------------
 #reaches_path = "C:/Users/Ryan/Downloads/Reaches_(All_Jan2021)/Reaches_(All).shp"
 #reaches_jan2021 <- sf::st_read(reaches_path) # this shapefile does not show up properly
 #reaches_jan2021 <- sf::st_transform(reaches_jan2021, 4326)
+
+
 
 # ---------------------------------------------------------------------------
 #  Read in Habitat Quality Score
@@ -91,6 +104,9 @@ for(habitat_attribute_x in habitat_attributes_indiv_x ){
 }
 
 
+Habitat_Quality_Pathway_Steelhead_OKANOGAN[['Habitat_Quality_Pathway_Restoration']]
+Habitat_Quality_Pathway_Steelhead_OKANOGAN[['Habitat_Quality_Pathway_Protection']]
+
 # ---------------------------------------------------------------------------
 #  Merge the data
 # ---------------------------------------------------------------------------
@@ -112,6 +128,15 @@ reaches_LF_data = merge(reaches, Habitat_Attribute_Score_Final_COMBINE, by = "Re
 # ------- remove columns we don't want ------
 reaches_LF_data = subset (reaches_LF_data, select = -c(Assessment,RM_Start,RM_End, SpringChin, SteelheadR,BullTroutR,
                                                  Length_mi,Length_m,Basin.y))
+# ----------------------------------
+# 
+# -------------------------------------------
+
+# -------- merge reach spatial data with habitat data --------------
+reaches_PROTECTION_data = merge(reaches, Protection_Prioritization_Output, by = "ReachName") 
+# ------- remove columns we don't want ------
+reaches_PROTECTION_data = subset (reaches_PROTECTION_data, select = -c(Assessment,RM_Start,RM_End, SpringChin, SteelheadR,BullTroutR,
+                                                       Length_mi,Length_m,Basin.y))
 
 # -------------------------------------
 # Add Projects
@@ -123,30 +148,36 @@ colnames(reaches_Projects)[colnames(reaches_Projects) == "Reach Assessment"] = "
 reaches_Projects$Reach_Assessment = as.factor(reaches_Projects$Reach_Assessment)
 
 # -------------------------------------
-#   Reach Restoration Scores
+#   Reach Ranks (Restoration and Protection) Scores
 # -------------------------------------
-Restoration_Scores_Output = read.csv( 'C:/Users/Ryan/Documents/GitHub/Prioritization_Step2_Data_R_Project/Output/Reach_Rankings_Restoration.csv', nrows=134, header=T )
+output_path_x =  paste(output_path,'Restoration_Reach_Ranking_Scores_Output.xlsx', sep="")
+#Restoration_Rank_Scores_Output =  read_excel( output_path_x) 
+Restoration_Rank_Scores_Output = Reach_Rankings_Output_Restoration
+output_path_x =  paste(output_path,'Protection_Reach_Ranking_Scores_Output.xlsx', sep="")
+#Protection_Rank_Scores_Output =  read_excel( output_path_x) 
+Protection_Rank_Scores_Output = Reach_Rankings_Output_Protection
 
 # -------- merge reach spatial data with habitat data --------------
-reaches_reach_ranks_data = merge(reaches, Restoration_Scores_Output, by = "ReachName") 
+Restoration_Ranks_data = merge(reaches, Restoration_Rank_Scores_Output, by = "ReachName") 
+Protection_Ranks_data = merge(reaches, Protection_Rank_Scores_Output, by = "ReachName") 
 # ------- remove columns we don't want ------
-reaches_reach_ranks_data = subset (reaches_reach_ranks_data, select = -c(Assessment,RM_Start,RM_End, SpringChin, SteelheadR,BullTroutR,
-                                                       Length_mi,Length_m,Basin.y))
+#Restoration_Ranks_data = subset (Restoration_Ranks_data, select = -c("RM_End","RM_Start","Length_mi","Length_m","Assessment.Unit","Basin.y"))
+#Protection_Ranks_data = subset (Protection_Ranks_data, select = -c("RM_End","RM_Start","Length_mi","Length_m","Assessment.Unit","Basin.y"))
 # ------------------- make it numeric ---------------
-reaches_reach_ranks_data$Score_Total = as.numeric(as.character(reaches_reach_ranks_data$Score_Total))
-reaches_reach_ranks_data$Rank_Total = as.numeric(as.character(reaches_reach_ranks_data$Rank_Total))
-reaches_reach_ranks_data$Rank_AUs = as.numeric(as.character(reaches_reach_ranks_data$Rank_AUs))
+# ------- Restoration ----------
+Restoration_Ranks_data$Score_Total = as.numeric(as.character(Restoration_Ranks_data$Reach_Rank_Total_Score))
+Restoration_Ranks_data$Rank_Total = as.numeric(as.character(Restoration_Ranks_data$AU_level_Reach_Rank))
+# ------------- Protection ------
+Protection_Ranks_data$Score_Total = as.numeric(as.character(Protection_Ranks_data$Reach_Rank_Total_Score))
+Protection_Ranks_data$Rank_Total = as.numeric(as.character(Protection_Ranks_data$AU_level_Reach_Rank))
+Protection_Ranks_data$Protected_90_100_Pct = as.numeric(as.character(Protection_Ranks_data$Protected_90_100_Pct))
 
+# ---------------- set "Missing_Data" to NA ------------
+restoration_rank_missing = which(Restoration_Ranks_data$AU_level_Reach_Rank == "Missing_Data")
+Restoration_Ranks_data$AU_level_Reach_Rank[restoration_rank_missing] = NA
+protection_rank_missing = which(Protection_Ranks_data$AU_level_Reach_Rank == "Missing_Data")
+Protection_Ranks_data$AU_level_Reach_Rank[protection_rank_missing] = NA
 
-# --------------------------------
-#   PROTECTION (read in)
-# --------------------------------------
-
-# -------- merge reach spatial data with habitat data --------------
-reaches_PROTECTOIN_data = merge(reaches, Protection_Prioritization_Output, by = "ReachName") 
-# ------- remove columns we don't want ------
-reaches_PROTECTOIN_data = subset (reaches_PROTECTOIN_data, select = -c(Assessment,RM_Start,RM_End, SpringChin, SteelheadR,BullTroutR,
-                                                                         Length_mi,Length_m,Basin.y))
 # --------------------------------
 #   WebMap output (read in)
 # --------------------------------------
@@ -181,6 +212,16 @@ x = which(reaches_HQ_data$ReachName = "Peshastin Creek Lower 03")
 as.numeric(as.character( reaches_HQ_data$`Off-Channel-Floodplain_score` ))[x]
 as.numeric(as.character( reaches_LF_data$`Off-Channel- Floodplain` ))[x]
 as.numeric(as.character( reaches_HQ_data$`Off-Channel-Floodplain_score` ))[x] -  as.numeric(as.character( reaches_LF_data$`Off-Channel- Floodplain` ))[x]
+
+
+reaches$color_reach = 0
+reaches$color_reach[which(reaches$ReachName == "Johnson 16-1")] = 1
+
+color_palette_x = c("red", "blue")
+color_palette_continuous_LARGE = brewer.pal(9, 'Set1')
+# 
+mapview(reaches, lwd=4, zcol="RM_End", legend = mapviewGetOption("legend"), na.color='grey',
+        color= color_palette_continuous_LARGE, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
 
 # ---------------------------------------------------------------------------
 #     Generate the Colors
@@ -248,7 +289,7 @@ attribute_2 = "HQ_Score_Protection"
 
 mapview(reaches_HQ_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
         color= color_palette_x, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap")) +
-  mapview(reaches_HQ_data, zcol = attribute_2, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
+mapview(reaches_HQ_data, zcol = attribute_2, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
           color= color_palette_x) 
 # Note: helpful for plotting factors: https://github.com/r-spatial/mapview/issues/240
 
@@ -277,15 +318,25 @@ mapview(reaches_HQ_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("l
         color= color_palette_continuous, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
 
 # ----------------------------------------------------------
-#     plot CONTINUOUS variable : Reach Ranks
+#     plot Reach Ranks
 # ----------------------------------------------------------
 
 # ------------- for total score -------------
-attribute_1 = "Score_Total"
-color_palette_continuous = brewer.pal(6, 'YlGnBu')
+attribute_1 = "AU_level_Reach_Rank"
+color_palette_x = c("red", "yellow","forestgreen")
+color_palette_x = brewer.pal(3, 'YlGnBu')
+color_palette_x = c(color_palette_x[3],color_palette_x[2],color_palette_x[1]) # reverse the order
 
-mapview(reaches_reach_ranks_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), 
-        color= color_palette_continuous, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
+
+mapview(Restoration_Ranks_data , zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
+        color= color_palette_x, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
+mapview(Protection_Ranks_data , zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
+        color= color_palette_x, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
+
+attribute_1 = "Protected_Percent"
+color_palette_x = brewer.pal(9, 'YlGnBu')
+mapview(Protection_Ranks_data , zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
+        color= color_palette_x, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
 
 # ------------- for Reach Ranks -------------
 attribute_1 = "Rank_AUs"
@@ -307,7 +358,7 @@ mapview(reaches_reach_ranks_data, zcol = attribute_1, lwd=4, legend = mapviewGet
 #     plot PROTECTION
 # ----------------------------------------------------------
 
-mapview(reaches_PROTECTOIN_data, lwd=4, legend = mapviewGetOption("legend"), 
+mapview(reaches_PROTECTION_data, lwd=4, legend = mapviewGetOption("legend"), 
         color= 'blue', map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
 
 attribute_1 = "HQ_Score_Protection"
@@ -436,3 +487,25 @@ legend(1,215, c("Habitat Quality Pathway (REI value)", "Limiting Factor Pathway 
 
 hist(  as.numeric(as.character(reaches_HQ_data$Floodplain_Dif) )  )
 abline(v = median(as.numeric(as.character(reaches_HQ_data$Floodplain_Dif) ), na.rm=T ), col='red', lwd=3)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+join(reaches$geometry[x1], reaches$geometry[x2])
+
+
+
+x = st_sf(a = 1:2, geom = st_sfc(st_point(c(0,0)), st_point(c(1,1))))
+y = data.frame(a = 2:3)
+merge(x, y)

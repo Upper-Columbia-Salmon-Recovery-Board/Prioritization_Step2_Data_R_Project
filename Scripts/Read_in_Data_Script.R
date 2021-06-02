@@ -102,19 +102,33 @@ Life_Stage_Priorities_AU_only_data = read_excel( paste(ranking_data_path,'LifeSt
 Life_Stage_Priorities_AU_and_Reach_data = read_excel( paste(ranking_data_path,'LifeStagePriorities_AUandReach.xlsx', sep="") )
 
 # ---------------------- match column names to life stages ------------------------------ 
-spring_chinook_life_stages = list("Adult Migration" = "SPCH Adult Migration  AU LS Priority",	  "Holding"=	"SPCH Holding  AU LS Priority", "Holding and Maturation"=	"SPCH Holding  AU LS Priority",
-                                "Spawning and Incubation" = "SPCH Spawning AU LS Priority",	"Fry Colonization" = "SPCH Fry Colonization  AU LS Priority", "Fry" = "SPCH Fry Colonization  AU LS Priority",
-                                "Summer Rearing"  = "SPCH Summer Rearing  AU LS Priority", 	"Winter Rearing" = "SPCH Winter Rearing  AU LS Priority",
-                                "Smolt Outmigration"="SPCH Smolt Emigration  AU LS Priority", "Holding and Maturation" = "SPCH Holding")
+spring_chinook_life_stages = list("Adult Migration" = "SPCH Adult Migration  AU LS Priority",	  
+                                "Holding"=	"SPCH Holding  AU LS Priority", 
+                                "Holding and Maturation"=	"SPCH Holding  AU LS Priority",
+                                "Spawning and Incubation" = "SPCH Spawning AU LS Priority",	
+                                "Fry Colonization" = "SPCH Fry Colonization  AU LS Priority", 
+                                "Fry" = "SPCH Fry Colonization  AU LS Priority",
+                                "Summer Rearing"  = "SPCH Summer Rearing  AU LS Priority", 
+                                "Winter Rearing" = "SPCH Winter Rearing  AU LS Priority",
+                                "Smolt Outmigration"="SPCH Smolt Emigration  AU LS Priority", 
+                                "Holding and Maturation" = "SPCH Holding")
 
-steelhead_life_stages =     life_stage_priority_list = list("Adult Migration"  = "SH Adult Migration  AU LS Priority","Holding"  =  "SH Holding  AU LS Priority",
-                                                            "Holding and Maturation"  =  "SH Holding  AU LS Priority",	"Spawning and Incubation" ="SH Spawning AU LS Priority", 
-                                                            "Fry" = "SH Fry Colonization  AU LS Priority", "Fry Colonization" = "SH Fry Colonization  AU LS Priority","Spawning and Incubation" = "SH Summer Rearing  AU LS Priority",
-                                                            "Winter Rearing"  = "SH Winter Rearing  AU LS Priority",	"Smolt Outmigration" = "SH Smolt Emigration  AU LS Priority")
+steelhead_life_stages =     life_stage_priority_list = list("Adult Migration"  = "SH Adult Migration  AU LS Priority",
+                                                            "Holding"  =  "SH Holding  AU LS Priority",
+                                                            "Holding and Maturation"  =  "SH Holding  AU LS Priority",
+                                                            "Spawning and Incubation" ="SH Spawning AU LS Priority", 
+                                                            "Fry" = "SH Fry Colonization  AU LS Priority", 
+                                                            "Fry Colonization" = "SH Fry Colonization  AU LS Priority",
+                                                            "Summer Rearing" = "SH Summer Rearing  AU LS Priority",
+                                                            "Winter Rearing"  = "SH Winter Rearing  AU LS Priority",	
+                                                            "Smolt Outmigration" = "SH Smolt Emigration  AU LS Priority")
 
-bull_trout_life_stages = list("Adult Migration"  = "BT Adult Migration  AU LS Priority",	"Holding and Maturation"= 	"BT Holding  AU LS Priority",
-                                "Spawning and Incubation" =	"BT Spawning AU LS Priority",	"BT Natal Rearing" =  "BT Natal Rearing  AU LS Priority",
-                                "Adult Non-Spawning" = "BT Adult Non-Spawning AU LS Priority", "BT Subadult Rearing"=  "BT Subadult Rearing  AU LS Priority")
+bull_trout_life_stages = list("Adult Migration"  = "BT Adult Migration  AU LS Priority",	
+                              "Holding and Maturation"= 	"BT Holding  AU LS Priority",
+                                "Spawning and Incubation" =	"BT Spawning AU LS Priority",	
+                              "BT Natal Rearing" =  "BT Natal Rearing  AU LS Priority",
+                                "Adult Non-Spawning" = "BT Adult Non-Spawning AU LS Priority", 
+                              "BT Subadult Rearing"=  "BT Subadult Rearing  AU LS Priority")
 
 life_stages_priorities = list("spring_chinook_life_stages" =  spring_chinook_life_stages,  
                               "steelhead_life_stages" = steelhead_life_stages, 
@@ -334,6 +348,18 @@ FUNCTION_update_Confinement_Scores(Confinement_Scores, Geomorphic_Criteria)
 
 # ---------------------------------------------------------------------------
 #
+#   Floodplain Disturbance and Proteciton Data
+#
+# ---------------------------------------------------------------------------
+
+# -------------------- Protected_Percentage_Data Excel ------------------
+Protected_Percentage_Data = read_excel( paste(habitat_data_path,'Protected_Percentage_Data.xlsx', sep="") )
+# -------------------- Degraded_Floodplain_Data Excel ------------------
+Degraded_Floodplain_Data = read_excel( paste(habitat_data_path,'Degraded_Floodplain_Data.xlsx', sep="") )
+
+
+# ---------------------------------------------------------------------------
+#
 #   Habitat Quality Restoration and Protection Criteria
 #
 # ---------------------------------------------------------------------------
@@ -392,18 +418,24 @@ HabitatAttribute_Ratings_Level3 = read_excel( paste(Okanogan_EDT_path,'HabitatAt
 
 # --------------- EDT Habitat Attribute Crosswalk --------------------
 Barriers_Okanogan_EDT = read_excel( paste(Okanogan_EDT_path,'Barriers_Okanogan_EDT.xlsx', sep="") )
+Barriers_Okanogan_EDT$`Change in NEQ` = as.numeric(Barriers_Okanogan_EDT$`Change in NEQ`)
 
 # --------------- EDT Habitat Attribute Crosswalk --------------------
 LifeStageCrosswalk_EDT = read_excel( paste(Okanogan_EDT_path,'LifeStageCrosswalk_Okanogan_EDT.xlsx', sep="") )
 
 # ------------- EDT Crosswalk between Level 2 and Level 3 EDT habitat attribute names --------
 Level2_Level3_EDT_Crosswalk = read_excel( paste(Okanogan_EDT_path,'Level2_Level3_EDT_Crosswalk.xlsx', sep="") )
+Level2_Level3_EDT_Crosswalk_primary_only = Level2_Level3_EDT_Crosswalk[which(Level2_Level3_EDT_Crosswalk$Contribution == "Primary"),]
 
 # ------------------ Limiting Factors Okanogan EDT -----------
 Limiting_Factors_Okanogan_EDT = read_excel( paste(Okanogan_EDT_path,'Limiting_Factors_Okanogan_EDT.xlsx', sep="") )
 
-# ------------------ Limiting Factors Okanogan EDT -----------
+# ------------------ Habitat Quality Percent Okanogan EDT -----------
 PRCNT_Habitat_Quality_Okanogan_EDT = read_excel( paste(Okanogan_EDT_path,'PRCNT_Habitat_Quality_Okanogan_EDT.xlsx', sep="") )
+
+# ----------------- Reach Rankings for Restoration and Protection ------------
+Reach_and_Attribute_Rank_Restoration_Okanogan = read_excel( paste(Okanogan_EDT_path,'Reach_and_Attribute_Rank_Restoration.xlsx', sep="") )
+Reach_and_Attribute_Rank_Protection_Okanogan = read_excel( paste(Okanogan_EDT_path,'Reach_and_Attribute_Rank_Protection.xlsx', sep="") )
 
 # ------------------------------- AU Ranks for Okanogan ----------------------------------
 AU_Ranks_Okanogan = read_excel( paste(Okanogan_EDT_path,'AU_Ranks_Okanogan_EDT.xlsx', sep="") )

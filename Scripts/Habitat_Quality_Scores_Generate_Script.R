@@ -44,6 +44,8 @@ source(paste(script_path, 'FUNCTIONS_for_Habitat_Quality_Filters.R', sep=""))
 
 #reach_names = unique(Reach_Information_data$ReachName)
 
+# Habitat Attributes in HQ but not in LF pathway: "Bank Stability", "Channel Stability" "Riparian- Canopy Cover", "Riparian-Disturbance"   
+
 # --------------------------------------
 #   Loop through each Reach to generate score
 # --------------------------------------
@@ -55,7 +57,7 @@ Habitat_Quality_Scores = as.tibble(Reach_Information_data[,c('ReachName','Basin'
                                                              'Spring.Chinook.Reach','Steelhead.Reach','Bull.Trout.Reach')])
 colnames(Habitat_Quality_Scores) = c('ReachName','Basin', 'Assessment.Unit',
                                      'Spring.Chinook.Reach','Steelhead.Reach','Bull.Trout.Reach')
-habitat_attribute_x = names(Habitat_Quality_Habitat_Attributes_List)[1]
+habitat_attribute_x = names(Habitat_Quality_Habitat_Attributes_List)[1] # just to print out
 
 ptm <- proc.time()[3]
 for( habitat_attribute_x in names(Habitat_Quality_Habitat_Attributes_List) ){
@@ -71,8 +73,9 @@ for( habitat_attribute_x in names(Habitat_Quality_Habitat_Attributes_List) ){
   # --------------------------------------------------------------------
   
   if( nrow(output_x) > 0 ){
-    output_x_add_to_HQ = output_x[  , "Habitat_Attribute_Score"]
-    
+    # ------- pull score from Habitat Attribute data --------
+    output_x_add_to_HQ = output_x[  , c("ReachName", "Habitat_Attribute_Score")]
+    colnames(output_x_add_to_HQ) = c("ReachName","final_score")
     
   # --------------------------------------------------------------------
   #   IF NO Score for Habitat Attribute is present in Habitat_Attribute_Scores
@@ -89,7 +92,7 @@ for( habitat_attribute_x in names(Habitat_Quality_Habitat_Attributes_List) ){
     # --------------------------------------------------------------------
     #   Only one data source for this habitat attribute
     # --------------------------------------------------------------------
-    if(length(data_sources_list[[1]]) == 1){
+    if( length(data_sources_list[[1]]) == 1){
       
       output_x = FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw(habitat_attribute_x, data_sources_list[[1]][1], "HQ")
       
@@ -102,37 +105,48 @@ for( habitat_attribute_x in names(Habitat_Quality_Habitat_Attributes_List) ){
     }else{
       
       # ------------ data frame to record habitat attributes --------
-      habitat_attribute_x_data_frame = data.frame()
+      
+      i = 0
       for( location_x in 1:length(data_sources_list[[1]]) ){
-        
+
         # ------------------- skip reading PROFESSOINAL JUDGEMENT -------------
         if(data_sources_list[[1]][location_x] == "PROFESSIONAL JUDGEMENT"){ next }else{
           # ------------ Generate metric value  AND score (1,3,5) for each habitat attribute -------------------
+          i = i + 1 # to include reach name if first 
+          
           # outputs both metric value and score
           output_x = FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw(habitat_attribute_x,  data_sources_list[[1]][location_x],  "HQ" )
           
           # -------- data frame for this specific reach and habitat attribute --------
-          habitat_attribute_x_data_frame = rbind(habitat_attribute_x_data_frame, output_x$score)
+          if(i == 1){
+            habitat_attribute_x_data_frame = output_x[,c("ReachName","score")]
+          }else{
+            habitat_attribute_x_data_frame = cbind(habitat_attribute_x_data_frame, output_x$score)
+          }
+          
         }
       }
       
       # ------------ data frame to record habitat attributes --------
-      habitat_attribute_x_data_frame = t(habitat_attribute_x_data_frame)
-      habitat_attribute_x_data_frame = as_data_frame(habitat_attribute_x_data_frame)
+      #habitat_attribute_x_data_frame = t(habitat_attribute_x_data_frame)
+      #habitat_attribute_x_data_frame = as_data_frame(habitat_attribute_x_data_frame)
+      # ---------- pull just the scores -------
+      habitat_attribute_x_data_frame_numeric = habitat_attribute_x_data_frame[,2:ncol(habitat_attribute_x_data_frame)]
       
       # ------------------- get minimum score for each row ----------
-      habitat_attribute_x_data_frame = habitat_attribute_x_data_frame%>%
+      habitat_attribute_x_data_frame_numeric= habitat_attribute_x_data_frame_numeric %>%
         rowwise() %>%
         mutate(minimum_score = min(c_across(), na.rm=T) )
-      # ------- convert minimum score to 3 ---------------
-      habitat_attribute_x_data_frame$minimum_score = as.numeric(habitat_attribute_x_data_frame$minimum_score) 
       
-      # -------- adding NA column (for metric colum, it needs to be NA to be multiple) ------
-      habitat_attribute_x_data_frame$na_column = NA
-      output_x =  habitat_attribute_x_data_frame[,c("na_column","minimum_score")]
-      colnames(output_x) = c("metric_data", "score")
+      # ------- convert minimum score to numeric ---------------
+      habitat_attribute_x_data_frame_numeric$minimum_score2 = as.numeric(habitat_attribute_x_data_frame_numeric$minimum_score) 
+      
+      # -------- adding NA column (for metric column, it needs to be NA to be multiple) ------
+      habitat_attribute_x_data_frame_numeric$na_column = NA
+      output_x =  cbind(habitat_attribute_x_data_frame$ReachName, habitat_attribute_x_data_frame_numeric[,c("na_column","minimum_score2")])
+      colnames(output_x) = c("ReachName", "metric_data", "final_score")
       # ------ generate output to add to HQ Score data frames -------
-      output_x_add_to_HQ = output_x$score
+      output_x_add_to_HQ = output_x[,c("ReachName","final_score")]
     }
 
   }
@@ -142,12 +156,11 @@ for( habitat_attribute_x in names(Habitat_Quality_Habitat_Attributes_List) ){
   # --------------------------------------------------------------------
   
   # ---------------------------- add new columns to summary data frame -----------
-  # ------ generate data frame -------
-  output_x_add_to_HQ = as.data.frame(output_x_add_to_HQ)
   # --------- generate column name ---------
   column_score = paste(gsub(" ", "", habitat_attribute_x, fixed = TRUE), "score", sep="_")
+  colnames(output_x_add_to_HQ)[2] = column_score
   # ---------- add to HQ score ------------
-  Habitat_Quality_Scores[, column_score] = output_x_add_to_HQ
+  Habitat_Quality_Scores = merge(Habitat_Quality_Scores, output_x_add_to_HQ, by="ReachName")
   
   # --------------------------------------------------------------------
   #      Add Riparian Mean score

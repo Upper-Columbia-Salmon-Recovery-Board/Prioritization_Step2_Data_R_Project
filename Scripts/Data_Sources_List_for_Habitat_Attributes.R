@@ -50,6 +50,44 @@ Habitat_Attributes_List = list(
   'Temperature- Rearing'  = c('NORWEST_Temperature', '305bListings_Temperature', 'RAWatershed_Rating_Temp' )
 )
 
+
+
+# ----------------------- list of Level 2 habitat attribute names in Okanogan EDT Results --------------
+
+Habitat_Attributes_List_OKANOGAN = list(
+  '% Fines/Embeddedness' = c('EDT Level 2 Fine Sediment Functional Condition', 'EDT Level 2 Embeddedness  Functional Condition', 'EDT Level 2 Total Suspended Solids Functional Condition'),
+  'Bank Stability' = c('EDT Level 2 Confinement Artificial Functional Condition'),
+  'Brook Trout' = c(),
+  'Channel Stability' = c('EDT Level 2 Confinement Artificial Functional Condition'),
+  'Coarse Substrate' = c('EDT Level 2 Large Cobble Riffle Functional Condition', 'EDT Level 2 Small Cobble Riffle Functional Condition'),
+  'Contaminants' = c( 'Contaminants_303d', 'EDT Level 2 Metals in Sediments Functional Condition','EDT Level 2 Metals in Water Functional Condition','EDT Level 2 Miscellaneous Toxins Functional Condition'),
+  'Cover- Boulders'  = c( ), 
+  'Cover- Undercut Banks' = c( ), 
+  'Cover- Wood' = c('EDT Level 2 Woody Debris Functional Condition' ), 
+  'Entrainment/Stranding' = c('PROFESSIONAL JUDGEMENT'),
+  'Flow- Scour' = c( 'EDT Level 2 Bed Scour Functional Condition','EDT Level 2 Flow: Inter-annual High Flow Variation Functional Condition'), 
+  'Flow- Summer Base Flow' = c( 'EDT Level 2 Width Functional Condition','EDT Level 2 Flow: Inter-annual Low Flow Variation Functional Condition', 'PROSPER' , 'PROFESSIONAL JUDGEMENT','ATLAS_Flow'), 
+  'Food- Food Web Resources' = c( 'PROFESSIONAL JUDGEMENT', 'EDT Level 2 Benthic Richness Functional Condition', 'EDT Level 2 Temperature: Food Effect Functional Condition'), 
+  'Harassment' = c('PROFESSIONAL JUDGEMENT' ), 
+  'Icing' = c( 'PROFESSIONAL JUDGEMENT'), 
+  'Off-Channel- Floodplain' = c( 'EDT Level 2 Backwater Pools Functional Condition' , 'EDT Level 2 Floodplain Ponds Functional Condition', 'EDT Level 2 Seasonnally Inundated Floodplain Functional Condition'),
+  'Off-Channel- Side-Channels' = c('EDT Level 2 Side Channel Functional Condition'  ),
+  'Pool Quantity & Quality' = c( 'EDT Level 2 Beaver Ponds Functional Condition', 'EDT Level 2 Scour Pools Functional Condition'), 
+  'Pools- Deep Pools' = c(  ), 
+  'Predators- Juveniles' = c( 'PROFESSIONAL JUDGEMENT', 'EDT Level 2 Predation Risk Functional Condition'),
+  'Riparian- Canopy Cover' = c('Canopy_Cover_CATEGORY_1' , 'UCSRB_CanopyCoverPct' , 'EDT Level 2 Riparian/Stream Interface Functional Condition' ),
+  'Riparian-Disturbance' = c('Disturbance_CATEGORY_1' , 'UCSRB_RiparianDisturbancePct' ),
+  'Superimposition' = list('PROFESSIONAL JUDGEMENT' ), 
+  'Temperature- Adult Holding' = c( 'NORWEST_Temperature', '305bListings_Temperature', 'RAWatershed_Rating_Temp', 'EDT Level 2 Temperature: Daily Maximum Functional Condition' ), 
+  'Temperature- Adult Spawning' = c('NORWEST_Temperature', '305bListings_Temperature', 'RAWatershed_Rating_Temp', 'EDT Level 2 Temperature: Daily Maximum Functional Condition'), 
+  'Temperature- Rearing'  = c('NORWEST_Temperature', '305bListings_Temperature', 'RAWatershed_Rating_Temp', 'EDT Level 2 Temperature: Daily Maximum Functional Condition' )
+)
+
+
+# ---------------------------------- Read in crosswalk between EDT names and names in HabitatAttribute_Ratings_Level2_updated ----------------
+Level2_Data_Sources_Name_Crosswalk = read_excel( paste(Okanogan_EDT_path,'Level2_Data_Sources_Name_Crosswalk.xlsx', sep="") )
+
+
 # ------------- habitat attribute AND habitat attribute number/location of data FROM Channel Unit Data -------
 #    Data listed here should pull data from Channel_Unit_Raw data frame (not habitat_raw_data)
 # data frame: Channel_Unit_Raw

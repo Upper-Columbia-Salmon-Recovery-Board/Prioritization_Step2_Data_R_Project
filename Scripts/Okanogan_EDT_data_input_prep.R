@@ -20,7 +20,7 @@
 # ---------------------------------------------------------------------------
 
 # ------------- get unique EDT reaches ---------
-unique_EDT_attributes = unique(HabitatAttribute_Ratings$`EDT Attribute`)
+unique_EDT_attributes = unique(HabitatAttribute_Ratings_Level2$`EDT Attribute`)
 
 for(EDT_habitat_attribute_x in unique_EDT_attributes){
   
@@ -31,8 +31,8 @@ for(EDT_habitat_attribute_x in unique_EDT_attributes){
   
   if(length(RTT_habitat_attribute_name_x) > 0){
     # -------------------- update RTT reach name -------
-    x = which( HabitatAttribute_Ratings$`EDT Attribute` ==  EDT_habitat_attribute_x )
-    HabitatAttribute_Ratings$`RTT Habitat Attribute`[x] = RTT_habitat_attribute_name_x
+    x = which( HabitatAttribute_Ratings_Level2$`EDT Attribute` ==  EDT_habitat_attribute_x )
+    HabitatAttribute_Ratings_Level2$`RTT Habitat Attribute`[x] = RTT_habitat_attribute_name_x
     print(EDT_habitat_attribute_x)
     
   }else{
@@ -55,7 +55,7 @@ for(EDT_habitat_attribute_x in unique_EDT_attributes){
 #      Only carry forward habitat attributes that have RTT Habitat Attributes
 # ----------------------------------------------------------------------------------
 
-HabitatAttribute_Ratings_RTT_habitat_attributes = HabitatAttribute_Ratings[ !is.na(HabitatAttribute_Ratings$`RTT Habitat Attribute`), ]
+HabitatAttribute_Ratings_RTT_habitat_attributes = HabitatAttribute_Ratings_Level2[ !is.na(HabitatAttribute_Ratings_Level2$`RTT Habitat Attribute`), ]
 
 # ----------------------------------------------------------------------------------
 #   Level 2 data - generate scores (Function_Condition) from factorWeight
@@ -172,8 +172,8 @@ for(EDT_attribute_x in unique_EDT_attributes_x){
 # ----------------------------------------------------------------------------------
 #      Only carry forward habitat attributes that have RTT Habitat Attributes
 # ----------------------------------------------------------------------------------
-
-HabitatAttribute_Ratings_Level2_updated = HabitatAttribute_Ratings_Level2_updated[ !is.na(HabitatAttribute_Ratings_Level2_updated$`RTT Habitat Attribute`), ]
+# Keeping all Level 2 data - since will print out Level 2 habitat attributes with no RTT habitat attributes
+# HabitatAttribute_Ratings_Level2_updated = HabitatAttribute_Ratings_Level2_updated[ !is.na(HabitatAttribute_Ratings_Level2_updated$`RTT Habitat Attribute`), ]
 
 # ---------------------------------------------------------------------------
 #
@@ -307,8 +307,8 @@ for(level_3_habitat_attribute_x  in  unique_level_3){
   #    Level 3 => Level 2
   # ------------------------------------------------------------------------------ 
   # ---------------- identify correct level 2  -----------------
-  level_2_x = which(Level2_Level3_EDT_Crosswalk$`Level 3 Attribute`==level_3_habitat_attribute_x)
-  level_2_row_x = Level2_Level3_EDT_Crosswalk[level_2_x, ]
+  level_2_x = which(Level2_Level3_EDT_Crosswalk_primary_only$`Level 3 Attribute`==level_3_habitat_attribute_x)
+  level_2_row_x = Level2_Level3_EDT_Crosswalk_primary_only[level_2_x, ]
   # ----------------- add all Level 2 to row -----------
   # ------- get just level 2 habitat attribute ----
   level_2_attribute_x = as.data.frame(level_2_row_x[,c('Level 2 Attribute')])
@@ -334,6 +334,10 @@ for(level_3_habitat_attribute_x  in  unique_level_3){
       if( !is.na(AttributeCrosswalk$`RTT Habitat Attributes`[RTT_x ]) ){
         RTT_row_x = rbind(RTT_row_x, AttributeCrosswalk[RTT_x, ])
       }
+    }
+    
+    if(is.null(RTT_row_x)){
+      RTT_row_x = AttributeCrosswalk[RTT_x, ]
     }
 
     # ------------------ all rows with this level 3 habitat attribute, put all level 2 habitat attriubtes ------
@@ -400,13 +404,24 @@ for(level_3_habitat_attribute_x  in  unique_level_3){
 }
 
 
-
-
 # --------------------------------------------------------------------------------------------------------------- 
 # 
 #    Add Okanogan Barriers data to the existing Barriers data (for Okanogan-Wenatchee-Methow)
 # 
 # --------------------------------------------------------------------------------------------------------------- 
+
+
+# ----------------------------------------------------------------------------- 
+#    Add Restoration and Protection Tiers
+# ----------------------------------------------------------------------------- 
+
+AU_Ranks_Okanogan_2 = AU_Ranks_Okanogan[,c("RTT AU","AU Restoration Rank","AU Protection Rank")]
+AU_Ranks_Okanogan_2 = AU_Ranks_Okanogan_2[!is.na(AU_Ranks_Okanogan_2$`RTT AU`),] # remove the rows with NAs
+AU_Ranks_Okanogan_2 = AU_Ranks_Okanogan_2[!duplicated(AU_Ranks_Okanogan_2$`RTT AU`), ] # remove duplicated
+
+Barriers_Okanogan_EDT$`RTT AU` = Barriers_Okanogan_EDT$`Assessment Unit RTT` # get it so the column name is the same as the other data frame
+
+Barriers_Okanogan_EDT = inner_join(Barriers_Okanogan_EDT, AU_Ranks_Okanogan_2,  by = "RTT AU" )
 
 # ----------------------------------------------------------------------------- 
 #     Remove the "type" of barrier in the reach name
@@ -427,11 +442,20 @@ Barriers_Okanogan_EDT = Barriers_Okanogan_EDT  %>%
                                                      `Change in NEQ`   <= Criteria_Okanogan_EDT_Scoring_Barrires$Category_upper_limit[2] , Criteria_Okanogan_EDT_Scoring_Barrires$Score[2],
                                                    ifelse(`Change in NEQ`   > Criteria_Okanogan_EDT_Scoring_Barrires$Category_lower_limit[3] & 
                                                             `Change in NEQ`   <= Criteria_Okanogan_EDT_Scoring_Barrires$Category_upper_limit[3] , Criteria_Okanogan_EDT_Scoring_Barrires$Score[3],
-                                                          NA))))
+                                                           NA))))
 
 
-# ------------------------ Only pull barriers within the individual habitat attribute score --------------------
-Barriers_Okanogan_EDT_updated = Barriers_Okanogan_EDT[which(Barriers_Okanogan_EDT$Barriers_Score <= Individual_Habitat_Attribute_Score), ]
+# ------------------------  Pull barriers with Barrier Score of 1 and B) Barrier Score of 3 AND Tier 1 Restoration  --------------------
+Barriers_Okanogan_EDT_updated = Barriers_Okanogan_EDT[which(Barriers_Okanogan_EDT$Barriers_Score <= 1), ]
+
+# ------------------------  Pull barriers with Barrier Score of 3 AND Tier 1 Restoration  --------------------
+
+Barriers_Okanogan_EDT_updated2 = Barriers_Okanogan_EDT[which(Barriers_Okanogan_EDT$Barriers_Score > 1  & 
+                                                              Barriers_Okanogan_EDT$Barriers_Score <= 3 &
+                                                              Barriers_Okanogan_EDT$`AU Restoration Rank` == 1), ]
+
+Barriers_Okanogan_EDT_updated = rbind(Barriers_Okanogan_EDT_updated, Barriers_Okanogan_EDT_updated2)
+
 
 # ----------------------------------------------------------------------------- 
 #     Add to existing barrier data
@@ -440,14 +464,51 @@ Barriers_Okanogan_EDT_updated = Barriers_Okanogan_EDT[which(Barriers_Okanogan_ED
 # ------- prepare to merge with Wenatchee-Entiat-Methow Barrier data ----------
 Barriers_Okanogan_EDT_updated_for_merge = as.data.frame( rep("Okanogan", length.out=nrow(Barriers_Okanogan_EDT_updated))   )  
 colnames(Barriers_Okanogan_EDT_updated_for_merge) = "Basin"
-Barriers_Okanogan_EDT_updated_for_merge$`Assessment.Unit` = Barriers_Okanogan_EDT_updated$`Assessment Unit`
+Barriers_Okanogan_EDT_updated_for_merge$`Assessment.Unit` = Barriers_Okanogan_EDT_updated$`Assessment Unit RTT`
 Barriers_Okanogan_EDT_updated_for_merge$ReachName = Barriers_Okanogan_EDT_updated$Reach_no_ref
 Barriers_Okanogan_EDT_updated_for_merge$`Action Category` = rep(Barriers_Pathways_Data$`Action Category`[1], length.out=nrow(Barriers_Okanogan_EDT_updated))
 Barriers_Okanogan_EDT_updated_for_merge$Habitat_Attributes =  rep(Barriers_Pathways_Data$Habitat_Attributes[1], length.out=nrow(Barriers_Okanogan_EDT_updated))
 Barriers_Okanogan_EDT_updated_for_merge$Pathways =  rep(Barriers_Pathways_Data$Pathways[1], length.out=nrow(Barriers_Okanogan_EDT_updated))
 
+
+# -------------- remove Barriers John Arterburn (May 11, 2021) said had already been fixed -----
+reach_barriers_do_not_exist = c("Antoine 16-2","Johnson 16-1", "Johnson 16-2", "Omak 16-1",
+                                "Omak 16-5", "Salmon 16-4", "Antoine 16-1","Johnson 16-5",
+                                "Johnson 16-3", "Johnson 16-1")
+x_remove = c()
+for(i in 1:nrow(Barriers_Okanogan_EDT_updated_for_merge) ){ 
+  if( any(reach_barriers_do_not_exist == Barriers_Okanogan_EDT_updated_for_merge$ReachName[i] )  ){ 
+    x_remove = c(x_remove, i) 
+    } 
+         
+}
+
+Barriers_Okanogan_EDT_updated_for_merge = Barriers_Okanogan_EDT_updated_for_merge[-x_remove,]
 # -------------- merge the data ------------
 Barriers_Pathways_Data = rbind( Barriers_Pathways_Data, Barriers_Okanogan_EDT_updated_for_merge)
+
+
+
+
+# --------------------------------------------------------------------------
+#
+# --------------------------------------------------------------------------
+
+life_stages = c("Adult Migration","Fry","Holding and Maturation","Smolt Outmigration",     
+             "Spawning and Incubation","Summer Rearing","Winter Rearing"   )
+
+level3_RTT_habitat_attributes = c()
+
+for(life_stage_x in life_stages){
+  
+  # ------------ filter out limiting factors for life stage ----------
+  Limiting_Factors_Okanogan_EDT_LIFE_STAGE = Limiting_Factors_Okanogan_EDT[which(Limiting_Factors_Okanogan_EDT$`RTT Life Stage` == life_stage_x), ]
+  
+  # --------- unique habitat attributes (level 3) -----
+  level_3_x = unique(Limiting_Factors_Okanogan_EDT_LIFE_STAGE)
+}
+
+
 
 
 

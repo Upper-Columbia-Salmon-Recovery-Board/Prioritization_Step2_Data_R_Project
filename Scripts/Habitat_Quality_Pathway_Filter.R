@@ -19,7 +19,7 @@
 # ---------------------------------------------------------------------------
 
 #  to test
-species = "Steelhead"
+species = "Bull Trout"
 basins = c("Methow",  "Entiat","Wenatchee", "Okanogan")
 
 Generate_Habitat_Quality_Output_Table = function(species, basins, habitat_quality_scores_colnames_for_sum ){
@@ -310,6 +310,26 @@ Generate_Habitat_Quality_Output_Table = function(species, basins, habitat_qualit
     "Habitat_Quality_Pathway_Restoration" = Habitat_Quality_Pathway_Restoration,
     "Habitat_Quality_Pathway_Protection" = Habitat_Quality_Pathway_Protection
   )
+  
+  # ------------- empty data frame IF A) is Bull Trout and B) is to be excluded -----------
+  if(exclude_bull_trout == "yes" & species == "Bull Trout"){
+    
+    # --------------------- Restoration ------------------
+    # ------ remove all but one row -------
+    Habitat_Quality_Pathway_Output[["Habitat_Quality_Pathway_Restoration"]] = Habitat_Quality_Pathway_Output[["Habitat_Quality_Pathway_Restoration"]][1,]
+    # ------ make all NA -------
+    for(col_i in 1:ncol(Habitat_Quality_Pathway_Output[["Habitat_Quality_Pathway_Restoration"]])){
+      Habitat_Quality_Pathway_Output[["Habitat_Quality_Pathway_Restoration"]][1,col_i] = NA
+    }
+    
+    # --------------------- Protection ------------------
+    # ------ remove all but one row -------
+    Habitat_Quality_Pathway_Output[["Habitat_Quality_Pathway_Protection"]] = Habitat_Quality_Pathway_Output[["Habitat_Quality_Pathway_Protection"]][1,]
+    # ------ make all NA -------
+    for(col_i in 1:ncol(Habitat_Quality_Pathway_Output[["Habitat_Quality_Pathway_Protection"]])){
+      Habitat_Quality_Pathway_Output[["Habitat_Quality_Pathway_Protection"]][1,col_i] = NA
+    }
+  }
   
   return(Habitat_Quality_Pathway_Output)
   

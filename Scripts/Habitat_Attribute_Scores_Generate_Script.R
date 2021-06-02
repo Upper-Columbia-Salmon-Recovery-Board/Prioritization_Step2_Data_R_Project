@@ -239,3 +239,5 @@ if(output_Habitat_Quality_and_Habitat_Attribute_Scores == "yes"){
 
 print(paste("Time to complete Habitat Attributes Output: ", paste(round((proc.time()[3] - ptm)/60, 2), " minutes")    ))
 
+
+

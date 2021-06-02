@@ -45,7 +45,7 @@ Okanogan_Individual_Habitat_Attribute_Score = Individual_Habitat_Attribute_Score
 
 # --------- Okanogan EDT: "% of Template" ---------------
 PRCNT_of_Template_Restoration_Score = 0.8  # THIS PERCENT and below pass through filter for Okanogan EDT Restoration
-PRCNT_of_Template_Protection_Score = 0.8  # THIS PERCENT and above pass through filter for Okanogan EDT Protection
+PRCNT_of_Template_Protection_Score = 0.7  # THIS PERCENT and above pass through filter for Okanogan EDT Protection
 
 # ----------------------------------------------------------------------------------------------------------------------------
 #

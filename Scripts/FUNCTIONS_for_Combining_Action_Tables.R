@@ -19,8 +19,12 @@
 #
 # ---------------------------------------------------------------------------
 
-# score_1_or_3 = "one"
-# restoration_or_protection = 'restoration'
+test_x = TRUE
+if(test_x){
+  score_1_or_3 = "one"
+  restoration_or_protection = 'restoration'
+}
+
 
 FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_or_3,  restoration_or_protection){
   
@@ -53,20 +57,28 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
   # ------------------------------------------------------------
   #       Initiate data frame
   # ------------------------------------------------------------
-  reaches_unique = unique( c(HQ_spring_chinook$ReachName, HQ_steelhead$ReachName, HQ_bull_trout$ReachName ) )
+  if(exclude_bull_trout == "no"){
+    reaches_unique = unique( c(HQ_spring_chinook$ReachName, HQ_steelhead$ReachName, HQ_bull_trout$ReachName ) )
+  }else if(exclude_bull_trout == "yes"){
+    reaches_unique = unique( c(HQ_spring_chinook$ReachName, HQ_steelhead$ReachName) )
+  }
+  
   reaches_unique = reaches_unique[order(reaches_unique)]  # just alphabetize 
   
   # ------------ get Reach Information ------
   Reach_Information_HQ_Actions = Reach_Information_data %>%  
     filter(ReachName   %in% reaches_unique)
-  # --------------- just get important reach information  ----------
-  Reach_Information_HQ_Actions = Reach_Information_HQ_Actions[, c('ReachName','Basin',"Assessment.Unit",  "Spring.Chinook.Reach","Steelhead.Reach" ,"Bull.Trout.Reach" )]
-  
+
   # ------------------------------------------------------------
   #       Loop Through reaches to get information
   # ------------------------------------------------------------
   Pathway_Output_x = c()
   for(reachname_x in reaches_unique){
+    
+    # ------------------ basic info about the reach ------------
+    x_row = which(Reach_Information_HQ_Actions$ReachName == reachname_x)
+    output_info_row_x = Reach_Information_HQ_Actions[x_row, c('ReachName','Basin',"Assessment.Unit",  "Spring.Chinook.Reach","Steelhead.Reach" ,"Bull.Trout.Reach" )]
+    
     
     # --------------------- initiate cells for each reach ---------------
     pathways_x  = c()
@@ -123,34 +135,39 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
    
     
     # ---------------------- Bull_Trout ----------
-    if( any(HQ_bull_trout$ReachName == reachname_x) ){
-      # ------------- pull that reach --------------
-      HQ_row_x = HQ_bull_trout[which(HQ_bull_trout$ReachName == reachname_x),]
+    if( exclude_bull_trout == "no" ){
       
-      # -------- IF there are habitat attributes for that score (unacceptable, at risk, unacceptable-at risk) -------
-      if(  !is.na(HQ_row_x[,attributes_column]) ){
-        # ---------------- pathway -------------------
-        pathways_x = paste(pathways_x, "HQ_bull_trout", sep=",")
-        # ----------------- habitat attributes ------------------
-        habitat_attributes_x = paste(habitat_attributes_x, HQ_row_x[,attributes_column], sep=",")
-        # --------------- habitat attributes related to Bull Trout actions --------------
-        bull_trout_habitat_attributes = HQ_row_x[,attributes_column]
-        # ----------------- action categories ------------------
-        action_categories_x = paste(action_categories_x, HQ_row_x[,actions_column], sep=",")
-        # ------------------- specifically add to bull trout actions --------------
-        bull_trout_actions = HQ_row_x[,actions_column]
+      if( any(HQ_bull_trout$ReachName == reachname_x) ){
+        # ------------- pull that reach --------------
+        HQ_row_x = HQ_bull_trout[which(HQ_bull_trout$ReachName == reachname_x),]
+        
+        # -------- IF there are habitat attributes for that score (unacceptable, at risk, unacceptable-at risk) -------
+        if(  !is.na(HQ_row_x[,attributes_column]) ){
+          # ---------------- pathway -------------------
+          pathways_x = paste(pathways_x, "HQ_bull_trout", sep=",")
+          # ----------------- habitat attributes ------------------
+          habitat_attributes_x = paste(habitat_attributes_x, HQ_row_x[,attributes_column], sep=",")
+          # --------------- habitat attributes related to Bull Trout actions --------------
+          bull_trout_habitat_attributes = HQ_row_x[,attributes_column]
+          # ----------------- action categories ------------------
+          action_categories_x = paste(action_categories_x, HQ_row_x[,actions_column], sep=",")
+          # ------------------- specifically add to bull trout actions --------------
+          bull_trout_actions = HQ_row_x[,actions_column]
+        }
       }
     }
+    
     
     # --------------------------------------------------------------------------
     #    All Species
     # --------------------------------------------------------------------------
     
     # ------------------------------------- Pathways -------------------------------
-    
-    if(is.null(pathways_x)){
+    # --------- if no pathways -------
+    if( is.null(pathways_x) ){
       pathways_x = NA
       number_of_pathways_x = 0
+    # ---------- if a pathway present (HQ or LF) -----
     }else{
       # ---------------- remove leading comma -------
       pathways_x = substr(pathways_x,2,nchar(pathways_x))
@@ -159,12 +176,14 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
     }
     
     # ------------------------------------- Habitat Attributes -------------------------------
-    if(is.null(habitat_attributes_x)){
+    # ------- if no habitat attributes --------
+    if( is.null(habitat_attributes_x) ){
       habitat_attributes_x = NA
       number_of_habitat_attributes_x = 0
+    # ------------ if impaired habitat attributes present -----
     }else{
       # ---------------- remove leading comma -------
-      habitat_attributes_x = substr(habitat_attributes_x,2,nchar(habitat_attributes_x))
+      habitat_attributes_x = substr(habitat_attributes_x,2,nchar(habitat_attributes_x)) # remove leading comma
       # ------- number of habitat attributes -------------
       habitat_attributes_x = unique(unlist(strsplit(habitat_attributes_x, ",")))   # get list of habitat attributes with NO redundancies
       number_of_habitat_attributes_x =  length( habitat_attributes_x )
@@ -172,9 +191,11 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
     }
     
     # ------------------------------------- Action Categories -------------------------------
-    if(is.null(action_categories_x)){
+    # ------- if no action categories in this reach -----
+    if( is.null(action_categories_x) ){
       action_categories_x = NA
       number_of_action_categories_x = 0
+    # ------------- if actions present in this reach -------
     }else{
       # ---------------- remove leading comma -------
       action_categories_x = substr(action_categories_x,2,nchar(action_categories_x))
@@ -191,8 +212,8 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
     #     for spring chinook
     # -----------------------------------------
     # ------- number of habitat attributes -------------
-    if(is.null(spring_chinook_habitat_attributes)){
-      spring_chinook_habitat_attributes = NA   # get list of habitat attributes with NO redundancies
+    if( is.null(spring_chinook_habitat_attributes) ){
+      spring_chinook_habitat_attributes = c()   # get list of habitat attributes with NO redundancies
       number_of_spring_chinook_habitat_attributes =  0
       spring_chinook_presence = "no"
     }else{
@@ -218,7 +239,7 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
     # -----------------------------------------
     # ------- number of habitat attributes -------------
     if(is.null(steelhead_habitat_attributes)){
-      steelhead_habitat_attributes = NA   # get list of habitat attributes with NO redundancies
+      steelhead_habitat_attributes = c()   # get list of habitat attributes with NO redundancies
       number_of_steelhead_habitat_attributes =  0
     }else{
       steelhead_habitat_attributes = unique(unlist(strsplit(steelhead_habitat_attributes, ",")))   # get list of habitat attributes with NO redundancies
@@ -241,7 +262,7 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
     # -----------------------------------------
     # ------- number of habitat attributes -------------
     if(is.null(bull_trout_habitat_attributes)){
-      bull_trout_habitat_attributes = NA   # get list of habitat attributes with NO redundancies
+      bull_trout_habitat_attributes = c()   # get list of habitat attributes with NO redundancies
       number_of_bull_trout_habitat_attributes =  0
     }else{
       bull_trout_habitat_attributes = unique(unlist(strsplit(bull_trout_habitat_attributes, ",")))   # get list of habitat attributes with NO redundancies
@@ -268,37 +289,44 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
     #   Add life stage ( Life_Stage_Priorities_AU_and_Reach_data has 0 and 1 for life stage presence )
     # ----------------------------------------- 
     life_stage_list = c()
-    if(!is.null(spring_chinook_habitat_attributes)){
+    if( !is.null(spring_chinook_habitat_attributes) ){
       life_stages_present = FUNCTION_life_stage_presence("spring_chinook", reachname_x)
       life_stage_list = paste(life_stage_list, life_stages_present, sep="," )
       life_stage_spring_chinook_output = life_stages_present
     }else{
       life_stage_spring_chinook_output = "NA"
+      spring_chinook_habitat_attributes = "NA"
     }
-    if(!is.null(steelhead_habitat_attributes)){
+    if( !is.null(steelhead_habitat_attributes)  ){
       life_stages_present = FUNCTION_life_stage_presence("steelhead", reachname_x)
       life_stage_list = paste(life_stage_list, life_stages_present, sep="," )
       life_stage_steelhead_output = life_stages_present
     }else{
       life_stage_steelhead_output = "NA"
+      steelhead_habitat_attributes = "NA"
     }
-    if(!is.null(bull_trout_habitat_attributes) & exclude_bull_trout != "yes"){
+    if( !is.null(bull_trout_habitat_attributes)  & exclude_bull_trout != "yes" ){
       life_stages_present = FUNCTION_life_stage_presence("bull_trout", reachname_x)
       life_stage_list = paste(life_stage_list, life_stages_present, sep="," )
       life_stage_bull_trout_output = life_stages_present
     }else{
       life_stage_bull_trout_output = "NA"
+      bull_trout_habitat_attributes = "NA"
     }
     # ---------------- remove leading comma -------
-    life_stage_list = substr(life_stage_list,2,nchar(life_stage_list))
+    if( is.null(life_stage_list) ){
+      life_stage_list = "NA"
+    }else{
+      life_stage_list = substr(life_stage_list,2,nchar(life_stage_list))
+    }
     
     # -----------------------------------------
     #     combine and output
     # -----------------------------------------
     
-    output_row_x = t( as.data.frame(c(spring_chinook_presence,  all_species_present,
+    output_row_x = as.data.frame( as.data.frame(c(output_info_row_x, spring_chinook_presence,  all_species_present,
                                       pathways_x, number_of_pathways_x,
-                                      habitat_attributes_x,number_of_habitat_attributes_x, 
+                                      habitat_attributes_x, number_of_habitat_attributes_x, 
                                       spring_chinook_habitat_attributes, number_of_spring_chinook_habitat_attributes,
                                       steelhead_habitat_attributes, number_of_steelhead_habitat_attributes,
                                       bull_trout_habitat_attributes, number_of_bull_trout_habitat_attributes,
@@ -306,8 +334,8 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
                                       spring_chinook_actions, number_of_spring_chinook_actions,
                                       steelhead_actions, number_of_steelhead_actions,
                                       bull_trout_actions, number_of_bull_trout_actions, 
-                                      life_stage_list, life_stage_spring_chinook_output, life_stage_steelhead_output, life_stage_bull_trout_output )  )  )
-    colnames(output_row_x) = c("Spring_Chinook_Actions_Present_Yes_No", "SprCh_STLD_BullTr_All_Present_Yes_No",
+                                      life_stage_list, life_stage_spring_chinook_output, life_stage_steelhead_output, life_stage_bull_trout_output )    ) )
+    colnames(output_row_x) = c("ReachName","Basin","Assessment.Unit",  "Spring.Chinook.Reach","Steelhead.Reach" ,"Bull.Trout.Reach", "Spring_Chinook_Actions_Present_Yes_No", "SprCh_STLD_BullTr_All_Present_Yes_No",
                                "Pathways","Number_of_Pathways", 
                                "Impaired_Habitat_Attributes_All_Species","Number_Impaired_Habitat_Attributes_All_Species",
                                "Impaired_Habitat_Attributes_SpringChinook","Number_Impaired_Habitat_Attributes_SpringChinook",
@@ -364,9 +392,12 @@ FUNCTION_life_stage_presence= function(species_x, reachname_x){
 #    Function to summarize Limiting Factor Output by species (and across all)
 #
 # ---------------------------------------------------------------------------
+test_x = FALSE
+if(test_x){
+  score_1_or_3 = "one thru three"
+  restoration_or_protection = 'restoration'
+}
 
-# score_1_or_3 = "one"
-# restoration_or_protection = 'restoration'
 
 FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_or_3,  restoration_or_protection){
   
@@ -399,22 +430,26 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
   # ------------------------------------------------------------
   #       Initiate data frame
   # ------------------------------------------------------------
-  reaches_unique = unique( c(LF_spring_chinook$ReachName, LF_steelhead$ReachName, LF_bull_trout$ReachName) )
+  if(exclude_bull_trout == "no"){
+    reaches_unique = unique( c(LF_spring_chinook$ReachName, LF_steelhead$ReachName, LF_bull_trout$ReachName) )
+  }else if(exclude_bull_trout == "yes"){
+    reaches_unique = unique( c(LF_spring_chinook$ReachName, LF_steelhead$ReachName) )
+  }
+  
+  
   reaches_unique = reaches_unique[order(reaches_unique)]  # just alphabetize 
   
   # ------------ get Reach Information ------
   Reach_Information_LF_Actions = Reach_Information_data %>%  
     filter(ReachName   %in% reaches_unique)
-  # --------------- just get important reach information  ----------
-  Reach_Information_LF_Actions = Reach_Information_LF_Actions[, c('ReachName','Basin',"Assessment.Unit",  "Spring.Chinook.Reach","Steelhead.Reach" ,"Bull.Trout.Reach" )]
-  
+
   # ------------------------------------------------------------
   #       Loop Through reaches to get information
   # ------------------------------------------------------------
   Pathway_Output_x = c()
   # to test:  reachname_x = "Chiwawa River Lower 02"
   for( reachname_x in reaches_unique ){
-
+    
     # --------------------- initiate cells for each reach ---------------
     pathways_x  = c()
     habitat_attributes_x = c()
@@ -431,6 +466,11 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
     steelhead_life_stages = c()
     bull_trout_actions = c()
     all_three_species_actions = c()
+    
+    # --------------- just get important reach information  ----------
+    x = which(Reach_Information_LF_Actions$ReachName == reachname_x)[1]
+    output_row_info_x = Reach_Information_LF_Actions[x, c('ReachName','Basin',"Assessment.Unit",  "Spring.Chinook.Reach","Steelhead.Reach" ,"Bull.Trout.Reach" )]
+    
     
     # ---------------------- Spring_Chinook ----------
     if( any(LF_spring_chinook$ReachName == reachname_x) ){
@@ -493,30 +533,33 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
     
     
     # ---------------------- Bull_Trout ----------
-    if( any(LF_bull_trout$ReachName == reachname_x) ){
-      # ------------- pull that reach --------------
-      LF_row_x = LF_bull_trout[which(LF_bull_trout$ReachName == reachname_x),]
+    if( exclude_bull_trout == "no" ){
       
-      # -------- IF there are habitat attributes for that score (unacceptable, at risk, unacceptable-at risk) -------
-      if(  !is.na(LF_row_x[,attributes_column][[1]]) & nchar(LF_row_x[,attributes_column][[1]]) > 0   ){
-        # ---------------- pathway -------------------
-        pathways_x = paste(pathways_x, "LF_bull_trout", sep=",")
+      if( any(LF_bull_trout$ReachName == reachname_x) ){
+        # ------------- pull that reach --------------
+        LF_row_x = LF_bull_trout[which(LF_bull_trout$ReachName == reachname_x),]
         
-        # ---------- loop through each life stage in this reach --------
-        for(life_stage_row_x in 1:nrow(LF_row_x)){
-          # ----------------- habitat attributes ------------------
-          habitat_attributes_x = paste(habitat_attributes_x, LF_row_x[life_stage_row_x,attributes_column][[1]], sep=",")
-          # ----------------- action categories ------------------
-          action_categories_x = paste(action_categories_x, LF_row_x[life_stage_row_x,actions_column][[1]], sep=",")
-          # ----------------- life stages ---------------------------
-          life_stages_x = paste(life_stages_x, LF_row_x[life_stage_row_x,"life_stage"][[1]], sep=",")
+        # -------- IF there are habitat attributes for that score (unacceptable, at risk, unacceptable-at risk) -------
+        if(  !is.na(LF_row_x[,attributes_column][[1]]) & nchar(LF_row_x[,attributes_column][[1]]) > 0   ){
+          # ---------------- pathway -------------------
+          pathways_x = paste(pathways_x, "LF_bull_trout", sep=",")
           
-          # --------------- habitat attributes related to Bull Trout actions --------------
-          bull_trout_habitat_attributes =  paste(bull_trout_habitat_attributes, LF_row_x[life_stage_row_x,attributes_column][[1]] , sep=",")
-          # ------------------- specifically add to bull trout actions --------------
-          bull_trout_actions = paste(bull_trout_actions, LF_row_x[life_stage_row_x,actions_column][[1]], sep=",")
-          # ------------------- life stages specifically for spring chinook --------------
-          bull_trout_life_stages =  paste(bull_trout_life_stages, LF_row_x[life_stage_row_x,"life_stage"][[1]], sep=",")
+          # ---------- loop through each life stage in this reach --------
+          for(life_stage_row_x in 1:nrow(LF_row_x)){
+            # ----------------- habitat attributes ------------------
+            habitat_attributes_x = paste(habitat_attributes_x, LF_row_x[life_stage_row_x,attributes_column][[1]], sep=",")
+            # ----------------- action categories ------------------
+            action_categories_x = paste(action_categories_x, LF_row_x[life_stage_row_x,actions_column][[1]], sep=",")
+            # ----------------- life stages ---------------------------
+            life_stages_x = paste(life_stages_x, LF_row_x[life_stage_row_x,"life_stage"][[1]], sep=",")
+            
+            # --------------- habitat attributes related to Bull Trout actions --------------
+            bull_trout_habitat_attributes =  paste(bull_trout_habitat_attributes, LF_row_x[life_stage_row_x,attributes_column][[1]] , sep=",")
+            # ------------------- specifically add to bull trout actions --------------
+            bull_trout_actions = paste(bull_trout_actions, LF_row_x[life_stage_row_x,actions_column][[1]], sep=",")
+            # ------------------- life stages specifically for spring chinook --------------
+            bull_trout_life_stages =  paste(bull_trout_life_stages, LF_row_x[life_stage_row_x,"life_stage"][[1]], sep=",")
+          }
         }
       }
     }
@@ -563,12 +606,18 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
     }
     
     # ------------------------------------- Life Stages -------------------------------
+    #print(paste("ALL LIFE STAGES: ", life_stages_x) )
     if(is.null(life_stages_x)){
       life_stages_x = NA
       number_of_life_stages_x = 0
     }else{
-      # ---------------- remove leading comma -------
-      life_stages_x = substr(life_stages_x,2,nchar(life_stages_x))
+      # ---------------- remove leading NA or comma -------
+      if(substr(life_stages_x,0,1) == ","){
+        life_stages_x = substr(life_stages_x,2,nchar(life_stages_x))
+      }else if(substr(life_stages_x,0,3) == "NA,"){
+        life_stages_x = substr(life_stages_x,4,nchar(life_stages_x))
+      }
+     
       # -------------- number of action categories -----------
       life_stages_x = unique( unlist(strsplit(life_stages_x, ",")) )  # get list of action categories with NO redundancies
       number_of_life_stages_x =  length( life_stages_x )
@@ -714,7 +763,7 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
     #     combine and output
     # -----------------------------------------
     
-    output_row_x = t( as.data.frame(c(spring_chinook_presence,  all_species_present,
+    output_row_x =  as.data.frame(c(output_row_info_x,spring_chinook_presence,  all_species_present,
                                       pathways_x, number_of_pathways_x,
                                     
                                       habitat_attributes_x,number_of_habitat_attributes_x, 
@@ -731,8 +780,8 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
                                       spring_chinook_life_stages, number_of_spring_chinook_life_stages,
                                       steelhead_life_stages, number_of_steelhead_life_stages,
                                       bull_trout_life_stages, number_of_bull_trout_life_stages
-                                      )  )  )
-    colnames(output_row_x) = c("Spring_Chinook_Actions_Present_Yes_No", "SprCh_STLD_BullTr_All_Present_Yes_No",
+                                      )  )  
+    colnames(output_row_x) = c("ReachName", "Basin","Assessment.Unit","Spring.Chinook.Reach","Steelhead.Reach","Bull.Trout.Reach", "Spring_Chinook_Actions_Present_Yes_No", "SprCh_STLD_BullTr_All_Present_Yes_No",
                                "Pathways","Number_of_Pathways", 
                                
                                "Impaired_Habitat_Attributes_All_Species","Number_Impaired_Habitat_Attributes_All_Species",
@@ -751,18 +800,15 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
                                "Life_Stages_BullTrout", "Number_Life_Stages_BullTrout"
                                )
     Pathway_Output_x = rbind(Pathway_Output_x, output_row_x)
+
   }
-  
-  # ----------------------- combine Reach Informatoin and Pathway processed info for output ----------
-  Output_DF = cbind(Reach_Information_LF_Actions, Pathway_Output_x)
-  rownames(Output_DF) = seq(1, nrow(Output_DF))
   
   # ---------------- remove rows with no pathways --------
-  if( length(which(Output_DF$Number_of_Pathways == 0)) > 0  ){
-    Output_DF = Output_DF[-which(Output_DF$Number_of_Pathways == 0) , ]
+  if( length(which(Pathway_Output_x$Number_of_Pathways == 0)) > 0  ){
+    Pathway_Output_x = Pathway_Output_x[-which(Pathway_Output_x$Number_of_Pathways == 0) , ]
   }
   
-  return(Output_DF)
+  return(Pathway_Output_x)
   
 }
 
@@ -773,9 +819,12 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
 #
 # ------------------------------------------------------------------------------------------
 
+test_x = FALSE
+if(test_x){
+  HQ_pathway_df = Habitat_Quality_Restoration_Unacceptable
+  LF_pathway_df = Limiting_Factor_Restoration_Unacceptable
+}
 
-# HQ_pathway_df = Habitat_Quality_Restoration_Unacceptable
-# LF_pathway_df = Limiting_Factor_Restoration_Unacceptable
 
 columns_info = c( "ReachName" )
 
@@ -953,12 +1002,16 @@ FUNCTION_combine_across_pathways = function(HQ_pathway_df, LF_pathway_df){
 #
 # ------------------------------------------------------------------------------------------
 
-# To Test
-# HQ_LF_Unacceptable = Restoration_Unacceptable
-# HQ_LF_At_Risk = Restoration_At_Risk
-# HQ_LF_Both = Restoration_Unacceptable_and_At_Risk
-# HQ_Both = Habitat_Quality_Restoration_Unacceptable_and_At_Risk
-#  columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
+test_x = FALSE
+if(test_x){
+  HQ_LF_Unacceptable = Restoration_Unacceptable
+  HQ_LF_At_Risk = Restoration_At_Risk
+  HQ_LF_Both = Restoration_Unacceptable_and_At_Risk
+  HQ_Both = Habitat_Quality_Restoration_Unacceptable_and_At_Risk
+  columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
+  HQ_add_life_stage == "No"
+}
+
 
 FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, HQ_LF_At_Risk, HQ_LF_Both, HQ_Both, columns_info, exclude_bull_trout, HQ_add_life_stage){
   
@@ -972,6 +1025,9 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
   Unacceptable_AtRisk_combined_output = c()
   
   for(reach_x in HQ_LF_Both$ReachName){
+    
+    # ------ get row -----
+    rowx = which(HQ_LF_Both$ReachName==reach_x)
     
     # --------------------- generate HQ and LF index ----------
     HQ_LF_Both_index = which(HQ_LF_Both$ReachName == reach_x)
@@ -1199,7 +1255,7 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
     }
     
     # ------------------------------------------------------------
-    #   add HQ life stages (if HQ_add_life_stage is yes)
+    #   add HQ life stages presence (if HQ_add_life_stage is yes)
     # ------------------------------------------------------------
     if(HQ_add_life_stage  == "yes"){
       # ---- pull the reach's row in HQ Pathway data frame ---------
@@ -1209,7 +1265,8 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
       pathway_list_letters = substr(pathways_x_list, 1, 2)
       # ------------- unique species ---------
       species_list = substr(pathways_x_list, 4, nchar(pathways_x_list)) # unique species
-      
+      # ------------- if Okanogan - just do for Steelhead --------------
+      if( HQ_LF_Both$Basin[rowx] ==  "Okanogan"){species_list = "steelhead"}
       # ------------ IF Habitat Quality Pathways presence -------------------
       if( any(pathway_list_letters == "HQ") ){
         
@@ -1227,16 +1284,17 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
       # --------------- update life stages ----------------
       
       # ------ if life stages list is NA ------
-      if(is.na(HQ_and_LF_combo_x$Life_Stages)){
-        HQ_and_LF_combo_x$Life_Stages = life_stages_all_output
+      if(is.na(HQ_and_LF_combo_x$Life_Stages_Presence)){
+        HQ_and_LF_combo_x$Life_Stages_Presence = life_stages_all_output
         
         # ------- if life stages exist already -----
       }else{
-        life_stages_updated = paste(HQ_and_LF_combo_x$Life_Stages,life_stages_all_output, sep="," )
+        life_stages_updated = paste(HQ_and_LF_combo_x$Life_Stages_Presence,life_stages_all_output, sep="," )
         life_stages_updated = unique(unlist(strsplit(life_stages_updated, ",")))
         life_stages_updated = paste(life_stages_updated, collapse=",")
-        HQ_and_LF_combo_x$Life_Stages =  life_stages_updated
+        HQ_and_LF_combo_x$Life_Stages_Presence =  life_stages_updated
       }
+      
     }
     
     
@@ -1335,7 +1393,7 @@ FUNCTION_output_life_stages_based_on_species_and_life_stage_presence = function(
 
 # ------------------------------------------------------------------------------------------
 #
-#      Generate life stages AND species for Fish Barriers
+#      Generate Priority life stages AND species for Fish Barriers
 #
 # ------------------------------------------------------------------------------------------
 
@@ -1441,7 +1499,7 @@ FUNCTION_generate_life_stage_list_for_species_reach_FLAT_TABLE = function(specie
     }
   }
   
-  # --------- Bull Trout -------- grep
+  # --------- Bull Trout --------
   if(species_x == "bull_trout"){
     
     for(life_stage_i in names(bull_trout_life_stages_presence)){
@@ -1479,6 +1537,7 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined,  Barriers_Pathways_Data,  e
     
     HQ_LF_index = which(HQ_LF_Combined$ReachName == reach_x)
     barrier_index = which(Barriers_Pathways_Data$ReachName == reach_x)
+    barrier_index = barrier_index[1] # if more than one barrier - just pulling the action category and habitat attribute names
     
     # ------------------------------------------------------------
     #   IF the barriers reach is in the existing list of prioritized reaches
@@ -1516,6 +1575,8 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined,  Barriers_Pathways_Data,  e
     }else{
       
       barrier_index = which(Barriers_Pathways_Data$ReachName == reach_x)
+      barrier_index = barrier_index[1] # if more than one barrier - just pulling the action category and habitat attribute names
+      
       # ------------- add reach information --------------------
       HQ_and_LF_combo_x = as.data.frame( Barriers_Pathways_Data[barrier_index, columns_info]  )
       
@@ -1547,7 +1608,8 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined,  Barriers_Pathways_Data,  e
       HQ_and_LF_combo_x$Steelhead_Actions = NA 
       HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes = NA                             
       HQ_and_LF_combo_x$Bull_Trout_Actions = NA
-      HQ_and_LF_combo_x$Life_Stages = species_and_life_stages[2]
+      HQ_and_LF_combo_x$Life_Stages = NA
+      #HQ_and_LF_combo_x$Life_Stages_Presence = NA
       
       # ----------------- add Action Categories  ------------
       HQ_and_LF_combo_x$Action_Categories_All_Species = Barriers_Pathways_Data$`Action Category`[barrier_index]
@@ -1616,12 +1678,14 @@ FUNCTION_Add_Barrier_Data_to_WebMap_Flat_Tables = function(HQ_LF_Combined, Barri
     
     HQ_LF_index = which(HQ_LF_Combined$ReachName == reach_x)
     barrier_index = which(Barriers_Pathways_Data$ReachName == reach_x)
+    barrier_index = barrier_index[1] # if more than one barrier - just pulling the action category and habitat attribute names
     
     # ------------------------------------------------------------
     #   IF the barriers reach is in the existing list of prioritized reaches
     # ------------------------------------------------------------
     
     if( length(HQ_LF_index) > 0){
+      
       
       # ---------------------------------------------------------------------------
       #    Update Pathways, Action Categories, and Habitat Attributes
@@ -1650,6 +1714,8 @@ FUNCTION_Add_Barrier_Data_to_WebMap_Flat_Tables = function(HQ_LF_Combined, Barri
     }else{
       
       barrier_index = which(Barriers_Pathways_Data$ReachName == reach_x)
+      barrier_index = barrier_index[1] # if more than one barrier - just pulling the action category and habitat attribute names
+      
       # ------------- add reach information --------------------
       HQ_and_LF_combo_x = as.data.frame( Barriers_Pathways_Data[barrier_index, columns_info]  )
       
@@ -1679,6 +1745,7 @@ FUNCTION_Add_Barrier_Data_to_WebMap_Flat_Tables = function(HQ_LF_Combined, Barri
       HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes = NA                             
       HQ_and_LF_combo_x$Bull_Trout_Actions = NA
       HQ_and_LF_combo_x$Life_Stages = NA
+      HQ_and_LF_combo_x$Life_Stages_Presence = NA
       
       # ----------------- add Action Categories  ------------
       HQ_and_LF_combo_x$Action_Categories_All_Species = Barriers_Pathways_Data$`Action Category`[barrier_index]
@@ -1737,9 +1804,12 @@ FUNCTION_Add_Barrier_Data_to_WebMap_Flat_Tables = function(HQ_LF_Combined, Barri
 #
 # ------------------------------------------------------------
 
-# data_frame_x = Restoration_Prioritization_Output_for_WebMap
-# colnames_outward_facing_WebMap_ORDER = c("ReachName","RM_Start", "RM_End","Assessment.Unit","Species","Actions", "Life_Stages","Impaired_Habitat_Attributes_All_Species","Action_Categories_All_Species" )
-# colnames_outward_facing_WebMap_UPDATED = c("Reach Name","River Mile - Start", "River Mile - End","Assessment Unit","Species","Action","Priority Life Stages","Limiting Factor","Action Categories" )
+test_x = FALSE
+if(test_x){
+  data_frame_x = Restoration_Prioritization_Output_for_WebMap
+  colnames_outward_facing_WebMap_ORDER = colnames_outward_facing_WebMap_ORDER
+  colnames_outward_facing_WebMap_UPDATED = colnames_outward_facing_WebMap_UPDATED
+}
 FUNCTION_prepare_outward_facing_table = function(data_frame_x, colnames_outward_facing_WebMap_ORDER, colnames_outward_facing_WebMap_UPDATED, exclude_bull_trout){
   
   # -------------------- remove Bull Trout rows and instances ----------
@@ -1761,12 +1831,27 @@ FUNCTION_prepare_outward_facing_table = function(data_frame_x, colnames_outward_
   # ---------------- remove Under Score ( _ ) from species names
   data_frame_x$Species = gsub("_", " ", data_frame_x$Species )
   
-  # ---------------- if "NA" in a life stage - change it to "multiple ----
-  data_frame_x$Life_Stages = gsub("NA", "multiple", data_frame_x$Life_Stages )
+  # ---------------- if "NA" in a life stage - take out  ----
+  data_frame_x$Life_Stages = gsub("NA", "", data_frame_x$Life_Stages )
+  
+  # ------------- if "Restore Reach Function" (HQ pathway) - add "multiple (HQ Pathway)" ------
+  HQ_pathway = which(grepl("Restore Reach Function", data_frame_x$Actions))
+  data_frame_x$Life_Stages[HQ_pathway] = paste(data_frame_x$Life_Stages[HQ_pathway], "multiple (HQ pathway)", sep=", ")
+  
+  # --------------- if "Restore Fish Passage" (Barrier Pathway) - add "multiple (Barrier pathway)" ----
+  barrier_pathway = which(grepl("Restore Fish Passage", data_frame_x$Actions))
+  data_frame_x$Life_Stages[barrier_pathway] = paste(data_frame_x$Life_Stages[barrier_pathway], "multiple (barrier pathway)", sep=", ")
+  
+  # ------ remove leading comma from life stage name --------
+  leading_comma = which(substr(data_frame_x$Life_Stages, 0, 2) == ", ")
+  data_frame_x$Life_Stages[leading_comma] = substr(data_frame_x$Life_Stages[leading_comma], 3, nchar(data_frame_x$Life_Stages[leading_comma]))
   
   # ---------------- round river mile to decimal place ----
-  data_frame_x$RM_Start = round(data_frame_x$RM_Start, 2)
-  data_frame_x$RM_End = round(data_frame_x$RM_End, 2)
+  if( any(colnames(data_frame_x) == "RM_Start" ) ){
+    data_frame_x$RM_Start = round(data_frame_x$RM_Start, 2)
+    data_frame_x$RM_End = round(data_frame_x$RM_End, 2)
+  }
+
   
   # ------------------------------------------------------------
   #   Update References for WebMap: PRCT (%), AND (&), and the "/" as a space
@@ -1855,3 +1940,25 @@ FUNCTION_add_reach_information = function(data_frame_x, colnames_reach_info){
 }
   
   
+
+
+# ---------------------------------------------------------------------
+#    Script to compare life stage priorities
+# ---------------------------------------------------------------------
+
+compare_x = TRUE
+
+if(compare_x){
+  
+  life_stage_priorities_comparison = c()
+  for(reach_x in Restoration_Prioritization_Output_for_WebMap$`Reach Name`){
+    
+    x_webmap = which(Restoration_Prioritization_Output_for_WebMap$`Reach Name` == reach_x)
+    
+    x_orig = which(Life_Stage_Priorities_AU_and_Reach_data$ReachName == reach_x)
+    # -------------- print priority life stages that made it through the filter --------
+    #output_x = t(as.data.frame(c(Restoration_Prioritization_Output_for_WebMap$`Priority Life Stages`[x], 
+    #                             Life_Stage_Priorities_AU_and_Reach_data$)))
+  }
+}
+

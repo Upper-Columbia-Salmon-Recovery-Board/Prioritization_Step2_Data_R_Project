@@ -22,9 +22,14 @@
 
 
 #  to test
-species = "Steelhead"
+test_x = TRUE
+if(test_x){
+  species = "Steelhead"
+}
 
+# HQ_Pct above 0.8:  Ninemile 16-5 (not in an AU Protection ), 	 Salmon 16-11 (3 life stages (need to have more than 3)), Tonasket 16-2 (passed through)
 Generate_Habitat_Quality_Output_Table_Okanogan = function( species ){
+  
   
   # ------------------------------------------------------------------------------
   #       Establish species-specific variable names
@@ -58,8 +63,11 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species ){
   #  ---------------------------------------------------------------------------------
   # -------- Reach Information data frame for this species -----------
   Species_Reach_Information_data = Reach_Information_data
+
   # --------------------- Filter by Okanogan -------------
   Species_Reach_Information_data = Species_Reach_Information_data[which(Species_Reach_Information_data$Basin == "Okanogan"),]
+  # --------------- combined all data -------------
+  Output_All_Combined  = Species_Reach_Information_data[,c("ReachName","Basin","Assessment.Unit")]
   
   print(paste("Total Initial Reaches (HQ Pathway): ", nrow(Species_Reach_Information_data), sep=""))
   
@@ -71,6 +79,11 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species ){
   # ----------------------- filter out for only reaches with this species --------------
   Species_Reach_Information_data = Species_Reach_Information_data %>%  
     filter(Species_Reaches   == 'yes')
+  # ----------- add to combined ----------
+  yesx = which(Species_Reach_Information_data[,species_reach]=="yes")
+  Output_All_Combined$Species_Reach = 0
+  Output_All_Combined$Species_Reach[yesx] = 1
+    
   print(paste("Total reaches after species-reach filter: ", nrow(Species_Reach_Information_data), sep=""))
   
   #  ---------------------------------------------------------------------------------
@@ -84,7 +97,12 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species ){
     filter(Species_AU_Ranks    %in%   AU_Rank)
   # ------------------------ identify AUs that pass this filter in reach-based table ----------
   Species_Reach_Information_data_restoration = Species_Reach_Information_data %>%  
-    filter(Assessment.Unit    %in%   Species_AU_Ranks_data_restoration$`RTT AU`)
+    filter(Assessment.Unit    %in%   Species_AU_Ranks_data_restoration$`EDT AU`)
+  
+  # ----------- add to combined ----------
+  AU_ranks_for_combo = Species_AU_Ranks_data[,c("EDT AU","AU Restoration Rank")]
+  colnames(AU_ranks_for_combo)[1] = "Assessment.Unit"
+  Output_All_Combined = merge(Output_All_Combined, AU_ranks_for_combo, by="Assessment.Unit")
   
   print(paste("Restoration - total AU rank filter: ", nrow(Species_Reach_Information_data_restoration), sep=""))
   
@@ -99,7 +117,13 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species ){
     filter(Species_AU_Ranks    %in%   AU_Rank)
   # ------------------------ identify after AUs that pass this filter in reach-based table ----------
   Species_Reach_Information_data_protection = Species_Reach_Information_data %>%  
-    filter(Assessment.Unit    %in%   Species_AU_Ranks_data_protection$`RTT AU`)
+    filter(Assessment.Unit    %in%   Species_AU_Ranks_data_protection$`EDT AU`)
+  
+  # ----------- add to combined ----------
+  AU_ranks_for_combo = Species_AU_Ranks_data[,c("EDT AU","AU Protection Rank")]
+  colnames(AU_ranks_for_combo)[1] = "Assessment.Unit"
+  Output_All_Combined = merge(Output_All_Combined, AU_ranks_for_combo, by="Assessment.Unit")
+  
   
   print(paste("Protection - total after AU rank filter: ", nrow(Species_Reach_Information_data_protection), sep=""))
   
@@ -114,6 +138,12 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species ){
   Species_Reach_Information_data_restoration = Species_Reach_Information_data_restoration %>%  
     filter(ReachName   %in%   Confinement_Scores_Restoration$`ReachName`)
   
+  # ----------- add to combined ----------
+  Confinement_Scores_for_combo = Confinement_Scores[,c("ReachName","Unconfined_Pct")]
+  Output_All_Combined = merge(Output_All_Combined, Confinement_Scores_for_combo, by="ReachName")
+  
+  
+  
   print(paste("HQ Pathway-RESTORATION - total reaches after reach confinement filter: ", nrow(Species_Reach_Information_data_restoration), sep=""))
   
   #  ---------------------------------------------------------------------------------
@@ -125,6 +155,12 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species ){
   # ----------------------- filter out for Habitat_Quality_Scores reaches with Habitat Quality Score criteria --------------
   Life_Stage_Priorities_AU_and_Reach_data_FILTERED = Life_Stage_Priorities_AU_and_Reach_data %>%  
     filter(Life_Stage_Sum_Column   >=   Sum_Life_Stage_Criteria)
+  
+  # ----------- add to combined ----------
+  Life_Stage_for_combo = Life_Stage_Priorities_AU_and_Reach_data[,c("ReachName",life_stage_sum_column)]
+  Output_All_Combined = merge(Output_All_Combined, Life_Stage_for_combo, by="ReachName")
+  
+  
   
   # ------------------------ identify reaches that pass through the RESTORATION filter ----------
   Habitat_Quality_Pathway_Restoration = Species_Reach_Information_data_restoration %>%  
@@ -145,7 +181,7 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species ){
   # ------------------- filter out % of Template that is below certain score --------------------
   PRCNT_Habitat_Quality_Okanogan_EDT_FILTER_RESTORATION = PRCNT_Habitat_Quality_Okanogan_EDT[which(PRCNT_Habitat_Quality_Okanogan_EDT$HQ_Score <= PRCNT_of_Template_Restoration_Score), ]
   
-  # ------------------------ identify reaches that pass through the PROTECTION filter ----------
+  # ------------------------ identify reaches that pass through the RESTORATION filter ----------
   Habitat_Quality_Pathway_Restoration = Habitat_Quality_Pathway_Restoration %>%  
     filter(ReachName   %in%   PRCNT_Habitat_Quality_Okanogan_EDT_FILTER_RESTORATION$`ReachName`)
   
@@ -184,7 +220,11 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species ){
     # ------ list column names/all habitat attributes -----------------
     colnames_restoration_x = unique(HabitatAttribute_Ratings_Level2_updated$`RTT Habitat Attribute`)
     colnames_restoration_x = colnames_restoration_x[order(colnames_restoration_x)]
-    colnames_restoration_x = colnames_restoration_x[-which(is.na(colnames_restoration_x))]
+    # ------------------ if any names are NA (remove them) -----------------
+    if(any(is.na(colnames_restoration_x))){
+      colnames_restoration_x = colnames_restoration_x[-which(is.na(colnames_restoration_x))]
+    }
+    
     
     for(rowx in 1:nrow(Habitat_Quality_Pathway_Restoration)){
       # --------------------- pull habitat attributes for this reach -----------------
@@ -223,11 +263,39 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species ){
   
   if( nrow(Habitat_Quality_Pathway_Protection) > 0 ){
     
-    # -------------------------------------------------------
-    # NOTE: these two columns added in Restoration NOTE added here since Protection
-    #       does not factor in individual habitat attributes for restoration
     
-    print(paste("--- Protection - TOTAL reaches after habitat attributes filter: ", nrow(Habitat_Quality_Pathway_Protection), sep=""))
+    # -------------------------------------------------------
+    #         identify all individual habitat attribute scores at 3 (or lower) and 1
+    # -------------------------------------------------------
+    # NOTE: these two columns are added at the very end 
+    
+    # -------------------- protection -----------
+    # --------------- identify habitat attributes at 1 (Unacceptable) OR 3 (At Risk) -----------------------
+    # HabitatAttribute_Ratings_Level2_updated
+    indiv_habitat_attributes_impaired_protection = c() 
+    
+    # ------ list column names/all habitat attributes -----------------
+    colnames_protection_x = unique(HabitatAttribute_Ratings_Level2_updated$`RTT Habitat Attribute`)
+    colnames_protection_x = colnames_protection_x[order(colnames_protection_x)]
+    # ------------------ if any names are NA (remove them) -----------------
+    if(any(is.na(colnames_protection_x))){
+      colnames_protection_x = colnames_protection_x[-which(is.na(colnames_protection_x))]
+    }
+    
+    # ------------------ pull habitat attributes in protection reaches ----------
+    for(rowx in 1:nrow(Habitat_Quality_Pathway_Protection)){
+      # --------------------- pull habitat attributes for this reach -----------------
+      habitat_attributes_output_x = HabitatAttribute_Ratings_Level2_updated[which(HabitatAttribute_Ratings_Level2_updated$Reach ==  Habitat_Quality_Pathway_Protection$ReachName[rowx] ), ]
+      # ------------ function to identify habitat attributes at 1 and 3 (and list for each reach) ---------
+      output_row_x = list_indiv_habitat_attributes_low_FUNCTION_OKANOGAN(habitat_attributes_output_x, colnames_protection_x)
+      # ------------------ combine row -------------------
+      indiv_habitat_attributes_impaired_protection = rbind(indiv_habitat_attributes_impaired_protection,output_row_x )
+    }
+    
+    # ----------------------- Remove impaired attributes columns (since not using for protection) -----------
+    indiv_habitat_attributes_impaired_protection = indiv_habitat_attributes_impaired_protection[,1:(ncol(indiv_habitat_attributes_impaired_protection) - 3)]
+    
+    print(paste("--- Protection - TOTAL reaches after habitat attributes filter: ", nrow(indiv_habitat_attributes_impaired_protection), sep=""))
     
     #  ---------------------------------------------------------------------------------
     #           Write output data to output file
@@ -235,7 +303,7 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species ){
     
     # ----------------------- Protection --------------------
     output_path_x =  paste(output_path,protection_output_name, sep="")
-    write_xlsx(Habitat_Quality_Pathway_Protection,output_path_x )
+    write_xlsx(indiv_habitat_attributes_impaired_protection,output_path_x )
     
   }else{
     
@@ -246,7 +314,7 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species ){
   # --------------------- Put Restoration and Protection into a list --------------
   Habitat_Quality_Pathway_Output = list( 
     "Habitat_Quality_Pathway_Restoration" = indiv_habitat_attributes_impaired_restoration,
-    "Habitat_Quality_Pathway_Protection" = Habitat_Quality_Pathway_Protection
+    "Habitat_Quality_Pathway_Protection" = indiv_habitat_attributes_impaired_protection
   )
   
   return(Habitat_Quality_Pathway_Output)
@@ -285,7 +353,7 @@ list_indiv_habitat_attributes_low_FUNCTION_OKANOGAN <- function(reach_okanogan_d
     
     # -------- if multiple RTT habitat attributes for a single EDT habitat attribute -----------
     if( length(habitat_attribute_x_i) > 1){
-      # ----------------- get lowest Function Conditoin (habitat attribute) score ------------
+      # ----------------- get lowest Function Condition (habitat attribute) score ------------
       score_x = min(reach_okanogan_data_frame$`Level 2 Functional Condition`[habitat_attribute_x_i])
       # row_x_i = which( reach_okanogan_data_frame$Function_Condition[habitat_attribute_x_i] == score_x )
       
@@ -333,7 +401,7 @@ list_indiv_habitat_attributes_low_FUNCTION_OKANOGAN <- function(reach_okanogan_d
 
 #  ---------------------------------------------------------------------------------
 #
-#           FUNCTION to combine main (Methow, Entiat, and Wenatchee) and Okanogan HQ Output
+#   FUNCTION to combine main (Methow, Entiat, and Wenatchee) and Okanogan HQ Output - RESTORATION
 #
 #  ---------------------------------------------------------------------------------
 test_x = FALSE
@@ -347,6 +415,9 @@ Combine_MetEntWen_and_Okanogan_Habitat_Quality_Output = function(MetEntWen_data_
   # -------------- update "Riparian_Mean" name ---------------
   x = which(habitat_quality_scores_colnames_for_combo == "Riparian_Mean")
   habitat_quality_scores_colnames_for_combo[x] = "Riparian_Mean_score"
+  # ----------- update Okanogan name ---------
+  x = which(colnames(Okanogan_data_frame) == "Riparian_score")
+  colnames(Okanogan_data_frame)[x] = "Riparian_Mean_score"
   
   # -------------- start with basic info --------------
   df_add_to_MetEntWen = Okanogan_data_frame[,1:6]
@@ -357,8 +428,10 @@ Combine_MetEntWen_and_Okanogan_Habitat_Quality_Output = function(MetEntWen_data_
     # ------- if column is in Okanogan data -----
     if( any(colnames(Okanogan_data_frame) == colx) ){
       df_add_to_MetEntWen[,colx] = Okanogan_data_frame[,colx]
+      print(colx)
       # ------- if column not in Okanogan data ------
     }else{
+      #print(colx)
       df_add_to_MetEntWen[,colx] = NA
     }
   }
@@ -408,5 +481,89 @@ Combine_MetEntWen_and_Okanogan_Habitat_Quality_Output = function(MetEntWen_data_
 }
 
 
+
+#  ---------------------------------------------------------------------------------
+#
+#   FUNCTION to combine main (Methow, Entiat, and Wenatchee) and Okanogan HQ Output - PROTECTION
+#
+#  ---------------------------------------------------------------------------------
+
+
+test_x = FALSE
+if(test_x){
+  MetEntWen_data_frame = Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Protection']]
+  Okanogan_data_frame = Habitat_Quality_Pathway_Steelhead_OKANOGAN[['Habitat_Quality_Pathway_Protection']]  
+}
+
+Combine_MetEntWen_and_Okanogan_Habitat_Quality_Output_Protection = function(MetEntWen_data_frame,   Okanogan_data_frame,  habitat_quality_scores_colnames_for_combo){
+  
+  # -------------- update "Riparian_Mean" name ---------------
+  x = which(habitat_quality_scores_colnames_for_combo == "Riparian_Mean")
+  habitat_quality_scores_colnames_for_combo[x] = "Riparian_Mean_score"
+  # ----------- update Okanogan name ---------
+  x = which(colnames(Okanogan_data_frame) == "Riparian_score")
+  colnames(Okanogan_data_frame)[x] = "Riparian_Mean_score"
+  
+  # -------------- start with basic info --------------
+  df_add_to_MetEntWen = Okanogan_data_frame[,1:6]
+  
+  # ---------------- loop through all the habitat attributes ----------
+  for(colx in habitat_quality_scores_colnames_for_combo){
+    # ------- if column is in Okanogan data -----
+    if( any(colnames(Okanogan_data_frame) == colx) ){
+      df_add_to_MetEntWen[,colx] = Okanogan_data_frame[,colx]
+      # ------- if column not in Okanogan data ------
+      print(colx)
+    }else{
+      
+      df_add_to_MetEntWen[,colx] = NA
+    }
+  }
+  
+  # NOTE - for Habitat Quality Score - it is not "added up", but directly imported from EDT tab "%HabitatQuality" (based on % Template parameter in EDT)
+  
+  # --------------- HQ_Sum is NA (for now) -----------
+  df_add_to_MetEntWen$HQ_Sum = NA
+  
+  # ----------------- add HQ_Pct, HQ Restoration and Protection, and unacceptable/at risk attributes ----
+  # ---------- truncate the HQ Score data frame -----------
+  PRCNT_Habitat_Quality_Okanogan_EDT_Truncated = PRCNT_Habitat_Quality_Okanogan_EDT[,c("ReachName","HQ_Score")]
+  # -------- merge HQ Score -----
+  df_add_to_MetEntWen = merge(df_add_to_MetEntWen, PRCNT_Habitat_Quality_Okanogan_EDT_Truncated, by="ReachName")
+  colnames(df_add_to_MetEntWen)[length(colnames(df_add_to_MetEntWen))] = "HQ_Pct"
+  
+  # ------------------------------ HQ Restoration Score ------------------------
+  df_add_to_MetEntWen = df_add_to_MetEntWen  %>%
+    mutate(HQ_Score_Restoration = ifelse(HQ_Pct  > Restoration_Scoring$Category_Lower[1] & 
+                                           HQ_Pct  < Restoration_Scoring$Category_Upper[1] , Restoration_Scoring$Score[1],
+                                         ifelse(HQ_Pct  >= Restoration_Scoring$Category_Lower[2] & 
+                                                  HQ_Pct  <= Restoration_Scoring$Category_Upper[2] , Restoration_Scoring$Score[2],
+                                                ifelse(HQ_Pct  > Restoration_Scoring$Category_Lower[3] & 
+                                                         HQ_Pct  <= Restoration_Scoring$Category_Upper[3] , Restoration_Scoring$Score[3],
+                                                       NA))))
+  # ------------------------------ HQ Protection Score ------------------------
+  df_add_to_MetEntWen = df_add_to_MetEntWen  %>%
+    mutate(HQ_Score_Protection = ifelse(HQ_Pct  > Protection_Scoring$Category_Lower [1] & 
+                                          HQ_Pct  < Protection_Scoring$Category_Upper[1] , Protection_Scoring$Score[1],
+                                        ifelse(HQ_Pct  >= Protection_Scoring$Category_Lower[2] & 
+                                                 HQ_Pct  <= Protection_Scoring$Category_Upper[2] , Protection_Scoring$Score[2],
+                                               ifelse(HQ_Pct  > Protection_Scoring$Category_Lower[3] & 
+                                                        HQ_Pct  <= Protection_Scoring$Category_Upper[3] , Protection_Scoring$Score[3],
+                                                      NA))))
+  
+  # --------------------- add At Risk and Unnacceptable habitat attributes -----------------
+  #df_add_to_MetEntWen[,colnames(Okanogan_data_frame)[(length(colnames(Okanogan_data_frame))-2):length(colnames(Okanogan_data_frame))]] =
+  #  Okanogan_data_frame[,colnames(Okanogan_data_frame)[(length(colnames(Okanogan_data_frame))-2):length(colnames(Okanogan_data_frame))]]
+  
+  # ---------------- update Riparian column name -----------
+  x = which(colnames(df_add_to_MetEntWen) == "Riparian_Mean_score")
+  colnames(df_add_to_MetEntWen)[x] = "Riparian_Mean"
+  
+  # ----------------- combine prepared Okanogan data frame with MetEntWen data frame -----
+  MetEntWen_data_frame_updated = rbind(MetEntWen_data_frame,  df_add_to_MetEntWen)
+  
+  # ------------------ Return ---------------
+  return(MetEntWen_data_frame_updated)
+}
 
 

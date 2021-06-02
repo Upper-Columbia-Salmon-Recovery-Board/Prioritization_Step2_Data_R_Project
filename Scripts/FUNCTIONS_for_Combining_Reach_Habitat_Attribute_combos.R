@@ -130,7 +130,7 @@ FUNCTION_match_INDIVIDUAL_core_metrics_from_habitat_attributes_SPECIES = functio
 
 
 # To Test
-test = TRUE
+test = FALSE
 if(test){
   HQ_spring_chinook = Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']]
   HQ_steelhead = Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']]
@@ -139,7 +139,7 @@ if(test){
   LF_steelhead = Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']]
   LF_bull_trout = Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']]
   columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
-  exclude_bull_trout = "no"
+  exclude_bull_trout = "yes"
 }
 
 
@@ -382,8 +382,8 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage = function(HQ_spring_
 
 
 # To Test
-test_x = "yes"
-if(test_x == "yes"){
+test_x = TRUE
+if(test_x ){
   HQ_spring_chinook = Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']]
   HQ_steelhead = Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']]
   HQ_bull_trout = Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']]
@@ -471,13 +471,13 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ
     
     if(HQ_life_stages == "yes"){
       # ------------- Spring Chinook -----------
-      if(!is.na(HQ_spring_chinook_index)){    life_stages_spring_chinook_HQ = FUNCTION_generate_life_stage_list_for_species_reach("Spring Chinook", reach_x)   }else{ life_stages_spring_chinook_HQ = c()}
+      if(!is.na(HQ_spring_chinook_index)){    life_stages_spring_chinook_HQ = FUNCTION_generate_priority_life_stage_list_for_species_reach("Spring Chinook", reach_x)   }else{ life_stages_spring_chinook_HQ = c()}
       if(!is.na(LF_spring_chinook_index[1])){  life_stages_spring_chinook_LF = paste(LF_spring_chinook$life_stage[LF_spring_chinook_index], collapse=",")  }else{ life_stages_spring_chinook_LF = c()}
       # ----------- Steelhead -----------------
-      if(!is.na(HQ_steelhead_index)){    life_stages_steelhead_HQ = FUNCTION_generate_life_stage_list_for_species_reach("Steelhead", reach_x)        }else{ life_stages_steelhead_HQ = c()}
+      if(!is.na(HQ_steelhead_index)){    life_stages_steelhead_HQ = FUNCTION_generate_priority_life_stage_list_for_species_reach("Steelhead", reach_x)        }else{ life_stages_steelhead_HQ = c()}
       if(!is.na(LF_steelhead_index[1])){ life_stages_steelhead_LF =paste(LF_steelhead$life_stage[LF_steelhead_index], collapse=",") }else{ life_stages_steelhead_LF = c()}
       # --------------- Bull Trout -------------
-      if(!is.na(HQ_bull_trout_index)){   life_stages_bull_trout_HQ = FUNCTION_generate_life_stage_list_for_species_reach("Bull Trout", reach_x)     }else{ life_stages_bull_trout_HQ = c()}
+      if(!is.na(HQ_bull_trout_index)){   life_stages_bull_trout_HQ = FUNCTION_generate_priority_life_stage_list_for_species_reach("Bull Trout", reach_x)     }else{ life_stages_bull_trout_HQ = c()}
       if(!is.na(LF_bull_trout_index[1])){   life_stages_bull_trout_LF = paste(LF_bull_trout$life_stage[LF_bull_trout_index], collapse=",")  }else{ life_stages_bull_trout_LF = c()  }
     }
     # ------------------------------------------------------------
@@ -823,9 +823,9 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ
     # ------------------------------------------------------------
     #     Identify life stages in reach (based on reach presence)
     # ------------------------------------------------------------
-    spring_chinook_presence = FUNCTION_generate_life_stage_list_for_species_reach("Spring Chinook", reach_x)
-    steelhead_presence = FUNCTION_generate_life_stage_list_for_species_reach("Steelhead", reach_x)
-    bull_trout_presence = FUNCTION_generate_life_stage_list_for_species_reach("Bull Trout", reach_x)
+    spring_chinook_presence = FUNCTION_generate_priority_life_stage_list_for_species_reach("Spring Chinook", reach_x)
+    steelhead_presence = FUNCTION_generate_priority_life_stage_list_for_species_reach("Steelhead", reach_x)
+    bull_trout_presence = FUNCTION_generate_priority_life_stage_list_for_species_reach("Bull Trout", reach_x)
     
     # --------------- get list of species --------------
     species_list = c()
@@ -968,7 +968,7 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ
 #
 # ------------------------------------------------------------------------------------------
 
-FUNCTION_generate_life_stage_list_for_species_reach = function(species_x, reach_x){
+FUNCTION_generate_priority_life_stage_list_for_species_reach = function(species_x, reach_x){
   
   # ----------------------- filter by reach ------
   Life_Stage_Priorities_AU_and_Reach_data_REACH_X = Life_Stage_Priorities_AU_and_Reach_data[ which(Life_Stage_Priorities_AU_and_Reach_data$ReachName == reach_x), ] 
@@ -978,13 +978,13 @@ FUNCTION_generate_life_stage_list_for_species_reach = function(species_x, reach_
   # --------- Spring Chinook --------
   if(species_x == "Spring Chinook"){
     
-    for(life_stage_i in names(spring_chinook_life_stages_presence)){
+    for(life_stage_i in names(spring_chinook_life_stages)){
       # ------- generate name of column for this life stage --------
-      life_stage_i2 = spring_chinook_life_stages_presence[[life_stage_i]]
+      life_stage_i2 = spring_chinook_life_stages[[life_stage_i]]
       # -------------- pull the value -------
-      life_stage_presence_0_1 = Life_Stage_Priorities_AU_and_Reach_data_REACH_X[[life_stage_i2]]
+      life_stage_presence_priority_x = Life_Stage_Priorities_AU_and_Reach_data_REACH_X[[life_stage_i2]]
       # -------- add life stage name -------
-      if(life_stage_presence_0_1 == 1){ life_stage_list_x = paste(life_stage_list_x,life_stage_i, sep="," ) }
+      if(life_stage_presence_priority_x == "High Priority"){ life_stage_list_x = paste(life_stage_list_x,life_stage_i, sep="," ) }
     }
   }
   
@@ -992,26 +992,26 @@ FUNCTION_generate_life_stage_list_for_species_reach = function(species_x, reach_
   # --------- Steelhead --------
   if(species_x == "Steelhead"){
     
-    for(life_stage_i in names(steelhead_life_stages_presence)){
+    for(life_stage_i in names(steelhead_life_stages)){
       # ------- generate name of column for this life stage --------
-      life_stage_i2 = steelhead_life_stages_presence[[life_stage_i]]
+      life_stage_i2 = steelhead_life_stages[[life_stage_i]]
       # -------------- pull the value -------
-      life_stage_presence_0_1 = Life_Stage_Priorities_AU_and_Reach_data_REACH_X[[life_stage_i2]]
+      life_stage_presence_priority_x = Life_Stage_Priorities_AU_and_Reach_data_REACH_X[[life_stage_i2]]
       # -------- add life stage name -------
-      if(life_stage_presence_0_1 == 1){ life_stage_list_x = paste(life_stage_list_x,life_stage_i, sep="," ) }
+      if(life_stage_presence_priority_x == "High Priority"){ life_stage_list_x = paste(life_stage_list_x,life_stage_i, sep="," ) }
     }
   }
   
   # --------- Bull Trout --------
   if(species_x == "Bull Trout"){
     
-    for(life_stage_i in names(bull_trout_life_stages_presence)){
+    for(life_stage_i in names(bull_trout_life_stages)){
       # ------- generate name of column for this life stage --------
-      life_stage_i2 = bull_trout_life_stages_presence[[life_stage_i]]
+      life_stage_i2 = bull_trout_life_stages[[life_stage_i]]
       # -------------- pull the value -------
-      life_stage_presence_0_1 = Life_Stage_Priorities_AU_and_Reach_data_REACH_X[[life_stage_i2]]
+      life_stage_presence_priority_x = Life_Stage_Priorities_AU_and_Reach_data_REACH_X[[life_stage_i2]]
       # -------- add life stage name -------
-      if(life_stage_presence_0_1 == 1){ life_stage_list_x = paste(life_stage_list_x,life_stage_i, sep="," ) }
+      if(life_stage_presence_priority_x == "High Priority"){ life_stage_list_x = paste(life_stage_list_x,life_stage_i, sep="," ) }
     }
   }
   

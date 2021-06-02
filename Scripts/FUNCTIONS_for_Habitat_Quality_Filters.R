@@ -49,7 +49,7 @@ LF_or_HQ = "LF"
 test_x = FALSE
 if(test_x){
   data_col_name = data_source_x
-  data_col_name = data_sources_list[[1]][1]
+  #data_col_name = data_sources_list[[1]][1]
 }
 
 
@@ -141,7 +141,7 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
         
         # ----------- pull stream width for this reach -------------
         stream_width_m = Reach_Information_data %>%
-          dplyr::select(Length_AvgWettedWidth_Meters)
+          dplyr::select(ReachName,Length_AvgWettedWidth_Meters)
         
         # --------- create blank NA column ------
         data_output_x$score = NA
@@ -153,11 +153,12 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
             filter(metric_criteria_x$Habitat_Type_Filter == habitat_filter_type)
           
           # ------------ find streams with this width ----------
-          stream_width_m_i = which(stream_width_m >= metric_criteria_x_i$Filter_value_lower_meters[1] & 
-                                     stream_width_m < metric_criteria_x_i$Filter_value_upper_meters[1] )
+          stream_width_m_i = which(stream_width_m$Length_AvgWettedWidth_Meters >= metric_criteria_x_i$Filter_value_lower_meters[1] & 
+                                     stream_width_m$Length_AvgWettedWidth_Meters < metric_criteria_x_i$Filter_value_upper_meters[1] )
           
           # ------------------- pull metrics for those stream widths -------------------
-          data_output_x_i = data_output_x[stream_width_m_i,]
+          data_output_x_overlap_i = which(data_output_x$ReachName %in% stream_width_m$ReachName[stream_width_m_i])
+          data_output_x_i = data_output_x[data_output_x_overlap_i,]
           
           # ----------------- generate scores ------------
           data_output_x_i = data_output_x_i  %>%
@@ -168,7 +169,7 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
                                          NA)))
           
           # --------------- add score data for appropriate stream width ---------
-          data_output_x$score[stream_width_m_i] = data_output_x_i$score
+          data_output_x$score[data_output_x_overlap_i] = data_output_x_i$score
         }
         
       }else if(metric_criteria_x$Habitat_Type[1] == 'Temperature'){
