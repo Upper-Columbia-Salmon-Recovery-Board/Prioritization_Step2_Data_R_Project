@@ -53,6 +53,9 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   protection_output_name = paste(paste("Spring_Chinook_Reach_Scoring_PROTECTION" , 
                                        paste(basins_to_include, collapse = "_"), sep="_"),
                                  ".xlsx", sep="")
+  Output_ALL_Spring_Chinook_file = paste(paste("Spring_Chinook_Ranks_ALL_OUTPUT" , 
+                                paste(basins_to_include, collapse = "_"), sep="_"),
+                          ".xlsx", sep="")
     
   # -------------------- STEELHEAD -------------------------------------------
   # ---------------- species reach ---------------
@@ -75,6 +78,9 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   protection_output_name = paste(paste("Steelhead_Reach_Scoring_PROTECTION" , 
                                        paste(basins_to_include, collapse = "_"), sep="_"),
                                  ".xlsx", sep="")
+  Output_ALL_Steelhead_file = paste(paste("Steelhead_Ranks_ALL_OUTPUT" , 
+                                paste(basins_to_include, collapse = "_"), sep="_"),
+                          ".xlsx", sep="")
     
   if(exclude_bull_trout == "no"){
     # ---------------- species reach ---------------
@@ -95,6 +101,9 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     protection_output_name = paste(paste("Bull_Trout_Reach_Scoring_PROTECTION" , 
                                          paste(basins_to_include, collapse = "_"), sep="_"),
                                    ".xlsx", sep="")
+    Output_ALL_Bull_Trout_file = paste(paste("Bull_Trout_Ranks_ALL_OUTPUT" , 
+                                  paste(basins_to_include, collapse = "_"), sep="_"),
+                            ".xlsx", sep="")
   }
   
   #  ---------------------------------------------------------------------------------
@@ -144,8 +153,6 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   
   # -------------------- STEELHEAD: add additional column for this particular species reach presence ---------------
   Steelhead_Reach_Information_data =  Species_Reach_Information_data
-  # ---------------------- start data frame that outputs results for all reaches -------------
-  Output_Steelhead_All = Reach_Information_data[,c(1:3,5)]
   
   Steelhead_Reach_Information_data$Species_Reaches = Steelhead_Reach_Information_data[species_reach_Steelhead]
   # ----------------------- filter out for only reaches with this species --------------
@@ -163,6 +170,10 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     print(paste("Total reaches after Bull Trout species-reach filter: ", nrow(Bull_Trout_Reach_Information_data), sep=""))
     
   }
+  
+  # ---------------------- start data frame that outputs results for all reaches -------------
+  Output_Spring_Chinook_All = Reach_Information_data[,c(1:4)]
+  Output_Steelhead_All = Reach_Information_data[,c(1:3,5)]
   
   # ---------------------------------------------------------------------------------------------------------------
   #
@@ -209,14 +220,7 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   # ------------------------ identify AUs that pass this filter in reach-based table ----------
   Steelhead_Reach_Information_data_restoration_Okanogan = Steelhead_Reach_Information_data %>%  
     filter(Assessment.Unit    %in%   Species_AU_Ranks_data_Steelhead_restoration_Okanogan$`EDT AU`)
-  # -------- add to data frame that includes all reaches -----
-  AU_Rank_Data = Species_AU_Ranks_data_Steelhead_Okanogan[,c("EDT AU","AU Restoration Rank")]
-  colnames(AU_Rank_Data)[1] = "Assessment.Unit"
-  AU_Rank_Data2 = Species_AU_Ranks_data_Steelhead [,c("Assessment Unit", "Species_AU_Ranks")]
-  colnames(AU_Rank_Data2) = c("Assessment.Unit", colnames(AU_Rank_Data)[2])
-  AU_Rank_Data = rbind(AU_Rank_Data, AU_Rank_Data2)
-  Output_Steelhead_All = merge(Output_Steelhead_All  ,AU_Rank_Data, by = "Assessment.Unit", all.x= TRUE )
-  
+
   # ------------------- combine Wen-Ent-Methow and Okanogan ------------
   Steelhead_Reach_Information_data_restoration = rbind(Steelhead_Reach_Information_data_restoration, Steelhead_Reach_Information_data_restoration_Okanogan)
   
@@ -236,7 +240,21 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     
     print(paste("Bull Trout Restoration - total AU rank filter: ", nrow(Bull_Trout_Reach_Information_data_restoration), sep=""))
   }
+  
+  # -------- add to data frame that includes all reaches -----
+  # ------------- Spring Chinook --------
 
+  AU_Rank_Data = Species_AU_Ranks_data_Spring_Chinook [,c("Assessment Unit", "Species_AU_Ranks")]
+  colnames(AU_Rank_Data) = c("Assessment.Unit", "AU Restoration Rank")
+  Output_Spring_Chinook_All = merge(Output_Spring_Chinook_All  ,AU_Rank_Data, by = "Assessment.Unit", all.x= TRUE )
+  # ----------- Steelhead ----------
+  AU_Rank_Data = Species_AU_Ranks_data_Steelhead_Okanogan[,c("EDT AU","AU Restoration Rank")]
+  colnames(AU_Rank_Data)[1] = "Assessment.Unit"
+  AU_Rank_Data2 = Species_AU_Ranks_data_Steelhead [,c("Assessment Unit", "Species_AU_Ranks")]
+  colnames(AU_Rank_Data2) = c("Assessment.Unit", colnames(AU_Rank_Data)[2])
+  AU_Rank_Data = rbind(AU_Rank_Data, AU_Rank_Data2)
+  Output_Steelhead_All = merge(Output_Steelhead_All  ,AU_Rank_Data, by = "Assessment.Unit", all.x= TRUE )
+  
   #  ---------------------------------------------------------------------------------
   #            Filter out to select for AU rank - PROTECTION
   #  ---------------------------------------------------------------------------------
@@ -279,13 +297,6 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   
   # ------------------- combine Wen-Ent-Methow and Okanogan ------------
   Steelhead_Reach_Information_data_protection = rbind(Steelhead_Reach_Information_data_protection, Steelhead_Reach_Information_data_protection_Okanogan)
-  # -------- add to output that includes all reaches -----
-  AU_Rank_Data = Species_AU_Ranks_data_Steelhead_Okanogan[,c("EDT AU","AU Protection Rank")]
-  colnames(AU_Rank_Data)[1] = "Assessment.Unit"
-  AU_Rank_Data2 = Species_AU_Ranks_data_Steelhead [,c("Assessment Unit", "Species_AU_Ranks")]
-  colnames(AU_Rank_Data2) = c("Assessment.Unit", colnames(AU_Rank_Data)[2])
-  AU_Rank_Data = rbind(AU_Rank_Data, AU_Rank_Data2)
-  Output_Steelhead_All = merge(Output_Steelhead_All  ,AU_Rank_Data, by = "Assessment.Unit", all.x= TRUE )
 
   print(paste("Steelhead Protection - total AU rank filter: ", nrow(Steelhead_Reach_Information_data_protection), sep=""))
   
@@ -303,6 +314,19 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     
     print(paste("Bull Trout Protection - total AU rank filter: ", nrow(Bull_Trout_Reach_Information_data_protection), sep=""))
   }
+  
+  # -------- add to output that includes all reaches -----
+  # ------ Spring Chinook --------
+  AU_Rank_Data = Species_AU_Ranks_data_Spring_Chinook[,c("Assessment Unit", "Species_AU_Ranks")]
+  colnames(AU_Rank_Data) = c("Assessment.Unit", "AU Protection Rank")
+  Output_Spring_Chinook_All = merge(Output_Spring_Chinook_All  ,AU_Rank_Data, by = "Assessment.Unit", all.x= TRUE )
+  # --------- Steelhead ----------
+  AU_Rank_Data = Species_AU_Ranks_data_Steelhead_Okanogan[,c("EDT AU","AU Protection Rank")]
+  colnames(AU_Rank_Data)[1] = "Assessment.Unit"
+  AU_Rank_Data2 = Species_AU_Ranks_data_Steelhead [,c("Assessment Unit", "Species_AU_Ranks")]
+  colnames(AU_Rank_Data2) = c("Assessment.Unit", colnames(AU_Rank_Data)[2])
+  AU_Rank_Data = rbind(AU_Rank_Data, AU_Rank_Data2)
+  Output_Steelhead_All = merge(Output_Steelhead_All  ,AU_Rank_Data, by = "Assessment.Unit", all.x= TRUE )
   
   #  ---------------------------------------------------------------------------------
   #
@@ -347,6 +371,7 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   colnames(HQ_data_x) = c("ReachName", "HQ_Pct")
   HQ_data_x2 = Habitat_Quality_Scores[which(Habitat_Quality_Scores$Basin != "Okanogan"),c("ReachName", "HQ_Pct")]
   HQ_data_x = rbind(HQ_data_x, HQ_data_x2)
+  Output_Spring_Chinook_All = merge(Output_Spring_Chinook_All  ,HQ_data_x, by = "ReachName" )  # NOTE - some Okanogan reaches are not present in the EDT results HQ output (PRCNT_Habitat_Quality_Okanogan_EDT)
   Output_Steelhead_All = merge(Output_Steelhead_All  ,HQ_data_x, by = "ReachName" )  # NOTE - some Okanogan reaches are not present in the EDT results HQ output (PRCNT_Habitat_Quality_Okanogan_EDT)
   
   # --------- combine Wen-Ent-Wen and Okanogan -----------
@@ -433,7 +458,70 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     filter(ReachName   %in%   Limiting_Factor_Pathway_Steelhead_Reach_Ranking$`ReachName`)
   print(paste("Steelhead Restoration - total after LF score filter: ", nrow(Limiting_Factor_Pathway_Restoration_Steelhead), sep=""))
  
-   # -------- add to output of all reaches -----
+  # ------------------------------------------------------------------------ 
+  #                     add to output of all reaches 
+  # ------------------------------------------------------------------------ 
+  
+  # ------------------------- Spring Chinook ---------------------------------- 
+  # list "yes" or "no" if it has a limiting factor in a high priority life stage (maybe list the limiting factor OR life stage?)
+  # ----------- loop through each reach and identify if the reach has a limiting factor in a priority life stage
+  Output_LF_all = c()
+  for(reach_x in Output_Spring_Chinook_All$ReachName){
+    
+    # ------------------ pull the priority life stages in this reach -------------------
+    output_life_stages_x = FUNCTION_pull_High_Priority_Life_Stages_for_a_reach(reach_x, "Spring Chinook")
+    
+    reach_in_LF_output = any(Limiting_Factor_Pathway_Steelhead[["Limiting_Factor_Pathway_Restoration"]]$ReachName == reach_x)
+    # --------------- IF there is a reach in the LF Pathway output -------------
+    if(reach_in_LF_output){
+      rows_x = which(Limiting_Factor_Pathway_Spring_Chinook[["Limiting_Factor_Pathway_Restoration"]]$ReachName == reach_x)
+      #output_life_stages_x = c()
+      output_limiting_factor_x = c()
+      for(x in rows_x){
+        #output_life_stages_x = c(output_life_stages_x, Limiting_Factor_Pathway_Steelhead[["Limiting_Factor_Pathway_Restoration"]][x,c("life_stage")])
+        output_limiting_factor_x = c(output_limiting_factor_x, Limiting_Factor_Pathway_Spring_Chinook[["Limiting_Factor_Pathway_Restoration"]][x,c("unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes")])
+      }
+      
+      # ------------- IF reach is not in the LF pathway -----
+    }else{
+      #output_life_stages_x = "No Priority Life Stages with Limiting Factors"
+      output_limiting_factor_x = "No Priority Life Stages with Limiting Factors"
+    }
+    output_life_stages_x = paste(output_life_stages_x, collapse = ",")
+    output_limiting_factor_x = paste(output_limiting_factor_x, collapse = ",")
+    Output_LF_x = t(as.data.frame(c(reach_x,output_life_stages_x, output_limiting_factor_x )))
+    colnames(Output_LF_x) = c("ReachName", "Priority_Life_Stages_with_Limiting_Factors","Limiting_Factors_for_Priority_Life_Stages")
+    Output_LF_all = rbind(Output_LF_all, Output_LF_x )
+  }
+  # ------------- combine -------------
+  Output_Spring_Chinook_All = merge(  Output_Spring_Chinook_All  ,  Output_LF_all, by = "ReachName", all.x= TRUE )
+  
+  # ------------- verify which reach passes HQ pathway or LF Pathway for RESTORATION -------------
+  HQ_or_LF_RESTORATION_filter_pass = c()
+  for(reach_x in Output_Spring_Chinook_All$ReachName){
+    # -------------- pull row with reach --------
+    x = which(Output_Spring_Chinook_All$ReachName == reach_x)
+    
+    # --------------- if HQ score is NA, set to 100 (so it won't pass through the filter), otherwise, pull the HQ_Pct)
+    if(is.na(Output_Spring_Chinook_All$HQ_Pct[x])){
+      HQ_Pct_x = 100
+    }else{
+      HQ_Pct_x = Output_Spring_Chinook_All$HQ_Pct[x]
+    }
+    if(HQ_Pct_x< HQ_Score_Restoration_Reach_Scores$Category_upper_limit | 
+       Output_Spring_Chinook_All$Limiting_Factors_for_Priority_Life_Stages[x] != "No Priority Life Stages with Limiting Factors"){
+      output_x = t(as.data.frame(c(reach_x, "yes")))
+    }else{
+      output_x = t(as.data.frame(c(reach_x, "no")))
+    }
+    HQ_or_LF_RESTORATION_filter_pass = rbind(HQ_or_LF_RESTORATION_filter_pass, output_x)
+  }
+  colnames(HQ_or_LF_RESTORATION_filter_pass) = c("ReachName","HQ_or_LF_restoration_filter_pass_yes_no")
+  # ------------- combine -------------
+  Output_Spring_Chinook_All = merge(Output_Spring_Chinook_All  ,HQ_or_LF_RESTORATION_filter_pass, by = "ReachName", all.x= TRUE )
+  
+  
+  # ------------------------- Steelhead ---------------------------------- 
   # list "yes" or "no" if it has a limiting factor in a high priority life stage (maybe list the limiting factor OR life stage?)
   # ----------- loop through each reach and identify if the reach has a limiting factor in a priority life stage
   Output_LF_all = c()
@@ -524,7 +612,36 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     print(paste("Bull Trout - total after LF score filter: ", nrow(Limiting_Factor_Pathway_Protection_Bull_Trout), sep=""))
   }
   
-  # ------------- verify which reach passes HQ pathway or LF Pathway for PROTECTION -------------
+  #  ---------------------------------------------------------------------------------
+  #       Protection - all outputs - verify which reach passes HQ pathway or LF Pathway for PROTECTION
+  #  ---------------------------------------------------------------------------------
+  
+  # ----------------------------- Spring Chinook ----------------------------
+  # NOTE: put in LF score first
+  HQ_or_LF_PROTECTION_filter_pass = c()
+  for(reach_x in Output_Spring_Chinook_All$ReachName){
+    # -------------- pull row with reach --------
+    x = which(Output_Spring_Chinook_All$ReachName == reach_x)
+    
+    # --------------- if HQ score is NA, set to 0 (so won't pass through filter), otherwise, pull the HQ_Pct)
+    if(is.na(Output_Spring_Chinook_All$HQ_Pct[x])){
+      HQ_Pct_x = 0
+    }else{
+      HQ_Pct_x = Output_Spring_Chinook_All$HQ_Pct[x]
+    }
+    if(HQ_Pct_x > HQ_Score_Protection_Reach_Scores$Category_lower_limit | 
+       Output_Spring_Chinook_All$Limiting_Factors_for_Priority_Life_Stages[x] != "No Priority Life Stages with Limiting Factors"){
+      output_x = t(as.data.frame(c(reach_x, "yes")))
+    }else{
+      output_x = t(as.data.frame(c(reach_x, "no")))
+    }
+    HQ_or_LF_PROTECTION_filter_pass = rbind(HQ_or_LF_PROTECTION_filter_pass, output_x)
+  }
+  colnames(HQ_or_LF_PROTECTION_filter_pass) = c("ReachName","HQ_or_LF_protection_filter_pass_yes_no")
+  # ------------- combine -------------
+  Output_Spring_Chinook_All = merge(Output_Spring_Chinook_All  ,HQ_or_LF_PROTECTION_filter_pass, by = "ReachName", all.x= TRUE )
+  
+  # ----------------------------- Steelhead ------------------------------
   # NOTE: put in LF score first
   HQ_or_LF_PROTECTION_filter_pass = c()
   for(reach_x in Output_Steelhead_All$ReachName){
@@ -548,7 +665,6 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   colnames(HQ_or_LF_PROTECTION_filter_pass) = c("ReachName","HQ_or_LF_protection_filter_pass_yes_no")
   # ------------- combine -------------
   Output_Steelhead_All = merge(Output_Steelhead_All  ,HQ_or_LF_PROTECTION_filter_pass, by = "ReachName", all.x= TRUE )
-  
   
   #  ---------------------------------------------------------------------------------
   #
@@ -666,6 +782,7 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   confinement_output = Confinement_Scores[,c("ReachName","Unconfined_Pct")]
   confinement_output$Unconfined_more_than_0 = "yes"
   confinement_output$Unconfined_more_than_0[which(confinement_output$Unconfined_Pct == 0)] = "no"
+  Output_Spring_Chinook_All = merge(Output_Spring_Chinook_All  ,confinement_output, by = "ReachName" ) 
   Output_Steelhead_All = merge(Output_Steelhead_All  ,confinement_output, by = "ReachName" ) 
   
   
@@ -731,8 +848,19 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   print(paste("HQ Pathway-RESTORATION Steelhead - total reaches after life stage sum filter: ", nrow(HQ_and_LF_Pathway_Restoration_Steelhead), sep=""))
   
   # -------- add to total output -----
+  life_stage_sum_output = Life_Stage_Priorities_AU_and_Reach_data[,c("ReachName","Life_Stage_Sum_Column_Spring_Chinook")]
+  Output_Spring_Chinook_All = merge(Output_Spring_Chinook_All  ,life_stage_sum_output, by = "ReachName" ) 
+  
   life_stage_sum_output = Life_Stage_Priorities_AU_and_Reach_data[,c("ReachName","Life_Stage_Sum_Column_Steelhead")]
   Output_Steelhead_All = merge(Output_Steelhead_All  ,life_stage_sum_output, by = "ReachName" ) 
+  
+  # ------------- write the Output of the Reaches --------
+  # -------- Spring Chinook -------
+  output_path_x =  paste(output_path,Output_ALL_Spring_Chinook_file, sep="")
+  write_xlsx(Output_Spring_Chinook_All,output_path_x )
+  # -------- Steelhead -------
+  output_path_x =  paste(output_path,Output_ALL_Steelhead_file, sep="")
+  write_xlsx(Output_Steelhead_All,output_path_x )
   
   # ------------------  Bull Trout ----------
   if(exclude_bull_trout == "no"){
@@ -1029,6 +1157,8 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     unique_AU = unique(Restoration_Scores_Output$Assessment.Unit[x_basins])
     # -------------- start the AU Rank score ---------
     Restoration_Scores_Output$AU_level_Reach_Rank = NA
+    # -------------- start the EDT reach rank (NOTE this will only be present in Okanogan) ---------
+    Restoration_Scores_Output$EDT_reach_rank = NA
     for(AU_x in unique_AU){
       
       # --------------- pull scores for reaches in this AU ---------
@@ -1074,7 +1204,11 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
       }
       
       # -------------- add the AU Rank to data -----------------
-      Restoration_Scores_Output$AU_level_Reach_Rank[which(Restoration_Scores_Output$Assessment.Unit == AU_x)] = AU_data_frame$AU_level_Reach_Rank
+      for(reach_x in AU_data_frame$ReachName){
+        AU_rank_x = AU_data_frame$AU_level_Reach_Rank[ which(AU_data_frame$ReachName == reach_x)]
+        Restoration_Scores_Output$AU_level_Reach_Rank[ which(Restoration_Scores_Output$ReachName == reach_x)] = AU_rank_x
+      }
+      #Restoration_Scores_Output$AU_level_Reach_Rank[which(Restoration_Scores_Output$Assessment.Unit == AU_x)] = AU_data_frame$AU_level_Reach_Rank
       
       
     }
@@ -1095,7 +1229,7 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
       # --------------- pull scores for reaches in this AU (from prioritization) ---------
       AU_data_frame = Restoration_Scores_Output[which(Restoration_Scores_Output$Assessment.Unit == AU_x), ]
       # --------------- pull scores for reaches in this AU (from EDT) ---------
-      AU_data_frame_EDT = Reach_and_Attribute_Rank_Protection_Okanogan[which(Reach_and_Attribute_Rank_Protection_Okanogan$`Assessment Unit` == AU_x), ]
+      AU_data_frame_EDT = Reach_and_Attribute_Rank_Restoration_Okanogan[which(Reach_and_Attribute_Rank_Restoration_Okanogan$`Assessment Unit` == AU_x), ]
       # --------------- initiate AU_level_Reach_Rank ------------
       AU_data_frame$AU_level_Reach_Rank = NA
       # ---------------- remove NA ------------
@@ -1153,8 +1287,18 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
       }
       
       # -------------- add the AU Rank to data -----------------
-      Restoration_Scores_Output$AU_level_Reach_Rank[which(Restoration_Scores_Output$Assessment.Unit == AU_x)] = AU_data_frame$AU_level_Reach_Rank
+      for(reach_x in AU_data_frame$ReachName){
+        AU_rank_x = AU_data_frame$AU_level_Reach_Rank[ which(AU_data_frame$ReachName == reach_x)]
+        Restoration_Scores_Output$AU_level_Reach_Rank[ which(Restoration_Scores_Output$ReachName == reach_x)] = AU_rank_x
+      }
+      #Restoration_Scores_Output$AU_level_Reach_Rank[which(Restoration_Scores_Output$Assessment.Unit == AU_x)] = AU_data_frame$AU_level_Reach_Rank
       
+      # -------------- add Okanogan AU level rank ---------
+      for(reach_x in AU_data_frame_EDT$ReachName){
+        EDT_AU_rank_x = AU_data_frame_EDT$Reach_Rank[ which(AU_data_frame_EDT$ReachName == reach_x)]
+        Restoration_Scores_Output$EDT_reach_rank[ which(Restoration_Scores_Output$ReachName == reach_x)] = EDT_AU_rank_x
+      }
+      #Restoration_Scores_Output$EDT_reach_rank[which(Restoration_Scores_Output$Assessment.Unit == AU_x)] = AU_data_frame_EDT$Reach_Rank 
       
     }
     
@@ -1328,6 +1472,8 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     unique_AU = unique(Protection_Scores_Output$Assessment.Unit[x_basins])
     # -------------- start the AU Rank score ---------
     Protection_Scores_Output$AU_level_Reach_Rank = NA
+    # -------------- start the EDT reach rank (NOTE this will only be present in Okanogan) ---------
+    Protection_Scores_Output$EDT_reach_rank = NA
     for(AU_x in unique_AU){
       
       # --------------- pull scores for reaches in this AU ---------
@@ -1373,7 +1519,11 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
       }
       
       # -------------- add the AU Rank to data -----------------
-      Protection_Scores_Output$AU_level_Reach_Rank[which(Protection_Scores_Output$Assessment.Unit == AU_x)] = AU_data_frame$AU_level_Reach_Rank
+      for(reach_x in AU_data_frame$ReachName){
+        AU_rank_x = AU_data_frame$AU_level_Reach_Rank[ which(AU_data_frame$ReachName == reach_x)]
+        Protection_Scores_Output$AU_level_Reach_Rank[ which(Protection_Scores_Output$ReachName == reach_x)] = AU_rank_x
+      }
+      #Protection_Scores_Output$AU_level_Reach_Rank[which(Protection_Scores_Output$Assessment.Unit == AU_x)] = AU_data_frame$AU_level_Reach_Rank
       
       
     }
@@ -1401,10 +1551,11 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
       #reaches_to_rank = rank_reach_x[which(!is.na(AU_data_frame_EDT$Reach_Rank[rank_reach_x]))]
       
       # ----------------- copy EDT reach ranks over to prioritization data ---------
-      i = 0
+      
       reaches_to_rank = c()
-      for(reach_x in AU_data_frame$ReachName){
-        i = i + 1
+      for(i in 1:nrow(AU_data_frame)){
+        reach_x = AU_data_frame$ReachName[i]
+        
         # ------ get EDT reach ------
         reach_x_EDT = which(AU_data_frame_EDT$ReachName == reach_x)
         if(length(reach_x_EDT) > 0){
@@ -1452,7 +1603,18 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
       }
       
       # -------------- add the AU Rank to data -----------------
-      Protection_Scores_Output$AU_level_Reach_Rank[which(Protection_Scores_Output$Assessment.Unit == AU_x)] = AU_data_frame$AU_level_Reach_Rank
+      for(reach_x in AU_data_frame$ReachName){
+        AU_rank_x = AU_data_frame$AU_level_Reach_Rank[ which(AU_data_frame$ReachName == reach_x)]
+        Protection_Scores_Output$AU_level_Reach_Rank[ which(Protection_Scores_Output$ReachName == reach_x)] = AU_rank_x
+      }
+      #Protection_Scores_Output$AU_level_Reach_Rank[which(Protection_Scores_Output$Assessment.Unit == AU_x)] = AU_data_frame$AU_level_Reach_Rank
+      
+      # -------------- add Okanogan AU level rank ---------
+      for(reach_x in AU_data_frame_EDT$ReachName){
+        EDT_AU_rank_x = AU_data_frame_EDT$Reach_Rank[ which(AU_data_frame_EDT$ReachName == reach_x)]
+        Protection_Scores_Output$EDT_reach_rank[ which(Protection_Scores_Output$ReachName == reach_x)] = EDT_AU_rank_x
+      }
+      
       
       
     }
@@ -1470,6 +1632,10 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     print(paste("--- No Protection Reaches generated for species: ", species_x, sep=""))
     Protection_Scores_Output = NA
   }
+  
+  # ----------------- convert AU Reach Ranks to numeric -------
+  Restoration_Scores_Output$AU_level_Reach_Rank = as.numeric(as.character(Restoration_Scores_Output$AU_level_Reach_Rank ))
+  Protection_Scores_Output$AU_level_Reach_Rank = as.numeric(as.character(Protection_Scores_Output$AU_level_Reach_Rank ))
   
   # --------------------- Put Restoration and Protection Reach Rankings into a list --------------
   Reach_Rankings_Combined = list( 

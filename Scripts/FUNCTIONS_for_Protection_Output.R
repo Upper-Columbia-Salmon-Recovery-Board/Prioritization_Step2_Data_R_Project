@@ -18,20 +18,28 @@
 #   Function to prep Protection Output
 #
 # ---------------------------------------------------------------------------
+test_x = TRUE
+if(test_x){
+  HQ_spring_chinook = Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Protection']]
+  HQ_steelhead = Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Protection']]
+  HQ_bull_trout = Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Protection']]
+  LF_spring_chinook = Limiting_Factor_Pathway_Spring_Chinook[['Limiting_Factor_Pathway_Protection']]
+  LF_steelhead = Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']]
+  LF_bull_trout = Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Protection']]
+  
+}
 
-HQ_spring_chinook = Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Protection']]
-HQ_steelhead = Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Protection']]
-HQ_bull_trout = Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Protection']]
-LF_spring_chinook = Limiting_Factor_Pathway_Spring_Chinook[['Limiting_Factor_Pathway_Protection']]
-LF_steelhead = Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']]
-LF_bull_trout = Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Protection']]
 
-
-FUNCTION_Combine_Protection_Output = function(HQ_spring_chinook, HQ_steelhead, HQ_bull_trout, LF_spring_chinook, LF_steelhead, LF_bull_trout){
+FUNCTION_Combine_Protection_Output = function(HQ_spring_chinook, HQ_steelhead, HQ_bull_trout, LF_spring_chinook, LF_steelhead, LF_bull_trout, exclude_bull_trout){
   
   # -------------- identify reaches across all protection
   reaches_unique = unique( c(HQ_spring_chinook$ReachName, HQ_steelhead$ReachName, HQ_bull_trout$ReachName, 
                           LF_spring_chinook$ReachName, LF_steelhead$ReachName, LF_bull_trout$ReachName))
+  # -------- remove NA reach ---------
+  xNA = which(is.na(reaches_unique))
+  if(length(xNA)>0){
+    reaches_unique = reaches_unique[-xNA]
+  }
   
   # 	Life_Stage	Action
 
@@ -57,18 +65,24 @@ FUNCTION_Combine_Protection_Output = function(HQ_spring_chinook, HQ_steelhead, H
     if( any(HQ_steelhead$ReachName == reach_x) ){
       pathway_x = paste(pathway_x, "HQ_steelhead", sep=",")
     }
-    if( any(HQ_bull_trout$ReachName == reach_x) ){
-      pathway_x = paste(pathway_x, "HQ_bull_trout", sep=",")
-    }
+    
     if( any(LF_spring_chinook$ReachName == reach_x) ){
       pathway_x = paste(pathway_x, "LF_spring_chinook", sep=",")
     }
     if( any(LF_steelhead$ReachName == reach_x) ){
       pathway_x = paste(pathway_x, "LF_steelhead", sep=",")
     }
-    if( any(LF_bull_trout$ReachName == reach_x) ){
-      pathway_x = paste(pathway_x, "LF_bull_trout", sep=",")
+    
+    if(exclude_bull_trout == "no"){
+      if( any(HQ_bull_trout$ReachName == reach_x) ){
+        pathway_x = paste(pathway_x, "HQ_bull_trout", sep=",")
+      }
+      if( any(LF_bull_trout$ReachName == reach_x) ){
+        pathway_x = paste(pathway_x, "LF_bull_trout", sep=",")
+      }
+      
     }
+
     # ---------------- remove leading comma -------
     pathway_x = substr(pathway_x,2,nchar(pathway_x))
     
@@ -91,12 +105,15 @@ FUNCTION_Combine_Protection_Output = function(HQ_spring_chinook, HQ_steelhead, H
       if(length(life_stages_LF_x) > 1){   life_stages_LF_x = paste(life_stages_LF_x, collapse=",")}
       life_stage_x = paste(life_stage_x, life_stages_LF_x, sep=",") 
     }
-    if( any(LF_bull_trout$ReachName == reach_x) ){
-      life_stages_LF_x = LF_bull_trout$life_stage[which(LF_bull_trout$ReachName == reach_x)]
-      # make into one element if more than one life stage 
-      if(length(life_stages_LF_x) > 1){   life_stages_LF_x = paste(life_stages_LF_x, collapse=",")}
-      life_stage_x = paste(life_stage_x, life_stages_LF_x, sep=",") 
+    if(exclude_bull_trout == "no"){
+      if( any(LF_bull_trout$ReachName == reach_x) ){
+        life_stages_LF_x = LF_bull_trout$life_stage[which(LF_bull_trout$ReachName == reach_x)]
+        # make into one element if more than one life stage 
+        if(length(life_stages_LF_x) > 1){   life_stages_LF_x = paste(life_stages_LF_x, collapse=",")}
+        life_stage_x = paste(life_stage_x, life_stages_LF_x, sep=",") 
+      }
     }
+
     # ------------- Number of Life Stages -------------------
     if( !is.null(life_stage_x) ){
       life_stage_x = substr(life_stage_x,2,nchar(life_stage_x))   # remove leading comma

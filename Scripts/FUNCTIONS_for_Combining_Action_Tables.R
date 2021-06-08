@@ -21,7 +21,7 @@
 
 test_x = TRUE
 if(test_x){
-  score_1_or_3 = "one"
+  score_1_or_3 = "two and three"
   restoration_or_protection = 'restoration'
 }
 
@@ -74,11 +74,10 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
   # ------------------------------------------------------------
   Pathway_Output_x = c()
   for(reachname_x in reaches_unique){
-    
+   
     # ------------------ basic info about the reach ------------
     x_row = which(Reach_Information_HQ_Actions$ReachName == reachname_x)
     output_info_row_x = Reach_Information_HQ_Actions[x_row, c('ReachName','Basin',"Assessment.Unit",  "Spring.Chinook.Reach","Steelhead.Reach" ,"Bull.Trout.Reach" )]
-    
     
     # --------------------- initiate cells for each reach ---------------
     pathways_x  = c()
@@ -225,20 +224,23 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
     }
 
     # -------------- number of action categories -----------
-    if(is.null(spring_chinook_actions)){
+    if(class(spring_chinook_actions) == "list"){spring_chinook_actions = unlist(spring_chinook_actions)}
+    
+    if( is.null(spring_chinook_actions) ){
       spring_chinook_actions = NA   # get list of habitat attributes with NO redundancies
       number_of_spring_chinook_actions =  0
     }else{
+      if(class(spring_chinook_actions) == "list"){ spring_chinook_actions = unlist(spring_chinook_actions)}
       spring_chinook_actions = unique( unlist(strsplit(spring_chinook_actions, ",")) )  # get list of action categories with NO redundancies
       number_of_spring_chinook_actions =  length( spring_chinook_actions )
       spring_chinook_actions = paste(spring_chinook_actions, collapse=",")
     }
-    
+  
     # -----------------------------------------
     #     for steelhead
     # -----------------------------------------
     # ------- number of habitat attributes -------------
-    if(is.null(steelhead_habitat_attributes)){
+    if( is.null(steelhead_habitat_attributes) ){
       steelhead_habitat_attributes = c()   # get list of habitat attributes with NO redundancies
       number_of_steelhead_habitat_attributes =  0
     }else{
@@ -248,10 +250,13 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
       species_count_x = species_count_x + 1
     }
     # -------------- number of action categories -----------
-    if(is.null(steelhead_actions)){
+    if(class(steelhead_actions) == "list"){steelhead_actions = unlist(steelhead_actions)}
+    
+    if( is.null(steelhead_actions) ){
       steelhead_actions = NA   # get list of habitat attributes with NO redundancies
       number_of_steelhead_actions =  0
     }else{
+      if(class(steelhead_actions) == "list"){ steelhead_actions = unlist(steelhead_actions)}
       steelhead_actions = unique( unlist(strsplit(steelhead_actions, ",")) )  # get list of action categories with NO redundancies
       number_of_steelhead_actions =  length( steelhead_actions )
       steelhead_actions = paste(steelhead_actions, collapse=",")
@@ -272,10 +277,13 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
     }
     
     # -------------- number of action categories -----------
+    if(class(bull_trout_actions) == "list"){bull_trout_actions = unlist(bull_trout_actions)}
+    
     if(is.null(bull_trout_actions)){
       bull_trout_actions = NA   # get list of habitat attributes with NO redundancies
       number_of_bull_trout_actions =  0
     }else{
+      if(class(bull_trout_actions) == "list"){ bull_trout_actions = unlist(bull_trout_actions)}
       bull_trout_actions = unique( unlist(strsplit(bull_trout_actions, ",")) )  # get list of action categories with NO redundancies
       number_of_bull_trout_actions =  length( bull_trout_actions )
       bull_trout_actions = paste(bull_trout_actions, collapse=",")
@@ -350,7 +358,7 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
   }
   
   # ----------------------- combine Reach Information and Pathway processed info for output ----------
-  Output_DF = cbind(Reach_Information_HQ_Actions, Pathway_Output_x)
+  Output_DF = merge(Reach_Information_HQ_Actions, Pathway_Output_x, by="ReachName")
   rownames(Output_DF) = seq(1, nrow(Output_DF))
   
   # ---------------- remove rows with no pathways --------
@@ -654,6 +662,7 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
       # ---------------- remove leading comma -------
       spring_chinook_actions = substr(spring_chinook_actions,2,nchar(spring_chinook_actions))
       # ----------------- get list w/ no redundancies and count them ------------
+      if(class(spring_chinook_actions) == "list" ){ spring_chinook_actions = unlist(spring_chinook_actions)}
       spring_chinook_actions = unique( unlist(strsplit(spring_chinook_actions, ",")) )  # get list of action categories with NO redundancies
       number_of_spring_chinook_actions =  length( spring_chinook_actions )
       spring_chinook_actions = paste(spring_chinook_actions, collapse=",")
@@ -696,6 +705,8 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
       # ---------------- remove leading comma -------
       steelhead_actions = substr(steelhead_actions,2,nchar(steelhead_actions))
       # ----------------- get list w/ no redundancies and count them ------------
+      
+      if(class(steelhead_actions) == "list" ){ steelhead_actions = unlist(steelhead_actions)}
       steelhead_actions = unique( unlist(strsplit(steelhead_actions, ",")) )  # get list of action categories with NO redundancies
       number_of_steelhead_actions =  length( steelhead_actions )
       steelhead_actions = paste(steelhead_actions, collapse=",")
@@ -738,6 +749,7 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
       # ---------------- remove leading comma -------
       bull_trout_actions = substr(bull_trout_actions,2,nchar(bull_trout_actions))
       # ----------------- get list w/ no redundancies and count them ------------
+      if(class(bull_trout_actions) == "list" ){ bull_trout_actions = unlist(bull_trout_actions)}
       bull_trout_actions = unique( unlist(strsplit(bull_trout_actions, ",")) )  # get list of action categories with NO redundancies
       number_of_bull_trout_actions =  length( bull_trout_actions )
       bull_trout_actions = paste(bull_trout_actions, collapse=",")
@@ -853,6 +865,7 @@ FUNCTION_combine_across_pathways = function(HQ_pathway_df, LF_pathway_df){
     }else{
       HQ_and_LF_combo_x = as.data.frame(LF_pathway_df[LF_reach_index, columns_info])
     }
+    colnames(HQ_and_LF_combo_x) = "ReachName"
     
     # ------------------------------------------------------------
     #     Combine Text - HQ and LF
@@ -1008,7 +1021,7 @@ if(test_x){
   HQ_LF_At_Risk = Restoration_At_Risk
   HQ_LF_Both = Restoration_Unacceptable_and_At_Risk
   HQ_Both = Habitat_Quality_Restoration_Unacceptable_and_At_Risk
-  columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
+  columns_info = c( "ReachName" ) # columns to automatically add to beginning (left side) of output
   HQ_add_life_stage == "No"
 }
 
@@ -1044,6 +1057,8 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
     #     Add Reach Information Data 
     # ------------------------------------------------------------
     HQ_and_LF_combo_x = as.data.frame(HQ_LF_Both[HQ_LF_Both_index, columns_info])
+    colnames(HQ_and_LF_combo_x) = "ReachName"
+    HQ_and_LF_combo_x = merge(HQ_and_LF_combo_x, Reach_Information_data[,c("ReachName", "Basin", "Assessment.Unit")], by="ReachName", all.x=TRUE )
     
     # ------------------------------------------------------------
     #    Pathways (list and yes/no)
@@ -1946,7 +1961,7 @@ FUNCTION_add_reach_information = function(data_frame_x, colnames_reach_info){
 #    Script to compare life stage priorities
 # ---------------------------------------------------------------------
 
-compare_x = TRUE
+compare_x = FALSE
 
 if(compare_x){
   

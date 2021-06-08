@@ -42,9 +42,9 @@ reach_name_x  = "Big Meadow Creek 01"
 #        habitat_attribute list of data source (1, 2, 3, or 4)
 #  'Pool Quantity & Quality' = c( 'Pools_CATEGORY_1', 'Pool_Habitat_Prcnt_INDICATOR_4', 'Pools_per_mile_INDICATOR_2'), 
 #   'Temperature- Adult Spawning' = c('NORWEST_Temperature', '305bListings_Temperature', 'RAWatershed_Rating_Temp' ), 
-habitat_attribute_x = "Riparian-Disturbance"
-data_col_name = 'Dominant_Substrate_CATEGORY_1'
-LF_or_HQ = "LF"
+habitat_attribute_x = "Temperature- Adult Holding"
+data_col_name = 'NORWEST_Temperature'
+LF_or_HQ = "HQ"
 
 test_x = FALSE
 if(test_x){
@@ -172,7 +172,7 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
           data_output_x$score[data_output_x_overlap_i] = data_output_x_i$score
         }
         
-      }else if(metric_criteria_x$Habitat_Type[1] == 'Temperature'){
+      }else if( metric_criteria_x$Habitat_Type[1] == 'Temperature' ){
         
         # --------------- get metric data ONLY for this habitat attribute --------
         metric_criteria_UPDATED_x = metric_criteria_x %>%

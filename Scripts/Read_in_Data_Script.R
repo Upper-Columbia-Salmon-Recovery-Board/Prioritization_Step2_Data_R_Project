@@ -156,7 +156,7 @@ life_stages_prescence = list("spring_chinook_life_stages" =  spring_chinook_life
 
 # ---------------------------------------------------------------------------
 #
-#     Life Stages and accompanying Habitat Attributes for each Species
+#     Life Stage Crosswalk and accompanying Habitat Attributes for each Species
 #
 # ---------------------------------------------------------------------------
 
@@ -559,3 +559,4 @@ if(comparing_habitat_raw_data_and_reach_layer_T_F){
 
     
 }
+

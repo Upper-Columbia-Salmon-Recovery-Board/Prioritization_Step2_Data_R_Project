@@ -22,7 +22,7 @@
 
 
 #  to test
-test_x = TRUE
+test_x = FALSE
 if(test_x){
   species = "Steelhead"
 }
@@ -76,13 +76,13 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species ){
   #  ---------------------------------------------------------------------------------
   # -------------------- add additional column for this particular species reach presence ---------------
   Species_Reach_Information_data$Species_Reaches = Species_Reach_Information_data[species_reach]
+  Species_Reach_Information_data_all = Species_Reach_Information_data
   # ----------------------- filter out for only reaches with this species --------------
   Species_Reach_Information_data = Species_Reach_Information_data %>%  
     filter(Species_Reaches   == 'yes')
   # ----------- add to combined ----------
-  yesx = which(Species_Reach_Information_data[,species_reach]=="yes")
-  Output_All_Combined$Species_Reach = 0
-  Output_All_Combined$Species_Reach[yesx] = 1
+  Species_Reach_Information_data_merge = Species_Reach_Information_data_all[,c("ReachName", species_reach)]
+  Output_All_Combined = merge(Output_All_Combined, Species_Reach_Information_data_merge, by="ReachName", all.x=TRUE)
     
   print(paste("Total reaches after species-reach filter: ", nrow(Species_Reach_Information_data), sep=""))
   
@@ -102,7 +102,7 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species ){
   # ----------- add to combined ----------
   AU_ranks_for_combo = Species_AU_Ranks_data[,c("EDT AU","AU Restoration Rank")]
   colnames(AU_ranks_for_combo)[1] = "Assessment.Unit"
-  Output_All_Combined = merge(Output_All_Combined, AU_ranks_for_combo, by="Assessment.Unit")
+  Output_All_Combined = merge(Output_All_Combined, AU_ranks_for_combo, by="Assessment.Unit", all.x=TRUE)
   
   print(paste("Restoration - total AU rank filter: ", nrow(Species_Reach_Information_data_restoration), sep=""))
   
@@ -122,10 +122,10 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species ){
   # ----------- add to combined ----------
   AU_ranks_for_combo = Species_AU_Ranks_data[,c("EDT AU","AU Protection Rank")]
   colnames(AU_ranks_for_combo)[1] = "Assessment.Unit"
-  Output_All_Combined = merge(Output_All_Combined, AU_ranks_for_combo, by="Assessment.Unit")
+  Output_All_Combined = merge(Output_All_Combined, AU_ranks_for_combo, by="Assessment.Unit", all.x=TRUE)
   
   
-  print(paste("Protection - total after AU rank filter: ", nrow(Species_Reach_Information_data_protection), sep=""))
+  print(paste("Protection - total after Protection AU rank filter: ", nrow(Species_Reach_Information_data_protection), sep=""))
   
   #  ---------------------------------------------------------------------------------
   #           Reach Confinement (NOTE - only used for Restoration, not for Protection)
@@ -133,16 +133,14 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species ){
   
   # ----------------------- filter out for Habitat_Quality_Scores reaches with Habitat Quality Score criteria --------------
   Confinement_Scores_Restoration = Confinement_Scores %>%  
-    filter(Score   >=   Reach_Confinement_SCORE_Criteria)
+    filter(Score   ==   Reach_Confinement_SCORE_Criteria)
   # ------------------------ identify AUs that pass this filter in reach-based table ----------
   Species_Reach_Information_data_restoration = Species_Reach_Information_data_restoration %>%  
     filter(ReachName   %in%   Confinement_Scores_Restoration$`ReachName`)
   
   # ----------- add to combined ----------
   Confinement_Scores_for_combo = Confinement_Scores[,c("ReachName","Unconfined_Pct")]
-  Output_All_Combined = merge(Output_All_Combined, Confinement_Scores_for_combo, by="ReachName")
-  
-  
+  Output_All_Combined = merge(Output_All_Combined, Confinement_Scores_for_combo, by="ReachName", all.x=TRUE)
   
   print(paste("HQ Pathway-RESTORATION - total reaches after reach confinement filter: ", nrow(Species_Reach_Information_data_restoration), sep=""))
   
@@ -158,9 +156,7 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species ){
   
   # ----------- add to combined ----------
   Life_Stage_for_combo = Life_Stage_Priorities_AU_and_Reach_data[,c("ReachName",life_stage_sum_column)]
-  Output_All_Combined = merge(Output_All_Combined, Life_Stage_for_combo, by="ReachName")
-  
-  
+  Output_All_Combined = merge(Output_All_Combined, Life_Stage_for_combo, by="ReachName", all.x=TRUE)
   
   # ------------------------ identify reaches that pass through the RESTORATION filter ----------
   Habitat_Quality_Pathway_Restoration = Species_Reach_Information_data_restoration %>%  
@@ -185,6 +181,10 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species ){
   Habitat_Quality_Pathway_Restoration = Habitat_Quality_Pathway_Restoration %>%  
     filter(ReachName   %in%   PRCNT_Habitat_Quality_Okanogan_EDT_FILTER_RESTORATION$`ReachName`)
   
+  # ----------- add to combined ----------
+  PRCNT_HQ_merge = PRCNT_Habitat_Quality_Okanogan_EDT[,c("ReachName","HQ_Score")]
+  Output_All_Combined = merge(Output_All_Combined, PRCNT_HQ_merge, by="ReachName", all.x=TRUE)
+  
   print(paste("HQ Pathway-RESTORATION - total reaches after life stages number filter: ", nrow(Habitat_Quality_Pathway_Restoration), sep=""))
   
   #  ---------------------------------------------------------------------------------
@@ -200,6 +200,13 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species ){
   
   print(paste("HQ Pathway-PROTECTION - total reaches after life stages number filter: ", nrow(Habitat_Quality_Pathway_Protection), sep=""))
   
+  # -------------------------------------------------------
+  #     Combine ALL data output with Okanogan_Habitat_Quality_Output (HQ table)
+  # ------------------------------------------------------- 
+  Habitat_Quality_Scores_Okanogan_merge = Habitat_Quality_Scores_Okanogan[, -which(names(Habitat_Quality_Scores_Okanogan) %in% c("Assessment.Unit"))]
+  # merged with all habitat attributes in Habitat_Attribute_Scores_Okanogan instead
+  #Output_All_Combined = merge(Output_All_Combined, Habitat_Quality_Scores_Okanogan_merge, by="ReachName", all.x=TRUE)
+
   # -------------------------------------------------------
   #     Output Scores (if reaches generated)
   # ------------------------------------------------------- 
@@ -225,7 +232,7 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species ){
       colnames_restoration_x = colnames_restoration_x[-which(is.na(colnames_restoration_x))]
     }
     
-    
+    # ----------------- original way to pull impaired habitat attributes -----------
     for(rowx in 1:nrow(Habitat_Quality_Pathway_Restoration)){
       # --------------------- pull habitat attributes for this reach -----------------
       habitat_attributes_output_x = HabitatAttribute_Ratings_Level2_updated[which(HabitatAttribute_Ratings_Level2_updated$Reach ==  Habitat_Quality_Pathway_Restoration$ReachName[rowx] ), ]
@@ -241,6 +248,103 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species ){
     indiv_habitat_attributes_impaired_restoration = indiv_habitat_attributes_impaired_restoration[-NA_rows_x, ]
     
     print(paste("--- Restoration - TOTAL reaches after habitat attributes filter: ", nrow(indiv_habitat_attributes_impaired_restoration), sep=""))
+    indiv_habitat_attributes_impaired_restoration_old = indiv_habitat_attributes_impaired_restoration
+    
+    
+    # ------------ pull from Habitat_Attribute_Scores_Okanogan ----------
+    # ---------------- pull the reaches ------------
+    Habitat_Attribute_Scores_Okanogan_FILTERED = Habitat_Attribute_Scores_Okanogan %>%  
+      filter(ReachName   %in%   Habitat_Quality_Pathway_Restoration$ReachName)
+    # --------------- just pull the habitat attributes in RTT list ---------
+    #Habitat_Attribute_Scores_Okanogan_FILTERED = Habitat_Attribute_Scores_Okanogan_FILTERED %>%  
+    #  filter(Habitat_Attribute   %in%   colnames_restoration_x)
+    # --------------- only pull 1s (Unacceptable) and 3s (At Risk) ------------
+    Habitat_Attribute_Scores_Okanogan_FILTERED$Habitat_Attribute_Score = as.numeric(as.character(Habitat_Attribute_Scores_Okanogan_FILTERED$Habitat_Attribute_Score))
+    Habitat_Attribute_Scores_Okanogan_FILTERED = Habitat_Attribute_Scores_Okanogan_FILTERED[which(Habitat_Attribute_Scores_Okanogan_FILTERED$Habitat_Attribute_Score <= Individual_Habitat_Attribute_Score), ]
+    # --------------------- PREP FOR OUTPUT ----------------
+    indiv_habitat_attributes_impaired_restoration = c()
+    reaches_unique = unique(Habitat_Attribute_Scores_Okanogan_FILTERED$ReachName)
+    for(reach_x in reaches_unique){
+      # -------- pull rows ----------
+      x = which(Habitat_Attribute_Scores_Okanogan_FILTERED$ReachName == reach_x)
+      Habitat_Attribute_Scores_Okanogan_FILTERED_reach_x = Habitat_Attribute_Scores_Okanogan_FILTERED[x,]
+      # --------------- get Reach Info -------
+      Reach_Info_x = Habitat_Attribute_Scores_Okanogan_FILTERED_reach_x[1,1:3]
+      # ----------------------------------------------------
+      #   Add Columns for HQ Pathway Merge
+      # ----------------------------------------------------
+      Reach_Info_x$Spring.Chinook.Reach = Reach_Information_data$Spring.Chinook.Reach[which(Reach_Information_data$ReachName == reach_x)]
+      Reach_Info_x$Steelhead.Reach = Reach_Information_data$Steelhead.Reach[which(Reach_Information_data$ReachName == reach_x)]
+      Reach_Info_x$Bull.Trout.Reach = Reach_Information_data$Bull.Trout.Reach[which(Reach_Information_data$ReachName == reach_x)]
+      Reach_Info_x$BankStability_score = Habitat_Quality_Scores_Okanogan$`Bank Stability`[ which(Habitat_Quality_Scores_Okanogan$ReachName == reach_x)]
+      Reach_Info_x$ChannelStability_score = Habitat_Quality_Scores_Okanogan$`Channel Stability`[ which(Habitat_Quality_Scores_Okanogan$ReachName == reach_x)]
+      Reach_Info_x$Stability_Mean = Habitat_Quality_Scores_Okanogan$Stability[ which(Habitat_Quality_Scores_Okanogan$ReachName == reach_x)]
+      Reach_Info_x$CoarseSubstrate_score = Habitat_Quality_Scores_Okanogan$`Coarse Substrate`[ which(Habitat_Quality_Scores_Okanogan$ReachName == reach_x)]
+      Reach_Info_x$`Cover-Wood_score` = Habitat_Quality_Scores_Okanogan$`Cover- Wood`[ which(Habitat_Quality_Scores_Okanogan$ReachName == reach_x)]
+      Reach_Info_x$`Flow-SummerBaseFlow_score` = Habitat_Quality_Scores_Okanogan$`Flow- Summer Base Flow`[ which(Habitat_Quality_Scores_Okanogan$ReachName == reach_x)]
+      Reach_Info_x$`Off-Channel-Floodplain_score` = Habitat_Quality_Scores_Okanogan$`Off-Channel- Floodplain`[ which(Habitat_Quality_Scores_Okanogan$ReachName == reach_x)]
+      Reach_Info_x$`Off-Channel-Side-Channels_score` = Habitat_Quality_Scores_Okanogan$`Off-Channel- Side-Channels`[ which(Habitat_Quality_Scores_Okanogan$ReachName == reach_x)]
+      Reach_Info_x$`PoolQuantity&Quality_score` = Habitat_Quality_Scores_Okanogan$`Pool Quantity & Quality`[ which(Habitat_Quality_Scores_Okanogan$ReachName == reach_x)]
+      Reach_Info_x$`Riparian-Disturbance_score` = Habitat_Quality_Scores_Okanogan$`Riparian-Disturbance`[ which(Habitat_Quality_Scores_Okanogan$ReachName == reach_x)]
+      Reach_Info_x$`Riparian-CanopyCover_score` = Habitat_Quality_Scores_Okanogan$`Riparian- Canopy Cover`[ which(Habitat_Quality_Scores_Okanogan$ReachName == reach_x)]
+      Reach_Info_x$`Riparian_Mean` = Habitat_Quality_Scores_Okanogan$`Riparian`[ which(Habitat_Quality_Scores_Okanogan$ReachName == reach_x)]
+      Reach_Info_x$`Temperature-Rearing_score` = Habitat_Quality_Scores_Okanogan$`Temperature- Rearing`[ which(Habitat_Quality_Scores_Okanogan$ReachName == reach_x)]
+      Reach_Info_x$HQ_Sum = Habitat_Quality_Scores_Okanogan$HQ_Sum[ which(Habitat_Quality_Scores_Okanogan$ReachName == reach_x)]
+      Reach_Info_x$HQ_Pct = Habitat_Quality_Scores_Okanogan$HQ_Pct[ which(Habitat_Quality_Scores_Okanogan$ReachName == reach_x)]
+      Reach_Info_x$HQ_Score_Restoration = NA
+      Reach_Info_x$HQ_Score_Protection = NA
+      
+      
+      # ----------------------------------------------------
+      #   Get individual habitat attributes
+      # ----------------------------------------------------
+      # --------------- Unacceptable (1s) --------------
+      x_1 = which(Habitat_Attribute_Scores_Okanogan_FILTERED_reach_x$Habitat_Attribute_Score == 1)
+      unacceptable_1_indiv_habitat_attributes_x = Habitat_Attribute_Scores_Okanogan_FILTERED_reach_x$Habitat_Attribute[x_1]
+      Reach_Info_x$unacceptable_1_indiv_habitat_attributes = paste(unacceptable_1_indiv_habitat_attributes_x, collapse=",")
+      # --------------- At Risk (3s) --------------
+      x_3 = which(Habitat_Attribute_Scores_Okanogan_FILTERED_reach_x$Habitat_Attribute_Score <= 3  &
+                    Habitat_Attribute_Scores_Okanogan_FILTERED_reach_x$Habitat_Attribute_Score > 1 )
+      at_risk_2_or_3_indiv_habitat_attributes_x = Habitat_Attribute_Scores_Okanogan_FILTERED_reach_x$Habitat_Attribute[x_3]
+      Reach_Info_x$at_risk_2_or_3_indiv_habitat_attributes = paste(at_risk_2_or_3_indiv_habitat_attributes_x, collapse=",")
+      # --------------- Unacceptable (1s) or At Risk (3s) --------------
+      x_1_3 = which(Habitat_Attribute_Scores_Okanogan_FILTERED_reach_x$Habitat_Attribute_Score <= 3  )
+      unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes_x = Habitat_Attribute_Scores_Okanogan_FILTERED_reach_x$Habitat_Attribute[x_1_3]
+      Reach_Info_x$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes = paste(unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes_x, collapse=",")
+      
+      # ------------ combine ------
+      indiv_habitat_attributes_impaired_restoration  = rbind(indiv_habitat_attributes_impaired_restoration,Reach_Info_x )
+    }
+    
+    print(paste("--- Restoration - TOTAL reaches after habitat attributes filter: ", length(unique(Habitat_Attribute_Scores_Okanogan_FILTERED$ReachName)), sep=""))
+    
+    # ---------------------------- get output for ALL ---------------------
+    
+    Habitat_Attribute_Scores_Okanogan_FILTERED_ALL = Habitat_Attribute_Scores_Okanogan %>%  
+      filter(ReachName   %in%   Output_All_Combined$ReachName)
+    # --------------- just pull the habitat attributes in RTT list ---------
+    #Habitat_Attribute_Scores_Okanogan_FILTERED_ALL = Habitat_Attribute_Scores_Okanogan_FILTERED_ALL %>%  
+    #  filter(Habitat_Attribute   %in%   colnames_restoration_x)
+    # --------------- only pull 1s (Unacceptable) and 3s (At Risk) ------------
+    Habitat_Attribute_Scores_Okanogan_FILTERED_ALL$Habitat_Attribute_Score = as.numeric(as.character(Habitat_Attribute_Scores_Okanogan_FILTERED_ALL$Habitat_Attribute_Score))
+ 
+    # ------------- add to output --------
+    all_habitat_attributes = unique(Habitat_Attribute_Scores_Okanogan_FILTERED_ALL$Habitat_Attribute)[order(unique(Habitat_Attribute_Scores_Okanogan_FILTERED_ALL$Habitat_Attribute))]
+    for(habitat_attribute_x in all_habitat_attributes){
+      
+      if(habitat_attribute_x == "Brook Trout"){next} # we don't do Brook Trout
+      # ----------- pull data for this habitat attribute ---------
+      habitat_attribute_x_data_frame = Habitat_Attribute_Scores_Okanogan_FILTERED_ALL[Habitat_Attribute_Scores_Okanogan_FILTERED_ALL$Habitat_Attribute == habitat_attribute_x,c("ReachName","Habitat_Attribute_Score")]
+      # -------------- rename column name ---------
+      colnames(habitat_attribute_x_data_frame)[2] = habitat_attribute_x
+      # ------------ merge with Output_All_Combined ------
+      Output_All_Combined = merge( Output_All_Combined,  habitat_attribute_x_data_frame, by="ReachName", )
+    }
+    
+    # ---------- write all the output ------------
+    write.xlsx(Output_All_Combined, file=paste(output_path,"Habitat_Quality_Scores_Filters_Okanogan.xlsx",sep=""),  row.names=FALSE)
+    
+    
     
     #  ---------------------------------------------------------------------------------
     #           Write output data to output file
@@ -283,7 +387,7 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species ){
     }
     
     # ------------------ pull habitat attributes in protection reaches ----------
-    for(rowx in 1:nrow(Habitat_Quality_Pathway_Protection)){
+    for(rowx in 1:nrow(Habitat_Quality_Pathway_Protection) ){
       # --------------------- pull habitat attributes for this reach -----------------
       habitat_attributes_output_x = HabitatAttribute_Ratings_Level2_updated[which(HabitatAttribute_Ratings_Level2_updated$Reach ==  Habitat_Quality_Pathway_Protection$ReachName[rowx] ), ]
       # ------------ function to identify habitat attributes at 1 and 3 (and list for each reach) ---------
@@ -567,3 +671,9 @@ Combine_MetEntWen_and_Okanogan_Habitat_Quality_Output_Protection = function(MetE
 }
 
 
+
+combo_habitat_attributes = c( unique(AttributeCrosswalk$`RTT Habitat Attributes`), unique(Habitat_Attribute_Scores_Okanogan$Habitat_Attribute))
+
+for(habitat_attribute_x in combo_habitat_attributes){
+  
+}

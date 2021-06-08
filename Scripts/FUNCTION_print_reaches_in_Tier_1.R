@@ -9,14 +9,24 @@
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 
-reach_names_x = Reach_Rankings_Output_Protection$ReachName
-restoration_or_protection = "protection"
+test_x = TRUE
+if(test_x){
+  reach_names_x = Reach_Rankings_Output_Protection$ReachName
+  restoration_or_protection = "protection"
+}
 
-FUNCTION_compare_tier_1_reaches_to_an_output("protection", Reach_Rankings_Output_Protection$ReachName)
-FUNCTION_compare_tier_1_reaches_to_an_output("restoration", Reach_Rankings_Output_Restoration$ReachName)
+run_x = TRUE
+if(run_x){
+  Restoration_Rank_Tier_1_comparison = FUNCTION_compare_tier_1_reaches_to_an_output_ranks("restoration", Reach_Rankings_Output_Restoration$ReachName)
+  Protection_Rank_Tier_1_comparison = FUNCTION_compare_tier_1_reaches_to_an_output_ranks("protection", Reach_Rankings_Output_Protection$ReachName)
+}
+
+# ---------- print restoration and protection AUs not with priority reaches ------------
+Restoration_Rank_Tier_1_comparison_NO_PRIORITY_REACH = Restoration_Rank_Tier_1_comparison[which(Restoration_Rank_Tier_1_comparison$Priority_Reaches == ""), c(1,3)]
+Protection_Rank_Tier_1_comparison_NO_PRIORITY_REACH = Protection_Rank_Tier_1_comparison[which(Protection_Rank_Tier_1_comparison$Priority_Reaches == ""), c(1,3)]
 
 
-FUNCTION_compare_tier_1_reaches_to_an_output = function(restoration_or_protection,  reach_names_x){
+FUNCTION_compare_tier_1_reaches_to_an_output_ranks = function(restoration_or_protection,  reach_names_x){
   
   
   if( restoration_or_protection == "restoration" ){
@@ -44,24 +54,43 @@ FUNCTION_compare_tier_1_reaches_to_an_output = function(restoration_or_protectio
   }
   
   # ------------ filter out for Tier 1 ----------
-  tier_AUs = tier_AUs %>% filter_all(any_vars(. %in% c(1)))
+  # NOTE: just rows with Tier 1 for any species
+  if(exclude_bull_trout == "no"){
+    tier_AUs = tier_AUs %>% filter_all(any_vars(. %in% c(1)))
+  }else{
+    tier_AUs = tier_AUs[,c(1:3)]
+    tier_AUs = tier_AUs %>% filter_all(any_vars(. %in% c(1)))
+  }
+  
   
   # ------------------- Pull reaches for AUs ----------
   rows_in_tier_1 = c()
+  output_combined = c()
   for(AU_x in tier_AUs$`Assessment Unit`){
     
     # --------------- pull reaches for AU -------
     reaches_in_AU_x = Reach_Information_data$ReachName[which(Reach_Information_data$Assessment.Unit == AU_x)]
+    
     # --------------- identify which reaches are in the AU_x --------------
-    reaches_in_AU_from_data = intersect(reaches_in_AU_x, reach_names_x)
+    reaches_in_AU_also_in_priority_results = intersect(reaches_in_AU_x, reach_names_x)
+    reaches_in_AU_also_in_priority_results_for_output = paste(reaches_in_AU_also_in_priority_results, collapse=",")
+    
+    # --------------- identify which reaches are in the AU_x --------------
+    reaches_in_AU_NOT_in_priority_results = setdiff(reaches_in_AU_x, reach_names_x)
+    reaches_in_AU_NOT_in_priority_results_for_output = paste(reaches_in_AU_NOT_in_priority_results, collapse=",")
+    
+    # -------------- combine output ------------
+    output_x = t(as.data.frame(c(AU_x,reaches_in_AU_also_in_priority_results_for_output, reaches_in_AU_NOT_in_priority_results_for_output )))
+    output_combined = rbind(output_combined, output_x)
+    
     # ------------- identify index of reaches ------
-    if(length(reaches_in_AU_from_data) > 0){
-      for(reach_x_in in reaches_in_AU_from_data){
+    if(length(reaches_in_AU_also_in_priority_results) > 0){
+      for(reach_x_in in reaches_in_AU_also_in_priority_results){
         rows_in_tier_1 = c(rows_in_tier_1, which(reach_names_x == reach_x_in ))
       }
       #  -------------------- print AU and ----------------------------
       print(c("-----------------",AU_x,"------------------"))
-      print(reaches_in_AU_from_data)
+      print(reaches_in_AU_also_in_priority_results)
       print(tier_AUs[which(tier_AUs$`Assessment Unit` == AU_x),])
       print("  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  ")
       print(" ")
@@ -77,5 +106,17 @@ FUNCTION_compare_tier_1_reaches_to_an_output = function(restoration_or_protectio
   reaches_NOT_in_tier_1 = reach_names_x[rows_NOT_in_tier_1]
   
   print(reaches_NOT_in_tier_1[order(reaches_NOT_in_tier_1)])
+  print(reach_names_x[rows_in_tier_1])
   
+  colnames(output_combined) = c("Assessment.Unit","Priority_Reaches","NOT_priority_reaches")
+  rownames(output_combined) = seq(1,nrow(output_combined))
+  
+  output_combined = as.data.frame(output_combined)
+  
+  # ---------- add Basin ---------
+  Reach_Info_x = Reach_Information_data[which( !duplicated(Reach_Information_data$Assessment.Unit) ) ,c("Assessment.Unit","Basin")]
+  output_combined = merge(output_combined, Reach_Info_x, by="Assessment.Unit", all.x=TRUE, all.y=FALSE)
+  output_combined = output_combined[,c(1,4,2,3)]
+  
+  return(output_combined)
 }

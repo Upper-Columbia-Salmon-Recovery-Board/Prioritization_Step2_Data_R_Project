@@ -293,8 +293,8 @@ Limiting_Factors_Okanogan_EDT$"RTT_Habitat_Attributes" = NA
 # Limiting_Factors_Okanogan_EDT$"RTT Habitat Attribute" = NA
 
 for(level_3_habitat_attribute_x  in  unique_level_3){
-  print("------------------------------------------------------------")
-  print(level_3_habitat_attribute_x)
+  #print("------------------------------------------------------------")
+  #print(level_3_habitat_attribute_x)
   
   # ------------------------------------------------------------------------------
   #    Identify rows with this Level 3 habitat attribute
@@ -331,7 +331,7 @@ for(level_3_habitat_attribute_x  in  unique_level_3){
     RTT_row_x = c()
     for(level_2_x in level_2_row_x$`Level 2 Attribute`){
       RTT_x = which(AttributeCrosswalk$`Level 2 Attribute`==level_2_x)
-      if( !is.na(AttributeCrosswalk$`RTT Habitat Attributes`[RTT_x ]) ){
+      if( !is.na(AttributeCrosswalk$`RTT Habitat Attributes`[ RTT_x[1] ]) ){
         RTT_row_x = rbind(RTT_row_x, AttributeCrosswalk[RTT_x, ])
       }
     }
@@ -472,9 +472,10 @@ Barriers_Okanogan_EDT_updated_for_merge$Pathways =  rep(Barriers_Pathways_Data$P
 
 
 # -------------- remove Barriers John Arterburn (May 11, 2021) said had already been fixed -----
+#  NOTE: on June 2, 2021, John Arterburn responded and verified which to take out and which to keep
 reach_barriers_do_not_exist = c("Antoine 16-2","Johnson 16-1", "Johnson 16-2", "Omak 16-1",
-                                "Omak 16-5", "Salmon 16-4", "Antoine 16-1","Johnson 16-5",
-                                "Johnson 16-3", "Johnson 16-1")
+                                "Omak 16-5", "Antoine 16-1","Johnson 16-5",
+                                 "Johnson 16-1")
 x_remove = c()
 for(i in 1:nrow(Barriers_Okanogan_EDT_updated_for_merge) ){ 
   if( any(reach_barriers_do_not_exist == Barriers_Okanogan_EDT_updated_for_merge$ReachName[i] )  ){ 
@@ -487,7 +488,23 @@ Barriers_Okanogan_EDT_updated_for_merge = Barriers_Okanogan_EDT_updated_for_merg
 # -------------- merge the data ------------
 Barriers_Pathways_Data = rbind( Barriers_Pathways_Data, Barriers_Okanogan_EDT_updated_for_merge)
 
+# --------------------------------------------------------------------------
+#
+#        Convert Level 3 "Flow" to "Flow Variability" in Limiting_Factors_Okanogan_EDT and HabitatAttribute_Ratings_Level3
+#
+# --------------------------------------------------------------------------
 
+if(EDT_convert_Level3_Flow_to_Flow_Variability == "yes"){
+  
+  # -------------- convert Flow to Flow Variability in Limiting_Factors_Okanogan_EDT ----------
+  x_flow = which(Limiting_Factors_Okanogan_EDT$Attribute == "Flow")
+  Limiting_Factors_Okanogan_EDT$Attribute[x_flow] = "Flow Variability" 
+  
+  # -------------- convert Flow to Flow Variability in HabitatAttribute_Ratings_Level3 ----------
+  x_flow = which(HabitatAttribute_Ratings_Level3$`EDT Attribute` == "Flow")
+  HabitatAttribute_Ratings_Level3$`EDT Attribute`[x_flow] = "Flow Variability" 
+  
+}
 
 
 # --------------------------------------------------------------------------

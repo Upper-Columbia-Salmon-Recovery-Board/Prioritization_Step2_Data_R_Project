@@ -25,6 +25,21 @@ reaches <- sf::st_read(reaches_path) # this shapefile does not show up properly
 reaches <- sf::st_transform(reaches, 4326)
 
 
+# ---------------------- Okanogan reaches data ------------
+GIS_Okanogan_path = "P:/GIS/Reaches/US_EDT_Reaches_12_5_16_shared_by_CCT_on_March2021/US_EDT_Reaches_12_5_16.shp"
+GIS_Okanogan <- sf::st_read(GIS_Okanogan_path) # this shapefile does not show up properly
+GIS_Okanogan <- sf::st_transform(GIS_Okanogan, 4326)
+
+reaches_Okanogan = GIS_Okanogan[which(GIS_Okanogan$type == "Reach"),]
+
+color_palette_x = c("red", "blue")
+color_palette_continuous_LARGE = brewer.pal(9, 'Set1')
+# 
+# 
+mapview(reaches_Okanogan, lwd=4, zcol="length_km", legend = mapviewGetOption("legend"), na.color='grey',
+        color= color_palette_continuous_LARGE, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
+
+
 # -------------------------------------------------------------------
 #    Crosswalk names
 # -------------------------------------------------------------------

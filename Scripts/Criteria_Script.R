@@ -22,7 +22,7 @@ AU_Rank = c(1)                       # potential: 1, 2, or 3; 1 is high priority
 
 # --------------- Reach Confinement (data in confinement_scores) --------------------------------
 Reach_Confinement_SCORE_Criteria =  c(5)           # potential: 1, 3, 5; 1 is higher % confined, 5 is higher % unconfined, based on USGS Valley Confinment Algorithm
-
+ 
 # --------------- Sum Life Stage (sum of all the life stages present in reach) ---------------------
 # this is the MINIMUM value, so reaches with this number or greater of life stages will pass through the filter
 Sum_Life_Stage_Criteria = c(4)   # potential: 1,2,3,4,5,6,7

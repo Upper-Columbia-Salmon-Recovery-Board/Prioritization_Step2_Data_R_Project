@@ -130,7 +130,7 @@ FUNCTION_match_INDIVIDUAL_core_metrics_from_habitat_attributes_SPECIES = functio
 
 
 # To Test
-test = FALSE
+test = TRUE
 if(test){
   HQ_spring_chinook = Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']]
   HQ_steelhead = Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']]
@@ -150,6 +150,8 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage = function(HQ_spring_
   # ------------------------------------------------------------
   unique_reaches = unique( c(HQ_spring_chinook$ReachName, HQ_steelhead$ReachName, HQ_bull_trout$ReachName, 
                      LF_spring_chinook$ReachName, LF_steelhead$ReachName, LF_bull_trout$ReachName) )
+  # ------- remove NA reaches ----------
+  unique_reaches = unique_reaches[which( !is.na(unique_reaches) )]
   # ------------------------------------------------------------
   #      Loop through each Reach and combine data
   # ------------------------------------------------------------
@@ -160,22 +162,28 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage = function(HQ_spring_
     # --------------------- generate HQ and LF index ----------
     if( any(HQ_spring_chinook$ReachName == reach_x)){ HQ_spring_chinook_index = which(HQ_spring_chinook$ReachName == reach_x) }else{HQ_spring_chinook_index = NA}
     if( any(HQ_steelhead$ReachName == reach_x)){ HQ_steelhead_index = which(HQ_steelhead$ReachName == reach_x) }else{HQ_steelhead_index = NA}
-    if( any(HQ_bull_trout$ReachName == reach_x)){ HQ_bull_trout_index = which(HQ_bull_trout$ReachName == reach_x) }else{HQ_bull_trout_index = NA}
     if( any(LF_spring_chinook$ReachName == reach_x)){ LF_spring_chinook_index = which(LF_spring_chinook$ReachName == reach_x) }else{LF_spring_chinook_index = NA}
     if( any(LF_steelhead$ReachName == reach_x)){ LF_steelhead_index = which(LF_steelhead$ReachName == reach_x) }else{LF_steelhead_index = NA}
-    if( any(LF_bull_trout$ReachName == reach_x)){ LF_bull_trout_index = which(LF_bull_trout$ReachName == reach_x) }else{LF_bull_trout_index = NA}
     
+    if(exclude_bull_trout == "no"){
+      if( any(HQ_bull_trout$ReachName == reach_x)){ HQ_bull_trout_index = which(HQ_bull_trout$ReachName == reach_x) }else{HQ_bull_trout_index = NA}
+      if( any(LF_bull_trout$ReachName == reach_x)){ LF_bull_trout_index = which(LF_bull_trout$ReachName == reach_x) }else{LF_bull_trout_index = NA}
+    }else{
+      HQ_bull_trout_index = NA
+      LF_bull_trout_index = NA
+    }
+
     # ------------------------------------------------------------
     #     List All the Habitat Attributes
     # ------------------------------------------------------------
     habitat_attributes_all = c(
       
-      if(!is.na(HQ_spring_chinook_index)){HQ_spring_chinook$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes[HQ_spring_chinook_index]},
-      if(!is.na(HQ_steelhead_index)){HQ_steelhead$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes[HQ_steelhead_index]  },
-      if(!is.na(HQ_bull_trout_index)){HQ_bull_trout$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes[HQ_bull_trout_index]  },
-      if(!is.na(LF_spring_chinook_index[1])){  paste(LF_spring_chinook$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes[LF_spring_chinook_index], collapse=",")  },
-      if(!is.na(LF_steelhead_index[1])){ paste(LF_spring_chinook$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes[LF_spring_chinook_index], collapse=",")[1] },
-      if(!is.na(LF_bull_trout_index[1])){paste(LF_bull_trout$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes[LF_bull_trout_index], collapse=",")[1] }
+      if( !is.na(HQ_spring_chinook_index) ){HQ_spring_chinook$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes[HQ_spring_chinook_index]},
+      if( !is.na(HQ_steelhead_index) ){HQ_steelhead$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes[HQ_steelhead_index]  },
+      if( !is.na(HQ_bull_trout_index) ){HQ_bull_trout$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes[HQ_bull_trout_index]  },
+      if( !is.na(LF_spring_chinook_index[1]) ){  paste(LF_spring_chinook$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes[LF_spring_chinook_index], collapse=",")  },
+      if( !is.na(LF_steelhead_index[1]) ){ paste(LF_steelhead$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes[LF_steelhead_index], collapse=",")[1] },
+      if( !is.na(LF_bull_trout_index[1]) ){paste(LF_bull_trout$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes[LF_bull_trout_index], collapse=",")[1] }
       
     ) 
     habitat_attributes_all = gsub(" ", "", habitat_attributes_all, fixed = TRUE)
@@ -361,7 +369,9 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage = function(HQ_spring_
     # ----------- which rows are Bull Trout ------------
     bull_trout_rows_x = which(Reach_Habitat_Attribute_combined_output$Species == "Bull Trout")
     # ------------- remove those rows from output ---------------
-    Reach_Habitat_Attribute_combined_output = Reach_Habitat_Attribute_combined_output[ , -bull_trout_rows_x]
+    if( length(bull_trout_rows_x) > 0){
+      Reach_Habitat_Attribute_combined_outputx = Reach_Habitat_Attribute_combined_output[ , -bull_trout_rows_x]
+    }
     
   }
   
@@ -382,7 +392,7 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage = function(HQ_spring_
 
 
 # To Test
-test_x = TRUE
+test_x = FALSE
 if(test_x ){
   HQ_spring_chinook = Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']]
   HQ_steelhead = Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']]
@@ -391,6 +401,7 @@ if(test_x ){
   LF_steelhead = Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']]
   LF_bull_trout = Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']]
   columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
+  HQ_life_stages = "no"
 }
 
 
@@ -401,6 +412,9 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ
   # ------------------------------------------------------------
   unique_reaches = unique( c(HQ_spring_chinook$ReachName, HQ_steelhead$ReachName, HQ_bull_trout$ReachName, 
                              LF_spring_chinook$ReachName, LF_steelhead$ReachName, LF_bull_trout$ReachName) )
+  # ------- remove NA reaches ----------
+  unique_reaches = unique_reaches[which( !is.na(unique_reaches) )]
+  
   # ------------------------------------------------------------
   #      Loop through each Reach and combine data
   # ------------------------------------------------------------
@@ -412,10 +426,16 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ
     # --------------------- generate HQ and LF index ----------
     if( any(HQ_spring_chinook$ReachName == reach_x)){ HQ_spring_chinook_index = which(HQ_spring_chinook$ReachName == reach_x) }else{HQ_spring_chinook_index = NA }
     if( any(HQ_steelhead$ReachName == reach_x)){ HQ_steelhead_index = which(HQ_steelhead$ReachName == reach_x) }else{HQ_steelhead_index = NA}
-    if( any(HQ_bull_trout$ReachName == reach_x)){ HQ_bull_trout_index = which(HQ_bull_trout$ReachName == reach_x) }else{HQ_bull_trout_index = NA}
     if( any(LF_spring_chinook$ReachName == reach_x)){ LF_spring_chinook_index = which(LF_spring_chinook$ReachName == reach_x) }else{LF_spring_chinook_index = NA}
     if( any(LF_steelhead$ReachName == reach_x)){ LF_steelhead_index = which(LF_steelhead$ReachName == reach_x) }else{LF_steelhead_index = NA}
-    if( any(LF_bull_trout$ReachName == reach_x)){ LF_bull_trout_index = which(LF_bull_trout$ReachName == reach_x) }else{LF_bull_trout_index = NA}
+    
+    if(exclude_bull_trout == "no"){
+      if( any(HQ_bull_trout$ReachName == reach_x)){ HQ_bull_trout_index = which(HQ_bull_trout$ReachName == reach_x) }else{HQ_bull_trout_index = NA}
+      if( any(LF_bull_trout$ReachName == reach_x)){ LF_bull_trout_index = which(LF_bull_trout$ReachName == reach_x) }else{LF_bull_trout_index = NA}
+    }else{
+      HQ_bull_trout_index = NA
+      LF_bull_trout_index = NA
+    }
     
     # ------------------------------------------------------------
     #     List Habitat Attributes for each species and life stage
@@ -423,10 +443,16 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ
 
     if(!is.na(HQ_spring_chinook_index)){ habitat_attributes_spring_chinook_HQ = HQ_spring_chinook$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes[HQ_spring_chinook_index]}else{habitat_attributes_spring_chinook_HQ = NA}
     if(!is.na(HQ_steelhead_index)){ habitat_attributes_steelhead_HQ = HQ_steelhead$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes[HQ_steelhead_index]  }else{habitat_attributes_steelhead_HQ = NA}
-    if(!is.na(HQ_bull_trout_index)){ habitat_attributes_bull_trout_HQ = HQ_bull_trout$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes[HQ_bull_trout_index]  }else{habitat_attributes_bull_trout_HQ = NA}
     if(!is.na(LF_spring_chinook_index[1])){  habitat_attributes_spring_chinook_LF = paste(LF_spring_chinook$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes[LF_spring_chinook_index], collapse=",")  }else{habitat_attributes_spring_chinook_LF = NA}
     if(!is.na(LF_steelhead_index[1])){  habitat_attributes_steelhead_LF = paste(LF_steelhead$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes[LF_steelhead_index], collapse=",")[1] }else{habitat_attributes_steelhead_LF = NA}
-    if(!is.na(LF_bull_trout_index[1])){ habitat_attributes_bull_trout_LF = paste(LF_bull_trout$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes[LF_bull_trout_index], collapse=",")[1] }else{habitat_attributes_bull_trout_LF = NA}
+    
+    if(exclude_bull_trout == "no"){
+      if(!is.na(HQ_bull_trout_index)){ habitat_attributes_bull_trout_HQ = HQ_bull_trout$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes[HQ_bull_trout_index]  }else{habitat_attributes_bull_trout_HQ = NA}
+      if(!is.na(LF_bull_trout_index[1])){ habitat_attributes_bull_trout_LF = paste(LF_bull_trout$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes[LF_bull_trout_index], collapse=",")[1] }else{habitat_attributes_bull_trout_LF = NA}
+    }else{
+      habitat_attributes_bull_trout_HQ = NA
+      habitat_attributes_bull_trout_LF = NA
+    }
     
     # ------------------------------------------------------------
     #     List All UNACCEPTABLE Habitat Attributes for each species and life stage
@@ -435,10 +461,16 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ
     # gsub function removes commas
     if(!is.na(HQ_spring_chinook_index)){unique_unacceptable_attributes_spring_chinook_HQ = gsub(" ", "", HQ_spring_chinook$unacceptable_1_indiv_habitat_attributes[HQ_spring_chinook_index], fixed = TRUE) }else{unique_unacceptable_attributes_spring_chinook_HQ = NA}
     if(!is.na(HQ_steelhead_index)){unique_unacceptable_attributes_steelhead_HQ = gsub(" ", "", HQ_steelhead$unacceptable_1_indiv_habitat_attributes[HQ_steelhead_index], fixed = TRUE) }else{unique_unacceptable_attributes_steelhead_HQ = NA}
-    if(!is.na(HQ_bull_trout_index)){unique_unacceptable_attributes_bull_trout_HQ = gsub(" ", "", HQ_bull_trout$unacceptable_1_indiv_habitat_attributes[HQ_bull_trout_index], fixed = TRUE) }else{unique_unacceptable_attributes_bull_trout_HQ = NA}
     if(!is.na(LF_spring_chinook_index[1])){  unique_unacceptable_attributes_spring_chinook_LF = gsub(" ", "", paste(LF_spring_chinook$unacceptable_1_indiv_habitat_attributes[LF_spring_chinook_index], collapse=",")[1], fixed = TRUE) }else{unique_unacceptable_attributes_spring_chinook_LF = NA}
     if(!is.na(LF_steelhead_index[1])){ unique_unacceptable_attributes_steelhead_LF = gsub(" ", "", paste(LF_steelhead$unacceptable_1_indiv_habitat_attributes[LF_steelhead_index], collapse=",")[1], fixed = TRUE) }else{unique_unacceptable_attributes_steelhead_LF = NA}
-    if(!is.na(LF_bull_trout_index[1])){ unique_unacceptable_attributes_bull_trout_LF = gsub(" ", "", paste(LF_bull_trout$unacceptable_1_indiv_habitat_attributes[LF_bull_trout_index], collapse=",")[1], fixed = TRUE) }else{unique_unacceptable_attributes_bull_trout_LF = NA}
+    
+    if(exclude_bull_trout == "no"){
+      if(!is.na(HQ_bull_trout_index)){unique_unacceptable_attributes_bull_trout_HQ = gsub(" ", "", HQ_bull_trout$unacceptable_1_indiv_habitat_attributes[HQ_bull_trout_index], fixed = TRUE) }else{unique_unacceptable_attributes_bull_trout_HQ = NA}
+      if(!is.na(LF_bull_trout_index[1])){ unique_unacceptable_attributes_bull_trout_LF = gsub(" ", "", paste(LF_bull_trout$unacceptable_1_indiv_habitat_attributes[LF_bull_trout_index], collapse=",")[1], fixed = TRUE) }else{unique_unacceptable_attributes_bull_trout_LF = NA}
+    }else{
+      unique_unacceptable_attributes_bull_trout_HQ = NA
+      unique_unacceptable_attributes_bull_trout_LF = NA
+    }
     
     # ------------------------------------------------------------
     #     List All AT RISK Habitat Attributes for each species and life stage
@@ -447,11 +479,16 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ
     # gsub function removes commas
     if(!is.na(HQ_spring_chinook_index)){unique_at_risk_attributes_spring_chinook_HQ = gsub(" ", "", HQ_spring_chinook$at_risk_2_or_3_indiv_habitat_attributes[HQ_spring_chinook_index], fixed = TRUE) }else{unique_at_risk_attributes_spring_chinook_HQ = NA}
     if(!is.na(HQ_steelhead_index)){unique_at_risk_attributes_steelhead_HQ = gsub(" ", "", HQ_steelhead$at_risk_2_or_3_indiv_habitat_attributes[HQ_steelhead_index], fixed = TRUE) }else{unique_at_risk_attributes_steelhead_HQ = NA}
-    if(!is.na(HQ_bull_trout_index)){unique_at_risk_attributes_bull_trout_HQ = gsub(" ", "", HQ_bull_trout$at_risk_2_or_3_indiv_habitat_attributes[HQ_bull_trout_index], fixed = TRUE) }else{unique_at_risk_attributes_bull_trout_HQ = NA}
     if(!is.na(LF_spring_chinook_index[1])){  unique_at_risk_attributes_spring_chinook_LF = gsub(" ", "", paste(LF_spring_chinook$at_risk_2_or_3_indiv_habitat_attributes[LF_spring_chinook_index], collapse=",")[1], fixed = TRUE) }else{unique_at_risk_attributes_spring_chinook_LF = NA}
     if(!is.na(LF_steelhead_index[1])){ unique_at_risk_attributes_steelhead_LF = gsub(" ", "", paste(LF_steelhead$at_risk_2_or_3_indiv_habitat_attributes[LF_steelhead_index], collapse=",")[1], fixed = TRUE) }else{unique_at_risk_attributes_steelhead_LF = NA}
-    if(!is.na(LF_bull_trout_index[1])){ unique_at_risk_attributes_bull_trout_LF = gsub(" ", "", paste(LF_bull_trout$at_risk_2_or_3_indiv_habitat_attributes[LF_bull_trout_index], collapse=",")[1], fixed = TRUE) }else{unique_at_risk_attributes_bull_trout_LF = NA}
     
+    if(exclude_bull_trout == "no"){
+      if(!is.na(HQ_bull_trout_index)){unique_at_risk_attributes_bull_trout_HQ = gsub(" ", "", HQ_bull_trout$at_risk_2_or_3_indiv_habitat_attributes[HQ_bull_trout_index], fixed = TRUE) }else{unique_at_risk_attributes_bull_trout_HQ = NA}
+      if(!is.na(LF_bull_trout_index[1])){ unique_at_risk_attributes_bull_trout_LF = gsub(" ", "", paste(LF_bull_trout$at_risk_2_or_3_indiv_habitat_attributes[LF_bull_trout_index], collapse=",")[1], fixed = TRUE) }else{unique_at_risk_attributes_bull_trout_LF = NA}
+    }else{
+      unique_at_risk_attributes_bull_trout_HQ = NA
+      unique_at_risk_attributes_bull_trout_LF = NA
+    }
     # ------------------------------------------------------------
     #     List for Each species - IF just generating life stage "multiple" for HQ
     # ------------------------------------------------------------
@@ -462,9 +499,14 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ
     if(!is.na(HQ_steelhead_index)){ life_stages_steelhead_HQ = "multiple" }else{ life_stages_steelhead_HQ = c()}
     if(!is.na(LF_steelhead_index[1])){  life_stages_steelhead_LF =paste(LF_steelhead$life_stage[LF_steelhead_index], collapse=",") }else{ life_stages_steelhead_LF = c()}
 
-    if(!is.na(HQ_bull_trout_index)){ life_stages_bull_trout_HQ = "multiple"  }else{ life_stages_bull_trout_HQ = c()}
-    if(!is.na(LF_bull_trout_index[1])){  life_stages_bull_trout_LF = paste(LF_bull_trout$life_stage[LF_bull_trout_index], collapse=",")   }else{ life_stages_bull_trout_LF = c()  }
-    
+    if(exclude_bull_trout == "no"){
+      if(!is.na(HQ_bull_trout_index)){ life_stages_bull_trout_HQ = "multiple"  }else{ life_stages_bull_trout_HQ = c()}
+      if(!is.na(LF_bull_trout_index[1])){  life_stages_bull_trout_LF = paste(LF_bull_trout$life_stage[LF_bull_trout_index], collapse=",")   }else{ life_stages_bull_trout_LF = c()  }
+    }else{
+      life_stages_bull_trout_HQ = c()
+      life_stages_bull_trout_LF = c()
+    }
+
     # ------------------------------------------------------------
     #    IF add life stages for Habitat Quality
     # ------------------------------------------------------------
@@ -477,8 +519,13 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ
       if(!is.na(HQ_steelhead_index)){    life_stages_steelhead_HQ = FUNCTION_generate_priority_life_stage_list_for_species_reach("Steelhead", reach_x)        }else{ life_stages_steelhead_HQ = c()}
       if(!is.na(LF_steelhead_index[1])){ life_stages_steelhead_LF =paste(LF_steelhead$life_stage[LF_steelhead_index], collapse=",") }else{ life_stages_steelhead_LF = c()}
       # --------------- Bull Trout -------------
-      if(!is.na(HQ_bull_trout_index)){   life_stages_bull_trout_HQ = FUNCTION_generate_priority_life_stage_list_for_species_reach("Bull Trout", reach_x)     }else{ life_stages_bull_trout_HQ = c()}
-      if(!is.na(LF_bull_trout_index[1])){   life_stages_bull_trout_LF = paste(LF_bull_trout$life_stage[LF_bull_trout_index], collapse=",")  }else{ life_stages_bull_trout_LF = c()  }
+      if(exclude_bull_trout == "no"){
+        if(!is.na(HQ_bull_trout_index)){   life_stages_bull_trout_HQ = FUNCTION_generate_priority_life_stage_list_for_species_reach("Bull Trout", reach_x)     }else{ life_stages_bull_trout_HQ = c() }
+        if(!is.na(LF_bull_trout_index[1])){   life_stages_bull_trout_LF = paste(LF_bull_trout$life_stage[LF_bull_trout_index], collapse=",")  }else{ life_stages_bull_trout_LF = c()  }
+      }else{
+        life_stages_bull_trout_HQ = c()
+        life_stages_bull_trout_LF = c()
+      }
     }
     # ------------------------------------------------------------
     #     List All Species in this Reach
@@ -514,280 +561,304 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ
       # ------------------------------------------------------------
       #    Habitat Quality Pathways
       # ------------------------------------------------------------
-      for(life_stage_x in life_stages_HQ){
-        
-        # ------------------------------------------------------------
-        #  Match Impaired Habitat Attributes to Life Stage Habitat Attributes
-        # ------------------------------------------------------------
-        
-        # ---------=-------------------------
-        #  Pull Life Stage habitat attributes
-        # ---------=-------------------------
-        life_stage_habitat_attributes = Attribute_LifeStage_Crosswalk %>%
-          filter( `Life Stage` %in% life_stage_x) %>%
-          filter( Species %in% species_x ) %>%
-          dplyr::select(`Habitat Attribute`)
-        life_stage_habitat_attributes = as.data.frame(life_stage_habitat_attributes)
-        life_stage_habitat_attributes = life_stage_habitat_attributes$`Habitat Attribute`
-        # ------------- remove the blank space ---------------
-        life_stage_habitat_attributes = gsub(" ","",life_stage_habitat_attributes)
-        
-        # ----------------------------------
-        #  Get Life Stages in HQ Pathway
-        # ----------------------------------
-        if( species_x == "Spring Chinook"  ){
-          if(!is.na(habitat_attributes_spring_chinook_HQ)){
-            habitat_attributes_species = unique( unlist(strsplit(habitat_attributes_spring_chinook_HQ, ","))) }else{habitat_attributes_species = NA}
-        }
-        if( species_x == "Steelhead"){
-          if(!is.na(habitat_attributes_steelhead_HQ)){
-            habitat_attributes_species = unique( unlist(strsplit(habitat_attributes_steelhead_HQ, ","))) }else{habitat_attributes_species = NA}
-        }
-        if( species_x == "Bull Trout"){
-          if(!is.na(habitat_attributes_bull_trout_HQ)){
-            habitat_attributes_species = unique( unlist(strsplit(habitat_attributes_bull_trout_HQ, ","))) }else{habitat_attributes_species = NA}
-        }
-        
-        # ----------------------------------
-        #  Overlap between life stage and HQ
-        # ----------------------------------
-        habitat_attributes_all = intersect(life_stage_habitat_attributes, habitat_attributes_species)
-        
-        # ----------------------------------
-        #  Unacceptable and At Risk attributes
-        # ----------------------------------
-        
-        if(species_x == "Spring Chinook"){ 
-          unique_unacceptable_attributes = unique_unacceptable_attributes_spring_chinook_HQ
-          unique_at_risk_attributes = unique_at_risk_attributes_spring_chinook_HQ
-        }
-        if(species_x == "Steelhead"){ 
-          unique_unacceptable_attributes = unique_unacceptable_attributes_steelhead_HQ
-          unique_at_risk_attributes = unique_at_risk_attributes_steelhead_HQ
-        }
-        if(species_x == "Bull Trout"){ 
-          unique_unacceptable_attributes = unique_unacceptable_attributes_bull_trout_HQ
-          unique_at_risk_attributes = unique_at_risk_attributes_bull_trout_HQ
-        }
-        
-        
-        # ------------------------------------------------------------
-        #    Loop through Each Habitat Attribute 
-        # ------------------------------------------------------------
-        if( length(habitat_attributes_all) > 0 ){
-          for(habitat_attribute_x in habitat_attributes_all){
-            
-            # ------------------------------------------------------------
-            #     Add Reach Information Data 
-            # ------------------------------------------------------------
-            HQ_and_LF_combo_x = as.data.frame(Reach_Information_data[which(Reach_Information_data$ReachName == reach_x), columns_info])
-            
-            # ------------------------------------------------------------
-            #     Add Habitat Attribute
-            # ------------------------------------------------------------
-            HQ_and_LF_combo_x$Habitat_Attribute = habitat_attribute_x
-            
-            # ------------------------------------------------------------
-            #   List the species
-            # ------------------------------------------------------------
-            HQ_and_LF_combo_x$Species = species_x 
-            
-            # ------------------------------------------------------------
-            #     Add Life Stage
-            # ------------------------------------------------------------
-            HQ_and_LF_combo_x$Life_Stage = life_stage_x 
-            
-            # ------------------------------------------------------------
-            #     Add Pathway 
-            # ------------------------------------------------------------
-            HQ_and_LF_combo_x$Action = "Restore Reach Function" 
-            
-            # ------------------------------------------------------------
-            #    Action Categories
-            # ------------------------------------------------------------
-            action_category_x = FUNCTION_match_INDIVIDUAL_habitat_attributes_and_action_categories(habitat_attribute_x)
-            number_of_actions_x = length(action_category_x)
-            action_category_x = paste(action_category_x, collapse=",")
-            # ------ add to row ---------
-            HQ_and_LF_combo_x$Action_Categories = action_category_x
-            HQ_and_LF_combo_x$Number_of_Actions = number_of_actions_x
-            
-            
-            # ------------------------------------------------------------
-            #  Unacceptable Habitat Attributes (Yes/No)
-            # ------------------------------------------------------------ 
-            
-            if(   length( grep(habitat_attribute_x, unique_at_risk_attributes) ) > 0  ){
-              HQ_and_LF_combo_x$Unacceptable_Habitat_Attributes_Presence = "yes"
-            }else{
-              HQ_and_LF_combo_x$Unacceptable_Habitat_Attributes_Presence = "no"
-            }
-            
-            # ------------------------------------------------------------
-            #  At Risk Habitat Attributes (Yes/No)
-            # ------------------------------------------------------------ 
-            if( length(grep(habitat_attribute_x, unique_unacceptable_attributes)) > 0   ){
-              HQ_and_LF_combo_x$At_Risk_Habitat_Attributes_Presence = "yes"
-            }else{
-              HQ_and_LF_combo_x$At_Risk_Habitat_Attributes_Presence = "no"
-            }
-            
-            # ------------------------------------------------------------
-            #  Metric a Core metric
-            # ------------------------------------------------------------ 
-            HQ_and_LF_combo_x$Core_Metric = FUNCTION_match_INDIVIDUAL_core_metrics_from_habitat_attributes_SPECIES(species_x, life_stage_x, habitat_attribute_x )
-            
-            # ------------------------------------------------------------
-            #  Reach Rank (FOR NOW just putting a "1")
-            # ------------------------------------------------------------ 
-            HQ_and_LF_combo_x$Reach_Rank = 1
-            
-            # ------------------------------------------------------------
-            # Combine with output data frame
-            # ------------------------------------------------------------ 
-            
-            Reach_Habitat_Attribute_combined_output = rbind(Reach_Habitat_Attribute_combined_output, HQ_and_LF_combo_x)
+      if(!is.na(life_stages_HQ)){
+        for(life_stage_x in life_stages_HQ){
+          
+          # ------------------------------------------------------------
+          #  Match Impaired Habitat Attributes to Life Stage Habitat Attributes
+          # ------------------------------------------------------------
+          
+          # ---------=-------------------------
+          #  Pull Life Stage habitat attributes
+          # ---------=-------------------------
+          life_stage_habitat_attributes = Attribute_LifeStage_Crosswalk %>%
+            filter( `Life Stage` %in% life_stage_x) %>%
+            filter( Species %in% species_x ) %>%
+            dplyr::select(`Habitat Attribute`)
+          life_stage_habitat_attributes = as.data.frame(life_stage_habitat_attributes)
+          life_stage_habitat_attributes = life_stage_habitat_attributes$`Habitat Attribute`
+          # ------------- remove the blank space ---------------
+          life_stage_habitat_attributes = gsub(" ","",life_stage_habitat_attributes)
+          
+          # ----------------------------------
+          #  Get Life Stages in HQ Pathway
+          # ----------------------------------
+          if( species_x == "Spring Chinook"  ){
+            if(!is.na(habitat_attributes_spring_chinook_HQ)){
+              habitat_attributes_species = unique( unlist(strsplit(habitat_attributes_spring_chinook_HQ, ","))) }else{habitat_attributes_species = NA}
           }
+          if( species_x == "Steelhead"){
+            if(!is.na(habitat_attributes_steelhead_HQ)){
+              habitat_attributes_species = unique( unlist(strsplit(habitat_attributes_steelhead_HQ, ","))) }else{habitat_attributes_species = NA}
+          }
+          if( species_x == "Bull Trout"){
+            if(!is.na(habitat_attributes_bull_trout_HQ)){
+              habitat_attributes_species = unique( unlist(strsplit(habitat_attributes_bull_trout_HQ, ","))) }else{habitat_attributes_species = NA}
+          }
+          
+          # ----------------------------------
+          #  Overlap between life stage and HQ
+          # ----------------------------------
+          if(length(life_stage_habitat_attributes)>0){
+            if( length(habitat_attributes_species) > 0){
+              habitat_attributes_all = intersect(life_stage_habitat_attributes, habitat_attributes_species)
+            }else{
+              habitat_attributes_all = life_stage_habitat_attributes
+            }
+            
+          }else{
+            habitat_attributes_all = habitat_attributes_species
+          }
+          
+          
+          # ----------------------------------
+          #  Unacceptable and At Risk attributes
+          # ----------------------------------
+          
+          if(species_x == "Spring Chinook"){ 
+            unique_unacceptable_attributes = unique_unacceptable_attributes_spring_chinook_HQ
+            unique_at_risk_attributes = unique_at_risk_attributes_spring_chinook_HQ
+          }
+          if(species_x == "Steelhead"){ 
+            unique_unacceptable_attributes = unique_unacceptable_attributes_steelhead_HQ
+            unique_at_risk_attributes = unique_at_risk_attributes_steelhead_HQ
+          }
+          if(species_x == "Bull Trout"){ 
+            unique_unacceptable_attributes = unique_unacceptable_attributes_bull_trout_HQ
+            unique_at_risk_attributes = unique_at_risk_attributes_bull_trout_HQ
+          }
+          
+          
+          # ------------------------------------------------------------
+          #    Loop through Each Habitat Attribute 
+          # ------------------------------------------------------------
+          if( length(habitat_attributes_all) > 0 ){
+            for(habitat_attribute_x in habitat_attributes_all){
+              
+              # ------------------------------------------------------------
+              #     Add Reach Information Data 
+              # ------------------------------------------------------------
+              HQ_and_LF_combo_x = as.data.frame(Reach_Information_data[which(Reach_Information_data$ReachName == reach_x), columns_info])
+              
+              # ------------------------------------------------------------
+              #     Add Habitat Attribute
+              # ------------------------------------------------------------
+              HQ_and_LF_combo_x$Habitat_Attribute = habitat_attribute_x
+              
+              # ------------------------------------------------------------
+              #   List the species
+              # ------------------------------------------------------------
+              HQ_and_LF_combo_x$Species = species_x 
+              
+              # ------------------------------------------------------------
+              #     Add Life Stage
+              # ------------------------------------------------------------
+              HQ_and_LF_combo_x$Life_Stage = life_stage_x 
+              
+              # ------------------------------------------------------------
+              #     Add Pathway 
+              # ------------------------------------------------------------
+              HQ_and_LF_combo_x$Action = "Restore Reach Function" 
+              
+              # ------------------------------------------------------------
+              #    Action Categories
+              # ------------------------------------------------------------
+              action_category_x = FUNCTION_match_INDIVIDUAL_habitat_attributes_and_action_categories(habitat_attribute_x)
+              number_of_actions_x = length(action_category_x)
+              action_category_x = paste(action_category_x, collapse=",")
+              # ------ add to row ---------
+              HQ_and_LF_combo_x$Action_Categories = action_category_x
+              HQ_and_LF_combo_x$Number_of_Actions = number_of_actions_x
+              
+              
+              # ------------------------------------------------------------
+              #  Unacceptable Habitat Attributes (Yes/No)
+              # ------------------------------------------------------------ 
+              
+              if(   length( grep(habitat_attribute_x, unique_at_risk_attributes) ) > 0  ){
+                HQ_and_LF_combo_x$Unacceptable_Habitat_Attributes_Presence = "yes"
+              }else{
+                HQ_and_LF_combo_x$Unacceptable_Habitat_Attributes_Presence = "no"
+              }
+              
+              # ------------------------------------------------------------
+              #  At Risk Habitat Attributes (Yes/No)
+              # ------------------------------------------------------------ 
+              if( length(grep(habitat_attribute_x, unique_unacceptable_attributes)) > 0   ){
+                HQ_and_LF_combo_x$At_Risk_Habitat_Attributes_Presence = "yes"
+              }else{
+                HQ_and_LF_combo_x$At_Risk_Habitat_Attributes_Presence = "no"
+              }
+              
+              # ------------------------------------------------------------
+              #  Metric a Core metric
+              # ------------------------------------------------------------ 
+              HQ_and_LF_combo_x$Core_Metric = FUNCTION_match_INDIVIDUAL_core_metrics_from_habitat_attributes_SPECIES(species_x, life_stage_x, habitat_attribute_x )
+              
+              # ------------------------------------------------------------
+              #  Reach Rank (FOR NOW just putting a "1")
+              # ------------------------------------------------------------ 
+              HQ_and_LF_combo_x$Reach_Rank = 1
+              
+              # ------------------------------------------------------------
+              # Combine with output data frame
+              # ------------------------------------------------------------ 
+              
+              Reach_Habitat_Attribute_combined_output = rbind(Reach_Habitat_Attribute_combined_output, HQ_and_LF_combo_x)
+            }
+          }
+  
         }
-
       }
       
       # ------------------------------------------------------------
       #    Limiting Factor
       # ------------------------------------------------------------
-      for(life_stage_x in life_stages_LF){
-        
-        # ------------------------------------------------------------
-        #  Match Impaired Habitat Attributes to Life Stage Habitat Attributes
-        # ------------------------------------------------------------
-        
-        # ---------=-------------------------
-        #  Pull Life Stage habitat attributes
-        # ---------=-------------------------
-        life_stage_habitat_attributes = Attribute_LifeStage_Crosswalk %>%
-          filter( `Life Stage` %in% life_stage_x) %>%
-          filter( Species %in% species_x ) %>%
-          dplyr::select(`Habitat Attribute`)
-        life_stage_habitat_attributes = as.data.frame(life_stage_habitat_attributes)
-        life_stage_habitat_attributes = life_stage_habitat_attributes$`Habitat Attribute`
-        # ------------- remove the blank space ---------------
-        life_stage_habitat_attributes = gsub(" ","",life_stage_habitat_attributes)
-        
-        # ----------------------------------
-        #  Get Life Stages in LF Pathway
-        # ----------------------------------
-        if( species_x == "Spring Chinook"  ){
-          if(!is.na(habitat_attributes_spring_chinook_LF)){
-            habitat_attributes_species = unique( unlist(strsplit(habitat_attributes_spring_chinook_LF, ","))) }else{habitat_attributes_species = NA}
-        }
-        if( species_x == "Steelhead"){
-          if(!is.na(habitat_attributes_steelhead_LF)){
-            habitat_attributes_species = unique( unlist(strsplit(habitat_attributes_steelhead_LF, ","))) }else{habitat_attributes_species = NA}
-        }
-        if( species_x == "Bull Trout"){
-          if(!is.na(habitat_attributes_bull_trout_LF)){
-            habitat_attributes_species = unique( unlist(strsplit(habitat_attributes_bull_trout_LF, ","))) }else{habitat_attributes_species = NA}
-        }
-        habitat_attributes_species  = gsub(" ","",habitat_attributes_species)
-        
-        # ----------------------------------
-        #  Overlap between life stage and HQ
-        # ----------------------------------
-        habitat_attributes_all = intersect(life_stage_habitat_attributes, habitat_attributes_species)
-        
-        # ----------------------------------
-        #  Unacceptable and At Risk attributes
-        # ----------------------------------
-        
-        if(species_x == "Spring Chinook"){ 
-          unique_unacceptable_attributes = unique_unacceptable_attributes_spring_chinook_LF
-          unique_at_risk_attributes = unique_at_risk_attributes_spring_chinook_LF
-        }
-        if(species_x == "Steelhead"){ 
-          unique_unacceptable_attributes = unique_unacceptable_attributes_steelhead_LF
-          unique_at_risk_attributes = unique_at_risk_attributes_steelhead_LF
-        }
-        if(species_x == "Bull Trout"){ 
-          unique_unacceptable_attributes = unique_unacceptable_attributes_bull_trout_LF
-          unique_at_risk_attributes = unique_at_risk_attributes_bull_trout_LF
-        }
-        
-        # ------------------------------------------------------------
-        #    Loop through Each Habitat Attribute 
-        # ------------------------------------------------------------
-        if( length(habitat_attributes_all) > 0 ){
-          for(habitat_attribute_x in habitat_attributes_all){
-            
-            # ------------------------------------------------------------
-            #     Add Reach Information Data 
-            # ------------------------------------------------------------
-            HQ_and_LF_combo_x = as.data.frame(Reach_Information_data[which(Reach_Information_data$ReachName == reach_x), columns_info])
-            
-            # ------------------------------------------------------------
-            #     Add Habitat Attribute
-            # ------------------------------------------------------------
-            HQ_and_LF_combo_x$Habitat_Attribute = habitat_attribute_x
-            
-            # ------------------------------------------------------------
-            #   List the species
-            # ------------------------------------------------------------
-            HQ_and_LF_combo_x$Species = species_x
-            
-            # ------------------------------------------------------------
-            #     Add Life Stage
-            # ------------------------------------------------------------
-            HQ_and_LF_combo_x$Life_Stage = life_stage_x 
-            
-            # ------------------------------------------------------------
-            #     Add Pathway 
-            # ------------------------------------------------------------
-            HQ_and_LF_combo_x$Action = "Address Limiting Factors" 
-            
-            # ------------------------------------------------------------
-            #    Action Categories
-            # ------------------------------------------------------------
-            action_category_x = FUNCTION_match_INDIVIDUAL_habitat_attributes_and_action_categories(habitat_attribute_x)
-            number_of_actions_x = length(action_category_x)
-            action_category_x = paste(action_category_x, collapse=",")
-            # ------ add to row ---------
-            HQ_and_LF_combo_x$Action_Categories = action_category_x
-            HQ_and_LF_combo_x$Number_of_Actions = number_of_actions_x
-            
-            
-            # ------------------------------------------------------------
-            #  Unacceptable Habitat Attributes (Yes/No)
-            # ------------------------------------------------------------ 
-            
-            if(   length(grep(habitat_attribute_x, unique_at_risk_attributes)) > 0  ){
-              HQ_and_LF_combo_x$Unacceptable_Habitat_Attributes_Presence = "yes"
+      if(!is.na(life_stages_LF)){
+        for(life_stage_x in life_stages_LF){
+          
+          # ------------------------------------------------------------
+          #  Match Impaired Habitat Attributes to Life Stage Habitat Attributes
+          # ------------------------------------------------------------
+          
+          # ---------=-------------------------
+          #  Pull Life Stage habitat attributes
+          # ---------=-------------------------
+          life_stage_habitat_attributes = Attribute_LifeStage_Crosswalk %>%
+            filter( `Life Stage` %in% life_stage_x) %>%
+            filter( Species %in% species_x ) %>%
+            dplyr::select(`Habitat Attribute`)
+          life_stage_habitat_attributes = as.data.frame(life_stage_habitat_attributes)
+          life_stage_habitat_attributes = life_stage_habitat_attributes$`Habitat Attribute`
+          # ------------- remove the blank space ---------------
+          life_stage_habitat_attributes = gsub(" ","",life_stage_habitat_attributes)
+          
+          # ----------------------------------
+          #  Get Life Stages in LF Pathway
+          # ----------------------------------
+          if( species_x == "Spring Chinook"  ){
+            if(!is.na(habitat_attributes_spring_chinook_LF)){
+              habitat_attributes_species = unique( unlist(strsplit(habitat_attributes_spring_chinook_LF, ","))) }else{habitat_attributes_species = NA}
+          }
+          if( species_x == "Steelhead"){
+            if(!is.na(habitat_attributes_steelhead_LF)){
+              habitat_attributes_species = unique( unlist(strsplit(habitat_attributes_steelhead_LF, ","))) }else{habitat_attributes_species = NA}
+          }
+          if( species_x == "Bull Trout"){
+            if(!is.na(habitat_attributes_bull_trout_LF)){
+              habitat_attributes_species = unique( unlist(strsplit(habitat_attributes_bull_trout_LF, ","))) }else{habitat_attributes_species = NA}
+          }
+          habitat_attributes_species  = gsub(" ","",habitat_attributes_species)
+          
+          # ----------------------------------
+          #  Overlap between life stage and HQ
+          # ----------------------------------
+          if(length(life_stage_habitat_attributes)>0){
+            if( length(habitat_attributes_species) > 0){
+              habitat_attributes_all = intersect(life_stage_habitat_attributes, habitat_attributes_species)
             }else{
-              HQ_and_LF_combo_x$Unacceptable_Habitat_Attributes_Presence = "no"
+              habitat_attributes_all = life_stage_habitat_attributes
             }
             
-            # ------------------------------------------------------------
-            #  At Risk Habitat Attributes (Yes/No)
-            # ------------------------------------------------------------ 
-            if( length(grep(habitat_attribute_x, unique_unacceptable_attributes)) > 0   ){
-              HQ_and_LF_combo_x$At_Risk_Habitat_Attributes_Presence = "yes"
-            }else{
-              HQ_and_LF_combo_x$At_Risk_Habitat_Attributes_Presence = "no"
+          }else{
+            habitat_attributes_all = habitat_attributes_species
+          }
+          
+          
+          # ----------------------------------
+          #  Unacceptable and At Risk attributes
+          # ----------------------------------
+          
+          if(species_x == "Spring Chinook"){ 
+            unique_unacceptable_attributes = unique_unacceptable_attributes_spring_chinook_LF
+            unique_at_risk_attributes = unique_at_risk_attributes_spring_chinook_LF
+          }
+          if(species_x == "Steelhead"){ 
+            unique_unacceptable_attributes = unique_unacceptable_attributes_steelhead_LF
+            unique_at_risk_attributes = unique_at_risk_attributes_steelhead_LF
+          }
+          if(species_x == "Bull Trout"){ 
+            unique_unacceptable_attributes = unique_unacceptable_attributes_bull_trout_LF
+            unique_at_risk_attributes = unique_at_risk_attributes_bull_trout_LF
+          }
+          
+          # ------------------------------------------------------------
+          #    Loop through Each Habitat Attribute 
+          # ------------------------------------------------------------
+          if( length(habitat_attributes_all) > 0 ){
+            for(habitat_attribute_x in habitat_attributes_all){
+              
+              # ------------------------------------------------------------
+              #     Add Reach Information Data 
+              # ------------------------------------------------------------
+              HQ_and_LF_combo_x = as.data.frame(Reach_Information_data[which(Reach_Information_data$ReachName == reach_x), columns_info])
+              
+              # ------------------------------------------------------------
+              #     Add Habitat Attribute
+              # ------------------------------------------------------------
+              HQ_and_LF_combo_x$Habitat_Attribute = habitat_attribute_x
+              
+              # ------------------------------------------------------------
+              #   List the species
+              # ------------------------------------------------------------
+              HQ_and_LF_combo_x$Species = species_x
+              
+              # ------------------------------------------------------------
+              #     Add Life Stage
+              # ------------------------------------------------------------
+              HQ_and_LF_combo_x$Life_Stage = life_stage_x 
+              
+              # ------------------------------------------------------------
+              #     Add Pathway 
+              # ------------------------------------------------------------
+              HQ_and_LF_combo_x$Action = "Address Limiting Factors" 
+              
+              # ------------------------------------------------------------
+              #    Action Categories
+              # ------------------------------------------------------------
+              action_category_x = FUNCTION_match_INDIVIDUAL_habitat_attributes_and_action_categories(habitat_attribute_x)
+              number_of_actions_x = length(action_category_x)
+              action_category_x = paste(action_category_x, collapse=",")
+              # ------ add to row ---------
+              HQ_and_LF_combo_x$Action_Categories = action_category_x
+              HQ_and_LF_combo_x$Number_of_Actions = number_of_actions_x
+              
+              
+              # ------------------------------------------------------------
+              #  Unacceptable Habitat Attributes (Yes/No)
+              # ------------------------------------------------------------ 
+              
+              if(   length(grep(habitat_attribute_x, unique_at_risk_attributes)) > 0  ){
+                HQ_and_LF_combo_x$Unacceptable_Habitat_Attributes_Presence = "yes"
+              }else{
+                HQ_and_LF_combo_x$Unacceptable_Habitat_Attributes_Presence = "no"
+              }
+              
+              # ------------------------------------------------------------
+              #  At Risk Habitat Attributes (Yes/No)
+              # ------------------------------------------------------------ 
+              if( length(grep(habitat_attribute_x, unique_unacceptable_attributes)) > 0   ){
+                HQ_and_LF_combo_x$At_Risk_Habitat_Attributes_Presence = "yes"
+              }else{
+                HQ_and_LF_combo_x$At_Risk_Habitat_Attributes_Presence = "no"
+              }
+              
+              # ------------------------------------------------------------
+              #  Metric a Core metric
+              # ------------------------------------------------------------ 
+              HQ_and_LF_combo_x$Core_Metric = FUNCTION_match_INDIVIDUAL_core_metrics_from_habitat_attributes_SPECIES(species_x, life_stage_x, habitat_attribute_x )
+              
+              # ------------------------------------------------------------
+              #  Reach Rank (FOR NOW just putting a "1")
+              # ------------------------------------------------------------ 
+              HQ_and_LF_combo_x$Reach_Rank = 1
+              
+              # ------------------------------------------------------------
+              # Combine with output data frame
+              # ------------------------------------------------------------ 
+              
+              Reach_Habitat_Attribute_combined_output = rbind(Reach_Habitat_Attribute_combined_output, HQ_and_LF_combo_x)
             }
-            
-            # ------------------------------------------------------------
-            #  Metric a Core metric
-            # ------------------------------------------------------------ 
-            HQ_and_LF_combo_x$Core_Metric = FUNCTION_match_INDIVIDUAL_core_metrics_from_habitat_attributes_SPECIES(species_x, life_stage_x, habitat_attribute_x )
-            
-            # ------------------------------------------------------------
-            #  Reach Rank (FOR NOW just putting a "1")
-            # ------------------------------------------------------------ 
-            HQ_and_LF_combo_x$Reach_Rank = 1
-            
-            # ------------------------------------------------------------
-            # Combine with output data frame
-            # ------------------------------------------------------------ 
-            
-            Reach_Habitat_Attribute_combined_output = rbind(Reach_Habitat_Attribute_combined_output, HQ_and_LF_combo_x)
           }
         }
       }
@@ -909,7 +980,9 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ
   # ------------------------------------------------------------
   reachname_habitat_attribute_life_stage_species_combo = with(Reach_Habitat_Attribute_combined_output, paste0(ReachName, Habitat_Attribute, Life_Stage, Species))
   duplicated_combos = which( duplicated(reachname_habitat_attribute_life_stage_species_combo) )
-  Reach_Habitat_Attribute_combined_output = Reach_Habitat_Attribute_combined_output[-duplicated_combos, ]
+  if(length(duplicated_combos) > 0){
+    Reach_Habitat_Attribute_combined_output = Reach_Habitat_Attribute_combined_output[-duplicated_combos, ]
+  }
   
   # ------------------------------------------------------------
   #    Update Habitat Attribute_Names
@@ -936,7 +1009,9 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ
     # ----------- which rows are Bull Trout ------------
     bull_trout_rows_x = which(Reach_Habitat_Attribute_combined_output$Species == "Bull Trout")
     # ------------- remove those rows from output ---------------
-    Reach_Habitat_Attribute_combined_output = Reach_Habitat_Attribute_combined_output[ -bull_trout_rows_x , ]
+    if(length(bull_trout_rows_x) > 0){
+      Reach_Habitat_Attribute_combined_output = Reach_Habitat_Attribute_combined_output[ -bull_trout_rows_x , ]
+    }
     
   }
   

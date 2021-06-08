@@ -41,7 +41,7 @@ for(reach_x in reaches$ReachName){
   if(any(Okanogan_Reach_Crosswalk$ReachName_Old == reach_x)){
     x_old = which(reaches$ReachName == reach_x)
     x_new = which(Okanogan_Reach_Crosswalk$ReachName_Old == reach_x)
-    reaches$ReachName[x_old]  = Okanogan_Reach_Crosswalk$ReachName_New[x_new]
+    reaches$ReachName[x_old]  = Okanogan_Reach_Crosswalk$ReachName_New[x_new[1]]
   }
 }
 
