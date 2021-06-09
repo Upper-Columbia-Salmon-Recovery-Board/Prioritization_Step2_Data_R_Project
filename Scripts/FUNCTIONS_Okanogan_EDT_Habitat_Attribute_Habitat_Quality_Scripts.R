@@ -90,7 +90,9 @@ for( habitat_attribute_x in names(Habitat_Attributes_List_OKANOGAN) ){
 # ------- give it a different name ---------
 Okanogan_Habitat_Quality_Output = Okanogan_Basic_Reach_Info
 
-write.xlsx(Okanogan_Habitat_Quality_Output, file=paste(output_path,"Habitat_Quality_Pathway_Okanogan_All_Reaches.xlsx",sep=""), sheetName="Adult_Migration", row.names=FALSE)
+if(output_Habitat_Quality_and_Habitat_Attribute_Scores == "yes"){
+  write.xlsx(Okanogan_Habitat_Quality_Output, file=paste(output_path,"Habitat_Quality_Pathway_Okanogan_All_Reaches.xlsx",sep=""), sheetName="Adult_Migration", row.names=FALSE)
+}
 
 EDT_level2_data_no_in_EDT_excel = c("Total Suspended Solids", "Large Cobble Riffle", "Small Cobble Riffle","Metals in Sediment" , "Metals in Water",
                                     "Miscellaneous Toxins","Backwater Pools", "Floodplain Ponds" ,"Seasonally Inundated Floodplain","Side Channel",
@@ -258,8 +260,9 @@ for(habitat_attribute_x in habitat_attribute_list){
   Habitat_Attribute_Scores_Okanogan = rbind(Habitat_Attribute_Scores_Okanogan, Okanogan_Habitat_Quality_Output_X)
 }
 
-
-write.xlsx(Habitat_Attribute_Scores_Okanogan, file=paste(output_path,"Habitat_Attribute_Scores_Okanogan.xlsx",sep=""),  row.names=FALSE)
+if(output_Habitat_Quality_and_Habitat_Attribute_Scores == "yes"){
+  write.xlsx(Habitat_Attribute_Scores_Okanogan, file=paste(output_path,"Habitat_Attribute_Scores_Okanogan.xlsx",sep=""),  row.names=FALSE)
+}
 
 
 # ---------------------------------------------------------------------------
@@ -269,13 +272,17 @@ write.xlsx(Habitat_Attribute_Scores_Okanogan, file=paste(output_path,"Habitat_At
 # ---------------------------------------------------------------------------
 
 # ----------- habitat attributes for HQ output --------
-HQ_columns = c("Temperature- Rearing",	"Flow- Summer Base Flow",	"Riparian-Disturbance",	"Riparian- Canopy Cover",		"Coarse Substrate",
-               "Cover- Wood",	"Pool Quantity & Quality",	"Off-Channel- Floodplain",	"Off-Channel- Side-Channels",	"Channel Stability"	,"Bank Stability")
+HQ_columns = c("Bank Stability", "Channel Stability", "Coarse Substrate","Cover- Wood", 	"Flow- Summer Base Flow",
+               "Off-Channel- Floodplain","Off-Channel- Side-Channels", "Pool Quantity & Quality",
+               	"Riparian-Disturbance",	"Riparian- Canopy Cover",		"Temperature- Rearing")
 
 # columns to do sums: HQ_columns_sum = c("Riparian", "Stability")
 
 # ---------- initiate data frame -----------
-Habitat_Quality_Scores_Okanogan = Okanogan_Habitat_Quality_Output[,c("ReachName","Assessment.Unit")]
+Habitat_Quality_Scores_Okanogan = Okanogan_Habitat_Quality_Output[,c("ReachName","Basin", "Assessment.Unit", "Steelhead.Reach" )]
+Habitat_Quality_Scores_Okanogan$"Spring.Chinook.Reach" = NA
+Habitat_Quality_Scores_Okanogan$"Bull.Trout.Reach"  = NA
+Habitat_Quality_Scores_Okanogan = Habitat_Quality_Scores_Okanogan[,c("ReachName","Basin", "Assessment.Unit","Spring.Chinook.Reach","Steelhead.Reach","Bull.Trout.Reach"  )]
 
 for(habitat_attribute_x in HQ_columns){
   
@@ -295,26 +302,91 @@ for(habitat_attribute_x in HQ_columns){
   }
   
   # ----------- get average Riparian score)
-  if(habitat_attribute_x == "Bank Stability"){
+  if(habitat_attribute_x == "Channel Stability"){
     ncolx = ncol(Habitat_Quality_Scores_Okanogan)
     Habitat_Quality_Scores_Okanogan$Stability = rowMeans(Habitat_Quality_Scores_Okanogan[,(ncolx-1):ncolx], na.rm=T)
   }
 }
 
 # ------------------- calculate HQ SCore ---------
-HQ_Score_Columns = c("Temperature- Rearing" ,"Flow- Summer Base Flow", "Riparian" ,"Coarse Substrate",
-                     "Cover- Wood","Pool Quantity & Quality","Off-Channel- Floodplain","Off-Channel- Side-Channels","Stability" )
+HQ_Score_Columns = c("Stability", "Coarse Substrate","Cover- Wood", 	"Flow- Summer Base Flow",
+               "Off-Channel- Floodplain","Off-Channel- Side-Channels", "Pool Quantity & Quality",
+               "Riparian",		"Temperature- Rearing")
 
-# ---------- HQ Sum and Pct -------------------
-Habitat_Quality_Scores_Okanogan$HQ_Sum = rowSums(Habitat_Quality_Scores_Okanogan[,HQ_Score_Columns])
-Habitat_Quality_Scores_Okanogan$HQ_Pct = Habitat_Quality_Scores_Okanogan$HQ_Sum / (length(HQ_Score_Columns) * 5)
+# ------------------------------------------------------------------------------------- 
+#                 calculate HQ Sum and Pct
+# -------------------------------------------------------------------------------------
+# NOTE - for EDT the HQ_Pct was calculated from the % of Template in EDT
 
-write.xlsx(Habitat_Quality_Scores_Okanogan, file=paste(output_path,"Habitat_Quality_Scores_Okanogan.xlsx",sep=""), row.names=FALSE)
+Habitat_Quality_Scores_Okanogan$HQ_Sum = NA # other basins: rowSums(Habitat_Quality_Scores_Okanogan[,HQ_Score_Columns]) 
+PRCNT_Habitat_Quality_Okanogan_EDT_SHORTENED = PRCNT_Habitat_Quality_Okanogan_EDT[,c("ReachName","HQ_Score")]
+colnames(PRCNT_Habitat_Quality_Okanogan_EDT_SHORTENED)[2] = c("HQ_Pct")
+Habitat_Quality_Scores_Okanogan = merge(Habitat_Quality_Scores_Okanogan,PRCNT_Habitat_Quality_Okanogan_EDT_SHORTENED, by="ReachName", all.x=TRUE )
+
+# ------------------------------------------------------------------------------------- 
+#                 calculate HQ Restoration and Protection Score
+# ------------------------------------------------------------------------------------- 
+
+Habitat_Quality_Scores_Okanogan = Habitat_Quality_Scores_Okanogan  %>%
+  mutate(HQ_Score_Restoration = ifelse(HQ_Pct  > Restoration_Scoring$Category_Lower[1] & 
+                                         HQ_Pct  < Restoration_Scoring$Category_Upper[1] , Restoration_Scoring$Score[1],
+                                       ifelse(HQ_Pct  >= Restoration_Scoring$Category_Lower[2] & 
+                                                HQ_Pct  <= Restoration_Scoring$Category_Upper[2] , Restoration_Scoring$Score[2],
+                                              ifelse(HQ_Pct  > Restoration_Scoring$Category_Lower[3] & 
+                                                       HQ_Pct  <= Restoration_Scoring$Category_Upper[3] , Restoration_Scoring$Score[3],
+                                                     NA))))
+Habitat_Quality_Scores_Okanogan = Habitat_Quality_Scores_Okanogan  %>%
+  mutate(HQ_Score_Protection = ifelse(HQ_Pct  > Protection_Scoring$Category_Lower [1] & 
+                                        HQ_Pct  < Protection_Scoring$Category_Upper[1] , Protection_Scoring$Score[1],
+                                      ifelse(HQ_Pct  >= Protection_Scoring$Category_Lower[2] & 
+                                               HQ_Pct  <= Protection_Scoring$Category_Upper[2] , Protection_Scoring$Score[2],
+                                             ifelse(HQ_Pct  > Protection_Scoring$Category_Lower[3] & 
+                                                      HQ_Pct  <= Protection_Scoring$Category_Upper[3] , Protection_Scoring$Score[3],
+                                                    NA))))
+
+# ------------------------------------------------------------------------------------- 
+#                merge existing Habitat_Quality_Scores with Okanogan 
+# ------------------------------------------------------------------------------------- 
+
+# -----------------------  -----------
+for(row_OK in 1:nrow(Habitat_Quality_Scores_Okanogan) ){
+  # ----------- identify Habitat_Quality_Scores row for this reach ------
+  x = which(Habitat_Quality_Scores$ReachName == Habitat_Quality_Scores_Okanogan$ReachName[row_OK])
+  # ---------- replace this row for new Okangoan row -----
+  Habitat_Quality_Scores[x,] = Habitat_Quality_Scores_Okanogan[row_OK,]
+}
+
+# ------------------ output data -------------------------
+if(output_Habitat_Quality_and_Habitat_Attribute_Scores == "yes"){
+  Habitat_Quality_Scores = as.data.frame(Habitat_Quality_Scores)
+  output_path_x =  paste(output_path,'Habitat_Quality_Scores.xlsx', sep="")
+  write.xlsx(
+    Habitat_Quality_Scores,
+    output_path_x,
+    col.names = TRUE,
+    row.names = FALSE,
+    append = FALSE,
+    showNA = TRUE,
+    password = NULL
+  )
+}
+
+
+# ------------------------------------------------------------------------------------- 
+#                 Save the data
+# ------------------------------------------------------------------------------------- 
+# ---------- so column names match Habitat_Quality_Scores --------
+colnames(Habitat_Quality_Scores_Okanogan) = colnames(Habitat_Quality_Scores)
+
+if(output_Habitat_Quality_and_Habitat_Attribute_Scores == "yes"){
+  write.xlsx(Habitat_Quality_Scores_Okanogan, file=paste(output_path,"Habitat_Quality_Scores_Okanogan.xlsx",sep=""), row.names=FALSE)
+}
+
 
 
 # ---------------------------------------------------------------------------
 #
-#  Generate Life Stage tablesfor the Limiting Factor Pathway -  Okanogan
+#  Generate Life Stage tables for the Limiting Factor Pathway -  Okanogan
 #     NOTE - this is mergable with the Habitat Attribute Scores data frame
 #     ALSO Note - this applies no filters
 #
@@ -525,8 +597,7 @@ for(RTT_life_stage_x in unique_RTT_life_stages){
 #           Output these into individual tabs
 # ---------------------------------------------------------------------------
 # NOTE: had issues outputing all tabs - kept running into memory issues
-output_all_one_workbook = FALSE
-if(output_all_one_workbook){
+if(output_Habitat_Quality_and_Habitat_Attribute_Scores == "yes"){
   write.xlsx(Adult_Migration_LF_Okanogan, file=paste(output_path,"Limiting_Factor_Pathway_Okanogan_All_Reaches.xlsx",sep=""), sheetName="Adult_Migration", row.names=FALSE)
   write.xlsx(Fry_LF_Okanogan, file=paste(output_path,"Limiting_Factor_Pathway_Okanogan_All_Reaches.xlsx",sep=""), sheetName="Fry", append=TRUE, row.names=FALSE)
   write.xlsx(Holding_and_Maturation_LF_Okanogan, file=paste(output_path,"Limiting_Factor_Pathway_Okanogan_All_Reaches.xlsx",sep=""), sheetName="Holding_and_Maturation", append=TRUE, row.names=FALSE)
@@ -536,8 +607,6 @@ if(output_all_one_workbook){
   write.xlsx(Winter_Rearing_LF_Okanogan, file=paste(output_path,"Limiting_Factor_Pathway_Okanogan_All_Reaches.xlsx",sep=""), sheetName="Winter_Rearing", append=TRUE, row.names=FALSE)
   
 }
-
-
 
 
 # ---------------------------------------------------------------------------

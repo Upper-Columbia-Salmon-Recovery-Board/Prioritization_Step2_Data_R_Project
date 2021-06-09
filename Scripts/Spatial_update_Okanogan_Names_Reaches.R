@@ -32,6 +32,19 @@ GIS_Okanogan <- sf::st_transform(GIS_Okanogan, 4326)
 
 reaches_Okanogan = GIS_Okanogan[which(GIS_Okanogan$type == "Reach"),]
 
+# ---------------------------------------------------------------------------
+#  Read in Assessment Unit (HUC 12) data
+# ---------------------------------------------------------------------------
+AU_RTT_path = "P:/GIS/Prioritization/Step 2/Assessment_Units/AUPrioritization_Tiers.shp"
+AUs_RTT <- sf::st_read(AU_RTT_path) # this shapefile does not show up properly
+AUs_RTT <- sf::st_transform(AUs_RTT, 4326)
+
+
+
+# ---------------------------------------------------------------------------
+#     Map 
+# ---------------------------------------------------------------------------
+
 color_palette_x = c("red", "blue")
 color_palette_continuous_LARGE = brewer.pal(9, 'Set1')
 # 

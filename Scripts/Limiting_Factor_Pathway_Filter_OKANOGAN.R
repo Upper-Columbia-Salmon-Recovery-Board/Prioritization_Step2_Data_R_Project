@@ -1402,6 +1402,10 @@ if(test_x){
   LF_NO_level3 = Limiting_Factor_Pathway_Steelhead_OKANOGAN_no_level3[['Limiting_Factor_Pathway_Restoration']]
 }
 
+run_code_x = TRUE
+if(run_code_x){
+  Compare_Okanogan_LF_Output_with_without_Level3()
+}
 # NOTE: with the "no level 3" - there should be more reaches and/or attributes SINCE
 #       the initial EDT Limiting Factors Pathway filter if Level 3 habitat attributes of 1s or 3s
 #       is NOT applied (hence "no_level_3" name)

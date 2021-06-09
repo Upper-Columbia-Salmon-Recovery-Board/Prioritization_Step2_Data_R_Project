@@ -19,7 +19,7 @@
 #
 # ---------------------------------------------------------------------------
 
-test_x = TRUE
+test_x = FALSE
 if(test_x){
   score_1_or_3 = "two and three"
   restoration_or_protection = 'restoration'
@@ -331,7 +331,7 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
     # -----------------------------------------
     #     combine and output
     # -----------------------------------------
-    
+    output_info_row_x = output_info_row_x[,c("ReachName")]
     output_row_x = as.data.frame( as.data.frame(c(output_info_row_x, spring_chinook_presence,  all_species_present,
                                       pathways_x, number_of_pathways_x,
                                       habitat_attributes_x, number_of_habitat_attributes_x, 
@@ -343,7 +343,7 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
                                       steelhead_actions, number_of_steelhead_actions,
                                       bull_trout_actions, number_of_bull_trout_actions, 
                                       life_stage_list, life_stage_spring_chinook_output, life_stage_steelhead_output, life_stage_bull_trout_output )    ) )
-    colnames(output_row_x) = c("ReachName","Basin","Assessment.Unit",  "Spring.Chinook.Reach","Steelhead.Reach" ,"Bull.Trout.Reach", "Spring_Chinook_Actions_Present_Yes_No", "SprCh_STLD_BullTr_All_Present_Yes_No",
+    colnames(output_row_x) = c("ReachName", "Spring_Chinook_Actions_Present_Yes_No", "SprCh_STLD_BullTr_All_Present_Yes_No",
                                "Pathways","Number_of_Pathways", 
                                "Impaired_Habitat_Attributes_All_Species","Number_Impaired_Habitat_Attributes_All_Species",
                                "Impaired_Habitat_Attributes_SpringChinook","Number_Impaired_Habitat_Attributes_SpringChinook",
@@ -831,14 +831,14 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
 #
 # ------------------------------------------------------------------------------------------
 
-test_x = FALSE
+test_x = TRUE
 if(test_x){
   HQ_pathway_df = Habitat_Quality_Restoration_Unacceptable
   LF_pathway_df = Limiting_Factor_Restoration_Unacceptable
+  columns_info = c( "ReachName","Basin","Assessment.Unit" )
+  
 }
 
-
-columns_info = c( "ReachName" )
 
 FUNCTION_combine_across_pathways = function(HQ_pathway_df, LF_pathway_df){
   

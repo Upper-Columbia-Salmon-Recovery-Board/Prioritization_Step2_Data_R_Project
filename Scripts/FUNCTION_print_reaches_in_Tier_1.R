@@ -23,7 +23,7 @@ if(run_x){
 
 # ---------- print restoration and protection AUs not with priority reaches ------------
 Restoration_Rank_Tier_1_comparison_NO_PRIORITY_REACH = Restoration_Rank_Tier_1_comparison[which(Restoration_Rank_Tier_1_comparison$Priority_Reaches == ""), c(1,3)]
-Protection_Rank_Tier_1_comparison_NO_PRIORITY_REACH = Protection_Rank_Tier_1_comparison[which(Protection_Rank_Tier_1_comparison$Priority_Reaches == ""), c(1,3)]
+Protection_Rank_Tier_1_comparison_NO_PRIORITY_REACH = Protection_Rank_Tier_1_comparison[which(Protection_Rank_Tier_1_comparison$Priority_Reaches == ""), c(1,4)]
 
 
 FUNCTION_compare_tier_1_reaches_to_an_output_ranks = function(restoration_or_protection,  reach_names_x){

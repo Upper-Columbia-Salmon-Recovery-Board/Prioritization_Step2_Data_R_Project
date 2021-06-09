@@ -84,7 +84,7 @@ Habitat_Quality_Scores_factors$HQ_Score_Restoration = as.factor( Habitat_Quality
 Habitat_Quality_Scores_factors$HQ_Score_Protection = as.factor( Habitat_Quality_Scores_factors$HQ_Score_Protection )
 
 # ---------------------------------------------------------------------------
-#  Read in Habitat Quality Score
+#  Read in Habitat Attribute Scores
 # ---------------------------------------------------------------------------
 habitat_attributes_indiv_x = unique(Habitat_Attribute_Scores$Habitat_Attribute)
 Habitat_Attribute_Scores = as.tibble(Habitat_Attribute_Scores)
@@ -104,8 +104,6 @@ for(habitat_attribute_x in habitat_attributes_indiv_x ){
 }
 
 
-Habitat_Quality_Pathway_Steelhead_OKANOGAN[['Habitat_Quality_Pathway_Restoration']]
-Habitat_Quality_Pathway_Steelhead_OKANOGAN[['Habitat_Quality_Pathway_Protection']]
 
 # ---------------------------------------------------------------------------
 #  Merge the data
@@ -128,8 +126,8 @@ reaches_LF_data = merge(reaches, Habitat_Attribute_Score_Final_COMBINE, by = "Re
 # ------- remove columns we don't want ------
 reaches_LF_data = subset (reaches_LF_data, select = -c(Assessment,RM_Start,RM_End, SpringChin, SteelheadR,BullTroutR,
                                                  Length_mi,Length_m,Basin.y))
-# ----------------------------------
-# 
+# -------------------------------------------
+#    Protection data
 # -------------------------------------------
 
 # -------- merge reach spatial data with habitat data --------------
@@ -297,9 +295,12 @@ mapview(reaches_HQ_data, zcol = attribute_2, lwd=4, legend = mapviewGetOption("l
 #     plot TWO FACTOR/SCORE variable - HQ and LF
 # ----------------------------------------------------------
 
-# --- simple version ---:
-attribute_1 = "Off-Channel-Floodplain_score"
-attribute_2 = "Off-Channel- Floodplain"
+# --- Cover- Wood ---:
+attribute_1 = "Cover-Wood_score"
+attribute_2 = "Cover- Wood"
+# --- Pool Quantity & Quality ---:
+attribute_1 = "PoolQuantity&Quality_score"
+attribute_2 = "Pool Quantity & Quality"
 
 mapview(reaches_HQ_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
         color= color_palette_x, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap")) +

@@ -55,7 +55,7 @@ Habitat_Attributes_List = list(
 # ----------------------- list of Level 2 habitat attribute names in Okanogan EDT Results --------------
 
 Habitat_Attributes_List_OKANOGAN = list(
-  '% Fines/Embeddedness' = c('EDT Level 2 Fine Sediment Functional Condition', 'EDT Level 2 Embeddedness  Functional Condition', 'EDT Level 2 Total Suspended Solids Functional Condition'),
+  '% Fines/Embeddedness' = c('EDT Level 2 Fine Sediment Functional Condition', 'EDT Level 2 Embeddedness  Functional Condition'),
   'Bank Stability' = c('EDT Level 2 Confinement Artificial Functional Condition'),
   'Brook Trout' = c(),
   'Channel Stability' = c('EDT Level 2 Confinement Artificial Functional Condition'),
@@ -67,20 +67,21 @@ Habitat_Attributes_List_OKANOGAN = list(
   'Entrainment/Stranding' = c('PROFESSIONAL JUDGEMENT'),
   'Flow- Scour' = c( 'EDT Level 2 Bed Scour Functional Condition','EDT Level 2 Flow: Inter-annual High Flow Variation Functional Condition'), 
   'Flow- Summer Base Flow' = c( 'EDT Level 2 Width Functional Condition','EDT Level 2 Flow: Inter-annual Low Flow Variation Functional Condition', 'PROSPER' , 'PROFESSIONAL JUDGEMENT','ATLAS_Flow'), 
-  'Food- Food Web Resources' = c(  'EDT Level 2 Benthic Richness Functional Condition', 'EDT Level 2 Temperature: Food Effect Functional Condition'), 
+  'Food- Food Web Resources' = c('PROFESSIONAL JUDGEMENT',  'EDT Level 2 Benthic Richness Functional Condition', 'EDT Level 2 Temperature: Food Effect Functional Condition'), 
   'Harassment' = c('PROFESSIONAL JUDGEMENT' ), 
   'Icing' = c( 'PROFESSIONAL JUDGEMENT'), 
   'Off-Channel- Floodplain' = c( 'EDT Level 2 Backwater Pools Functional Condition' , 'EDT Level 2 Floodplain Ponds Functional Condition', 'EDT Level 2 Seasonnally Inundated Floodplain Functional Condition'),
   'Off-Channel- Side-Channels' = c('EDT Level 2 Side Channel Functional Condition'  ),
   'Pool Quantity & Quality' = c( 'EDT Level 2 Beaver Ponds Functional Condition', 'EDT Level 2 Scour Pools Functional Condition'), 
-  'Pools- Deep Pools' = c(  ), 
-  'Predators- Juveniles' = c(  'EDT Level 2 Predation Risk Functional Condition'),
-  'Riparian- Canopy Cover' = c('Canopy_Cover_CATEGORY_1' , 'UCSRB_CanopyCoverPct' , 'EDT Level 2 Riparian/Stream Interface Functional Condition' , 'Canopy_Cover_NORWEST'),
+  'Pools- Deep Pools' = c(  ),
+  'Predators- Adults' = c( 'PROFESSIONAL JUDGEMENT'), 
+  'Predators- Juveniles' = c( 'PROFESSIONAL JUDGEMENT', 'EDT Level 2 Predation Risk Functional Condition'),
+  'Riparian- Canopy Cover' = c( 'UCSRB_CanopyCoverPct' , 'Canopy_Cover_NORWEST'),
   'Riparian-Disturbance' = c('Disturbance_CATEGORY_1' , 'UCSRB_RiparianDisturbancePct' ),
   'Superimposition' = list('PROFESSIONAL JUDGEMENT' ), 
-  'Temperature- Adult Holding' = c( 'NORWEST_Temperature', '305bListings_Temperature', 'RAWatershed_Rating_Temp', 'EDT Level 2 Temperature: Daily Maximum Functional Condition' ), 
-  'Temperature- Adult Spawning' = c('NORWEST_Temperature', '305bListings_Temperature', 'RAWatershed_Rating_Temp', 'EDT Level 2 Temperature: Daily Maximum Functional Condition'), 
-  'Temperature- Rearing'  = c('NORWEST_Temperature', '305bListings_Temperature', 'RAWatershed_Rating_Temp', 'EDT Level 2 Temperature: Daily Maximum Functional Condition' )
+  'Temperature- Adult Holding' = c( 'NORWEST_Temperature', '305bListings_Temperature',  'EDT Level 2 Temperature: Daily Maximum Functional Condition' ), 
+  'Temperature- Adult Spawning' = c('NORWEST_Temperature', '305bListings_Temperature',  'EDT Level 2 Temperature: Daily Maximum Functional Condition'), 
+  'Temperature- Rearing'  = c('NORWEST_Temperature', '305bListings_Temperature',  'EDT Level 2 Temperature: Daily Maximum Functional Condition' )
 )
 
 

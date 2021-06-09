@@ -76,8 +76,6 @@ coarse_substrate_Reach_Info_Summarized = FUNCTION_pull_reach_names(coarse_substr
 cover_wood_Reach_Info_Summarized = FUNCTION_pull_reach_names(cover_wood_Reach_Info_Summarized, cover_wood_Reach_Info)
 pool_Reach_Info_Summarized = FUNCTION_pull_reach_names(pool_Reach_Info_Summarized, pool_Reach_Info)
 
-
-
 # ------------------------------------------------
 #    Add Restoration and Protection Tiers
 # ------------------------------------------------
@@ -118,5 +116,78 @@ write.xlsx(coarse_substrate_Reach_Info_Summarized, file = output_path_x , sheetN
 write.xlsx(cover_wood_Reach_Info_Summarized, file=output_path_x, sheetName="Cover_Wood", append=TRUE, row.names=FALSE)
 write.xlsx(pool_Reach_Info_Summarized, file=output_path_x, sheetName="Pool_Quality_and_Quantity", append=TRUE, row.names=FALSE)
 
+# ------------------------------------------------
+#    Generate Maps
+# ------------------------------------------------
+
+# --- Cover- Wood ---:
+attribute_1 = "Cover-Wood_score"
+
+# --- Pool Quantity & Quality ---:
+attribute_1 = "PoolQuantity&Quality_score"
+
+mapview(reaches_HQ_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
+        color= color_palette_x, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap") )
+  
+if(TRUE){
+  print("YES!")
+}
+  
+if (FALSE) {
+  m = mapview(breweries)
+  
+  ## create standalone .png; temporary .html is removed automatically unless
+  ## 'remove_url = FALSE' is specified
+  output_path_x = "C:/Users/Ryan/Documents/GitHub/Prioritization_Step2_Data_R_Project/map.png"
+  mapshot(m, file = output_path_x )
+  
+  mapshot(m, file = paste0(getwd(), "/map.png"),
+          remove_controls = c("homeButton", "layersControl"))
+  
+  ## create .html and .png
+  mapshot(m, url = paste0(getwd(), "/map.html"),
+          file = paste0(getwd(), "/map.png"))
+}
 
 
+mapviewOptions(fgb = FALSE)
+m = mapview(breweries)
+mapshot(m, file = "~/Rplot.png")
+
+# ------------------------------------------------
+#    Double Checking Habitat_Quality_Scores and Habitat_Attributes_Scores values are all the same
+# ------------------------------------------------
+
+
+output_compare_x = c()
+for(row_x in 1:nrow(Habitat_Quality_Scores)){
+  reach_x = Habitat_Quality_Scores$ReachName[row_x]
+  # ----------- Cover- Wood -------------
+  hab_attr_x_i = which(Habitat_Attribute_Scores$ReachName == reach_x & 
+                         Habitat_Attribute_Scores$Habitat_Attribute =="Cover- Wood"  )
+  wood_x = c(Habitat_Quality_Scores$`Cover-Wood_score`[row_x], Habitat_Attribute_Scores$Habitat_Attribute_Score[hab_attr_x_i],
+             as.character( Habitat_Quality_Scores$`Cover-Wood_score`[row_x] == Habitat_Attribute_Scores$Habitat_Attribute_Score[hab_attr_x_i]  ) )
+
+  # ----------- Pool Quality and Quantiaty-------------
+  hab_attr_x_i = which(Habitat_Attribute_Scores$ReachName == reach_x & 
+                         Habitat_Attribute_Scores$Habitat_Attribute =="Pool Quantity & Quality"   )
+  pool_x = c( Habitat_Quality_Scores$`PoolQuantity&Quality_score`[row_x], Habitat_Attribute_Scores$Habitat_Attribute_Score[hab_attr_x_i],
+              as.character( Habitat_Quality_Scores$`PoolQuantity&Quality_score`[row_x] == Habitat_Attribute_Scores$Habitat_Attribute_Score[hab_attr_x_i] ) )
+  
+
+  # ----------- Coarse Substrate -------------
+  hab_attr_x_i = which(Habitat_Attribute_Scores$ReachName == reach_x & 
+                         Habitat_Attribute_Scores$Habitat_Attribute =="Coarse Substrate"  )
+  coarse_substrate_x = c( Habitat_Quality_Scores$CoarseSubstrate_score[row_x], Habitat_Attribute_Scores$Habitat_Attribute_Score[hab_attr_x_i],
+                          as.character( Habitat_Quality_Scores$CoarseSubstrate_score[row_x] == Habitat_Attribute_Scores$Habitat_Attribute_Score[hab_attr_x_i] ) )
+  
+  output_x = t( as.data.frame( c(reach_x, wood_x, pool_x, coarse_substrate_x) ) )
+  colnames(output_x) = c("ReachName", "Cover_Wood_HQ","Cover_Wood_LF", "Cover_Wood_TF",
+                         "Pool_HQ","Pool_LF","Pool_TF",
+                         "Coarse_Substrate_HQ","Coarse_Substrate_LF","Coarse_Substrate_TF")
+  output_compare_x = rbind(output_compare_x, output_x)
+  
+}
+
+rownames(output_compare_x) = seq(1,nrow(output_compare_x))
+output_compare_x = as.data.frame(output_compare_x)
