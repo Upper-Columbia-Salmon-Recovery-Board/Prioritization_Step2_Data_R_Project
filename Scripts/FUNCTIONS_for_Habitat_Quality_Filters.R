@@ -49,7 +49,7 @@ LF_or_HQ = "HQ"
 test_x = FALSE
 if(test_x){
   data_col_name = data_source_x
-  #data_col_name = data_sources_list[[1]][1]
+  LF_or_HQ = "LF"
 }
 
 
@@ -68,6 +68,12 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
       filter(Data_Sources   == data_col_name)
   }else{
     print("Pathway entered incorrectly")
+  }
+  
+  # ------------- habitat attribute metrics have gone between LF and HQ (need to merge) -----
+  if(nrow(metric_criteria_x) == 0 & LF_or_HQ == "LF"){
+    metric_criteria_x = Habitat_Quality_and_Geomorphic_Potential_Rating_Criteria_Updated %>%
+      filter(Data_Sources   == data_col_name)
   }
   
   # -----------------------------------
@@ -141,11 +147,14 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
         
         # ----------- pull stream width for this reach -------------
         stream_width_m = Reach_Information_data %>%
-          dplyr::select(ReachName,Length_AvgWettedWidth_Meters)
+          dplyr::select(ReachName,PFC_Channel_Width_BINS_5_10_15_20_25_50_75_100_feet)
+        
+        # as of June 10th, 2021 - we used the PFC width bins as the stream widths
+        stream_width_m$PFC_Channel_Width_meters = stream_width_m$PFC_Channel_Width_BINS_5_10_15_20_25_50_75_100_feet * 0.3048
         
         # --------- create blank NA column ------
         data_output_x$score = NA
-        
+        # habitat_filter_type = unique(metric_criteria_x$Habitat_Type_Filter)[8]
         for(habitat_filter_type in unique(metric_criteria_x$Habitat_Type_Filter) ){
           
           # ------------ get criteria specific to this stream width -----
@@ -153,20 +162,46 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
             filter(metric_criteria_x$Habitat_Type_Filter == habitat_filter_type)
           
           # ------------ find streams with this width ----------
-          stream_width_m_i = which(stream_width_m$Length_AvgWettedWidth_Meters >= metric_criteria_x_i$Filter_value_lower_meters[1] & 
-                                     stream_width_m$Length_AvgWettedWidth_Meters < metric_criteria_x_i$Filter_value_upper_meters[1] )
+          if( metric_criteria_x$Data_Sources[1] ==  'Pools_per_mile_INDICATOR_2'){
+            
+            # ---------- "upper" of 100 foot bin was set high 
+            if(habitat_filter_type == "100 ft stream width bin" ){
+              stream_width_m_i = which( abs(stream_width_m$PFC_Channel_Width_meters - 30.480)<0.1) 
+              
+            }else{
+              stream_width_m_i = which( abs(stream_width_m$PFC_Channel_Width_meters - metric_criteria_x_i$Filter_value_upper_meters[1])<0.1) 
+              
+            }
+            
+          }else if(metric_criteria_x$Habitat_Attribute[1] == 'Cover- Wood'){
+            stream_width_m_i = which( stream_width_m$PFC_Channel_Width_meters >= metric_criteria_x_i$Filter_value_lower_meters[1] &
+                                        stream_width_m$PFC_Channel_Width_meters <  metric_criteria_x_i$Filter_value_upper_meters[1]  ) 
+            
+          }
           
           # ------------------- pull metrics for those stream widths -------------------
           data_output_x_overlap_i = which(data_output_x$ReachName %in% stream_width_m$ReachName[stream_width_m_i])
           data_output_x_i = data_output_x[data_output_x_overlap_i,]
           
           # ----------------- generate scores ------------
-          data_output_x_i = data_output_x_i  %>%
-            mutate(score = ifelse(metric_data  >= metric_criteria_x_i$Category_lower[1] & 
-                                    metric_data  <= metric_criteria_x_i$Category_upper[1] , metric_criteria_x_i$Score[1],
-                                  ifelse(metric_data  > metric_criteria_x_i$Category_lower[2] & 
-                                           metric_data  <= metric_criteria_x_i$Category_upper[2] , metric_criteria_x_i$Score[2],
-                                         NA)))
+          if( nrow(metric_criteria_x_i) == 2 ){
+            data_output_x_i = data_output_x_i  %>%
+              mutate(score = ifelse(metric_data  >= metric_criteria_x_i$Category_lower[1] & 
+                                      metric_data  <= metric_criteria_x_i$Category_upper[1] , metric_criteria_x_i$Score[1],
+                                    ifelse(metric_data  > metric_criteria_x_i$Category_lower[2] & 
+                                             metric_data  <= metric_criteria_x_i$Category_upper[2] , metric_criteria_x_i$Score[2],
+                                                  NA)))
+          }else if( nrow(metric_criteria_x_i) == 3 ){
+            data_output_x_i = data_output_x_i  %>%
+              mutate(score = ifelse(metric_data  >= metric_criteria_x_i$Category_lower[1] & 
+                                      metric_data  <= metric_criteria_x_i$Category_upper[1] , metric_criteria_x_i$Score[1],
+                                    ifelse(metric_data  > metric_criteria_x_i$Category_lower[2] & 
+                                             metric_data  <= metric_criteria_x_i$Category_upper[2] , metric_criteria_x_i$Score[2],
+                                           ifelse(metric_data  > metric_criteria_x_i$Category_lower[3] & 
+                                                    metric_data  <= metric_criteria_x_i$Category_upper[3] , metric_criteria_x_i$Score[3],
+                                                  NA))))
+          }
+
           
           # --------------- add score data for appropriate stream width ---------
           data_output_x$score[data_output_x_overlap_i] = data_output_x_i$score
@@ -309,7 +344,8 @@ habitat_attribute_x = "Off-Channel- Side-Channels"
 data_col_name = 'Side_Channel_Habitat_Prcnt_INDICATOR_6'
 data_col_name = data_source_x
 # x = FUNCTION_generate_habitat_attribute_score_from_CHAMP_or_Channel_Unit(habitat_attribute_x, data_col_name, "LF")
-
+data_col_name = data_source_x
+LF_or_HQ = "LF"
 
 FUNCTION_generate_habitat_attribute_score_from_CHAMP_or_Channel_Unit = function(habitat_attribute_x, data_col_name, LF_or_HQ){
   
@@ -334,7 +370,7 @@ FUNCTION_generate_habitat_attribute_score_from_CHAMP_or_Channel_Unit = function(
   # -----------------------------------
   #    Generate Metric value IF in CHAMP Data
   # -----------------------------------
-  if( any(CHAMP_data_per_reach_data_sources[habitat_attribute_x] == data_col_name ) ){
+  if( any(CHAMP_data_per_reach_data_sources[habitat_attribute_x] == data_col_name )  ){
     
     data_output_x = CHAMP_data_Updated %>%
       dplyr::select(ReachName,data_col_name)

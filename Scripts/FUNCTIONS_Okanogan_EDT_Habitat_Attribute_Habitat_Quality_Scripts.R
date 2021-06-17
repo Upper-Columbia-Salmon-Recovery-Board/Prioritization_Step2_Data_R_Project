@@ -348,6 +348,9 @@ Habitat_Quality_Scores_Okanogan = Habitat_Quality_Scores_Okanogan  %>%
 #                merge existing Habitat_Quality_Scores with Okanogan 
 # ------------------------------------------------------------------------------------- 
 
+# ------------ convert Habitat_Quality_Scores to regular data frame ---------
+Habitat_Quality_Scores= as.data.frame(Habitat_Quality_Scores)
+
 # -----------------------  -----------
 for(row_OK in 1:nrow(Habitat_Quality_Scores_Okanogan) ){
   # ----------- identify Habitat_Quality_Scores row for this reach ------
@@ -609,6 +612,165 @@ if(output_Habitat_Quality_and_Habitat_Attribute_Scores == "yes"){
 }
 
 
+
+# ---------------------------------------------------------------------------
+#
+#  Generate LF Score for each life stage 
+#   4.June.2021: Greer and I discussed that we should try to pull Level2 -> RTT habitat attributes (for life stage)
+#       and compare to original output (filter through Level 3 1s and 2s first)
+#
+# ---------------------------------------------------------------------------
+
+
+# --------------- prep life stages output data ---------
+Adult_Migration_LF_Okanogan 
+Fry_LF_Okanogan 
+Holding_and_Maturation_LF_Okanogan 
+Smolt_Outmigration_LF_Okanogan 
+Spawning_and_Incubation_LF_Okanogan 
+Summer_Rearing_LF_Okanogan 
+Winter_Rearing_LF_Okanogan 
+
+#Life_stage_Okanogan_data_frame = Holding_and_Maturation_LF_Okanogan
+
+LF_Scores_Okanogan_FUNCTION = function(Life_stage_Okanogan_data_frame, life_stage_x){
+  
+  # --------------------------------------------------
+  #   LF Sum Calculate
+  # --------------------------------------------------
+  
+  # ------------------------------------------------
+  #  loop through reaches to calculate LF_Sum, LF_Pct, etc.
+  # ------------------------------------------------
+  
+  LF_Scores_Output = c()
+  reaches_unique_all = unique(Life_stage_Okanogan_data_frame$ReachName)
+  
+  for(reach_x in reaches_unique_all){
+    
+    # ------------------ reach data frame ---------------
+    Limiting_Factor_Life_Stage_Table_REACH = Life_stage_Okanogan_data_frame[which(Life_stage_Okanogan_data_frame$ReachName == reach_x), ]
+    
+    # ------------------- pull reaches with scores ---------------
+    Limiting_Factor_Life_Stage_Table_REACH_numeric = Limiting_Factor_Life_Stage_Table_REACH[ which( Limiting_Factor_Life_Stage_Table_REACH$Functional_Condition_Score >= 0), ]
+    
+    # -------------- pull unique habitat attributes in this Reach ----------------
+    Level_2_attributes_unique = unique(Limiting_Factor_Life_Stage_Table_REACH_numeric$Level_2_Habitat_Attribute )
+    
+    combined_RTT_scores = c()
+    for(level_2_attributes_x in Level_2_attributes_unique){
+      indiv_score = min(Limiting_Factor_Life_Stage_Table_REACH_numeric$Functional_Condition_Score[ Limiting_Factor_Life_Stage_Table_REACH_numeric$Level_2_Habitat_Attribute ==level_2_attributes_x] )
+      combined_RTT_scores = c(combined_RTT_scores,indiv_score)
+    }
+    combined_RTT_scores = as.numeric(combined_RTT_scores)
+    
+    # ------------------------- LF_Sum ---------------
+    LF_Sum_x = sum(combined_RTT_scores)
+    
+    # ------------------------- LF_Sum ---------------
+    LF_Pct_x = LF_Sum_x/ (length(combined_RTT_scores) * 5)
+    
+    
+    # --------------- combine -----------
+    LF_output_x = t(as.data.frame(c(reach_x, "Okanogan","Steelhead",life_stage_x, LF_Sum_x, LF_Pct_x)))
+    LF_output_x = as.data.frame(LF_output_x)
+    colnames(LF_output_x) = c("ReachName","Basin","species","life_stage", "LF_Sum", "LF_Pct")
+    
+    # ----------------- put together 1s and 3s --------------
+    # ------ start the 1s and 3s ---------
+    unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes_x = c()
+    # ------ pull 1s -----
+    x1 = which(Limiting_Factor_Life_Stage_Table_REACH$Functional_Condition_Score == 1)
+    if(length(x1) > 0){
+      x1_attribute = paste(Limiting_Factor_Life_Stage_Table_REACH$Level_2_Habitat_Attribute[x1], collapse=",")
+      LF_output_x$unacceptable_1_indiv_habitat_attributes = x1_attribute
+      unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes_x = x1_attribute
+    }else{
+      LF_output_x$unacceptable_1_indiv_habitat_attributes = ""
+    }
+    # ------ pull 3s -----
+    x3 = which(Limiting_Factor_Life_Stage_Table_REACH$Functional_Condition_Score <=3 & Limiting_Factor_Life_Stage_Table_REACH$Functional_Condition_Score > 1)
+    if(length(x3) > 0){
+      x3_attribute = paste(Limiting_Factor_Life_Stage_Table_REACH$Level_2_Habitat_Attribute[x3], collapse=",")
+      LF_output_x$at_risk_2_or_3_indiv_habitat_attributes = x3_attribute
+      
+      # --------- combine 1s and 3s ---------
+      if( length(unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes_x) > 0 ){
+        unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes_x = paste(c(unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes_x, x3_attribute), collapse=",")
+      }else{
+        unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes_x = x3_attribute
+      }
+    }else{
+      LF_output_x$at_risk_2_or_3_indiv_habitat_attributes = ""
+      if( nchar(LF_output_x$unacceptable_1_indiv_habitat_attributes) == 0 ){
+        unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes_x = ""
+      }
+    }
+    # ------------ combine 1s and 3s ------------
+    LF_output_x$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes =unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes_x
+    
+    # --------------- add to previous ------------
+    LF_Scores_Output = rbind(LF_Scores_Output, LF_output_x)
+    
+  }
+  
+  #LF_Scores_Output = as.data.frame(LF_Scores_Output)
+  #colnames(LF_Scores_Output) = c("ReachName", "LF_Sum", "LF_Pct")
+  LF_Scores_Output$LF_Sum= as.numeric( as.character(LF_Scores_Output$LF_Sum))
+  LF_Scores_Output$LF_Pct= as.numeric( as.character(LF_Scores_Output$LF_Pct))
+  
+  # ------------------------------------------------------------------------------------- 
+  #                 calculate LF Restoration and Protection Score
+  # ------------------------------------------------------------------------------------- 
+  
+  # ------------------------------------- Restoration ---------------------------------
+  LF_Scores_Output = LF_Scores_Output  %>%
+    mutate(LF_Score_Restoration = ifelse(LF_Pct  > Restoration_Scoring$Category_Lower[1] & 
+                                           LF_Pct  <= Restoration_Scoring$Category_Upper[1] , Restoration_Scoring$Score[1],
+                                         ifelse(LF_Pct  > Restoration_Scoring$Category_Lower[2] & 
+                                                  LF_Pct  <= Restoration_Scoring$Category_Upper[2] , Restoration_Scoring$Score[2],
+                                                ifelse(LF_Pct  > Restoration_Scoring$Category_Lower[3] & 
+                                                         LF_Pct  <= Restoration_Scoring$Category_Upper[3] , Restoration_Scoring$Score[3],
+                                                       NA))))
+  
+  # ------------------------------------- Protection ---------------------------------
+  LF_Scores_Output = LF_Scores_Output  %>%
+    mutate(LF_Score_Protection = ifelse(LF_Pct  > Protection_Scoring$Category_Lower [1] & 
+                                          LF_Pct  <= Protection_Scoring$Category_Upper[1] , Protection_Scoring$Score[1],
+                                        ifelse(LF_Pct  > Protection_Scoring$Category_Lower[2] & 
+                                                 LF_Pct  <= Protection_Scoring$Category_Upper[2] , Protection_Scoring$Score[2],
+                                               ifelse(LF_Pct  > Protection_Scoring$Category_Lower[3] & 
+                                                        LF_Pct  <= Protection_Scoring$Category_Upper[3] , Protection_Scoring$Score[3],
+                                                      NA))))
+  
+  
+  # -------------- re-organize columns ---------
+  LF_Scores_Output = LF_Scores_Output[,c(1,2,3,4,5,6,10,11,7,8,9)]
+  
+  
+  return(LF_Scores_Output)
+  
+}
+
+
+# --------------- prep life stages output data ---------
+Adult_Migration_LF_Okanogan_LF_Scores = LF_Scores_Okanogan_FUNCTION(Adult_Migration_LF_Okanogan, "Adult Migration" )
+Fry_LF_Okanogan_LF_Scores  = LF_Scores_Okanogan_FUNCTION(Fry_LF_Okanogan, "Fry")
+Holding_and_Maturation_LF_Okanogan_LF_Scores  = LF_Scores_Okanogan_FUNCTION(Holding_and_Maturation_LF_Okanogan, "Holding and Maturation")
+Smolt_Outmigration_LF_Okanogan_LF_Scores  = LF_Scores_Okanogan_FUNCTION(Smolt_Outmigration_LF_Okanogan, "Smolt Outmigration")
+Spawning_and_Incubation_LF_Okanogan_LF_Scores  = LF_Scores_Okanogan_FUNCTION(Spawning_and_Incubation_LF_Okanogan, "Spawning and Incubation")
+Summer_Rearing_LF_Okanogan_LF_Scores  = LF_Scores_Okanogan_FUNCTION(Summer_Rearing_LF_Okanogan, "Summer Rearing")
+Winter_Rearing_LF_Okanogan_LF_Scores  = LF_Scores_Okanogan_FUNCTION(Winter_Rearing_LF_Okanogan, "Winter Rearing")
+
+Okanogan_Limiting_Factor_Scores_combined_ALL_REACHES = rbind(
+  Adult_Migration_LF_Okanogan_LF_Scores,
+  Fry_LF_Okanogan_LF_Scores,
+  Holding_and_Maturation_LF_Okanogan_LF_Scores,
+  Smolt_Outmigration_LF_Okanogan_LF_Scores,
+  Spawning_and_Incubation_LF_Okanogan_LF_Scores,
+  Summer_Rearing_LF_Okanogan_LF_Scores,
+  Winter_Rearing_LF_Okanogan_LF_Scores
+)
 # ---------------------------------------------------------------------------
 #
 #  Generate Life Stage tables for the Limiting Factor Pathway -  Okanogan - NO LEVEL 3
@@ -852,4 +1014,6 @@ Limiting_Factor_Pathway_Steelhead_OKANOGAN_no_level3_NO_Filters = rbind(
 # -------------------------------------------------------------------------
 #    Filter out for Protection and Restoration
 # ----------------------------------------------------------------------
+
+Adult_Migration_LF_Okanogan_combo = Generate_Species_Output_Table_Okanogan_Restoration_Protection_NO_LEVEL_3("Adult Migration",  Adult_Migration_LF_Okanogan )
 

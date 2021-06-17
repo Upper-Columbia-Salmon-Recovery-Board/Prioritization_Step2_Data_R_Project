@@ -72,10 +72,10 @@ output_path = 'Output/'
 print("----------------------------------------- READ IN THE DATA --------------------------------------------")
 source(paste(script_path, 'Read_in_data_Script.R', sep=""))
 
-print("----------------------------------------- Update Okanogan Reach Names (if necessary) --------------------------------------------")
-if(update_Okanogan_reach_names == "yes"){
-  source(paste(script_path, 'FUNCTION_update_names_in_data_frames.R', sep=""))
-}
+#print("----------------------------------------- Update Okanogan Reach Names (if necessary) --------------------------------------------")
+#if(update_Okanogan_reach_names == "yes"){
+#  source(paste(script_path, 'FUNCTION_update_names_in_data_frames.R', sep=""))
+#}
   
 # ---------------------------------------------------------------------------
 #      Criteria for Filters   
@@ -94,7 +94,7 @@ source(paste(script_path, 'Okanogan_EDT_data_input_prep.R', sep=""))
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #
 #
-#   - - - - - - - - -  Generate Habitat Attribute and Habitat Quality Scores Table  - - - - - - - - - 
+#   - - - - - - - - -  Generate Habitat Attribute (Limiting Factor) Table and Habitat Quality Scores Table  - - - - - - - - - 
 #  
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------------
@@ -166,10 +166,12 @@ habitat_quality_scores_colnames_for_sum = c("Stability_Mean" , "CoarseSubstrate_
 Habitat_Quality_Pathway_Spring_Chinook = Generate_Habitat_Quality_Output_Table("Spring Chinook", basins_to_include, habitat_quality_scores_colnames_for_sum )
 Habitat_Quality_Pathway_Steelhead = Generate_Habitat_Quality_Output_Table("Steelhead", basins_to_include, habitat_quality_scores_colnames_for_sum )
 Habitat_Quality_Pathway_Bull_Trout = Generate_Habitat_Quality_Output_Table("Bull Trout", basins_to_include, habitat_quality_scores_colnames_for_sum )
+# View(Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']])
+# View(Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']])
 
 # --------------- generate for Okanogan ---------------
 colnames_HQ_output = colnames(Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']])
-colnames_HQ_habitat_attributes = colnames_HQ_output[7:19]
+colnames_HQ_habitat_attributes = colnames_HQ_output[7:19]  # habitat attributes to pull for impaired habitat attributes
 # NOTE: just need to apply filters to Habitat_Quality_Scores_Okanogan - pull those directly
 Habitat_Quality_Pathway_Steelhead_OKANOGAN = Generate_Habitat_Quality_Output_Table_Okanogan("Steelhead" , colnames_HQ_output, colnames_HQ_habitat_attributes)
 # View(Habitat_Quality_Pathway_Steelhead_OKANOGAN[['Habitat_Quality_Pathway_Restoration']])
@@ -238,11 +240,48 @@ Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']] = rbin
 # --------------------------------------------------
 # Generate life stage tables for ALL reaches for each species (JUST for QAQC purposes)
 # --------------------------------------------------
-test_x = FALSE
+test_x = TRUE
 if(test_x){
+  
+  # --------- for each life stage and reach - calculate the LF Score -------
   Limiting_Factor_Scores_all_life_stages_reaches_Spring_Chinook = Generate_Species_Output_Table_for_ALL_REACHES_and_ALL_LIFE_STAGES("Spring Chinook")
   Limiting_Factor_Scores_all_life_stages_reaches_Steelhead = Generate_Species_Output_Table_for_ALL_REACHES_and_ALL_LIFE_STAGES("Steelhead")
   if(exclude_bull_trout == "no"){  Limiting_Factor_Scores_all_life_stages_reaches_Bull_Trout = Generate_Species_Output_Table_for_ALL_REACHES_and_ALL_LIFE_STAGES("Bull Trout") }
+  
+  
+  # -------------------- combine life stages across all -----------
+  # --------------- spring chinook ---------
+  Spring_Chinook_Limiting_Factor_Scores_ALL_REACHES = c()
+  life_stages_x = names(Limiting_Factor_Scores_all_life_stages_reaches_Spring_Chinook)
+  for(life_stage_x in life_stages_x){
+    # ---------- Wenatchee, Entiat, Methow ---------
+    Wen_Ent_Met_LF_x = Limiting_Factor_Scores_all_life_stages_reaches_Spring_Chinook[[life_stage_x]]
+    output_x = Wen_Ent_Met_LF_x[,c("ReachName","Basin","LF_Sum","LF_Pct","LF_Score_Restoration","LF_Score_Protection")]
+    
+    # ------ add life stage -------
+    output_x$life_stage_x = life_stage_x
+    
+    Spring_Chinook_Limiting_Factor_Scores_ALL_REACHES = rbind(Spring_Chinook_Limiting_Factor_Scores_ALL_REACHES, output_x)
+  }
+  
+  # --------------- Steelhead ---------
+  Steelhead_Limiting_Factor_Scores_ALL_REACHES = c()
+  life_stages_x = names(Limiting_Factor_Scores_all_life_stages_reaches_Steelhead)
+  for(life_stage_x in life_stages_x){
+    # ---------- Wenatchee, Entiat, Methow ---------
+    Wen_Ent_Met_LF_x = Limiting_Factor_Scores_all_life_stages_reaches_Steelhead[[life_stage_x]]
+    # ----------------- Okanogan -----------
+    Okanogan_LF_x = Okanogan_Limiting_Factor_Scores_combined_ALL_REACHES[which(Okanogan_Limiting_Factor_Scores_combined_ALL_REACHES$life_stage == life_stage_x), ]
+    # ----------- combine -------------
+    output_x = rbind(
+      Wen_Ent_Met_LF_x[,c("ReachName","Basin","LF_Sum","LF_Pct","LF_Score_Restoration","LF_Score_Protection")],
+      Okanogan_LF_x[,c("ReachName","Basin","LF_Sum","LF_Pct","LF_Score_Restoration","LF_Score_Protection")]
+    )
+    # ------ add life stage -------
+    output_x$life_stage_x = life_stage_x
+    
+    Steelhead_Limiting_Factor_Scores_ALL_REACHES = rbind(Steelhead_Limiting_Factor_Scores_ALL_REACHES, output_x)
+  }
   
 }
 
@@ -401,7 +440,8 @@ Reach_Rankings_Output_Protection = Reach_Rankings_Output[['Reach_Ranking_Protect
 
 # View(Reach_Rankings_Output_Restoration[which(Reach_Rankings_Output_Restoration$Basin == "Okanogan"),colnames(Reach_Rankings_Output_Restoration)[c(1,2,4,5,6,11,12:13,15)]])
 # View(Reach_Rankings_Output_Restoration[which(Reach_Rankings_Output_Restoration$Species == "Okanogan"),colnames(Reach_Rankings_Output_Restoration)[c(1,2,4,5,6,11,12:13,15)]])
-
+Reach_Rankings_Output_Protection$ReachName[  which( is.na(Reach_Rankings_Output_Protection$Degraded_Area_Percent) & 
+                                                         Reach_Rankings_Output_Protection$Basin != "Okanogan") ]
 
 # print what reaches overlap between restoration and protection 
 intersect(Reach_Rankings_Output_Restoration$ReachName, Reach_Rankings_Output_Protection$ReachName)

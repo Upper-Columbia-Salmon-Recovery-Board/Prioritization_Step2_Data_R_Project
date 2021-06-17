@@ -247,6 +247,11 @@ Generate_Habitat_Quality_Output_Table_WITH_FILTERS = function(species, basins, h
 #
 #  ---------------------------------------------------------------------------------
 
+test_x = TRUE
+if(test_x){
+  HQ_Spring_Chinook= Habitat_Quality_Scores_ALL_Spring_Chinook
+  HQ_Steelhead = Habitat_Quality_Scores_ALL_Steelhead
+}
 
 FUNCTION_combine_HQ_ALL_Filters_no_Bull_Trout = function(HQ_Spring_Chinook, HQ_Steelhead, write_to_xls ){
   
@@ -275,15 +280,76 @@ FUNCTION_combine_HQ_ALL_Filters_no_Bull_Trout = function(HQ_Spring_Chinook, HQ_S
   HQ_Steelhead_AU_tiers = HQ_Steelhead[,c(1,7:8)]
   Habitat_Quality_Scores_ALL_Species = merge(Habitat_Quality_Scores_ALL_Species, HQ_Steelhead_AU_tiers, by="ReachName", all.x=TRUE)
   
+  # ----------- make blank restoration and protection tiers "Not a priority" --------
+  replace_blank_x = "Not a Priority"
+  blank_x = which( is.na( nchar(Habitat_Quality_Scores_ALL_Species$SPCHNTier_Restoration)  ))
+  Habitat_Quality_Scores_ALL_Species$SPCHNTier_Restoration[blank_x] = replace_blank_x
+  blank_x = which( is.na( nchar(Habitat_Quality_Scores_ALL_Species$SPCHNTier_Protection)  ))
+  Habitat_Quality_Scores_ALL_Species$SPCHNTier_Protection[blank_x] = replace_blank_x
+  blank_x = which( is.na( nchar(Habitat_Quality_Scores_ALL_Species$STLTier_Restoration)  ))
+  Habitat_Quality_Scores_ALL_Species$STLTier_Restoration[blank_x] = replace_blank_x
+  blank_x = which( is.na( nchar(Habitat_Quality_Scores_ALL_Species$STLTier_Protection)  ))
+  Habitat_Quality_Scores_ALL_Species$STLTier_Protection[blank_x] = replace_blank_x
+  
   # ---------------- HQ Pct, Restoration and Protection scores AND individual habitat quality scores ------------
   HQ_Scores_x = HQ_Spring_Chinook[,c(1,9:ncol(HQ_Spring_Chinook))]
   Habitat_Quality_Scores_ALL_Species = merge(Habitat_Quality_Scores_ALL_Species, HQ_Scores_x, by="ReachName", all.x=TRUE)
   
+  # ------------------------ replace blank cells "NA" --------------
+  replace_blank_x = "NA"
+  blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$BankStability_score  ))
+  Habitat_Quality_Scores_ALL_Species$BankStability_score[blank_x] = replace_blank_x
+  blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$ChannelStability_score  ))
+  Habitat_Quality_Scores_ALL_Species$ChannelStability_score[blank_x] = replace_blank_x
+  blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$Stability_Mean  ))
+  Habitat_Quality_Scores_ALL_Species$Stability_Mean[blank_x] = replace_blank_x
+  blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$CoarseSubstrate_score  ))
+  Habitat_Quality_Scores_ALL_Species$CoarseSubstrate_score[blank_x] = replace_blank_x
+  blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$"Cover-Wood_score"  ))
+  Habitat_Quality_Scores_ALL_Species$"Cover-Wood_score"[blank_x] = replace_blank_x
+  blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$"Flow-SummerBaseFlow_score"  ))
+  Habitat_Quality_Scores_ALL_Species$"Flow-SummerBaseFlow_score"[blank_x] = replace_blank_x
+  blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$"Off-Channel-Floodplain_score"  ))
+  Habitat_Quality_Scores_ALL_Species$"Off-Channel-Floodplain_score"[blank_x] = replace_blank_x
+  blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$"Off-Channel-Side-Channels_score"  ))
+  Habitat_Quality_Scores_ALL_Species$"Off-Channel-Side-Channels_score"[blank_x] = replace_blank_x
+  blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$"PoolQuantity&Quality_score"  ))
+  Habitat_Quality_Scores_ALL_Species$"PoolQuantity&Quality_score"[blank_x] = replace_blank_x
+  blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$"Riparian-Disturbance_score"  ))
+  Habitat_Quality_Scores_ALL_Species$"Riparian-Disturbance_score"[blank_x] = replace_blank_x
+  blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$"Riparian-CanopyCover_score"   ))
+  Habitat_Quality_Scores_ALL_Species$"Riparian-CanopyCover_score" [blank_x] = replace_blank_x
+  blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$Riparian_Mean  ))
+  Habitat_Quality_Scores_ALL_Species$Riparian_Mean[blank_x] = replace_blank_x
+  blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$"Temperature-Rearing_score"   ))
+  Habitat_Quality_Scores_ALL_Species$"Temperature-Rearing_score" [blank_x] = replace_blank_x
+  
+  # ----------------- make column numeric -------------
+  Habitat_Quality_Scores_ALL_Species$SPCHNTier_Restoration = as.factor(Habitat_Quality_Scores_ALL_Species$SPCHNTier_Restoration)
+  Habitat_Quality_Scores_ALL_Species$SPCHNTier_Protection = as.factor(Habitat_Quality_Scores_ALL_Species$SPCHNTier_Protection)
+  Habitat_Quality_Scores_ALL_Species$STLTier_Restoration = as.factor(Habitat_Quality_Scores_ALL_Species$STLTier_Restoration)
+  Habitat_Quality_Scores_ALL_Species$STLTier_Protection = as.factor(Habitat_Quality_Scores_ALL_Species$STLTier_Protection)
+  Habitat_Quality_Scores_ALL_Species$BankStability_score = as.numeric(Habitat_Quality_Scores_ALL_Species$BankStability_score)
+  Habitat_Quality_Scores_ALL_Species$ChannelStability_score = as.numeric(Habitat_Quality_Scores_ALL_Species$ChannelStability_score)
+  Habitat_Quality_Scores_ALL_Species$Stability_Mean = as.numeric(Habitat_Quality_Scores_ALL_Species$Stability_Mean)
+  Habitat_Quality_Scores_ALL_Species$CoarseSubstrate_score = as.numeric(Habitat_Quality_Scores_ALL_Species$CoarseSubstrate_score)
+  Habitat_Quality_Scores_ALL_Species$"Cover-Wood_score" = as.numeric(Habitat_Quality_Scores_ALL_Species$"Cover-Wood_score")
+  Habitat_Quality_Scores_ALL_Species$"Flow-SummerBaseFlow_score" = as.numeric(Habitat_Quality_Scores_ALL_Species$"Flow-SummerBaseFlow_score")
+  Habitat_Quality_Scores_ALL_Species$"Off-Channel-Floodplain_score" = as.numeric(Habitat_Quality_Scores_ALL_Species$"Off-Channel-Floodplain_score")
+  Habitat_Quality_Scores_ALL_Species$"PoolQuantity&Quality_score" = as.numeric(Habitat_Quality_Scores_ALL_Species$"PoolQuantity&Quality_score")
+  Habitat_Quality_Scores_ALL_Species$"Riparian-Disturbance_score" = as.numeric(Habitat_Quality_Scores_ALL_Species$"Riparian-Disturbance_score")
+  Habitat_Quality_Scores_ALL_Species$"Riparian-CanopyCover_score" = as.numeric(Habitat_Quality_Scores_ALL_Species$"Riparian-CanopyCover_score")
+  Habitat_Quality_Scores_ALL_Species$Riparian_Mean = as.numeric(Habitat_Quality_Scores_ALL_Species$Riparian_Mean)
+  Habitat_Quality_Scores_ALL_Species$"Temperature-Rearing_score" = as.numeric(Habitat_Quality_Scores_ALL_Species$"Temperature-Rearing_score")
+  
+					
+  
+  
   
   # ------------------- export data ------------
   if(write_to_xls_x){
-    output_path_x =  paste(output_path,'Habitat_Quality_Scores_ALL_Species_and_Filters.xlsx', sep="")
-    write_xlsx(Habitat_Quality_Scores_ALL_Species,output_path_x )
+    output_path_x =  paste(output_path,'Habitat_Quality_Scores_ALL_Species_and_Filters.csv', sep="")
+    write.csv(Habitat_Quality_Scores_ALL_Species,output_path_x, row.names=FALSE )
     
   }
   

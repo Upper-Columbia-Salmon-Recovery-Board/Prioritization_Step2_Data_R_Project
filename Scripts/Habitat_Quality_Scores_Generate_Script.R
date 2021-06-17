@@ -165,7 +165,7 @@ for( habitat_attribute_x in names(Habitat_Quality_Habitat_Attributes_List) ){
   # --------------------------------------------------------------------
   #      Add Riparian Mean score
   # --------------------------------------------------------------------
-  if(habitat_attribute_x == 'Riparian- Canopy Cover'){
+  if(habitat_attribute_x == 'Riparian-Disturbance'){
     Habitat_Quality_Scores = Habitat_Quality_Scores%>%
       rowwise() %>%
       mutate(Riparian_Mean = mean( c_across(c('Riparian-Disturbance_score',

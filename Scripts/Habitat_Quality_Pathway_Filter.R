@@ -19,7 +19,7 @@
 # ---------------------------------------------------------------------------
 
 #  to test
-species = "Bull Trout"
+species = "Spring Chinook"
 basins = c("Methow",  "Entiat","Wenatchee", "Okanogan")
 
 Generate_Habitat_Quality_Output_Table = function(species, basins, habitat_quality_scores_colnames_for_sum ){

@@ -1396,13 +1396,13 @@ Generate_Limiting_Factor_Output_Table_Okanogan_no_level3 = function(species, bas
 #               And with just pulling RTT habitat attributes (Limiting_Factor_Pathway_Steelhead_OKANOGAN_no_level3)
 #
 #  ---------------------------------------------------------------------------------
-test_x = TRUE
+test_x = FALSE
 if(test_x){
   LF_level3 = Limiting_Factor_Pathway_Steelhead_OKANOGAN[['Limiting_Factor_Pathway_Restoration']]
   LF_NO_level3 = Limiting_Factor_Pathway_Steelhead_OKANOGAN_no_level3[['Limiting_Factor_Pathway_Restoration']]
 }
 
-run_code_x = TRUE
+run_code_x = FALSE
 if(run_code_x){
   Compare_Okanogan_LF_Output_with_without_Level3()
 }

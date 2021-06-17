@@ -527,5 +527,14 @@ for(life_stage_x in life_stages){
 
 
 
+# --------------------------------------------------------------------------
+#   Generate output to write 
+# --------------------------------------------------------------------------
 
+Reach_Information_data_Okanogan = Reach_Information_data[which(Reach_Information_data$Basin == "Okanogan"),c(1:5)]
+AU_Ranks_Okanogan_2 = AU_Ranks_Okanogan[,c("EDT AU", "AU Restoration Rank", "AU Protection Rank" )]
+colnames(AU_Ranks_Okanogan_2)[1] = "Assessment.Unit"
+Reach_Information_data_Okanogan = merge(Reach_Information_data_Okanogan, AU_Ranks_Okanogan_2, by="Assessment.Unit")
 
+output_path_x = paste(output_path,"Okanogan_Reaches_AU_Priorities.csv",sep="")
+write.csv(Reach_Information_data_Okanogan, file=output_path_x, row.names=FALSE)

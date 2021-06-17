@@ -45,7 +45,7 @@ source(paste(script_path, 'FUNCTIONS_for_Habitat_Attribute_Filters.R', sep=""))
 # -------------- to test ------------------------
 test = FALSE
 if(test){
-  habitat_attribute_x = names(Habitat_Attributes_List)[10]
+  habitat_attribute_x = names(Habitat_Attributes_List)[23]
   data_sources_list =  Habitat_Attributes_List[habitat_attribute_x]
   data_source_x = data_sources_list[[1]][1]
 }
@@ -151,9 +151,18 @@ for(habitat_attribute_x in names(Habitat_Attributes_List) ){
   
   # ------------------- get minimum score for each row ----------
   habitat_attribute_x_data_frame_CALC = habitat_attribute_x_data_frame[,c("HabitatAttributeScore1",	"HabitatAttributeScore2",	"HabitatAttributeScore3",	"HabitatAttributeScore4", "HabitatAttributeScore5", "HabitatAttributeScore6")]
+  
   habitat_attribute_x_data_frame_CALC = habitat_attribute_x_data_frame_CALC %>% 
     rowwise() %>%
     mutate(minimum_score = min(c_across(), na.rm=T) )
+  
+  # ---------------- over-ride with REI values -------
+  if( any(REI_Default_List == habitat_attribute_x) ){
+    # ----------- pull REI values if REI value is present and over-ride minimum value ------
+    REI_present_x = which( !is.na(habitat_attribute_x_data_frame_CALC$HabitatAttributeScore1) )
+    habitat_attribute_x_data_frame_CALC$minimum_score[REI_present_x] = habitat_attribute_x_data_frame_CALC$HabitatAttributeScore1[REI_present_x]
+  }
+  
   
   # --------------------- add data source ----------------
   data_source_output_list_per_row = rep(data_source_output_list_per_row, length.out=nrow(habitat_attribute_x_data_frame))

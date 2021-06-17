@@ -356,7 +356,7 @@ FUNCTION_update_Confinement_Scores(Confinement_Scores, Geomorphic_Criteria)
 Protected_Percentage_Data = read_excel( paste(habitat_data_path,'Protected_Percentage_Data.xlsx', sep="") )
 # -------------------- Degraded_Floodplain_Data Excel ------------------
 Degraded_Floodplain_Data = read_excel( paste(habitat_data_path,'Degraded_Floodplain_Data.xlsx', sep="") )
-
+Degraded_Floodplain_Data = Degraded_Floodplain_Data[which( !is.na(Degraded_Floodplain_Data$Degraded_Area_Percent ) ),1:3]
 
 # ---------------------------------------------------------------------------
 #

@@ -35,6 +35,17 @@ reaches_path = "C:/Users/Ryan/Documents/GitHub/Prioritization_Step2_Data_R_Proje
 reaches <- sf::st_read(reaches_path) # this shapefile does not show up properly
 reaches <- sf::st_transform(reaches, 4326)
 
+
+# ----------- read in as SpatialLinesDataFrame ---------
+#reaches2 <- readShapeLines(reaches_path,
+#                     proj4string=CRS("+proj=utm +zone=33 +datum=WGS84"))
+
+reaches_path2 = "C:/Users/Ryan/Documents/GitHub/Prioritization_Step2_Data_R_Project/Data/Reaches"
+reaches2 = readOGR(dsn = reaches_path2, layer = "Reaches")
+
+
+
+
 # -------------- update reach names ------------
 Okanogan_Reach_Crosswalk =  read_excel(  paste(Okanogan_EDT_path,'Okanogan_AU_Reach_Crosswalk.xlsx', sep="")  )
 for(reach_x in reaches$ReachName){
@@ -42,6 +53,12 @@ for(reach_x in reaches$ReachName){
     x_old = which(reaches$ReachName == reach_x)
     x_new = which(Okanogan_Reach_Crosswalk$ReachName_Old == reach_x)
     reaches$ReachName[x_old]  = Okanogan_Reach_Crosswalk$ReachName_New[x_new[1]]
+    
+    x_old = which(reaches2$ReachName == reach_x)
+    x_new = which(Okanogan_Reach_Crosswalk$ReachName_Old == reach_x)
+    reaches2$ReachName[x_old]  = Okanogan_Reach_Crosswalk$ReachName_New[x_new[1]]
+    
+    
   }
 }
 
@@ -113,10 +130,16 @@ for(habitat_attribute_x in habitat_attributes_indiv_x ){
 #  Habitat Quality 
 # -------------------------------------
 # -------- merge reach spatial data with habitat data --------------
-reaches_HQ_data = merge(reaches, Habitat_Quality_Scores_factors, by = "ReachName") 
+Habitat_Quality_Scores_factors2 = Habitat_Quality_Scores_factors[,-which(colnames(Habitat_Quality_Scores_factors)=="Basin")]
+reaches_HQ_data = merge(reaches,Habitat_Quality_Scores_factors2 , by = "ReachName") 
 # ------- remove columns we don't want ------
-reaches_HQ_data = subset (reaches_HQ_data, select = -c(Assessment,RM_Start,RM_End, SpringChin, SteelheadR,BullTroutR,
-                                             Length_mi,Length_m,Basin.y))
+reaches_HQ_data = subset (reaches_HQ_data, select = -c(Assessment,RM_Start,RM_End, SpringChin, SteelheadR,BullTroutR, Length_mi,Length_m))
+
+# ------------- do the same for the SpatialDataFrame -------
+reaches2_HQ_data = merge(reaches2,Habitat_Quality_Scores_factors2 , by = "ReachName") 
+# ------- remove columns we don't want ------
+reaches2_HQ_data = subset (reaches2_HQ_data, select = -c(Assessment,RM_Start,RM_End, SpringChin, SteelheadR,BullTroutR, Length_mi,Length_m))
+
 
 # -------------------------------------
 #  Habitat Attributes (Limiting Factor) 
@@ -322,17 +345,33 @@ mapview(reaches_HQ_data, zcol = attribute_1, lwd=4, legend = mapviewGetOption("l
 #     plot Reach Ranks
 # ----------------------------------------------------------
 
+# ----- to reduce the pop-up bubble ----
+Restoration_Ranks_data_shortened = Restoration_Ranks_data[,c(1,12,20,21,24,26,27,28)]
+Protection_Ranks_data_shortened = Protection_Ranks_data[,c(1,12,17,18,20,21)]
+
 # ------------- for total score -------------
 attribute_1 = "AU_level_Reach_Rank"
 color_palette_x = c("red", "yellow","forestgreen")
-color_palette_x = brewer.pal(3, 'YlGnBu')
-color_palette_x = c(color_palette_x[3],color_palette_x[2],color_palette_x[1]) # reverse the order
+color_palette_x = brewer.pal(4, 'YlGnBu')
+color_palette_x = c(color_palette_x[4],color_palette_x[3],color_palette_x[2],color_palette_x[1]) # reverse the order
 
 
-mapview(Restoration_Ranks_data , zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
+mapview(Restoration_Ranks_data_shortened , zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
         color= color_palette_x, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
-mapview(Protection_Ranks_data , zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
+mapview(Protection_Ranks_data_shortened , zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
         color= color_palette_x, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
+
+
+mapview(Protection_Ranks_data_shortened , zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
+        color= color_palette_x, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
+
+# --------------- plot side by side --------
+m1 = mapview(Restoration_Ranks_data_shortened , zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
+        color= color_palette_x, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
+m2 = mapview(Protection_Ranks_data_shortened , zcol = attribute_1, lwd=4, legend = mapviewGetOption("legend"), na.color='grey',
+        color= color_palette_x, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
+
+sync(m1, m2) # 4 panels synchronised
 
 attribute_1 = "Protected_Percent"
 color_palette_x = brewer.pal(9, 'YlGnBu')

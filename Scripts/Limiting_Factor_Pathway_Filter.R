@@ -296,6 +296,7 @@ Generate_Limiting_Factor_Output_Table = function(species, basins){
 #
 # ---------------------------------------------------------------------------
 
+Limiting_Factor_Pathway_Spring_Chinook_NO_FILTERS = Generate_Limiting_Factor_Output_Table_NO_FILTERS("Spring Chinook", basins)
 
 Generate_Limiting_Factor_Output_Table_NO_FILTERS = function(species, basins){
   
