@@ -5,9 +5,9 @@
 # 
 # ------------------------------------------------------------------------------------------------------------------
 
-test_x = TRUE
+test_x = FALSE
 if(test_x){
-  species="Spring Chinook"
+  species="Bull Trout"
   basins = c("Methow"  ,  "Entiat"  ,  "Wenatchee", "Okanogan" )
   
 }
@@ -247,7 +247,7 @@ Generate_Habitat_Quality_Output_Table_WITH_FILTERS = function(species, basins, h
 #
 #  ---------------------------------------------------------------------------------
 
-test_x = TRUE
+test_x = FALSE
 if(test_x){
   HQ_Spring_Chinook= Habitat_Quality_Scores_ALL_Spring_Chinook
   HQ_Steelhead = Habitat_Quality_Scores_ALL_Steelhead

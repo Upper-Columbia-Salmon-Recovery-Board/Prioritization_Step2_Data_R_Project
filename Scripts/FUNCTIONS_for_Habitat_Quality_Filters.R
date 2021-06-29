@@ -46,10 +46,10 @@ habitat_attribute_x = "Temperature- Adult Holding"
 data_col_name = 'NORWEST_Temperature'
 LF_or_HQ = "HQ"
 
-test_x = FALSE
+test_x = TRUE
 if(test_x){
   data_col_name = data_source_x
-  LF_or_HQ = "LF"
+  LF_or_HQ = "HQ"
 }
 
 

@@ -25,24 +25,37 @@ Reach_Information_data_Data_gaps = filter(Reach_Information_data_Data_gaps, !Bas
 #     Pull the NAs
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 
+# ------ first Data Gap analysis (early June 2021) --------
 coarse_substrate_na_x = which(is.na(Habitat_Quality_Scores_for_Data_Gaps$CoarseSubstrate_score))
 cover_wood_na_x = which(is.na(Habitat_Quality_Scores_for_Data_Gaps$`Cover-Wood_score`))
 pool_na_x = which(is.na(Habitat_Quality_Scores_for_Data_Gaps$`PoolQuantity&Quality_score`))
+
+# ------ second Data Gap analysis (mid June 2021) --------
+stability_na_x = which(is.na(Habitat_Quality_Scores_for_Data_Gaps$Stability_Mean ))
+floodplain_na_x = which(is.na(Habitat_Quality_Scores_for_Data_Gaps$`Off-Channel-Floodplain_score`))
+riparian_na_x = which(is.na(Habitat_Quality_Scores_for_Data_Gaps$Riparian_Mean))
 
 
 # ------------------------------------------------
 #     Pull Reach Information for Reaches with Data Gaps
 # ------------------------------------------------
 
+# ------ first Data Gap analysis (early June 2021) --------
 coarse_substrate_Reach_Info = merge(Reach_Information_data, Habitat_Quality_Scores_for_Data_Gaps[coarse_substrate_na_x, c("ReachName","CoarseSubstrate_score")], by="ReachName")
 cover_wood_Reach_Info = merge(Reach_Information_data, Habitat_Quality_Scores_for_Data_Gaps[cover_wood_na_x, c("ReachName","Cover-Wood_score")], by="ReachName")
 pool_Reach_Info = merge(Reach_Information_data, Habitat_Quality_Scores_for_Data_Gaps[pool_na_x, c("ReachName","PoolQuantity&Quality_score")], by="ReachName")
+
+# ------ second Data Gap analysis (mid June 2021) --------
+stability_Reach_Info = merge(Reach_Information_data, Habitat_Quality_Scores_for_Data_Gaps[stability_na_x, c("ReachName","Stability_Mean")], by="ReachName")
+floodplain_Reach_Info = merge(Reach_Information_data, Habitat_Quality_Scores_for_Data_Gaps[floodplain_na_x, c("ReachName","Off-Channel-Floodplain_score")], by="ReachName")
+riparian_Reach_Info = merge(Reach_Information_data, Habitat_Quality_Scores_for_Data_Gaps[riparian_na_x, c("ReachName","Riparian_Mean")], by="ReachName")
+
 
 # ------------------------------------------------
 #   Exclude any basins
 # ------------------------------------------------
 
-# ------------- filter to remove those reaches -------
+# ------------- FIRST analysis: filter to remove those reaches -------
 coarse_substrate_Reach_Info = filter(coarse_substrate_Reach_Info, 
                                                 !Basin %in%  Basins_to_Exclude )
 cover_wood_Reach_Info = filter(cover_wood_Reach_Info, 
@@ -50,10 +63,20 @@ cover_wood_Reach_Info = filter(cover_wood_Reach_Info,
 pool_Reach_Info = filter(pool_Reach_Info, 
                                     !Basin %in%  Basins_to_Exclude )
 
+# ------------- SECOND analysis: filter to remove those reaches -------
+stability_Reach_Info = filter(stability_Reach_Info, 
+                                     !Basin %in%  Basins_to_Exclude )
+floodplain_Reach_Info = filter(floodplain_Reach_Info, 
+                               !Basin %in%  Basins_to_Exclude )
+riparian_Reach_Info = filter(riparian_Reach_Info, 
+                         !Basin %in%  Basins_to_Exclude )
+
+
 # ------------------------------------------------
 #     Get Sum of River Miles with Data Gap
 # ------------------------------------------------
 
+# ---------- First Gap analysis ----------
 coarse_substrate_Reach_Info_Summarized = coarse_substrate_Reach_Info %>% group_by(Assessment.Unit) %>%
   dplyr::summarize(Total_River_Miles_Data_Gaps_meters = sum(Length..meters., na.rm=TRUE))
 cover_wood_Reach_Info_Summarized = cover_wood_Reach_Info %>% group_by(Assessment.Unit) %>%
@@ -61,19 +84,39 @@ cover_wood_Reach_Info_Summarized = cover_wood_Reach_Info %>% group_by(Assessment
 pool_Reach_Info_Summarized = pool_Reach_Info %>% group_by(Assessment.Unit) %>%
   dplyr::summarize(Total_River_Miles_Data_Gaps_meters = sum(Length..meters., na.rm=TRUE))
 
+# ---------- Second Gap analysis ----------
+stability_Reach_Info_Summarized = stability_Reach_Info %>% group_by(Assessment.Unit) %>%
+  dplyr::summarize(Total_River_Miles_Data_Gaps_meters = sum(Length..meters., na.rm=TRUE))
+floodplain_Reach_Info_Summarized = floodplain_Reach_Info %>% group_by(Assessment.Unit) %>%
+  dplyr::summarize(Total_River_Miles_Data_Gaps_meters = sum(Length..meters., na.rm=TRUE))
+riparian_Info_Summarized = riparian_Reach_Info %>% group_by(Assessment.Unit) %>%
+  dplyr::summarize(Total_River_Miles_Data_Gaps_meters = sum(Length..meters., na.rm=TRUE))
+
+
 # ------------------------------------------------
 #    Add Basin
 # ------------------------------------------------
 Reach_Info_Basin = Reach_Information_data[which(!duplicated(Reach_Information_data$Assessment.Unit)),c("Assessment.Unit", "Basin")]
 
+# ------------ First Gap analysis ---------
 coarse_substrate_Reach_Info_Summarized = merge(coarse_substrate_Reach_Info_Summarized, Reach_Info_Basin, by="Assessment.Unit", all.x=TRUE, all.y=FALSE)
 cover_wood_Reach_Info_Summarized = merge(cover_wood_Reach_Info_Summarized, Reach_Info_Basin, by="Assessment.Unit", all.x=TRUE, all.y=FALSE)
 pool_Reach_Info_Summarized = merge(pool_Reach_Info_Summarized, Reach_Info_Basin, by="Assessment.Unit", all.x=TRUE, all.y=FALSE)
+# ------------ Second Gap analysis ---------
+stability_Reach_Info_Summarized = merge(stability_Reach_Info_Summarized, Reach_Info_Basin, by="Assessment.Unit", all.x=TRUE, all.y=FALSE)
+floodplain_Reach_Info_Summarized = merge(floodplain_Reach_Info_Summarized, Reach_Info_Basin, by="Assessment.Unit", all.x=TRUE, all.y=FALSE)
+riparian_Info_Summarized = merge(riparian_Info_Summarized, Reach_Info_Basin, by="Assessment.Unit", all.x=TRUE, all.y=FALSE)
 
 # ------ re-organize columns ------------
+# ---------- First Gap analysis
 coarse_substrate_Reach_Info_Summarized = coarse_substrate_Reach_Info_Summarized[,c("Assessment.Unit","Basin","Total_River_Miles_Data_Gaps_meters")]
 cover_wood_Reach_Info_Summarized = cover_wood_Reach_Info_Summarized[,c("Assessment.Unit","Basin","Total_River_Miles_Data_Gaps_meters")]
 pool_Reach_Info_Summarized = pool_Reach_Info_Summarized[,c("Assessment.Unit","Basin","Total_River_Miles_Data_Gaps_meters")]
+# ------ Second Gap analysis ----------
+stability_Reach_Info_Summarized = stability_Reach_Info_Summarized[,c("Assessment.Unit","Basin","Total_River_Miles_Data_Gaps_meters")]
+floodplain_Reach_Info_Summarized = floodplain_Reach_Info_Summarized[,c("Assessment.Unit","Basin","Total_River_Miles_Data_Gaps_meters")]
+riparian_Info_Summarized = riparian_Info_Summarized[,c("Assessment.Unit","Basin","Total_River_Miles_Data_Gaps_meters")]
+
 
 # ------------------------------------------------
 #    List Reach Names
@@ -96,9 +139,14 @@ FUNCTION_pull_reach_names = function(AU_data_frame,reach_data_frame){
   
 }
 
+# ------------- First Gap Analysis ---------
 coarse_substrate_Reach_Info_Summarized = FUNCTION_pull_reach_names(coarse_substrate_Reach_Info_Summarized, coarse_substrate_Reach_Info)
 cover_wood_Reach_Info_Summarized = FUNCTION_pull_reach_names(cover_wood_Reach_Info_Summarized, cover_wood_Reach_Info)
 pool_Reach_Info_Summarized = FUNCTION_pull_reach_names(pool_Reach_Info_Summarized, pool_Reach_Info)
+# ------------ Second gap Analysis -----------
+stability_Reach_Info_Summarized = FUNCTION_pull_reach_names(stability_Reach_Info_Summarized, stability_Reach_Info)
+floodplain_Reach_Info_Summarized = FUNCTION_pull_reach_names(floodplain_Reach_Info_Summarized, floodplain_Reach_Info)
+riparian_Info_Summarized = FUNCTION_pull_reach_names(riparian_Info_Summarized, riparian_Reach_Info)
 
 # ------------------------------------------------
 #    Add Restoration and Protection Tiers
@@ -130,12 +178,21 @@ for(colx in colnames(AU_Ranks_data3)){
   AU_Ranks_data3[x_NA,colx] = "Not a Priority"
 }
 
-# ----------- add  AU priorities ---------
+
+# ---------------------------- add  AU priorities ----------------------
+# ----------- First Gap Analysis ----------
 coarse_substrate_Reach_Info_Summarized = merge(coarse_substrate_Reach_Info_Summarized, 
                                                AU_Ranks_data3[,c("Assessment.Unit","SPCHNTier_Restoration","STLTier_Restoration",  "SPCHNTier_Protection","STLTier_Protection")], by="Assessment.Unit", all.x=TRUE)
 cover_wood_Reach_Info_Summarized = merge(cover_wood_Reach_Info_Summarized, 
                                          AU_Ranks_data3[,c("Assessment.Unit","SPCHNTier_Restoration","STLTier_Restoration",  "SPCHNTier_Protection","STLTier_Protection")], by="Assessment.Unit", all.x=TRUE)
 pool_Reach_Info_Summarized = merge(pool_Reach_Info_Summarized, 
+                                   AU_Ranks_data3[,c("Assessment.Unit","SPCHNTier_Restoration","STLTier_Restoration", "SPCHNTier_Protection","STLTier_Protection")], by="Assessment.Unit", all.x=TRUE)
+# ----------- Second Gap Analysis ----------
+stability_Reach_Info_Summarized = merge(stability_Reach_Info_Summarized, 
+                                               AU_Ranks_data3[,c("Assessment.Unit","SPCHNTier_Restoration","STLTier_Restoration",  "SPCHNTier_Protection","STLTier_Protection")], by="Assessment.Unit", all.x=TRUE)
+floodplain_Reach_Info_Summarized = merge(floodplain_Reach_Info_Summarized, 
+                                         AU_Ranks_data3[,c("Assessment.Unit","SPCHNTier_Restoration","STLTier_Restoration",  "SPCHNTier_Protection","STLTier_Protection")], by="Assessment.Unit", all.x=TRUE)
+riparian_Info_Summarized = merge(riparian_Info_Summarized, 
                                    AU_Ranks_data3[,c("Assessment.Unit","SPCHNTier_Restoration","STLTier_Restoration", "SPCHNTier_Protection","STLTier_Protection")], by="Assessment.Unit", all.x=TRUE)
 
 # ------------------------------------------------
@@ -176,10 +233,24 @@ sum(Basin_gap_pools$Total_River_Miles_Data_Gaps_meters2)/sum(Basin_gap_pools$Tot
 #    Write to excel 
 # ------------------------------------------------
 
+# ----------------- First Gap Analysis --------------
 output_path_x =  paste(output_path,'Generate_River_Miles_Data_Gaps.xlsx', sep="")
 write.xlsx(coarse_substrate_Reach_Info_Summarized, file = output_path_x , sheetName="Coarse_Substrate", row.names=FALSE)
 write.xlsx(cover_wood_Reach_Info_Summarized, file=output_path_x, sheetName="Cover_Wood", append=TRUE, row.names=FALSE)
 write.xlsx(pool_Reach_Info_Summarized, file=output_path_x, sheetName="Pool_Quality_and_Quantity", append=TRUE, row.names=FALSE)
+# ----------------- Second Gap Analysis --------------
+output_path_x =  paste(output_path,'Generate_River_Miles_Data_Gaps_Stability_Floodplain_Riparian.xlsx', sep="")
+write.xlsx(stability_Reach_Info_Summarized, file = output_path_x , sheetName="Stability", row.names=FALSE)
+write.xlsx(floodplain_Reach_Info_Summarized, file=output_path_x, sheetName="Floodplain", append=TRUE, row.names=FALSE)
+write.xlsx(riparian_Info_Summarized, file=output_path_x, sheetName="Riparian", append=TRUE, row.names=FALSE)
+
+
+# -------------------------------------------------------------------------------------------
+#
+#    Combine for Prioritization WebMap 
+#
+# -------------------------------------------------------------------------------------------
+
 
 # -------------------------------------------------------------------------------------------
 #

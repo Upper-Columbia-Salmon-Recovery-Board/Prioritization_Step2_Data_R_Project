@@ -25,6 +25,10 @@ if(run_x){
 Restoration_Rank_Tier_1_comparison_NO_PRIORITY_REACH = Restoration_Rank_Tier_1_comparison[which(Restoration_Rank_Tier_1_comparison$Priority_Reaches == ""), c(1,3)]
 Protection_Rank_Tier_1_comparison_NO_PRIORITY_REACH = Protection_Rank_Tier_1_comparison[which(Protection_Rank_Tier_1_comparison$Priority_Reaches == ""), c(1,4)]
 
+# ---------- print restoration and protection AUs not with priority reaches ------------
+Restoration_Bull_Trout_Tier_1_comparison_LF = FUNCTION_compare_tier_1_reaches_to_an_output_ranks("restoration", Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']]$ReachName)
+Restoration_Bull_Trout_Tier_1_comparison_HQ = FUNCTION_compare_tier_1_reaches_to_an_output_ranks("restoration", Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']]$ReachName)
+#Protection_Bull_Trout_Tier_1_comparison_NO_PRIORITY_REACH = FUNCTION_compare_tier_1_reaches_to_an_output_ranks("restoration", Reach_Rankings_Output_Restoration$ReachName)
 
 FUNCTION_compare_tier_1_reaches_to_an_output_ranks = function(restoration_or_protection,  reach_names_x){
   

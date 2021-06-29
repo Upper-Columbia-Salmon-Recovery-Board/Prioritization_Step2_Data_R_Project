@@ -2,7 +2,7 @@
 
 # ---------------------------------------------------------------------------
 #
-#      SCRIPT: Okangaon-EDT Habitat Attribute and Habitat Qualty Functions
+#      SCRIPT: Okanogan-EDT Habitat Attribute and Habitat Qualty Functions
 #
 #      R Project to generate Priority Action Categories Based on Habitat Quality 
 #          and Limiting Factor Analysis from Step 2 of RTT Prioritization Process
@@ -13,8 +13,6 @@
 # ---------------------------------------------------------------------------
 
 
-
-
 # ---------------------------------------------------------------------------
 #
 #  Generate a "habitat_raw_data" type data frame for the HABITAT QUALITY Pathway -  Okanogan
@@ -23,9 +21,8 @@
 # NOTE - for the HQ Pathway - directly pull Level 2 (LF pathway FIRST filters through Level 3)
 
 
-
 # ----------------- initiate reach info ----------------
-Okanogan_Basic_Reach_Info= habitat_raw_data[which(habitat_raw_data$Basin == "Okanogan"),c(1:3,5) ]
+Okanogan_Basic_Reach_Info = habitat_raw_data[which(habitat_raw_data$Basin == "Okanogan"),c(1:3,5) ]
 
 # -------------- add columns for all attributes -------------
 for( habitat_attribute_x in names(Habitat_Attributes_List_OKANOGAN) ){
@@ -37,7 +34,7 @@ for( habitat_attribute_x in names(Habitat_Attributes_List_OKANOGAN) ){
   for(data_source_x in data_sources_x){
     
     # ------------------- skip if professional judgment --------------
-    if(data_source_x == "PROFESSIONAL JUDGEMENT"){ next }
+    if( data_source_x == "PROFESSIONAL JUDGEMENT" ){ next }
     
     # ------------------- if data already read in - skip ----------
     if( any( colnames(Okanogan_Basic_Reach_Info) == data_source_x) ){ next }
@@ -67,7 +64,7 @@ for( habitat_attribute_x in names(Habitat_Attributes_List_OKANOGAN) ){
       # ----------------- generate scores --------------------
       habitat_raw_data_output_x = FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw(habitat_attribute_x, data_source_x, "HQ")
       # -------- if data not in HQ scoring criteria data ----------
-      if( length(which(is.na(habitat_raw_data_output_x$metric_data))) == nrow(habitat_raw_data_output_x)){
+      if( length(which(is.na(habitat_raw_data_output_x$metric_data))) == nrow(habitat_raw_data_output_x) ){
         habitat_raw_data_output_x = FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw(habitat_attribute_x, data_source_x, "LF")
       }
       # ------------------- generate simple data frame with both habitat data and reach name -----------------
@@ -188,8 +185,8 @@ for(habitat_attribute_x in habitat_attribute_list){
   i = 0
   for(data_source_x in data_sources_x){
     i = i + 1
-    # ---------------- IF pulling in professional judgement ------------
-    if(data_source_x == "PROFESSIONAL JUDGEMENT"){
+    # ---------------- IF pulling in professional judgment ------------
+    if( data_source_x == "PROFESSIONAL JUDGEMENT" ){
       
       Habitat_Attribute_Notes_and_Professional_Judgement_Habitat_Attribute_x = Habitat_Attribute_Notes_and_Professional_Judgement[which(Habitat_Attribute_Notes_and_Professional_Judgement$Habitat_Attribute == habitat_attribute_x),]
       if(nrow(Habitat_Attribute_Notes_and_Professional_Judgement_Habitat_Attribute_x) > 0){
@@ -212,6 +209,16 @@ for(habitat_attribute_x in habitat_attribute_list){
     }else{
       # ----------------- pull data source column from Okanogan_Habitat_Quality_Output --------
       habitat_attribute_column_x = Okanogan_Habitat_Quality_Output[,c("ReachName",data_source_x )]
+      
+      # -------- if no data in the Okanogan_Habitat_Quality_Output, check the habitat_raw_data (28.June.2021 - MASTER Excel had EDT level 2 data) ----------
+      if( any( !is.na(habitat_attribute_column_x[,2]) ) == FALSE & any(colnames(habitat_raw_data) == data_source_x) ){
+        Habitat_Attribute_Scores_Okanogan_truncated = habitat_raw_data[which(habitat_raw_data$Basin == "Okanogan"),c("ReachName",data_source_x )]
+        habitat_attribute_column_x = merge(habitat_attribute_column_x,  Habitat_Attribute_Scores_Okanogan_truncated, by="ReachName", all.x=TRUE)
+        # ----- make it so data frame just has two columns -----
+        habitat_attribute_column_x[,2] = habitat_attribute_column_x[,3]
+        habitat_attribute_column_x = habitat_attribute_column_x[,1:2]
+        colnames(habitat_attribute_column_x) = c("ReachName",data_source_x )
+      }
       # ----------- merge with data --------------
       Okanogan_Habitat_Quality_Output_X_2 = merge(Okanogan_Habitat_Quality_Output_X,habitat_attribute_column_x, by="ReachName", all.x=TRUE )
       Okanogan_Habitat_Quality_Output_X[,col_habitat_attribute_score_x[i]] = Okanogan_Habitat_Quality_Output_X_2[,ncol(Okanogan_Habitat_Quality_Output_X_2)]

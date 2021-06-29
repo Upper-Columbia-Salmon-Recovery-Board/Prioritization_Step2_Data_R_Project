@@ -47,6 +47,9 @@ Okanogan_Individual_Habitat_Attribute_Score = Individual_Habitat_Attribute_Score
 PRCNT_of_Template_Restoration_Score = 0.8  # THIS PERCENT and below pass through filter for Okanogan EDT Restoration
 PRCNT_of_Template_Protection_Score = 0.7  # THIS PERCENT and above pass through filter for Okanogan EDT Protection
 
+# ------------------- Reach Rank HQ Pct ----------------
+HQ_Pct_for_LF_PCT_in_Ranks = 0.5
+
 # ----------------------------------------------------------------------------------------------------------------------------
 #
 #             Criteria: Limiting Factor Pathway

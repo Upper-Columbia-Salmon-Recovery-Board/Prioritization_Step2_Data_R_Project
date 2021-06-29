@@ -28,7 +28,7 @@ library(readxl)
 #  Script Criteria for output
 # ---------------------------------------------------------------------------
 basins_to_include = c("Methow",  "Entiat","Wenatchee" , "Okanogan")  # basins to include in simulation    
-exclude_bull_trout = "yes"  # if "yes" -> remove bull trout for WebMap applications
+exclude_bull_trout = "no"  # if "yes" -> remove bull trout for WebMap applications
 output_Habitat_Quality_and_Habitat_Attribute_Scores = "no"  # enter "yes" or "no" if you want the "flat table" Habitat Attribute output (doubles time to run script)
 update_Okanogan_reach_names = "no"  # if "yes" - update Okanogan reach names (should not have to run again - since on 5.Apr.2021 Ryan updated names)
 HQ_add_life_stage = "no"   # IF "yes" generate life stages for HQ pathway based on life stage presence in reaches, for combining into ONE Data frame across all pathways and scores
@@ -205,8 +205,8 @@ habitat_quality_scores_colnames_output = c("BankStability_score" ,"ChannelStabil
                                            "Riparian-Disturbance_score", "Riparian-CanopyCover_score", "Riparian_Mean","Temperature-Rearing_score")
 Habitat_Quality_Scores_ALL_Spring_Chinook = Generate_Habitat_Quality_Output_Table_WITH_FILTERS("Spring Chinook",basins_to_include, habitat_quality_scores_colnames_output)
 Habitat_Quality_Scores_ALL_Steelhead = Generate_Habitat_Quality_Output_Table_WITH_FILTERS("Steelhead",basins_to_include, habitat_quality_scores_colnames_output)
-if(exclude_bull_trout == "no"){
-  Habitat_Quality_Scores_ALL_Bull_Trout = Generate_Habitat_Quality_Output_Table_WITH_FILTERS("Spring Chinook",basins_to_include, habitat_quality_scores_colnames_output)
+if(exclude_bull_trout == "no"){           
+  Habitat_Quality_Scores_ALL_Bull_Trout = Generate_Habitat_Quality_Output_Table_WITH_FILTERS("Bull Trout",basins_to_include, habitat_quality_scores_colnames_output)
 }
 
 # ------------ combine individual species into one -----------
@@ -240,7 +240,7 @@ Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']] = rbin
 # --------------------------------------------------
 # Generate life stage tables for ALL reaches for each species (JUST for QAQC purposes)
 # --------------------------------------------------
-test_x = TRUE
+test_x = FALSE
 if(test_x){
   
   # --------- for each life stage and reach - calculate the LF Score -------
@@ -494,6 +494,77 @@ unlist(strsplit(Restoration_Prioritization_Output_for_WebMap[which(Restoration_P
 unique(Reach_Habitat_Attribute_Life_Stage_Species_Restoration_Output[which(Reach_Habitat_Attribute_Life_Stage_Species_Restoration_Output$ReachName == reach_test),]$Life_Stage)[order(unique(Reach_Habitat_Attribute_Life_Stage_Species_Restoration_Output[which(Reach_Habitat_Attribute_Life_Stage_Species_Restoration_Output$ReachName == reach_test),]$Life_Stage))]
 
 
+# -----------------------------------------------------------------------------------------------------------------------------------------------
+#
+#
+#   - - - - - - - - -  RESTORATION and PROTECTION - add reach rank and organize data  - - - - - - - - - 
+#  
+#
+# -----------------------------------------------------------------------------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+#   Add Reach Rank and other output to Restoration_Prioritization_Output_for_WebMap
+# ---------------------------------------------------------------------------
+
+columns_to_add_Restoration_Output = c()
+for(reach_x in Restoration_Prioritization_Output_for_WebMap$`Reach Name`){
+  
+  # ---------------------- Add Basin ------------------
+  basin_x = Reach_Information_data$Basin[which(Reach_Information_data$ReachName == reach_x)]
+  
+  # ------------------- Add Reach Rank ---------------
+  reach_rank_x = Reach_Rankings_Output_Restoration$AU_level_Reach_Rank[which(Reach_Rankings_Output_Restoration$ReachName == reach_x)]
+  if(length(reach_rank_x) == 0){ reach_rank_x = NA}
+  
+  # -------------- Unacceptable Limiting Factors ----------------
+  unacceptable_limiting_factors_x = Restoration_Prioritization_Output$Unacceptable_Impaired_Habitat_Attributes_All_Species[which(Restoration_Prioritization_Output$ReachName == reach_x)]
+  
+  # ------------ Add At-Risk Limiting Factors  ----------------
+  at_risk_limiting_factors_x = Restoration_Prioritization_Output$At_Risk_Impaired_Habitat_Attributes_All_Species[which(Restoration_Prioritization_Output$ReachName == reach_x)]
+  
+  # --------------- combine all the output -------------
+  output_x = t( as.data.frame( c(basin_x, reach_rank_x,unacceptable_limiting_factors_x, at_risk_limiting_factors_x )  )  )
+  colnames(output_x) = c("Basin","Reach Rank", "Unacceptable Limiting Factors", "At-Risk Limiting Factors")
+  columns_to_add_Restoration_Output = rbind(columns_to_add_Restoration_Output,  output_x )
+
+}
+rownames(columns_to_add_Restoration_Output) = rownames(Restoration_Prioritization_Output_for_WebMap)
+Restoration_Prioritization_Output_for_WebMap = cbind(Restoration_Prioritization_Output_for_WebMap, columns_to_add_Restoration_Output)
+
+
+# --------------------------- re-order reaches to be in correct order ---------------------------------
+# NOTE: these are also the correct column names (as of 24.June.2021)
+Restoration_Prioritization_Output_for_WebMap_column_order = c("Reach Name","Basin", "Assessment Unit" ,"Priority Actions" ,"Reach Rank",            
+                                                              "Priority Species" , "Priority Life Stages" ,                 
+                                                              "Unacceptable Limiting Factors" ,"At-Risk Limiting Factors", "Action Categories" )
+Restoration_Prioritization_Output_for_WebMap = Restoration_Prioritization_Output_for_WebMap[,Restoration_Prioritization_Output_for_WebMap_column_order]
+
+# ---------------------------------------------------------------------------
+#   Add Reach Rank and other output to Protection_Prioritization_Output
+# ---------------------------------------------------------------------------
+
+Protection_Prioritization_Output$Reach_Rank = NA
+for(row_i in 1:nrow( Protection_Prioritization_Output) ){
+  
+  # ------------------- Pull Reach Rank ---------------
+  reach_rank_x = Reach_Rankings_Output_Protection$AU_level_Reach_Rank[ which( Reach_Rankings_Output_Protection$ReachName == Protection_Prioritization_Output$ReachName[row_i] )]
+  
+  # --------------- Add to Ouptut -------------
+  if(length(reach_rank_x) > 0 ){
+    Protection_Prioritization_Output$Reach_Rank[row_i] = reach_rank_x
+  }
+  
+}
+
+# ------------------- order columns and give them correct names --------------
+Protection_Prioritization_Output_column_order = c("ReachName","Basin", "Assessment.Unit", "Pathway","Reach_Rank",  "Life_Stages","Action")
+
+Protection_Prioritization_Output_column_UPDATED_names = c("Reach Name", "Basin", "Assessment Unit", "Prioritization Pathway","Reach Rank", "Priority Life Stages", "Priority Actions")
+
+# ---------------- re-order columns for WebMap ------
+Protection_Prioritization_Output_for_WebMap = Protection_Prioritization_Output[,Protection_Prioritization_Output_column_order]
+# --------------- correct names for output ------------
+colnames(Protection_Prioritization_Output_for_WebMap) = Protection_Prioritization_Output_column_UPDATED_names
 
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #
@@ -508,9 +579,18 @@ Habitat_Attribute_Scores_columns_to_pull  = c("% Fines/Embeddedness", "Brook Tro
                                            "Flow- Summer Base Flow", "Food- Food Web Resources", "Harassment", "Icing", "Off-Channel- Floodplain",
                                            "Off-Channel- Side-Channels","Pool Quantity & Quality" , "Pools- Deep Pools", "Predators- Adults", "Predators- Juveniles",
                                            "Superimposition", "Temperature- Adult Holding", "Temperature- Adult Spawning", "Temperature- Rearing")
-Habitat_Quality_Scores_columns_to_pull = c("BankStability_score","ChannelStability_score","Stability_Mean","CoarseSubstrate_score","Cover-Wood_score","Flow-SummerBaseFlow_score",
+
+Habitat_Quality_Scores_columns_to_pull = c("ReachName","Basin", "BankStability_score","ChannelStability_score","Stability_Mean","CoarseSubstrate_score","Cover-Wood_score","Flow-SummerBaseFlow_score",
                                              "Off-Channel-Floodplain_score","Off-Channel-Side-Channels_score","PoolQuantity&Quality_score","Riparian-Disturbance_score",
-                                             "Riparian-CanopyCover_score","Riparian_Mean","Temperature-Rearing_score")
+                                             "Riparian-CanopyCover_score","Riparian_Mean","Temperature-Rearing_score", "HQ_Sum","HQ_Pct")
+
+Reach_Information_data_columns_to_pull = c("ReachName","Basin","Assessment.Unit","Spring.Chinook.Reach" ,"Steelhead.Reach","Bull.Trout.Reach",
+                                           "ReviewComments", "Reach.Assessment.Data", "Level.2.Survey.Data", "Level.2.Data.Prior.to.2000", "Level.2.Survey.Data.Date",
+                                           "Data.Gap","Length..miles.",  "Length..meters." ,"Reach_start_river_miles", "Reach_end_river_miles"   )
+Reach_Information_data_columns_new_names = c("Reach Name","Basin","Assessment Unit","Spring Chinook Reach" ,"Steelhead Reach","Bull Trout Reach",
+                                             "Review Comments", "Reach Assessment Data", "Level 2 Survey Data", "Level 2 Data Prior to 2000", "Level 2 Survey Date",
+                                             "Data Gap","Length (miles)",  "Length (meters)" ,"RM Start", "RM End")
+
 # ORDER: REI ratings -> core metrics -> then the rest of them
 Order_of_Habitat_Attribute_Rating_Table_Columns = c("Coarse Substrate","% Fines/Embeddedness", "Cover- Wood","Pool Quantity & Quality", # <- REI Values
                                                     "Off-Channel- Floodplain", "Off-Channel- Side-Channels", "Cover- Undercut Banks", #  <- REI Values
@@ -525,7 +605,8 @@ Order_of_Habitat_Attribute_Rating_Table_Columns = c("Coarse Substrate","% Fines/
 # just runs script - output is Habitat_Attributes_Ratings_Table
 source(paste(script_path, "FUNCTIONS_for_Habitat_Attribute_Rating_Table_for_WebMap.R", sep=""))
 
-
+#  generate missing data layer (HQ habitat attributes that are missing) for WebMap
+source(paste(script_path, "Generate_Habitat_Quality_Scores_Missing_Data_Layer.R", sep=""))
 
 
 # -----------------------------------------------------------------------------------------------------------------------------------------------
@@ -595,9 +676,12 @@ write_xlsx(Reach_Habitat_Attribute_Life_Stage_Restoration_Output,output_path_x )
 colnames(Reach_Habitat_Attribute_Life_Stage_Species_Restoration_Output)[colnames(Reach_Habitat_Attribute_Life_Stage_Species_Restoration_Output) == "Habitat_Attribute"] <- "Limiting_Factor"
 output_path_x =  paste(output_path,'Reach_Habitat_Attribute_Life_Stage_Species_Restoration_Output.xlsx', sep="")
 write_xlsx(Reach_Habitat_Attribute_Life_Stage_Species_Restoration_Output,output_path_x )
-# ----------- Outward Facing Table (pops up when reach is clicked on) -----------
+# ----------- Outward Facing Table (pops up when reach is clicked on) - RESTORATION -----------
 output_path_x =  paste(output_path,'Restoration_Prioritization_Output_for_WebMap_Table.xlsx', sep="")
 write_xlsx(Restoration_Prioritization_Output_for_WebMap,output_path_x )
+# ----------- Outward Facing Table (pops up when reach is clicked on) - PROTECTION -----------
+output_path_x =  paste(output_path,'Protection_Prioritization_Output_for_WebMap_Table.xlsx', sep="")
+write_xlsx(Protection_Prioritization_Output_for_WebMap,output_path_x )
 
 # ----------- Habitat Attributes Table w/ Ratings (to put in WebMap) -----------
 output_path_x =  paste(output_path,'Habitat_Attributes_Ratings_Table.xlsx', sep="")
@@ -615,6 +699,18 @@ write_xlsx(Restoration_Unacceptable_and_At_Risk,output_path_x )
 # ----------------- output Barriers data -----------------------
 output_path_x = paste(output_path,'Barriers_Pathway_Output.xlsx', sep="")
 write_xlsx(Barriers_Pathways_Data, output_path_x)
+
+# ------------------ output Habitat Quality Scores for WebMap ----------------
+Habitat_Quality_Scores_for_WebMap = Habitat_Quality_Scores[,Habitat_Quality_Scores_columns_to_pull]
+output_path_x = paste(output_path,'Habitat_Quality_Scores_for_WebMap.xlsx', sep="")
+write_xlsx(Habitat_Quality_Scores_for_WebMap, output_path_x)
+
+# ------------------ output Basin Reach Information for WebMap ----------------
+Reach_Information_data_for_WebMap = Reach_Information_data[,Reach_Information_data_columns_to_pull]
+colnames(Reach_Information_data_for_WebMap) = Reach_Information_data_columns_new_names
+output_path_x = paste(output_path,'Reach_Information_Data_for_WebMap.xlsx', sep="")
+write_xlsx(Reach_Information_data_for_WebMap, output_path_x)
+
 
 # -----------------------------------------------------------------
 #     Projects Output

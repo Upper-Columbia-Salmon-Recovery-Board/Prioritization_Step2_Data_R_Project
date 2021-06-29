@@ -145,9 +145,9 @@ steelhead_life_stages_presence =     life_stage_priority_list = list("Adult Migr
                                                             "Spawning and Incubation" = "SH Spawning", "Summer Rearing" =  "SH Summer Rearing",
                                                             "Winter Rearing"  = "SH Winter Rearing",	"Smolt Outmigration" = "SH Smolt Emigration")
 
-bull_trout_life_stages_presence = list("Adult Migration"  = "BT Adult Spawning Migration",	"Holding and Maturation"= 	"BT Holding and Maturation",
+bull_trout_life_stages_presence = list("Adult Migration"  = "BT Adult Migration",	"Holding and Maturation"= 	"BT Holding and Maturation",
                                        "Spawning and Incubation" =	"BT Spawning",	"BT Natal Rearing" =  "BT Natal Rearing",
-                                       "Adult Non-Spawning" = "BT_AdultNonspawning", "BT Subadult Rearing"=  "BT Subadult Rearing")
+                                       "Adult Non-Spawning" = "BT Adult Non-Spawning", "BT Subadult Rearing"=  "BT Subadult Rearing")
 
 
 life_stages_prescence = list("spring_chinook_life_stages" =  spring_chinook_life_stages_presence,  
@@ -395,6 +395,53 @@ Protection_Reach_Scoring = Reach_Scoring_Restoration_and_Protection_Scoring %>%
 
 # ---------------------------------------------------------------------------
 #
+#   Wilderness Data
+#
+# ---------------------------------------------------------------------------
+
+# -------------- read in data ------------
+wilderness_path = "Y:/UCRTT/Prioritization/Step 2/Data/GIS/Reaches/Reaches_and_Wilderness/Protection_Ranks_Intersect_Federal_Wilderness.xlsx"
+Wilderness_Reaches_Intersect = read_excel( wilderness_path )
+# --------------- remove small reaches --------------
+Wilderness_Reaches_Intersect = Wilderness_Reaches_Intersect[which(Wilderness_Reaches_Intersect$Shape_Length > 100), ]
+
+# ---------- Reaches that were 100% in wilderness but directly adjacent to non-wilderness -----------
+reaches_to_exclude_wilderness = c("Chiwawa River Upper 04", "Chiwawa River Upper 05")
+
+# ------------ add to Reach Information --------------
+Reach_Information_data$Wilderness_overlap_percent = 0
+Reach_Information_data$Wilderness_overlap_100_percent = "no"
+
+for(i in 1:nrow(Wilderness_Reaches_Intersect)){
+  # --------------- row in reach info ---------------
+  row_x = which(Reach_Information_data$ReachName == Wilderness_Reaches_Intersect$ReachName[i])
+  # ------------------ original length ----------
+  length_orig_x = Reach_Information_data$Length..meters.[row_x]
+  # ------------------ length in wilderness ----------
+  length_wilderness_x = Wilderness_Reaches_Intersect$Shape_Length[i]
+  # ---------------- calculate if the same --------
+  length_percent_x = (length_wilderness_x / length_orig_x) * 100
+  if(length_percent_x>100){length_percent_x = 100}
+  # ----------------- add wilderness overlap -----------
+  Reach_Information_data$Wilderness_overlap_percent[row_x] = length_percent_x
+  
+  # --------------- if above 99% - wilderness - mark as "yes" ----------  
+  if( length_percent_x > 99 ){
+    
+    Reach_Information_data$Wilderness_overlap_100_percent[row_x] = "yes"
+  }
+  
+  # --------------- if a reach that is 100% in wildernes, but is adjacent to non-wilderness (within 300 feet)  ----------  
+  if( any(reaches_to_exclude_wilderness == Reach_Information_data$ReachName[row_x])){
+    Reach_Information_data$Wilderness_overlap_100_percent[row_x] = "no"
+  }
+  
+  
+}
+
+
+# ---------------------------------------------------------------------------
+#
 #  Okanogan EDT data
 #
 # ---------------------------------------------------------------------------
@@ -475,14 +522,33 @@ Habitat_Attribute_Notes_and_Professional_Judgement = read_excel( paste(habitat_d
 
 # ---------------------------------------------------------------------------
 #
-#  Reach Assessments Projects and Status
+#  Action Categories Crosswalks
 #
+# ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+#           Restoration
 # ---------------------------------------------------------------------------
 
 Crosswalk_Habitat_Attributes_and_Actions = read_excel( paste(crosswalks_path,'Crosswalk_Habitat_Attributes_and_Actions.xlsx', sep="/"), 
                                                        sheet = 'Sheet1')
 Crosswalk_Habitat_Attributes_and_Actions$Habitat_Attribute_2 = gsub(" ", "", Crosswalk_Habitat_Attributes_and_Actions$`Habitat Attribute`, fixed = TRUE)
 Crosswalk_Habitat_Attributes_and_Actions$Action_Category_2 = gsub(" ", "", Crosswalk_Habitat_Attributes_and_Actions$`Action Category`, fixed = TRUE) # get action category without spaces
+
+# ---------------------------------------------------------------------------
+#           Protection
+# ---------------------------------------------------------------------------
+Crosswalk_Protection_Action_Categories = read_excel( paste(crosswalks_path,'Crosswalk_Protection_Action_Categories.xlsx', sep="/"), 
+                                                       sheet = 'Sheet1')
+
+
+
+
+# ---------------------------------------------------------------------------
+#
+#  Reach Assessments Project Data
+#
+# ---------------------------------------------------------------------------
 
 Reach_Assessment_Project_Data = read_excel( paste(reach_assessment_projects_path,'Reach_Assessments_Projects_Table_05052020.xlsx', sep=""), 
                                                         sheet = 'Data_Entry')
@@ -496,6 +562,8 @@ for(i in 1:nrow(Action_Category_Name_Crosswalk)){
   Action_Category_Name_Crosswalk_Simple[as.character(Action_Category_Name_Crosswalk$Action_Category_from_Rating_Table[i])] =
     Action_Category_Name_Crosswalk$Action_Category_List[i]
 }
+
+
 
 # ---------------------------------------------------------------------------
 #

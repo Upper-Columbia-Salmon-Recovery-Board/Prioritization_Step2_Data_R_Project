@@ -26,6 +26,7 @@ if(test_x){
   LF_spring_chinook = Limiting_Factor_Pathway_Spring_Chinook[['Limiting_Factor_Pathway_Protection']]
   LF_steelhead = Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']]
   LF_bull_trout = Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Protection']]
+  exclude_bull_trout = "no"
   
 }
 
@@ -33,8 +34,14 @@ if(test_x){
 FUNCTION_Combine_Protection_Output = function(HQ_spring_chinook, HQ_steelhead, HQ_bull_trout, LF_spring_chinook, LF_steelhead, LF_bull_trout, exclude_bull_trout){
   
   # -------------- identify reaches across all protection
-  reaches_unique = unique( c(HQ_spring_chinook$ReachName, HQ_steelhead$ReachName, HQ_bull_trout$ReachName, 
-                          LF_spring_chinook$ReachName, LF_steelhead$ReachName, LF_bull_trout$ReachName))
+  if(exclude_bull_trout == "no"){
+    reaches_unique = unique( c(HQ_spring_chinook$ReachName, HQ_steelhead$ReachName, HQ_bull_trout$ReachName, 
+                               LF_spring_chinook$ReachName, LF_steelhead$ReachName, LF_bull_trout$ReachName))
+  }else{
+    reaches_unique = unique( c(HQ_spring_chinook$ReachName, HQ_steelhead$ReachName, HQ_bull_trout$ReachName, 
+                               LF_spring_chinook$ReachName))
+  }
+
   # -------- remove NA reach ---------
   xNA = which(is.na(reaches_unique))
   if(length(xNA)>0){
@@ -130,10 +137,13 @@ FUNCTION_Combine_Protection_Output = function(HQ_spring_chinook, HQ_steelhead, H
     
     
     # ------------------------------------
-    #     Action
+    #     Action Categories (based on Protection)
     # -----------------------------------
-    action_x = "Habitat Protection"
+    protection_pcnt = habitat_raw_data$UCSRB_pctProtected[which(habitat_raw_data$ReachName == reach_x)]
     
+    action_x = Crosswalk_Protection_Action_Categories$`Action Category`[ which(Crosswalk_Protection_Action_Categories$Percent_Protected_Lower <= protection_pcnt &
+            Crosswalk_Protection_Action_Categories$Percent_Protected_Upper > protection_pcnt ) ]
+
     
     # ------------------------------------
     #    Combine into one row, then output

@@ -31,7 +31,12 @@ library(mapview)
 # ---------------------------------------------------------------------------
 
 # ---------------------- reaches data ------------
-reaches_path = "C:/Users/Ryan/Documents/GitHub/Prioritization_Step2_Data_R_Project/Data/Reaches/Reaches.shp"
+#reaches_path = "C:/Users/Ryan/Documents/GitHub/Prioritization_Step2_Data_R_Project/Data/Reaches/Reaches.shp"
+#reaches <- sf::st_read(reaches_path) # this shapefile does not show up properly
+#reaches <- sf::st_transform(reaches, 4326)
+
+# ------ updated with Okanogan EDT data layers -----------------
+reaches_path = "Y:/UCRTT/Prioritization/Step 2/Data/GIS/Reaches/Reaches.shp"
 reaches <- sf::st_read(reaches_path) # this shapefile does not show up properly
 reaches <- sf::st_transform(reaches, 4326)
 
@@ -40,35 +45,37 @@ reaches <- sf::st_transform(reaches, 4326)
 #reaches2 <- readShapeLines(reaches_path,
 #                     proj4string=CRS("+proj=utm +zone=33 +datum=WGS84"))
 
-reaches_path2 = "C:/Users/Ryan/Documents/GitHub/Prioritization_Step2_Data_R_Project/Data/Reaches"
-reaches2 = readOGR(dsn = reaches_path2, layer = "Reaches")
+#reaches_path2 = "C:/Users/Ryan/Documents/GitHub/Prioritization_Step2_Data_R_Project/Data/Reaches"
+#reaches2 = readOGR(dsn = reaches_path2, layer = "Reaches")
 
 
 
 
 # -------------- update reach names ------------
-Okanogan_Reach_Crosswalk =  read_excel(  paste(Okanogan_EDT_path,'Okanogan_AU_Reach_Crosswalk.xlsx', sep="")  )
-for(reach_x in reaches$ReachName){
-  if(any(Okanogan_Reach_Crosswalk$ReachName_Old == reach_x)){
-    x_old = which(reaches$ReachName == reach_x)
-    x_new = which(Okanogan_Reach_Crosswalk$ReachName_Old == reach_x)
-    reaches$ReachName[x_old]  = Okanogan_Reach_Crosswalk$ReachName_New[x_new[1]]
-    
-    x_old = which(reaches2$ReachName == reach_x)
-    x_new = which(Okanogan_Reach_Crosswalk$ReachName_Old == reach_x)
-    reaches2$ReachName[x_old]  = Okanogan_Reach_Crosswalk$ReachName_New[x_new[1]]
-    
-    
+update_Okanogan_x = FALSE
+if(update_Okanogan_x){
+  Okanogan_Reach_Crosswalk =  read_excel(  paste(Okanogan_EDT_path,'Okanogan_AU_Reach_Crosswalk.xlsx', sep="")  )
+  for(reach_x in reaches$ReachName){
+    if(any(Okanogan_Reach_Crosswalk$ReachName_Old == reach_x)){
+      x_old = which(reaches$ReachName == reach_x)
+      x_new = which(Okanogan_Reach_Crosswalk$ReachName_Old == reach_x)
+      reaches$ReachName[x_old]  = Okanogan_Reach_Crosswalk$ReachName_New[x_new[1]]
+      
+      x_old = which(reaches2$ReachName == reach_x)
+      x_new = which(Okanogan_Reach_Crosswalk$ReachName_Old == reach_x)
+      reaches2$ReachName[x_old]  = Okanogan_Reach_Crosswalk$ReachName_New[x_new[1]]
+      
+      
+    }
   }
 }
+
 
 
 # ---------------- Reaches from Jan 2021 ------------
 #reaches_path = "C:/Users/Ryan/Downloads/Reaches_(All_Jan2021)/Reaches_(All).shp"
 #reaches_jan2021 <- sf::st_read(reaches_path) # this shapefile does not show up properly
 #reaches_jan2021 <- sf::st_transform(reaches_jan2021, 4326)
-
-
 
 # ---------------------------------------------------------------------------
 #  Read in Habitat Quality Score
@@ -241,7 +248,7 @@ reaches$color_reach[which(reaches$ReachName == "Johnson 16-1")] = 1
 color_palette_x = c("red", "blue")
 color_palette_continuous_LARGE = brewer.pal(9, 'Set1')
 # 
-mapview(reaches, lwd=4, zcol="RM_End", legend = mapviewGetOption("legend"), na.color='grey',
+mapview(reaches, lwd=4, zcol="Length_m", legend = mapviewGetOption("legend"), na.color='grey',
         color= color_palette_continuous_LARGE, map.types = c("CartoDB.Positron","CartoDB.DarkMatter",  "Esri.WorldImagery", "OpenStreetMap"))
 
 # ---------------------------------------------------------------------------

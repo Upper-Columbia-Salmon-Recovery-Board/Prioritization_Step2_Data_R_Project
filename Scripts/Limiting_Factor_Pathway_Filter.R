@@ -47,9 +47,9 @@ for(habitat_attribute_x in unique(Habitat_Attribute_Scores$Habitat_Attribute)[or
 #
 # ---------------------------------------------------------------------------
 
-test_x = TRUE
+test_x = FALSE
 if(test_x){
-  species = "Steelhead"
+  species = "Spring Chinook"
   basins = c("Methow",  "Entiat","Wenatchee", "Okanogan")
 }
 
@@ -296,7 +296,7 @@ Generate_Limiting_Factor_Output_Table = function(species, basins){
 #
 # ---------------------------------------------------------------------------
 
-Limiting_Factor_Pathway_Spring_Chinook_NO_FILTERS = Generate_Limiting_Factor_Output_Table_NO_FILTERS("Spring Chinook", basins)
+# Limiting_Factor_Pathway_Spring_Chinook_NO_FILTERS = Generate_Limiting_Factor_Output_Table_NO_FILTERS("Spring Chinook", basins)
 
 Generate_Limiting_Factor_Output_Table_NO_FILTERS = function(species, basins){
   
@@ -622,6 +622,7 @@ Generate_Species_Output_Table_ALL_LIFE_STAGES = function(species){
 #         and Protection scores, list all 1 or 3 habitat attributes        
 # -----------------------------------------------------------------------------------------
 # attributes not in data: Entrainment - Fry OR Entrainment- Summer Rearing (Entrainment/Stranding) is present AND Predators- Adults are misspelled
+# Generate_individual_life_stage_score("Spring Chinook", "Adult Migration")
 
 Generate_individual_life_stage_score = function(species, life_stage){
   

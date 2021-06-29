@@ -30,6 +30,14 @@ reaches_path = "C:/Users/Ryan/Documents/GitHub/Prioritization_Step2_Data_R_Proje
 #reaches <- st_read(reaches_path, stringsAsFactors = TRUE) # this shapefile does not show up properly
 #reaches <- sf::st_transform(reaches, 4326)
 
+# ------ updated with Okanogan EDT data layers -----------------
+reaches_path = "Y:/UCRTT/Prioritization/Step 2/Data/GIS/Reaches/Reaches.shp"
+reaches <- sf::st_read(reaches_path) # this shapefile does not show up properly
+reaches <- sf::st_transform(reaches, 4326)
+
+matrix(unname(unlist(reaches$geometry[144])), ncol = 2)
+
+
 ogrListLayers(reaches_path) #will show you available layers for the above dataset
 
 reaches=readOGR(reaches_path, layer="Reaches") #will load the shapefile to your dataset.
@@ -101,7 +109,6 @@ reaches_Okanogan_new = reaches_Okanogan[,c("ReachName", "Basin","Assessment", "R
 # ---------------------------------------------------------------------------
 # ---- exclude Okanogan -----
 reaches_new = reaches[-which(reaches$Basin == "Okanogan"),]
-
 
 reaches_Okanogan_new2 = reaches_Okanogan_new
 reaches_new2 = reaches_new

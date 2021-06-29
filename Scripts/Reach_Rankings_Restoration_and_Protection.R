@@ -21,7 +21,7 @@
 
 
 #  to test
-test_x = FALSE
+test_x = TRUE
 if(test_x){
   basins = c( "Wenatchee", "Methow", "Entiat", "Okanogan")
 }
@@ -428,7 +428,7 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   if(exclude_bull_trout == "no"){
     Habitat_Quality_Pathway_Protection_Bull_Trout = Bull_Trout_Reach_Information_data_protection %>%  
       filter(ReachName   %in%   Habitat_Quality_Scores_Protection$`ReachName`)
-    print(paste("Steelhead Protection - total after HQ score filter: ", nrow(Habitat_Quality_Pathway_Protection_Bull_Trout), sep=""))
+    print(paste("Bull Trout Protection - total after HQ score filter: ", nrow(Habitat_Quality_Pathway_Protection_Bull_Trout), sep=""))
   }
   
   #  ---------------------------------------------------------------------------------
@@ -462,10 +462,9 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   #                     add to output of all reaches 
   # ------------------------------------------------------------------------ 
   
-  
   # ------------------ function that outputs the entire row (so you can check) ------
-  Limiting_Factor_Output_ALL = FUNCTION_calc_Limiting_Factor_Score(Output_Spring_Chinook_All)
-  
+  Limiting_Factor_Output_ALL_Spring_Chinook = FUNCTION_calc_Limiting_Factor_Score_ALL_Output(Output_Spring_Chinook_All, "Spring Chinook")
+  Limiting_Factor_Output_ALL_Steelhead = FUNCTION_calc_Limiting_Factor_Score_ALL_Output(Output_Steelhead_All, "Steelhead")
   
   # ------------------------- Spring Chinook ---------------------------------- 
   # list "yes" or "no" if it has a limiting factor in a high priority life stage (maybe list the limiting factor OR life stage?)
@@ -484,7 +483,7 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
       output_limiting_factor_x = c()
       for(x in rows_x){
         #output_life_stages_x = c(output_life_stages_x, Limiting_Factor_Pathway_Steelhead[["Limiting_Factor_Pathway_Restoration"]][x,c("life_stage")])
-        output_limiting_factor_x = c(output_limiting_factor_x, Limiting_Factor_Pathway_Spring_Chinook[["Limiting_Factor_Pathway_Restoration"]][x,c("unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes")])
+        output_limiting_factor_x = c(output_limiting_factor_x, Limiting_Factor_Pathway_Spring_Chinook[["Limiting_Factor_Pathway_Restoration"]][x,c("unacceptable_and_at_risk_1_3_indiv_habitat_attributes")])
       }
       
       # ------------- IF reach is not in the LF pathway -----
@@ -525,7 +524,6 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   # ------------- combine -------------
   Output_Spring_Chinook_All = merge(Output_Spring_Chinook_All  ,HQ_or_LF_RESTORATION_filter_pass, by = "ReachName", all.x= TRUE )
   
-  
   # ------------------------- Steelhead ---------------------------------- 
   # list "yes" or "no" if it has a limiting factor in a high priority life stage (maybe list the limiting factor OR life stage?)
   # ----------- loop through each reach and identify if the reach has a limiting factor in a priority life stage
@@ -543,7 +541,7 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
       output_limiting_factor_x = c()
       for(x in rows_x){
         #output_life_stages_x = c(output_life_stages_x, Limiting_Factor_Pathway_Steelhead[["Limiting_Factor_Pathway_Restoration"]][x,c("life_stage")])
-        output_limiting_factor_x = c(output_limiting_factor_x, Limiting_Factor_Pathway_Steelhead[["Limiting_Factor_Pathway_Restoration"]][x,c("unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes")])
+        output_limiting_factor_x = c(output_limiting_factor_x, Limiting_Factor_Pathway_Steelhead[["Limiting_Factor_Pathway_Restoration"]][x,c("unacceptable_and_at_risk_1_3_indiv_habitat_attributes")])
       }
       
     # ------------- IF reach is not in the LF pathway -----
@@ -584,11 +582,10 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   # ------------- combine -------------
   Output_Steelhead_All = merge(Output_Steelhead_All  ,HQ_or_LF_RESTORATION_filter_pass, by = "ReachName", all.x= TRUE )
   
- 
   # ----------------------- BULL TROUT---------------------
   if(exclude_bull_trout == "no"){
     # ------------- only pull reaches with unacceptable attributes -----------
-    Limiting_Factor_Pathway_Bull_Trout_Reach_Ranking = Limiting_Factor_Pathway_Bull_Trout[["Limiting_Factor_Pathway_Restoration"]][nchar(Limiting_Factor_Pathway_Bull_Trout[["Limiting_Factor_Pathway_Restoration"]]$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes)>0,]
+    Limiting_Factor_Pathway_Bull_Trout_Reach_Ranking = Limiting_Factor_Pathway_Bull_Trout[["Limiting_Factor_Pathway_Restoration"]][nchar(Limiting_Factor_Pathway_Bull_Trout[["Limiting_Factor_Pathway_Restoration"]]$unacceptable_and_at_risk_1_3_indiv_habitat_attributes)>0,]
     # --------------- filter  the reaches ---------------
     Limiting_Factor_Pathway_Restoration_Bull_Trout = Bull_Trout_Reach_Information_data_restoration %>%  
       filter(ReachName   %in%  Limiting_Factor_Pathway_Bull_Trout_Reach_Ranking$`ReachName`)
@@ -600,14 +597,14 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   #  ---------------------------------------------------------------------------------
   
   # ----------------------- SPRING CHINOOK ---------------------
-  Limiting_Factor_Pathway_Protection_Spring_Chinook_LF_Protection_Pass = Spring_Chinook_Limiting_Factor_Scores_ALL_REACHES[which(Spring_Chinook_Limiting_Factor_Scores_ALL_REACHES$LF_Pct > 0.7), ]
+  Limiting_Factor_Pathway_Protection_Spring_Chinook_LF_Protection_Pass = Limiting_Factor_Output_ALL_Spring_Chinook[which(Limiting_Factor_Output_ALL_Spring_Chinook$Life_Stage_Habitat_Degradation > 0.7), ]
   Limiting_Factor_Pathway_Protection_Spring_Chinook = Spring_Chinook_Reach_Information_data_protection %>%  
     filter(ReachName   %in%   Limiting_Factor_Pathway_Protection_Spring_Chinook_LF_Protection_Pass$ReachName)
-  print(paste("Spring Chinook Restoration - total after LF score filter: ", nrow(Limiting_Factor_Pathway_Protection_Spring_Chinook), sep=""))
+  print(paste("Spring Chinook Protection - total after LF score filter: ", nrow(Limiting_Factor_Pathway_Protection_Spring_Chinook), sep=""))
   # -------------- combine with HQ Pathway ------------
   
   # ----------------------- STEELHEAD ---------------------
-  Limiting_Factor_Pathway_Protection_Steelhead_LF_Protection_Pass = Steelhead_Limiting_Factor_Scores_ALL_REACHES[which(Steelhead_Limiting_Factor_Scores_ALL_REACHES$LF_Pct > 0.7), ]
+  Limiting_Factor_Pathway_Protection_Steelhead_LF_Protection_Pass = Limiting_Factor_Output_ALL_Steelhead[which(Limiting_Factor_Output_ALL_Steelhead$Life_Stage_Habitat_Degradation > 0.7), ]
   Limiting_Factor_Pathway_Protection_Steelhead = Steelhead_Reach_Information_data_protection %>%  
     filter(ReachName   %in%   Limiting_Factor_Pathway_Protection_Steelhead_LF_Protection_Pass$ReachName)
   print(paste("Steelhead Restoration - total after LF score filter: ", nrow(Limiting_Factor_Pathway_Protection_Steelhead), sep=""))
@@ -712,7 +709,6 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     HQ_and_LF_Pathway_Protection_Bull_Trout = rbind(Habitat_Quality_Pathway_Protection_Bull_Trout,  Limiting_Factor_Pathway_Protection_Bull_Trout)
     HQ_and_LF_Pathway_Protection_Bull_Trout = HQ_and_LF_Pathway_Protection_Bull_Trout[!duplicated(HQ_and_LF_Pathway_Protection_Bull_Trout$ReachName), ]
   }
-  
   
   #  ---------------------------------------------------------------------------------
   #
@@ -951,6 +947,11 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     # ----------- combine ---------------
     Habitat_Quality_Pathway_Protection = rbind(Habitat_Quality_Pathway_Protection,Habitat_Quality_Pathway_Protection_Bull_Trout_X )
   }
+  
+  #  ---------------------------------------------------------------------------------
+  #               Protection - remove any reaches with less than 0.5 for HQ
+  #  ---------------------------------------------------------------------------------
+  Habitat_Quality_Pathway_Protection = Habitat_Quality_Pathway_Protection[ which(Habitat_Quality_Pathway_Protection$HQ_Pct > HQ_Pct_for_LF_PCT_in_Ranks), ]
   
   # ---------------------------------------------------------------------------------------
   #
@@ -1331,8 +1332,6 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     Restoration_Scores_Output = NA
   }
   
-
-  
   # -------------------------------------------------------
   #
   #     Calculate Scores and Sort into Tiers
@@ -1537,6 +1536,12 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
         Protection_Scores_Output$AU_level_Reach_Rank[ which(Protection_Scores_Output$ReachName == reach_x)] = AU_rank_x
       }
       #Protection_Scores_Output$AU_level_Reach_Rank[which(Protection_Scores_Output$Assessment.Unit == AU_x)] = AU_data_frame$AU_level_Reach_Rank
+      
+      
+      # ----------------------------------------------
+      #    Rank them (across all reaches)
+      # ----------------------------------------------
+      Protection_Scores_Output$Rank_Across_All_Reaches = rank( -Protection_Scores_Output$Reach_Rank_Total_Score, ties.method= "min")
       
       
     }
@@ -1777,7 +1782,9 @@ function_total_impaired_habitat_attribute = function(x, output){
 
 
 # --------------------------------------------------------------------------------------------------------------------------
-#        Primary Function
+#
+#        Primary Function to pull Limiting Factor Score
+#
 # --------------------------------------------------------------------------------------------------------------------------
 
 #data_x = Limiting_Factor_Reach_ALL_attributes[1:10,]
@@ -1786,6 +1793,7 @@ function_total_impaired_habitat_attribute = function(x, output){
 # Habitat_Quality_Pathway_Restoration_MASTER = Habitat_Quality_Pathway_Restoration
 
 #FUNCTION_calc_Limiting_Factor_Score(Habitat_Quality_Pathway_Restoration) 
+
 
 FUNCTION_calc_Limiting_Factor_Score = function(Habitat_Quality_Pathway_Restoration ){
   
@@ -2082,7 +2090,7 @@ FUNCTION_calc_Limiting_Factor_Score = function(Habitat_Quality_Pathway_Restorati
   # data_frame_x = cbind( Limiting_Factor_Reach_ALL_attributes[order(Limiting_Factor_Reach_ALL_attributes$ReachName),], Limiting_Factor_Reach_ALL_attributes_T_F_Presence[order(Limiting_Factor_Reach_ALL_attributes_T_F_Presence$ReachName),] )
   # ----------------------- calculate all the missing data --------------------
   #data_frame_x= Limiting_Factor_Reach_ALL_attributes_T_F_Presence[order(Limiting_Factor_Reach_ALL_attributes_T_F_Presence$ReachName),]
-  Limiting_Factor_Reach_ALL_attributes_T_F_Presence_one_column = apply( Limiting_Factor_Reach_ALL_attributes_T_F_Presence[order(Limiting_Factor_Reach_ALL_attributes_T_F_Presence$ReachName),] , 1, function_missing_data_in_one_column)
+  #Limiting_Factor_Reach_ALL_attributes_T_F_Presence_one_column = apply( Limiting_Factor_Reach_ALL_attributes_T_F_Presence[order(Limiting_Factor_Reach_ALL_attributes_T_F_Presence$ReachName),] , 1, function_missing_data_in_one_column)
   
   # -------- A) get one row with all missing data and B) add "Missing Data" to Limiting_Factor_Reach_ALL_attributes where data is missing ----
   list_of_missing_data = c()
@@ -2158,6 +2166,400 @@ FUNCTION_calc_Limiting_Factor_Score = function(Habitat_Quality_Pathway_Restorati
 # Limiting_Factor_Reach_ALL_attributes_T_F_Presence_3 = cbind(Limiting_Factor_Reach_ALL_attributes,  Limiting_Factor_Reach_ALL_attributes_T_F_Presence, Limiting_Factor_Reach_Ranking_Scores_Output)
 
 # Limiting_Factor_Reach_ALL_attributes_T_F_Presence_3 =cbind(Limiting_Factor_Reach_ALL_attributes[order(Limiting_Factor_Reach_ALL_attributes$ReachName),], Limiting_Factor_Reach_ALL_attributes_T_F_Presence[order(Limiting_Factor_Reach_ALL_attributes_T_F_Presence$ReachName),] , Limiting_Factor_Reach_Ranking_Scores_Output[order(Limiting_Factor_Reach_Ranking_Scores_Output$ReachName),] ) 
+
+
+
+
+# --------------------------------------------------------------------------------------------------------------------------
+#        Primary Function
+# --------------------------------------------------------------------------------------------------------------------------
+
+#data_x = Limiting_Factor_Reach_ALL_attributes[1:10,]
+#apply(data_x[,2:ncol(data_x)], 1, function_total_impaired_habitat_attribute)
+
+# Habitat_Quality_Pathway_Restoration_MASTER = Habitat_Quality_Pathway_Restoration
+
+#FUNCTION_calc_Limiting_Factor_Score(Habitat_Quality_Pathway_Restoration) 
+
+test_x = TRUE
+if(test_x){
+  Habitat_Quality_Pathway_Restoration = Output_Spring_Chinook_All
+  species_all = "Spring Chinook"
+}
+
+# x_output = FUNCTION_calc_Limiting_Factor_Score_ALL_Output(Output_Spring_Chinook_All, "Spring Chinook")
+
+FUNCTION_calc_Limiting_Factor_Score_ALL_Output = function(Habitat_Quality_Pathway_Restoration, species_all ){
+  
+  # ----------- use core metrics? --------
+  core_metric_use = "yes"
+  
+  # -------------------------------------------------------------------------------------------
+  #
+  #      Identify Species and Life stages Present
+  #
+  # -------------------------------------------------------------------------------------------
+  
+  # --------------------------------------------------------------------------
+  #         Generate Limiting Factor Data Table (to fill out and add to)
+  # --------------------------------------------------------------------------
+  # -------- create unique data table to add habitat attributes ----------
+  Limiting_Factor_Reach_Ranking_Scores = as.data.frame(Habitat_Quality_Pathway_Restoration[,'ReachName'])
+  colnames(Limiting_Factor_Reach_Ranking_Scores) = "ReachName"
+  # --------------- add columns ----------------
+  Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_Present_List = NA
+  Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_Missing_List = NA
+  Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_Present_Total = 0
+  Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_All_Total = 0
+  Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_Percent_Data_Presence = 0
+  Limiting_Factor_Reach_Ranking_Scores$Total_Attribute_Score = 0
+  Limiting_Factor_Reach_Ranking_Scores$Species = NA
+  Limiting_Factor_Reach_Ranking_Scores$Priority_Life_Stages = NA
+  
+  # ---------------- start data frame to combine all habitat attributes -------
+  Limiting_Factor_Reach_ALL_attributes = as.data.frame(Limiting_Factor_Reach_Ranking_Scores$ReachName)
+  colnames(Limiting_Factor_Reach_ALL_attributes) = "ReachName"
+  Limiting_Factor_Reach_ALL_attributes$Priority_Life_Stages = NA
+  # ---------------- start data frame for True/False if habitat data present -------
+  Limiting_Factor_Reach_ALL_attributes_T_F_Presence = as.data.frame(Limiting_Factor_Reach_Ranking_Scores$ReachName)
+  colnames(Limiting_Factor_Reach_ALL_attributes_T_F_Presence) = "ReachName"
+  
+  # --------------------------------------------------------------------------
+  #         Get Species
+  # --------------------------------------------------------------------------
+  # -------- get species list ----------
+  if(species_all == "Spring Chinook" ){
+    Species_List = c("Spring Chinook")
+  }else if(species_all == "Steelhead"){
+    Species_List = c("Steelhead")
+  }else if(species_all == "Bull Trout"){
+    Species_List = c("Bull Trout")
+  }
+  
+  reaches_unique_x = c() # just to output which reaches have high priority life stages
+  # --------------------------------------------------------------------------
+  #         Loop through Each Species
+  # --------------------------------------------------------------------------
+  for(species_x in Species_List){
+    print(paste('------------------',species_x,"------------------"))
+    # --------------------------------------------------------------------------
+    #         Generate Life Stage Names
+    # --------------------------------------------------------------------------
+    # ----------------- life stage reach presence name ------------
+    if(species_x == "Spring Chinook"){
+      life_stages_priorities_species_specific =  life_stages_priorities[['spring_chinook_life_stages']]
+      life_stages_prescence_species_specific =  life_stages_prescence[['spring_chinook_life_stages']]
+      
+    }
+    
+    # -------------- pull for Steelhead ------------
+    if(species_x == "Steelhead" ){
+      # ---------------- life stage priority names ---------
+      life_stages_priorities_species_specific =  life_stages_priorities[['steelhead_life_stages']]
+      life_stages_prescence_species_specific =  life_stages_prescence[['steelhead_life_stages']]
+    }
+    
+    # -------------- pull for Bull Trout ------------
+    if(species_x == "Bull Trout" & exclude_bull_trout == "no"){
+      # ---------------- life stage priority names ---------
+      life_stages_priorities_species_specific =  life_stages_priorities[['bull_trout_life_stages']]
+      life_stages_prescence_species_specific =  life_stages_prescence[['bull_trout_life_stages']]
+    }
+    
+    # --------------------------------------------------------------------------
+    #         Generate Habitat Attribute Scores and Add to Limiting_Factor_Reach_Ranking_Scores
+    # --------------------------------------------------------------------------
+    # -------------- Get unique life stages ---------------------
+    life_stages_unique = unique(Attribute_LifeStage_Crosswalk$`Life Stage`[which(Attribute_LifeStage_Crosswalk$Species == species_x)])
+    life_stage_x = life_stages_unique[2]
+    
+    for(life_stage_x in life_stages_unique){
+      print(life_stage_x)
+      # ------------------------------------------
+      #    Filter out if life stage is high priority in reaches
+      # ---------------------------------------------
+      # NOTE - just pulling 
+      # --------------------- high priority reaches -----------------
+      life_stages_priorities_species_specific_list = Life_Stage_Priorities_AU_and_Reach_data %>%
+        filter(Life_Stage_Priorities_AU_and_Reach_data[life_stages_priorities_species_specific[[life_stage_x]]] ==  Life_Stage_Priority)
+      # ----------------- life stage present in those high priority reaches --------------
+      life_stages_priorities_species_specific_list = life_stages_priorities_species_specific_list %>%
+        filter(life_stages_priorities_species_specific_list[life_stages_prescence_species_specific[[life_stage_x]]] ==  1)
+      #life_stages_priorities_species_specific_list = Life_Stage_Priorities_AU_and_Reach_data %>%
+      #  filter(Life_Stage_Priorities_AU_and_Reach_data[life_stages_prescence_species_specific[[life_stage_x]]] ==  1)
+      
+      # ------------------- just pull the reaches ----------------
+      #Reaches_life_stage_high_priority = as.data.frame(life_stages_priorities_species_specific_list[,c("ReachName")])[['ReachName']]
+      
+      # ------------------ identify overlapping reaches with reaches already filtered ------------
+      Reaches_life_stage_high_priority_Overlap = intersect( life_stages_priorities_species_specific_list$ReachName,
+                                                            Habitat_Quality_Pathway_Restoration$ReachName )
+      #Reaches_life_stage_high_priority_Overlap = Habitat_Quality_Pathway_Restoration$ReachName
+      reaches_unique_x = unique(c(reaches_unique_x,Reaches_life_stage_high_priority_Overlap))
+      
+      # ---------------------------------------------
+      #    Pull Habitat Attributes 
+      # ---------------------------------------------
+      habitat_attributes_reaches_x = Generate_individual_life_stage_habitat_attributes(Reaches_life_stage_high_priority_Overlap, species_x, 
+                                                                                       life_stage_x, core_metric_use)
+      # -------------------------------------------
+      #   Merge these habitat attributes
+      # ------------------------------------------
+      if( !is.na(habitat_attributes_reaches_x)[1] ){
+        colx = colnames(habitat_attributes_reaches_x)[2:ncol(habitat_attributes_reaches_x)][1]
+        
+        for(colx in colnames(habitat_attributes_reaches_x)[2:ncol(habitat_attributes_reaches_x)] ){
+          
+          
+          # -------------- if this is habitat attribute is already present ------  
+          if( any(colnames(Limiting_Factor_Reach_ALL_attributes) == colx) ){
+            
+            # ---------------------- fill in columns with 1, 3, 5 for the habitat attributes ----------------
+            habitat_attributes_reaches_x2 = habitat_attributes_reaches_x[,c("ReachName",colx)]  # pull ReachName and habitat attribute column
+            colnames(habitat_attributes_reaches_x2)[2] = "second"  # name the habitat attribute with the same name as second 
+            Limiting_Factor_Reach_ALL_attributes = merge(Limiting_Factor_Reach_ALL_attributes, habitat_attributes_reaches_x2[,c("ReachName","second")], by="ReachName", all.x=TRUE)
+            # ------------------ just pulling the number (taking minimum - but if it's a number it's the same number) -------
+            Limiting_Factor_Reach_ALL_attributes[,colx] = apply(Limiting_Factor_Reach_ALL_attributes[,c(colx, "second")], 1, two_attribute_fxn)
+            # ----------------- remove the "second" number ------------------
+            Limiting_Factor_Reach_ALL_attributes = Limiting_Factor_Reach_ALL_attributes[, - which(colnames(Limiting_Factor_Reach_ALL_attributes) == "second")]
+            # -------------------- add life-stage species combo ------
+            
+            # ------ get the index for each reach --------
+            reaches_to_merge_index = c()
+            for(reach_x in habitat_attributes_reaches_x2$ReachName){
+              x = which(Limiting_Factor_Reach_ALL_attributes$ReachName == reach_x)
+              if(length(x)>0){
+                reaches_to_merge_index = rbind(reaches_to_merge_index, x)
+              }
+            }
+            # ----- add life stage - species to column -----
+            life_stage_species_x = paste(life_stage_x,species_x,sep="-")
+            Limiting_Factor_Reach_ALL_attributes$Priority_Life_Stages[reaches_to_merge_index] = paste(Limiting_Factor_Reach_ALL_attributes$Priority_Life_Stages[reaches_to_merge_index], life_stage_species_x, sep=", " )
+            
+            # --------------- fill in True/False if present ---------
+            habitat_attributes_reaches_x2$T_or_F = FALSE
+            habitat_attributes_reaches_x2[which( !is.na(habitat_attributes_reaches_x2[,"second"]) ),"T_or_F"] = TRUE 
+            habitat_attributes_reaches_x2 = habitat_attributes_reaches_x2[,-which( colnames(habitat_attributes_reaches_x2) == "second") ]
+            # --------------------- merge -------------
+            Limiting_Factor_Reach_ALL_attributes_T_F_Presence = merge(Limiting_Factor_Reach_ALL_attributes_T_F_Presence, habitat_attributes_reaches_x2[,c("ReachName","T_or_F")], by="ReachName", all.x=TRUE)
+            # ------------------ just pulling the number (taking minimum - but if it's a number it's the same number) -------
+            Limiting_Factor_Reach_ALL_attributes_T_F_Presence[,colx] = apply(Limiting_Factor_Reach_ALL_attributes_T_F_Presence[,c(colx, "T_or_F")], 1, two_attribute_T_or_F_fxn)
+            # ----------------- remove the "second" number ------------------
+            Limiting_Factor_Reach_ALL_attributes_T_F_Presence = Limiting_Factor_Reach_ALL_attributes_T_F_Presence[, - which(colnames(Limiting_Factor_Reach_ALL_attributes_T_F_Presence) == "T_or_F")]
+            
+            
+            # ---------- if this habitat attribute is not in Limiting_Factor_Reach_ALL_attributes ------
+          }else{
+            # ---------------- habitat attributes ---------
+            Limiting_Factor_Reach_ALL_attributes = merge(Limiting_Factor_Reach_ALL_attributes, habitat_attributes_reaches_x[,c("ReachName",colx)], by="ReachName", all.x=TRUE)
+            
+            # -------------- T/F data frame -----------------
+            habitat_attributes_reaches_x2 = habitat_attributes_reaches_x[,c("ReachName",colx)]  # pull ReachName and habitat attribute column
+            habitat_attributes_reaches_x2$T_or_F = FALSE
+            habitat_attributes_reaches_x2[which( !is.na(habitat_attributes_reaches_x2[,colx]) ),"T_or_F"] = TRUE 
+            habitat_attributes_reaches_x2 = habitat_attributes_reaches_x2[,-which( colnames(habitat_attributes_reaches_x2) == colx) ]
+            colnames(habitat_attributes_reaches_x2)[2] = colx
+            Limiting_Factor_Reach_ALL_attributes_T_F_Presence = merge(Limiting_Factor_Reach_ALL_attributes_T_F_Presence, habitat_attributes_reaches_x2[,c("ReachName",colx)], by="ReachName", all.x=TRUE)
+          }
+          # ---------------- pull Limiting_Factor_Reach_ALL_attributes with the same name ---------
+        }
+        
+      }
+      
+      
+      
+      # ---------------- if habitat attribute data present for these reaches and life stages ----------------
+      if( !is.na(habitat_attributes_reaches_x)[1] ){
+        # ---------------------------------------------
+        #   Combine with Data
+        # ---------------------------------------------
+        # ------------ get the unique reaches -------------
+        reaches_Limiting_Factor_x = c()
+        for(reach_x2 in habitat_attributes_reaches_x$ReachName){
+          # ------- identify row (index value) with this reach ------
+          x = which(Limiting_Factor_Reach_Ranking_Scores$ReachName == reach_x2)
+          reaches_Limiting_Factor_x = rbind(reaches_Limiting_Factor_x,x )
+          
+        }
+        reaches_Limiting_Factor_x = as.vector(reaches_Limiting_Factor_x) 
+        
+        # ----------------------- get unique habitat attributes --------------
+        colnames_x = colnames(habitat_attributes_reaches_x)[2:length(colnames(habitat_attributes_reaches_x))]
+        # ------------ add the life stage and species to the name -----------
+        habitat_attributes_life_stage_species_x = paste(colnames_x,species_x,life_stage_x,sep="_")
+        # ----------------- loop through each habitat attribute --------
+        #colx = colnames_x[2]
+        i = 0
+        for(colx in colnames_x){
+          i = i + 1
+          # --------------- get reaches with data present and absent ----------------
+          presence_x = which(habitat_attributes_reaches_x[,colx] > 0 )
+          absence_x = which(is.na(habitat_attributes_reaches_x[,colx]) )
+          # ----------------------- fill Habitat Attribute Presence List ----------------------
+          Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_Present_List[reaches_Limiting_Factor_x[presence_x] ] = paste( Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_Present_List[reaches_Limiting_Factor_x[presence_x] ],  habitat_attributes_life_stage_species_x[i], sep=",")
+          # ----------------------- fill Habitat Attribute Missing List ----------------------
+          if( length(absence_x) > 0 ){
+            Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_Missing_List[reaches_Limiting_Factor_x[absence_x] ] = paste(Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_Missing_List[reaches_Limiting_Factor_x[absence_x] ], habitat_attributes_life_stage_species_x[i], sep=",")
+          }
+          # ----------------------- add to Data Presence Total ----------------------
+          Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_Present_Total[reaches_Limiting_Factor_x[presence_x] ] =  Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_Present_Total[reaches_Limiting_Factor_x[presence_x] ] + 1
+          # ----------------------- add to Data Total  ----------------------
+          Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_All_Total[reaches_Limiting_Factor_x] =  Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_All_Total[reaches_Limiting_Factor_x]  + 1
+          # ----------------------- add to Present Presence ----------------------
+          Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_Percent_Data_Presence[reaches_Limiting_Factor_x] = Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_Present_Total[reaches_Limiting_Factor_x ] /  Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_All_Total[reaches_Limiting_Factor_x]
+          # ----------------------- add to Total score----------------------
+          Limiting_Factor_Reach_Ranking_Scores$Total_Attribute_Score[reaches_Limiting_Factor_x] = rowSums( cbind( Limiting_Factor_Reach_Ranking_Scores$Total_Attribute_Score[reaches_Limiting_Factor_x], habitat_attributes_reaches_x[,colx] ), na.rm=T ) 
+          # -----------------------include species----------------------
+          Limiting_Factor_Reach_Ranking_Scores$Species[reaches_Limiting_Factor_x] = paste(Limiting_Factor_Reach_Ranking_Scores$Species[reaches_Limiting_Factor_x], species_x) 
+          # --------------------- add life stages -----------------
+          Limiting_Factor_Reach_Ranking_Scores$Priority_Life_Stages[reaches_Limiting_Factor_x] = paste(Limiting_Factor_Reach_Ranking_Scores$Priority_Life_Stages[reaches_Limiting_Factor_x], life_stage_x) 
+        }
+        
+      }
+      
+      # --------- remove T_or_F column ----------------
+      if( any(colnames(Limiting_Factor_Reach_ALL_attributes_T_F_Presence) == "T_or_F")  ){
+        Limiting_Factor_Reach_ALL_attributes_T_F_Presence = Limiting_Factor_Reach_ALL_attributes_T_F_Presence[ , -which(colnames(Limiting_Factor_Reach_ALL_attributes_T_F_Presence) == "T_or_F")]
+      }
+      
+    }
+    
+  } # end species loop
+  
+  # -------------------------------------------------------------------------------------------
+  #
+  #     Calculate Totals
+  #
+  # -------------------------------------------------------------------------------------------
+  
+  Limiting_Factor_Reach_Ranking_Scores$Limiting_Factor_Score_Percent = (Limiting_Factor_Reach_Ranking_Scores$Total_Attribute_Score / (Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_All_Total*5) ) * 100
+  # ------- all rows -----------
+  # potential columns:  "Habitat_Attribute_Present_List", "Habitat_Attribute_Missing_List" , "Habitat_Attribute_Present_Total", "Habitat_Attribute_All_Total" ,"Habitat_Attribute_Percent_Data_Presence", "Total_Attribute_Score", "Species", "Limiting_Factor_Score_Percent"  
+  
+  # -------------------------------------------------------------------------------------------
+  #
+  #     IF no attributes (e.g. not a high priority life stage) - set to 0
+  #
+  # -------------------------------------------------------------------------------------------
+  
+  no_high_priority_life_stage_x = which( is.na(Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_Present_List) &
+                                           is.na(Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_Missing_List) )
+  # ------------ set to 0 -------------
+  Limiting_Factor_Reach_Ranking_Scores$Limiting_Factor_Score_Percent[no_high_priority_life_stage_x] = 0
+  
+  # -------------------------------------------------------------------------------------------
+  #
+  #     Remove leading "NA,"
+  #
+  # -------------------------------------------------------------------------------------------
+  
+  # -------------------- remove leading "NA," from habitat attribute present list --------------------
+  x_leading_NA = which(substr(Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_Present_List,1,3) == "NA,")
+  Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_Present_List[x_leading_NA] = substr(Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_Present_List[x_leading_NA],4,nchar(Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_Present_List[x_leading_NA]))
+  # -------------------- remove leading "NA," from habitat attribute missing list --------------------
+  x_leading_NA = which(substr(Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_Missing_List,1,3) == "NA,")
+  Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_Missing_List[x_leading_NA] = substr(Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_Missing_List[x_leading_NA],4,nchar(Limiting_Factor_Reach_Ranking_Scores$Habitat_Attribute_Missing_List[x_leading_NA]))
+  
+  # -------------------------------------------------------------------------------------------
+  #
+  #       Calculate total Habitat Attributes Present
+  #
+  # -------------------------------------------------------------------------------------------
+  
+  # --------------------- count the total unique habitat attributes, if present, and if not ----------
+  Limiting_Factor_Reach_ALL_attributes_T_F_Presence_2 = apply(Limiting_Factor_Reach_ALL_attributes_T_F_Presence[,2:ncol(Limiting_Factor_Reach_ALL_attributes_T_F_Presence)], 1, pull_T_F_col_name_fxn)
+  Limiting_Factor_Reach_ALL_attributes_T_F_Presence_2 = t(Limiting_Factor_Reach_ALL_attributes_T_F_Presence_2)
+  colnames(Limiting_Factor_Reach_ALL_attributes_T_F_Presence_2) = c("total_potential_data", "data_present", "data_absent"  )
+  Limiting_Factor_Reach_ALL_attributes_T_F_Presence_2 = as.data.frame(Limiting_Factor_Reach_ALL_attributes_T_F_Presence_2)
+  
+  # ------------------------ identify which are impaired --------------
+  Limiting_Factor_Reach_ALL_attributes$Total_Impaired_Attributes = apply(Limiting_Factor_Reach_ALL_attributes[, 3:ncol(Limiting_Factor_Reach_ALL_attributes)], 1, function_total_impaired_habitat_attribute)
+  # ------------------- percent of LF habitat attributes are impaired --------
+  Limiting_Factor_Reach_ALL_attributes$Life_Stage_Habitat_Degradation = Limiting_Factor_Reach_ALL_attributes$Total_Impaired_Attributes / Limiting_Factor_Reach_ALL_attributes_T_F_Presence_2$data_present
+  
+  
+  # -------------------------------------------------------------------------------------------
+  #
+  #     Add which habitat attributes are missing (BOTH put "Missing Data" and list in a column)
+  #
+  # -------------------------------------------------------------------------------------------
+  # data_frame_x = cbind( Limiting_Factor_Reach_ALL_attributes[order(Limiting_Factor_Reach_ALL_attributes$ReachName),], Limiting_Factor_Reach_ALL_attributes_T_F_Presence[order(Limiting_Factor_Reach_ALL_attributes_T_F_Presence$ReachName),] )
+  # ----------------------- calculate all the missing data --------------------
+  #data_frame_x= Limiting_Factor_Reach_ALL_attributes_T_F_Presence[order(Limiting_Factor_Reach_ALL_attributes_T_F_Presence$ReachName),]
+  #Limiting_Factor_Reach_ALL_attributes_T_F_Presence_one_column = apply( Limiting_Factor_Reach_ALL_attributes_T_F_Presence[order(Limiting_Factor_Reach_ALL_attributes_T_F_Presence$ReachName),] , 1, function_missing_data_in_one_column)
+  
+  # -------- A) get one row with all missing data and B) add "Missing Data" to Limiting_Factor_Reach_ALL_attributes where data is missing ----
+  list_of_missing_data = c()
+  for(i in 1:nrow(Limiting_Factor_Reach_ALL_attributes_T_F_Presence)){
+    reach_x = Limiting_Factor_Reach_ALL_attributes_T_F_Presence$ReachName[i]
+    # ------------ pull columns that are false ----------
+    false_columns = Limiting_Factor_Reach_ALL_attributes_T_F_Presence[i,which(Limiting_Factor_Reach_ALL_attributes_T_F_Presence[i,] == FALSE)]
+    # ----------------- combine false column names into one column ---------------
+    false_columns_one_column = colnames(false_columns)
+    # ---------------------- combine into one element ------
+    false_columns_one_single = paste(false_columns_one_column, collapse=",")
+    # --------- add to list of all missing data -------------
+    list_of_missing_data = c(list_of_missing_data, false_columns_one_single)
+    
+    # ---------------- in Limiting_Factor_Reach_ALL_attributes - add "missing" where missing data -----------
+    row_x_output = which(Limiting_Factor_Reach_ALL_attributes$ReachName == reach_x)
+    for(colx in false_columns_one_column){
+      
+      # ------------ for a habitat attribute (column) that is "False" - add "Missing Data" -----
+      Limiting_Factor_Reach_ALL_attributes[row_x_output, colx] = "Missing Data"
+      
+    }
+    
+  }
+  # ----------------- add missing data -----------
+  missing_data_df =  cbind( Limiting_Factor_Reach_ALL_attributes_T_F_Presence$ReachName ,list_of_missing_data)
+  colnames(missing_data_df) = c("ReachName","list_of_missing_data")
+  Limiting_Factor_Reach_ALL_attributes = merge(Limiting_Factor_Reach_ALL_attributes, missing_data_df, by="ReachName", all.x=TRUE)
+  
+  # --------------------- make it so Life_Stage_Habitat_Degradation column is a percent (not a ratio) -------
+  Limiting_Factor_Reach_ALL_attributes$Life_Stage_Habitat_Degradation = Limiting_Factor_Reach_ALL_attributes$Life_Stage_Habitat_Degradation * 100
+  
+  # -------------------------------------------------------------------------------------------
+  #
+  #     Clean up Of Priority Life Stage column
+  #
+  # -------------------------------------------------------------------------------------------
+  # ------------------- Remove Leading NA ---------------
+  x_leading_NA = which(substr(Limiting_Factor_Reach_ALL_attributes$Priority_Life_Stages,1,3) == "NA,")
+  Limiting_Factor_Reach_ALL_attributes$Priority_Life_Stages[x_leading_NA] = substr(Limiting_Factor_Reach_ALL_attributes$Priority_Life_Stages[x_leading_NA],4,nchar(Limiting_Factor_Reach_ALL_attributes$Priority_Life_Stages[x_leading_NA]))
+  # ----------------- only get unique life stage - species combos ------
+  for(i in 1:nrow(Limiting_Factor_Reach_ALL_attributes)){
+    life_stage_species_x = Limiting_Factor_Reach_ALL_attributes$Priority_Life_Stages[i]
+    life_stage_species_x2 = unlist(strsplit(life_stage_species_x, ", "))
+    # ------ remove white space from outsides --------
+    life_stage_species_x2 = trimws(life_stage_species_x2)
+    # ------------- get unique -----------------
+    life_stage_species_x2 = unique(life_stage_species_x2)
+    # --------------- combine into one element -----------
+    life_stage_species_x2 = paste(life_stage_species_x2, collapse=", ")
+    # ------------- re merge ------------
+    Limiting_Factor_Reach_ALL_attributes$Priority_Life_Stages[i] = life_stage_species_x2
+  }
+  
+  # ------------- IF NA - then missing a priority life stage ----
+  x_NA = which( Limiting_Factor_Reach_ALL_attributes$Priority_Life_Stages == "NA" )
+  Limiting_Factor_Reach_ALL_attributes$Priority_Life_Stages[x_NA] = "No High Priority Life Stages in reach"
+  # ------ set Limiting Factor Percent Score for reach names with no high priority life stages to 0 ---------
+  Limiting_Factor_Reach_ALL_attributes$Life_Stage_Habitat_Degradation[x_NA] = 0
+  
+  # -------------------------------------------------------------------------------------------
+  #
+  #     Return Data
+  #
+  # -------------------------------------------------------------------------------------------
+  #Limiting_Factor_Reach_Ranking_Scores_Output = Limiting_Factor_Reach_Ranking_Scores[,columns_to_output ]
+  
+  
+  return(Limiting_Factor_Reach_ALL_attributes)
+  
+}
+
+
 # -------------------------------------------------------------------
 #
 #       Function to generate habitat attributes for individual species/life stage combo

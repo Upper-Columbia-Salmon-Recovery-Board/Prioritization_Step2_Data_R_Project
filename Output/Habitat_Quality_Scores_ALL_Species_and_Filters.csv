@@ -1,15 +1,15 @@
 "ReachName","Assessment.Unit","Basin","Confinement_Score","Spring.Chinook.Reach","Steelhead.Reach","SPCH_Life_Stage_Sum","SH_Life_Stage_Sum","SPCHNTier_Restoration","SPCHNTier_Protection","STLTier_Restoration","STLTier_Protection","HQ_Pct","HQ_Score_Restoration","HQ_Score_Protection","BankStability_score","ChannelStability_score","Stability_Mean","CoarseSubstrate_score","Cover-Wood_score","Flow-SummerBaseFlow_score","Off-Channel-Floodplain_score","Off-Channel-Side-Channels_score","PoolQuantity&Quality_score","Riparian-Disturbance_score","Riparian-CanopyCover_score","Riparian_Mean","Temperature-Rearing_score"
-"Aeneas 16-1","Aeneas Creek-DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0,5,1,1,1,1,NA,1,1,NA,"NA",NA,1,NA,1,5
-"Aeneas 16-2","Aeneas Creek-DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,5
+"Aeneas 16-1","Aeneas Creek-DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0,5,1,1,1,1,5,1,1,5,"NA",NA,1,NA,1,1
+"Aeneas 16-2","Aeneas Creek-DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,3,5,1,5,"NA",NA,1,NA,1,1
 "Alder Creek 01","Lower Chiwawa River","Wenatchee",5,"yes","yes",3,6,"1","1","2","2",NA,NA,NA,NA,NA,NA,5,1,5,3,"1",3,NA,NA,NA,1
 "Alder Creek 02","Lower Chiwawa River","Wenatchee",1,"yes","yes",2,3,"1","1","2","2",NA,NA,NA,NA,NA,NA,5,1,5,3,"1",5,1,NA,1,5
 "Andrews Creek 01","Andrews Creek","Methow",5,"yes","yes",2,2,"Not a Priority","Not a Priority","Not a Priority","Not a Priority",0.555555555555556,5,1,3,1,2,5,3,1,3,"1",3,3,1,2,5
-"Antoine 16-1","Antoine Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.289503418718569,5,1,3,3,3,NA,1,1,NA,"NA",NA,1,NA,1,3
-"Antoine 16-2","Antoine Creek-Lower","Okanogan",1,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.0992032395595723,5,1,5,5,5,NA,1,1,NA,"NA",NA,1,NA,1,5
-"Antoine 16-3","Antoine Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.0814431770666794,5,1,5,5,5,NA,3,1,NA,"NA",NA,1,NA,1,5
-"Antoine 16-4","Antoine Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.0634915212976588,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,5
-"Antoine 16-5","Antoine Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.0947505790038091,5,1,5,5,5,NA,1,1,NA,"NA",NA,1,NA,1,5
-"Antoine 16-6","Antoine Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.0547475840973595,5,1,5,5,5,NA,3,1,NA,"NA",NA,1,NA,1,5
+"Antoine 16-1","Antoine Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.289503418718569,5,1,3,3,3,5,1,1,5,"NA",NA,1,NA,1,1
+"Antoine 16-2","Antoine Creek-Lower","Okanogan",1,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.0992032395595723,5,1,5,5,5,3,1,1,5,"NA",NA,1,NA,1,1
+"Antoine 16-3","Antoine Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.0814431770666794,5,1,5,5,5,5,3,1,5,"NA",NA,1,NA,1,1
+"Antoine 16-4","Antoine Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.0634915212976588,5,1,5,5,5,3,5,1,5,"NA",NA,1,NA,1,1
+"Antoine 16-5","Antoine Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.0947505790038091,5,1,5,5,5,5,1,1,5,"NA",NA,1,NA,1,1
+"Antoine 16-6","Antoine Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.0547475840973595,5,1,5,5,5,5,3,1,5,"NA",NA,1,NA,1,1
 "Bear Creek 01","Bear Creek","Methow",5,"no","yes",0,3,"Not a Priority","Not a Priority","Not a Priority","Not a Priority",NA,NA,NA,1,1,1,NA,NA,1,1,"1",NA,NA,NA,NA,5
 "Bear Creek 02","Bear Creek","Methow",5,"no","no",0,0,"Not a Priority","Not a Priority","Not a Priority","Not a Priority",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,NA,NA,NA,5
 "Bear Creek 03","Bear Creek","Methow",5,"no","no",0,0,"Not a Priority","Not a Priority","Not a Priority","Not a Priority",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,NA,NA,NA,5
@@ -45,7 +45,7 @@
 "Black Canyon Creek 03","Black Canyon Creek","Methow",1,"yes","yes",2,5,"Not a Priority","Not a Priority","2","3",NA,NA,NA,NA,NA,NA,5,3,1,NA,"NA",1,NA,NA,NA,5
 "Black Canyon Creek 04","Black Canyon Creek","Methow",1,"no","yes",0,2,"Not a Priority","Not a Priority","2","3",NA,NA,NA,NA,NA,NA,5,3,1,NA,"NA",1,NA,NA,NA,5
 "Blue Buck Creek 01","Upper Beaver Creek","Methow",5,"yes","no",1,0,"3","3","2","3",NA,NA,NA,NA,NA,NA,3,5,5,NA,"NA",5,NA,NA,NA,5
-"Bonaparte 16-1","Bonaparte Creek-Lower DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","1",0.386256260439187,5,1,3,3,3,NA,3,3,NA,"NA",NA,1,NA,1,1
+"Bonaparte 16-1","Bonaparte Creek-Lower DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","1",0.386256260439187,5,1,3,3,3,5,3,3,5,"NA",NA,1,NA,1,1
 "Boulder Creek 01","Boulder Creek","Methow",5,"yes","yes",4,5,"2","3","2","3",0.466666666666667,5,1,3,1,2,5,1,1,1,"1",3,1,3,2,5
 "Brender Creek 01","Mission Creek-Brender Creek","Wenatchee",5,"no","yes",0,3,"2","3","1","2",0.422222222222222,5,1,1,1,1,3,5,1,1,"1",5,1,1,1,1
 "Brennegan Creek 01","Entiat River-Preston Creek","Entiat",5,"yes","yes",4,6,"1","1","1","2",NA,NA,NA,NA,NA,NA,5,3,5,NA,"1",NA,NA,NA,NA,5
@@ -74,8 +74,8 @@
 "Chewuch River Doe 07","Chewuch River-Doe Creek","Methow",5,"yes","yes",7,6,"1","1","1","2",0.622222222222222,5,1,3,1,2,3,1,3,3,"5",3,3,3,3,5
 "Chewuch River Doe 08","Chewuch River-Doe Creek","Methow",5,"yes","yes",7,6,"1","1","1","2",0.622222222222222,5,1,3,1,2,3,1,3,3,"5",3,3,3,3,5
 "Chewuch River Doe 09","Chewuch River-Doe Creek","Methow",5,"yes","yes",7,6,"1","1","1","2",0.577777777777778,5,1,3,1,2,5,1,3,3,"1",3,3,3,3,5
-"Chewuch River Kay 01","Chewuch River-Kay Creek","Methow",5,"yes","yes",7,6,"2","2","2","3",NA,NA,NA,NA,NA,NA,3,5,5,NA,"3",1,5,1,3,5
-"Chewuch River Kay 02","Chewuch River-Kay Creek","Methow",5,"yes","yes",6,4,"2","2","2","3",NA,NA,NA,NA,NA,NA,3,5,5,NA,"5",3,5,NA,5,5
+"Chewuch River Kay 01","Chewuch River-Kay Creek","Methow",5,"yes","yes",7,6,"2","2","2","3",NA,NA,NA,NA,NA,NA,3,5,5,NA,"NA",1,5,1,3,5
+"Chewuch River Kay 02","Chewuch River-Kay Creek","Methow",5,"yes","yes",6,4,"2","2","2","3",NA,NA,NA,NA,NA,NA,3,5,5,NA,"NA",5,5,NA,5,5
 "Chewuch River Kay 03","Chewuch River-Kay Creek","Methow",5,"yes","yes",6,4,"2","2","2","3",NA,NA,NA,NA,NA,NA,5,5,3,NA,"NA",1,NA,NA,NA,5
 "Chewuch River Pearrygin 01","Chewuch River-Pearrygin Creek","Methow",5,"yes","yes",7,6,"1","1","1","2",0.688888888888889,5,1,5,5,5,3,1,3,5,"5",5,5,1,3,1
 "Chewuch River Pearrygin 02","Chewuch River-Pearrygin Creek","Methow",5,"yes","yes",7,6,"1","1","1","2",0.688888888888889,5,1,5,5,5,3,1,3,5,"5",5,5,1,3,1
@@ -97,7 +97,7 @@
 "Chikamin Creek 02","Chikamin Creek","Wenatchee",5,"yes","yes",4,4,"2","2","3","3",NA,NA,NA,NA,NA,NA,NA,NA,5,NA,"NA",NA,5,1,3,5
 "Chikamin Creek 03","Chikamin Creek","Wenatchee",5,"yes","yes",4,4,"2","2","3","3",NA,NA,NA,NA,NA,NA,5,3,5,NA,"1",NA,5,1,3,5
 "Chikamin Creek 04","Chikamin Creek","Wenatchee",5,"yes","yes",4,2,"2","2","3","3",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,5,1,3,5
-"Chiliwist 16-1","Chiliwist Creek","Okanogan",5,"no","yes",0,2,"Not a Priority","Not a Priority","Not a Priority","Not a Priority",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,1,NA,1,5
+"Chiliwist 16-1","Chiliwist Creek","Okanogan",5,"no","yes",0,2,"Not a Priority","Not a Priority","Not a Priority","Not a Priority",NA,NA,NA,NA,NA,NA,1,NA,1,5,"NA",NA,1,NA,1,1
 "Chiwaukum Creek 01","Chiwaukum Creek","Wenatchee",5,"yes","yes",6,5,"3","2","2","2",NA,NA,NA,NA,1,1,NA,NA,3,1,"1",NA,NA,NA,NA,1
 "Chiwaukum Creek 02","Chiwaukum Creek","Wenatchee",5,"yes","yes",6,5,"3","2","2","2",NA,NA,NA,NA,NA,NA,5,1,3,NA,"1",NA,NA,NA,NA,5
 "Chiwaukum Creek 03","Chiwaukum Creek","Wenatchee",1,"yes","yes",6,4,"3","2","2","2",NA,NA,NA,NA,NA,NA,NA,NA,3,NA,"NA",NA,NA,NA,NA,5
@@ -152,10 +152,11 @@
 "Early Winters Creek 02","Early Winters Creek","Methow",5,"yes","yes",6,5,"2","2","2","2",NA,NA,NA,NA,NA,NA,5,3,1,NA,"1",5,NA,NA,NA,5
 "Early Winters Creek 03","Early Winters Creek","Methow",5,"yes","yes",4,4,"2","2","2","2",NA,NA,NA,NA,NA,NA,5,5,5,NA,"NA",1,NA,NA,NA,5
 "Early Winters Creek 04","Early Winters Creek","Methow",5,"yes","yes",4,4,"2","2","2","2",NA,NA,NA,NA,NA,NA,5,5,5,NA,"NA",5,NA,NA,NA,5
-"Early Winters Creek 06","Early Winters Creek","Methow",5,"yes","yes",4,4,"2","2","2","2",NA,NA,NA,NA,NA,NA,5,5,3,NA,"NA",5,NA,NA,NA,5
+"Early Winters Creek 05","Early Winters Creek","Methow",5,"yes","yes",4,4,"2","2","2","2",NA,NA,NA,NA,NA,NA,5,5,3,NA,"NA",5,NA,NA,NA,5
 "Eight Mile Creek 01","Eight Mile Creek","Methow",5,"yes","yes",3,5,"2","2","2","2",NA,NA,NA,NA,NA,NA,3,5,5,NA,"NA",1,3,3,3,5
 "Eight Mile Creek 02","Eight Mile Creek","Methow",5,"yes","yes",4,5,"2","2","2","2",NA,NA,NA,NA,NA,NA,3,5,5,NA,"NA",5,3,3,3,5
 "Eight Mile Creek 03","Eight Mile Creek","Methow",5,"yes","yes",4,4,"2","2","2","2",NA,NA,NA,NA,NA,NA,5,5,3,NA,"NA",5,3,1,2,5
+"Eight Mile Creek 04","Eight Mile Creek","Methow",5,"yes","yes",4,4,"2","2","2","2",NA,NA,NA,NA,NA,NA,5,NA,5,NA,"NA",NA,NA,NA,NA,NA
 "Eight Mile Creek 05","Eight Mile Creek","Methow",5,"yes","yes",4,2,"2","2","2","2",NA,NA,NA,NA,NA,NA,5,5,5,NA,"NA",5,5,3,4,5
 "Eight Mile Creek 06","Eight Mile Creek","Methow",5,"yes","yes",4,2,"2","2","2","2",NA,NA,NA,NA,NA,NA,5,5,5,NA,"NA",5,5,3,4,5
 "Eight Mile Creek 07","Eight Mile Creek","Methow",5,"yes","yes",4,2,"2","2","2","2",NA,NA,NA,NA,NA,NA,5,5,5,NA,"NA",5,3,3,3,5
@@ -273,15 +274,15 @@
 "Ingalls Creek 02","Ingalls Creek","Wenatchee",1,"yes","yes",4,2,"3","3","3","3",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,NA,NA,NA,3
 "Ingalls Creek 03","Ingalls Creek","Wenatchee",1,"yes","yes",4,4,"3","3","3","3",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,NA,NA,NA,3
 "Jack Creek 01","Jack Creek","Wenatchee",5,"yes","yes",2,4,"Not a Priority","Not a Priority","3","3",NA,NA,NA,NA,NA,NA,NA,NA,5,NA,"NA",NA,NA,NA,NA,1
-"Johnson 16-1","Johnson Creek","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","2",0,5,1,1,1,1,NA,1,1,NA,"NA",NA,1,NA,1,3
-"Johnson 16-2","Johnson Creek","Okanogan",5,"no","no",0,0,"Not a Priority","Not a Priority","1","2",0,5,1,1,1,1,NA,1,1,NA,"NA",NA,1,NA,1,3
-"Johnson 16-3","Johnson Creek","Okanogan",5,"no","no",0,0,"Not a Priority","Not a Priority","1","2",0,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,5
-"Johnson 16-4","Johnson Creek","Okanogan",5,"no","no",0,0,"Not a Priority","Not a Priority","1","2",0,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,5
-"Johnson 16-5","Johnson Creek","Okanogan",5,"no","no",0,0,"Not a Priority","Not a Priority","1","2",0,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,5
-"Johnson 16-6","Johnson Creek","Okanogan",5,"no","no",0,0,"Not a Priority","Not a Priority","1","2",0,5,1,3,3,3,NA,3,1,NA,"NA",NA,1,NA,1,5
-"Johnson 16-7","Johnson Creek","Okanogan",5,"no","no",0,0,"Not a Priority","Not a Priority","1","2",0,5,1,3,3,3,NA,3,1,NA,"NA",NA,1,NA,1,5
-"Johnson 16-8","Johnson Creek","Okanogan",5,"no","no",0,0,"Not a Priority","Not a Priority","1","2",0,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,5
-"Johnson 16-9","Johnson Creek","Okanogan",5,"no","no",0,0,"Not a Priority","Not a Priority","1","2",0,5,1,3,3,3,NA,3,1,NA,"NA",NA,1,NA,1,5
+"Johnson 16-1","Johnson Creek","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","2",0,5,1,1,1,1,5,1,1,1,"NA",NA,1,NA,1,1
+"Johnson 16-2","Johnson Creek","Okanogan",5,"no","no",0,0,"Not a Priority","Not a Priority","1","2",0,5,1,1,1,1,5,1,1,5,"NA",NA,1,NA,1,1
+"Johnson 16-3","Johnson Creek","Okanogan",5,"no","no",0,0,"Not a Priority","Not a Priority","1","2",0,5,1,5,5,5,3,5,1,5,"NA",NA,1,NA,1,1
+"Johnson 16-4","Johnson Creek","Okanogan",5,"no","no",0,0,"Not a Priority","Not a Priority","1","2",0,5,1,5,5,5,1,5,1,5,"NA",NA,1,NA,1,1
+"Johnson 16-5","Johnson Creek","Okanogan",5,"no","no",0,0,"Not a Priority","Not a Priority","1","2",0,5,1,5,5,5,3,5,1,NA,"NA",NA,1,NA,1,1
+"Johnson 16-6","Johnson Creek","Okanogan",5,"no","no",0,0,"Not a Priority","Not a Priority","1","2",0,5,1,3,3,3,3,3,1,1,"NA",NA,1,NA,1,1
+"Johnson 16-7","Johnson Creek","Okanogan",5,"no","no",0,0,"Not a Priority","Not a Priority","1","2",0,5,1,3,3,3,3,3,1,1,"NA",NA,1,NA,1,1
+"Johnson 16-8","Johnson Creek","Okanogan",5,"no","no",0,0,"Not a Priority","Not a Priority","1","2",0,5,1,5,5,5,3,5,1,1,"NA",NA,1,NA,1,1
+"Johnson 16-9","Johnson Creek","Okanogan",5,"no","no",0,0,"Not a Priority","Not a Priority","1","2",0,5,1,3,3,3,3,3,1,1,"NA",NA,1,NA,1,1
 "Kahler Creek 01","Lower Nason Creek","Wenatchee",5,"yes","yes",3,3,"1","1","1","1",NA,NA,NA,NA,NA,NA,5,3,1,NA,"5",NA,NA,NA,NA,1
 "Kloochman Creek 01","Tillicum Creek","Entiat",1,"no","yes",0,3,"3","3","2","3",NA,NA,NA,NA,NA,NA,NA,NA,5,NA,"NA",NA,NA,NA,NA,5
 "Lake Creek Entiat 01","Entiat River-Lake Creek","Entiat",1,"no","no",0,0,"1","1","2","2",NA,NA,NA,NA,NA,NA,NA,NA,5,NA,"NA",NA,NA,NA,NA,5
@@ -337,9 +338,9 @@
 "Lost River Lower 07","Upper Lost River","Methow",5,"yes","yes",4,4,"Not a Priority","Not a Priority","Not a Priority","Not a Priority",NA,NA,NA,NA,NA,NA,5,5,5,NA,"NA",1,NA,NA,NA,5
 "Lost River Upper 01","Diamond Creek","Methow",5,"yes","yes",2,2,"Not a Priority","Not a Priority","Not a Priority","Not a Priority",NA,NA,NA,NA,NA,NA,5,5,5,NA,"NA",5,NA,NA,NA,5
 "Lost River Upper 02","Diamond Creek","Methow",5,"yes","yes",2,2,"Not a Priority","Not a Priority","Not a Priority","Not a Priority",NA,NA,NA,NA,NA,NA,3,5,1,NA,"NA",1,NA,NA,NA,5
-"Loup Loup 16-1","Loup Loup Creek-Lower DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.413821612609874,5,1,1,1,1,NA,1,1,NA,"NA",NA,1,NA,1,1
-"Loup Loup 16-2","Loup Loup Creek-Lower DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.486404503282982,5,1,5,5,5,NA,1,1,NA,"NA",NA,1,NA,1,5
-"Loup Loup 16-3","Loup Loup Creek-Lower DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.40183470139682,5,1,5,5,5,NA,1,1,NA,"NA",NA,1,NA,1,5
+"Loup Loup 16-1","Loup Loup Creek-Lower DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.413821612609874,5,1,1,1,1,5,1,1,NA,"NA",NA,1,NA,1,1
+"Loup Loup 16-2","Loup Loup Creek-Lower DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.486404503282982,5,1,5,5,5,5,1,1,5,"NA",NA,1,NA,1,1
+"Loup Loup 16-3","Loup Loup Creek-Lower DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.40183470139682,5,1,5,5,5,5,1,1,5,"NA",NA,1,NA,1,1
 "Mad River Lower 01","Lower Mad River","Entiat",5,"yes","yes",6,6,"2","3","1","2",0.4,5,1,1,1,1,3,1,3,1,"1",1,3,1,2,5
 "Mad River Lower 02","Lower Mad River","Entiat",1,"yes","yes",6,6,"2","3","1","2",0.555555555555556,5,1,3,3,3,3,1,5,3,"1",1,5,1,3,5
 "Mad River Lower 03","Lower Mad River","Entiat",1,"yes","yes",5,6,"2","3","1","2",0.644444444444444,5,1,3,5,4,3,3,5,3,"1",1,5,3,4,5
@@ -452,79 +453,79 @@
 "Nason Creek Upper 04","Upper Nason Creek","Wenatchee",5,"yes","yes",2,3,"3","3","3","3",NA,NA,NA,NA,NA,NA,NA,3,5,3,"NA",1,NA,NA,NA,1
 "Nason Creek Upper 05","Upper Nason Creek","Wenatchee",1,"yes","yes",2,3,"3","3","3","3",NA,NA,NA,NA,NA,NA,NA,5,5,5,"NA",1,NA,NA,NA,1
 "Nason Creek Upper 06","Upper Nason Creek","Wenatchee",5,"yes","yes",2,3,"3","3","3","3",NA,NA,NA,NA,NA,NA,NA,3,1,3,"NA",1,NA,NA,NA,1
-"Ninemile 16-1","Ninemile Creek DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0.697899302795304,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,3
-"Ninemile 16-2","Ninemile Creek DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0.673385255086234,5,1,5,5,5,NA,3,1,NA,"NA",NA,1,NA,1,3
-"Ninemile 16-3","Ninemile Creek DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0.32589781514228,5,1,5,5,5,NA,1,1,NA,"NA",NA,1,NA,1,3
-"Ninemile 16-4","Ninemile Creek DS","Okanogan",1,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0.546556886635111,5,1,5,5,5,NA,3,1,NA,"NA",NA,1,NA,1,5
-"Ninemile 16-5","Ninemile Creek DS","Okanogan",1,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0.816498804419718,3,3,5,5,5,NA,1,1,NA,"NA",NA,3,NA,3,5
+"Ninemile 16-1","Ninemile Creek DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0.697899302795304,5,1,5,5,5,1,5,1,1,"NA",NA,1,NA,1,1
+"Ninemile 16-2","Ninemile Creek DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0.673385255086234,5,1,5,5,5,1,3,1,5,"NA",NA,1,NA,1,1
+"Ninemile 16-3","Ninemile Creek DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0.32589781514228,5,1,5,5,5,1,1,1,5,"NA",NA,1,NA,1,1
+"Ninemile 16-4","Ninemile Creek DS","Okanogan",1,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0.546556886635111,5,1,5,5,5,1,3,1,5,"NA",NA,1,NA,1,1
+"Ninemile 16-5","Ninemile Creek DS","Okanogan",1,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0.816498804419718,3,3,5,5,5,1,1,1,5,"NA",NA,3,NA,3,1
 "North Creek 01","Twisp River Headwaters","Methow",5,"yes","no",3,0,"3","3","3","2",0.888888888888889,3,3,3,5,4,5,5,5,5,"3",5,3,3,3,5
 "North Shaser Creek 01","Upper Peshastin Creek","Wenatchee",1,"yes","yes",2,2,"2","3","2","2",NA,NA,NA,NA,NA,NA,3,3,1,3,"NA",5,NA,NA,NA,5
-"Okanagan 16-48","Okanogan-Haynes Creek North","Okanogan",1,"no","yes",NA,NA,"Not a Priority","Not a Priority","2","1",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,NA,NA,NA,NA
-"Okanogan 16-1","Okanogan-Davis Canyon","Okanogan",5,"no","yes",0,4,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,NA,5,3,NA,"NA",NA,1,NA,1,5
-"Okanogan 16-10","Okanogan-Talant Creek","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","3",0,5,1,5,5,5,NA,3,3,NA,"NA",NA,1,NA,1,1
-"Okanogan 16-11","Okanogan-Talant Creek","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,NA,5,3,NA,"NA",NA,1,NA,1,1
-"Okanogan 16-12","Okanogan-Talant Creek","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,NA,5,3,NA,"NA",NA,1,NA,1,5
-"Okanogan 16-13","Okanogan-Talant Creek","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,NA,5,3,NA,"NA",NA,1,NA,1,5
-"Okanogan 16-14","Okanogan-Talant Creek","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,NA,3,3,NA,"NA",NA,1,NA,1,5
-"Okanogan 16-15","Okanogan-Talant Creek","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,NA,3,1,NA,"NA",NA,1,NA,1,1
-"Okanogan 16-16","Okanogan-Swipkin Canyon","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","3",0,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,3
-"Okanogan 16-17","Okanogan-Swipkin Canyon","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","3",0,5,1,5,5,5,NA,3,1,NA,"NA",NA,1,NA,1,3
-"Okanogan 16-18","Okanogan-Swipkin Canyon","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","3",NA,NA,NA,1,1,1,NA,1,1,NA,"NA",NA,1,NA,1,5
-"Okanogan 16-19","Okanogan-Swipkin Canyon","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","3",NA,NA,NA,1,1,1,NA,1,1,NA,"NA",NA,1,NA,1,1
-"Okanogan 16-2","Okanogan-Davis Canyon","Okanogan",5,"no","yes",0,4,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,NA,5,3,NA,"NA",NA,1,NA,1,5
-"Okanogan 16-20","Okanogan-Swipkin Canyon","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","3",0,5,1,5,5,5,NA,1,1,NA,"NA",NA,1,NA,1,1
-"Okanogan 16-21","Okanogan-Swipkin Canyon","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,5
-"Okanogan 16-22","Okanogan-Swipkin Canyon","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,NA,3,1,NA,"NA",NA,1,NA,1,5
-"Okanogan 16-23","Okanogan-Swipkin Canyon","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,NA,5,3,NA,"NA",NA,1,NA,1,3
-"Okanogan 16-24","Okanogan-Alkali Lake","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","3",NA,NA,NA,3,3,3,NA,3,1,NA,"NA",NA,1,NA,1,3
-"Okanogan 16-25","Okanogan-Alkali Lake","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","3",0,5,1,1,1,1,NA,1,3,NA,"NA",NA,1,NA,1,1
-"Okanogan 16-26","Okanogan-Whitestone Coulee","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,5
-"Okanogan 16-27","Okanogan-Whitestone Coulee","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,5
-"Okanogan 16-28","Okanogan-Whitestone Coulee","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","3",NA,NA,NA,3,3,3,NA,3,1,NA,"NA",NA,1,NA,1,1
-"Okanogan 16-29","Okanogan-Whitestone Coulee","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","3",0.240113518707938,5,1,3,3,3,NA,3,1,NA,"NA",NA,1,NA,1,1
-"Okanogan 16-3","Okanogan-Davis Canyon","Okanogan",5,"no","yes",0,4,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,NA,5,3,NA,"NA",NA,1,NA,1,3
-"Okanogan 16-30","Okanogan-Whitestone Coulee","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","3",0.354668085360461,5,1,3,3,3,NA,1,1,NA,"NA",NA,1,NA,1,1
-"Okanogan 16-31","Okanogan-Whitestone Coulee","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","3",0.234282539487935,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,3
-"Okanogan 16-32","Okanogan-Whitestone Coulee","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","3",0.247867864745167,5,1,3,3,3,NA,3,5,NA,"NA",NA,1,NA,1,1
-"Okanogan 16-33","Okanogan-Whitestone Coulee","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,NA,5,3,NA,"NA",NA,1,NA,1,5
-"Okanogan 16-34","Okanogan-Mosquito Creek","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","2",NA,NA,NA,5,5,5,NA,5,5,NA,"NA",NA,1,NA,1,3
-"Okanogan 16-35","Okanogan-Mosquito Creek","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","2",NA,NA,NA,1,1,1,NA,3,5,NA,"NA",NA,1,NA,1,5
-"Okanogan 16-36","Okanogan-Mosquito Creek","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","2",NA,NA,NA,5,5,5,NA,5,5,NA,"NA",NA,1,NA,1,1
-"Okanogan 16-37","Okanogan-Mosquito Creek","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","2",NA,NA,NA,5,5,5,NA,5,5,NA,"NA",NA,1,NA,1,5
-"Okanogan 16-38","Okanogan-Mosquito Creek","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","2",NA,NA,NA,5,5,5,NA,5,5,NA,"NA",NA,1,NA,1,5
-"Okanogan 16-39","Okanogan-Mosquito Creek","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,NA,5,5,NA,"NA",NA,1,NA,1,3
-"Okanogan 16-4","Okanogan-Davis Canyon","Okanogan",5,"no","yes",0,4,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,NA,5,3,NA,"NA",NA,1,NA,1,3
-"Okanogan 16-40","Okanogan-Mosquito Creek","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,NA,3,5,NA,"NA",NA,1,NA,1,1
-"Okanogan 16-41","Okanogan-Mosquito Creek","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,NA,5,5,NA,"NA",NA,1,NA,1,5
-"Okanogan 16-42","Okanogan-Mosquito Creek","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","2",NA,NA,NA,5,5,5,NA,5,5,NA,"NA",NA,1,NA,1,3
-"Okanogan 16-43","Okanogan-Haynes Creek South","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","2",0,5,1,3,3,3,NA,1,3,NA,"NA",NA,3,NA,3,5
-"Okanogan 16-44","Okanogan-Haynes Creek South","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,NA,5,5,NA,"NA",NA,1,NA,1,3
-"Okanogan 16-45","Okanogan-Haynes Creek South","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,NA,5,5,NA,"NA",NA,1,NA,1,1
-"Okanogan 16-46","Okanogan-Haynes Creek North","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","1",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,1,NA,1,1
-"Okanogan 16-47","Okanogan-Haynes Creek North","Okanogan",1,"no","yes",0,5,"Not a Priority","Not a Priority","2","1",NA,NA,NA,NA,NA,NA,NA,NA,5,NA,"NA",NA,1,NA,1,1
-"Okanogan 16-5","Okanogan-Davis Canyon","Okanogan",5,"no","yes",0,4,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,NA,5,3,NA,"NA",NA,1,NA,1,3
-"Okanogan 16-6","Okanogan-Davis Canyon","Okanogan",5,"no","yes",0,4,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,NA,5,3,NA,"NA",NA,1,NA,1,5
-"Okanogan 16-7","Okanogan-Davis Canyon","Okanogan",5,"no","yes",0,4,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,NA,5,3,NA,"NA",NA,1,NA,1,5
-"Okanogan 16-8","Okanogan-Davis Canyon","Okanogan",5,"no","yes",0,4,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,NA,5,5,NA,"NA",NA,1,NA,1,5
-"Okanogan 16-9","Okanogan-Talant Creek","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,NA,5,3,NA,"NA",NA,1,NA,1,5
-"Okanogan Crosschannel 16-1","Okanogan-Haynes Creek South","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","2",NA,NA,NA,5,5,5,NA,3,3,NA,"NA",NA,NA,NA,NA,3
-"Omak 16-1","Omak Creek-Lower DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.131452740653258,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,5
-"Omak 16-10","Omak Creek-Lower US","Okanogan",1,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,5
-"Omak 16-11","Omak Creek-Middle DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,NA,5,3,NA,"NA",NA,1,NA,1,5
-"Omak 16-12","Omak Creek-Middle DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,5
-"Omak 16-13","Omak Creek-Middle DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,NA,5,3,NA,"NA",NA,1,NA,1,5
-"Omak 16-14","Omak Creek-Upper DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,NA,5,3,NA,"NA",NA,1,NA,1,5
-"Omak 16-15","Omak Creek-Upper DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,NA,5,3,NA,"NA",NA,3,NA,3,3
-"Omak 16-16","Omak Creek-Upper DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,NA,5,1,NA,"NA",NA,3,NA,3,3
-"Omak 16-17","Omak Creek-Upper DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,NA,5,1,NA,"NA",NA,3,NA,3,3
-"Omak 16-2","Omak Creek-Lower DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.192955748449495,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,3
-"Omak 16-3","Omak Creek-Lower DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.205909254667754,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,1
-"Omak 16-4","Omak Creek-Lower DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.233443007589593,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,5
-"Omak 16-5","Omak Creek-Lower US","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,3
-"Omak 16-6","Omak Creek-Lower US","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,5
-"Omak 16-7","Omak Creek-Lower US","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,5
-"Omak 16-8","Omak Creek-Lower US","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,5
-"Omak 16-9","Omak Creek-Lower US","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,5
+"Okanagan 16-48","Okanogan-Haynes Creek North","Okanogan",1,"no","yes",0,5,"Not a Priority","Not a Priority","2","1",NA,NA,NA,NA,NA,NA,1,NA,1,NA,"NA",NA,NA,NA,NA,NA
+"Okanogan 16-1","Okanogan-Davis Canyon","Okanogan",5,"no","yes",0,4,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,1,5,3,1,"NA",NA,1,NA,1,1
+"Okanogan 16-10","Okanogan-Talant Creek","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","3",0,5,1,5,5,5,1,3,3,5,"NA",NA,1,NA,1,1
+"Okanogan 16-11","Okanogan-Talant Creek","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,1,5,3,NA,"NA",NA,1,NA,1,1
+"Okanogan 16-12","Okanogan-Talant Creek","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,1,5,3,NA,"NA",NA,1,NA,1,1
+"Okanogan 16-13","Okanogan-Talant Creek","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,1,5,3,5,"NA",NA,1,NA,1,1
+"Okanogan 16-14","Okanogan-Talant Creek","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,1,3,3,NA,"NA",NA,1,NA,1,1
+"Okanogan 16-15","Okanogan-Talant Creek","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,1,3,1,1,"NA",NA,1,NA,1,1
+"Okanogan 16-16","Okanogan-Swipkin Canyon","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","3",0,5,1,5,5,5,1,5,1,NA,"NA",NA,1,NA,1,1
+"Okanogan 16-17","Okanogan-Swipkin Canyon","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","3",0,5,1,5,5,5,1,3,1,1,"NA",NA,1,NA,1,1
+"Okanogan 16-18","Okanogan-Swipkin Canyon","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","3",NA,NA,NA,1,1,1,1,1,1,1,"NA",NA,1,NA,1,1
+"Okanogan 16-19","Okanogan-Swipkin Canyon","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","3",NA,NA,NA,1,1,1,1,1,1,5,"NA",NA,1,NA,1,1
+"Okanogan 16-2","Okanogan-Davis Canyon","Okanogan",5,"no","yes",0,4,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,1,5,3,5,"NA",NA,1,NA,1,1
+"Okanogan 16-20","Okanogan-Swipkin Canyon","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","3",0,5,1,5,5,5,1,1,1,NA,"NA",NA,1,NA,1,1
+"Okanogan 16-21","Okanogan-Swipkin Canyon","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,1,5,1,5,"NA",NA,1,NA,1,1
+"Okanogan 16-22","Okanogan-Swipkin Canyon","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,1,3,1,NA,"NA",NA,1,NA,1,1
+"Okanogan 16-23","Okanogan-Swipkin Canyon","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,1,5,3,NA,"NA",NA,1,NA,1,1
+"Okanogan 16-24","Okanogan-Alkali Lake","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","3",NA,NA,NA,3,3,3,1,3,1,1,"NA",NA,1,NA,1,1
+"Okanogan 16-25","Okanogan-Alkali Lake","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","3",0,5,1,1,1,1,1,1,3,5,"NA",NA,1,NA,1,1
+"Okanogan 16-26","Okanogan-Whitestone Coulee","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,1,5,1,5,"NA",NA,1,NA,1,1
+"Okanogan 16-27","Okanogan-Whitestone Coulee","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,1,5,1,5,"NA",NA,1,NA,1,1
+"Okanogan 16-28","Okanogan-Whitestone Coulee","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","3",NA,NA,NA,3,3,3,1,3,1,5,"NA",NA,1,NA,1,1
+"Okanogan 16-29","Okanogan-Whitestone Coulee","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","3",0.240113518707938,5,1,3,3,3,1,3,1,5,"NA",NA,1,NA,1,1
+"Okanogan 16-3","Okanogan-Davis Canyon","Okanogan",5,"no","yes",0,4,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,1,5,3,NA,"NA",NA,1,NA,1,1
+"Okanogan 16-30","Okanogan-Whitestone Coulee","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","3",0.354668085360461,5,1,3,3,3,1,1,1,NA,"NA",NA,1,NA,1,1
+"Okanogan 16-31","Okanogan-Whitestone Coulee","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","3",0.234282539487935,5,1,5,5,5,1,5,1,5,"NA",NA,1,NA,1,1
+"Okanogan 16-32","Okanogan-Whitestone Coulee","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","3",0.247867864745167,5,1,3,3,3,1,3,5,NA,"NA",NA,1,NA,1,1
+"Okanogan 16-33","Okanogan-Whitestone Coulee","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,1,5,3,5,"NA",NA,1,NA,1,1
+"Okanogan 16-34","Okanogan-Mosquito Creek","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","2",NA,NA,NA,5,5,5,1,5,5,5,"NA",NA,1,NA,1,1
+"Okanogan 16-35","Okanogan-Mosquito Creek","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","2",NA,NA,NA,1,1,1,1,3,5,5,"NA",NA,1,NA,1,1
+"Okanogan 16-36","Okanogan-Mosquito Creek","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","2",NA,NA,NA,5,5,5,1,5,5,5,"NA",NA,1,NA,1,1
+"Okanogan 16-37","Okanogan-Mosquito Creek","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","2",NA,NA,NA,5,5,5,1,5,5,NA,"NA",NA,1,NA,1,1
+"Okanogan 16-38","Okanogan-Mosquito Creek","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","2",NA,NA,NA,5,5,5,1,5,5,5,"NA",NA,1,NA,1,1
+"Okanogan 16-39","Okanogan-Mosquito Creek","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,1,5,5,NA,"NA",NA,1,NA,1,1
+"Okanogan 16-4","Okanogan-Davis Canyon","Okanogan",5,"no","yes",0,4,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,1,5,3,NA,"NA",NA,1,NA,1,1
+"Okanogan 16-40","Okanogan-Mosquito Creek","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,1,3,5,1,"NA",NA,1,NA,1,1
+"Okanogan 16-41","Okanogan-Mosquito Creek","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,1,5,5,1,"NA",NA,1,NA,1,1
+"Okanogan 16-42","Okanogan-Mosquito Creek","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","2",NA,NA,NA,5,5,5,1,5,5,NA,"NA",NA,1,NA,1,1
+"Okanogan 16-43","Okanogan-Haynes Creek South","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","2",0,5,1,3,3,3,1,1,3,5,"NA",NA,3,NA,3,1
+"Okanogan 16-44","Okanogan-Haynes Creek South","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,1,5,5,5,"NA",NA,1,NA,1,1
+"Okanogan 16-45","Okanogan-Haynes Creek South","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,1,5,5,NA,"NA",NA,1,NA,1,1
+"Okanogan 16-46","Okanogan-Haynes Creek North","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","1",NA,NA,NA,NA,NA,NA,1,NA,1,5,"NA",NA,1,NA,1,1
+"Okanogan 16-47","Okanogan-Haynes Creek North","Okanogan",1,"no","yes",0,5,"Not a Priority","Not a Priority","2","1",NA,NA,NA,NA,NA,NA,1,NA,5,NA,"NA",NA,1,NA,1,1
+"Okanogan 16-5","Okanogan-Davis Canyon","Okanogan",5,"no","yes",0,4,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,1,5,3,5,"NA",NA,1,NA,1,1
+"Okanogan 16-6","Okanogan-Davis Canyon","Okanogan",5,"no","yes",0,4,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,1,5,3,NA,"NA",NA,1,NA,1,1
+"Okanogan 16-7","Okanogan-Davis Canyon","Okanogan",5,"no","yes",0,4,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,1,5,3,5,"NA",NA,1,NA,1,1
+"Okanogan 16-8","Okanogan-Davis Canyon","Okanogan",5,"no","yes",0,4,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,1,5,5,5,"NA",NA,1,NA,1,1
+"Okanogan 16-9","Okanogan-Talant Creek","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","3",NA,NA,NA,5,5,5,1,5,3,5,"NA",NA,1,NA,1,1
+"Okanogan Crosschannel 16-1","Okanogan-Haynes Creek South","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","2",NA,NA,NA,5,5,5,1,3,3,5,"NA",NA,NA,NA,NA,3
+"Omak 16-1","Omak Creek-Lower DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.131452740653258,5,1,5,5,5,3,5,1,1,"NA",NA,1,NA,1,1
+"Omak 16-10","Omak Creek-Lower US","Okanogan",1,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0,5,1,5,5,5,5,5,1,5,"NA",NA,1,NA,1,1
+"Omak 16-11","Omak Creek-Middle DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,1,5,3,5,"NA",NA,1,NA,1,1
+"Omak 16-12","Omak Creek-Middle DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,1,5,1,5,"NA",NA,1,NA,1,1
+"Omak 16-13","Omak Creek-Middle DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,1,5,3,5,"NA",NA,1,NA,1,1
+"Omak 16-14","Omak Creek-Upper DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,1,5,3,5,"NA",NA,1,NA,1,1
+"Omak 16-15","Omak Creek-Upper DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,1,5,3,5,"NA",NA,3,NA,3,3
+"Omak 16-16","Omak Creek-Upper DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,1,5,1,5,"NA",NA,3,NA,3,3
+"Omak 16-17","Omak Creek-Upper DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,1,5,1,5,"NA",NA,3,NA,3,3
+"Omak 16-2","Omak Creek-Lower DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.192955748449495,5,1,5,5,5,5,5,1,NA,"NA",NA,1,NA,1,1
+"Omak 16-3","Omak Creek-Lower DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.205909254667754,5,1,5,5,5,3,5,1,NA,"NA",NA,1,NA,1,1
+"Omak 16-4","Omak Creek-Lower DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.233443007589593,5,1,5,5,5,3,5,1,NA,"NA",NA,1,NA,1,1
+"Omak 16-5","Omak Creek-Lower US","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0,5,1,5,5,5,5,5,1,5,"NA",NA,1,NA,1,1
+"Omak 16-6","Omak Creek-Lower US","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0,5,1,5,5,5,5,5,1,5,"NA",NA,1,NA,1,1
+"Omak 16-7","Omak Creek-Lower US","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0,5,1,5,5,5,5,5,1,NA,"NA",NA,1,NA,1,1
+"Omak 16-8","Omak Creek-Lower US","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0,5,1,5,5,5,5,5,1,5,"NA",NA,1,NA,1,1
+"Omak 16-9","Omak Creek-Lower US","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0,5,1,5,5,5,3,5,1,NA,"NA",NA,1,NA,1,1
 "Panther Creek 01","Panther Creek","Wenatchee",5,"yes","yes",5,4,"3","2","3","3",NA,NA,NA,5,5,5,NA,NA,1,5,"5",NA,NA,NA,NA,3
 "Pearrygin Lake Creek 01","Chewuch River-Pearrygin Creek","Methow",5,"yes","yes",3,3,"1","1","1","2",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,NA,NA,NA,5
 "Peshastin Creek Lower 01","Lower Peshastin Creek","Wenatchee",5,"yes","yes",7,6,"2","2","2","1",0.244444444444444,5,1,1,1,1,3,1,1,1,"1",1,1,1,1,1
@@ -576,31 +577,31 @@
 "Rock Creek 02","Rock Creek","Wenatchee",1,"yes","yes",2,5,"3","2","3","3",NA,NA,NA,NA,NA,NA,NA,NA,5,NA,"NA",NA,NA,NA,NA,1
 "Rock Creek 03","Rock Creek","Wenatchee",1,"yes","yes",2,3,"3","2","3","3",NA,NA,NA,NA,NA,NA,5,3,5,NA,"5",NA,NA,NA,NA,5
 "Ruby Creek 01","Upper Peshastin Creek","Wenatchee",1,"no","yes",0,2,"2","3","2","2",NA,NA,NA,NA,NA,NA,3,5,1,5,"NA",1,NA,NA,NA,5
-"Salmon 16-1","Salmon Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.0581569779503563,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,3
-"Salmon 16-10","Salmon Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.626617921420571,5,1,5,5,5,NA,3,1,NA,"NA",NA,3,NA,3,3
-"Salmon 16-11","Salmon Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.872302720070069,3,3,5,5,5,NA,5,1,NA,"NA",NA,3,NA,3,5
-"Salmon 16-12","Salmon Creek-Lower","Okanogan",1,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.436584722274903,5,1,5,5,5,NA,1,1,NA,"NA",NA,3,NA,3,5
-"Salmon 16-13","Salmon Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.654280377056844,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,5
-"Salmon 16-2","Salmon Creek-Lower","Okanogan",1,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.0420846940519813,5,1,3,3,3,NA,3,1,NA,"NA",NA,1,NA,1,3
-"Salmon 16-3","Salmon Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.0459982879695874,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,5
-"Salmon 16-4","Salmon Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.678840842271688,5,1,5,5,5,NA,3,1,NA,"NA",NA,1,NA,1,5
-"Salmon 16-5","Salmon Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.681008576206181,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,5
-"Salmon 16-6","Salmon Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.783016464016357,5,3,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,5
-"Salmon 16-7","Salmon Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.528032937786071,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,5
-"Salmon 16-8","Salmon Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.698825020843353,5,1,5,5,5,NA,3,1,NA,"NA",NA,1,NA,1,5
-"Salmon 16-9","Salmon Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.789291793508043,5,3,5,5,5,NA,3,1,NA,"NA",NA,1,NA,1,5
+"Salmon 16-1","Salmon Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.0581569779503563,5,1,5,5,5,5,5,1,5,"NA",NA,1,NA,1,1
+"Salmon 16-10","Salmon Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.626617921420571,5,1,5,5,5,3,3,1,5,"NA",NA,3,NA,3,1
+"Salmon 16-11","Salmon Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.872302720070069,3,3,5,5,5,5,5,1,5,"NA",NA,3,NA,3,1
+"Salmon 16-12","Salmon Creek-Lower","Okanogan",1,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.436584722274903,5,1,5,5,5,5,1,1,5,"NA",NA,3,NA,3,1
+"Salmon 16-13","Salmon Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.654280377056844,5,1,5,5,5,3,5,1,5,"NA",NA,1,NA,1,1
+"Salmon 16-2","Salmon Creek-Lower","Okanogan",1,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.0420846940519813,5,1,3,3,3,5,3,1,5,"NA",NA,1,NA,1,1
+"Salmon 16-3","Salmon Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.0459982879695874,5,1,5,5,5,3,5,1,5,"NA",NA,1,NA,1,1
+"Salmon 16-4","Salmon Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.678840842271688,5,1,5,5,5,3,3,1,5,"NA",NA,1,NA,1,1
+"Salmon 16-5","Salmon Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.681008576206181,5,1,5,5,5,3,5,1,5,"NA",NA,1,NA,1,1
+"Salmon 16-6","Salmon Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.783016464016357,5,3,5,5,5,3,5,1,5,"NA",NA,1,NA,1,1
+"Salmon 16-7","Salmon Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.528032937786071,5,1,5,5,5,3,5,1,5,"NA",NA,1,NA,1,1
+"Salmon 16-8","Salmon Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.698825020843353,5,1,5,5,5,3,3,1,5,"NA",NA,1,NA,1,1
+"Salmon 16-9","Salmon Creek-Lower","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.789291793508043,5,3,5,5,5,3,3,1,5,"NA",NA,1,NA,1,1
 "Sand Creek 01","Sand Creek","Wenatchee",1,"no","yes",0,2,"Not a Priority","Not a Priority","2","2",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,NA,NA,NA,1
 "Sand Creek 02","Sand Creek","Wenatchee",1,"no","yes",0,2,"Not a Priority","Not a Priority","2","2",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,NA,NA,NA,5
 "Scaffold Camp Creek 01","Middle Twisp River","Methow",5,"yes","yes",3,6,"1","1","1","1",NA,NA,NA,NA,NA,NA,NA,NA,5,NA,"NA",NA,NA,NA,NA,5
 "Sears Creek 01","Lower White River","Wenatchee",5,"no","yes",0,5,"2","1","3","3",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,NA,NA,NA,5
 "Seatter Creek 01","Upper Twisp River","Methow",5,"yes","yes",1,1,"2","2","2","2",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,NA,NA,NA,5
-"Similkameen 16-1","Similkameen River","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","1","1",0.289937829844472,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,5
-"Similkameen 16-2","Similkameen River","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","1","1",0.392226717716027,5,1,5,5,5,NA,3,1,NA,"NA",NA,1,NA,1,1
-"Similkameen 16-3","Similkameen River","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","1","1",0.512291200709168,5,1,1,1,1,NA,1,1,NA,"NA",NA,1,NA,1,3
-"Similkameen 16-4","Similkameen River","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","1","1",0.503351146256966,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,1
-"Similkameen 16-5","Similkameen River","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","1","1",0.629274055804117,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,1
-"Similkameen 16-6","Similkameen River","Okanogan",1,"no","yes",0,7,"Not a Priority","Not a Priority","1","1",0.517816624879269,5,1,5,5,5,NA,1,1,NA,"NA",NA,1,NA,1,3
-"Siwash 16-1","Siwash Creek-Lower DS","Okanogan",5,"no","no",0,0,"Not a Priority","Not a Priority","3","3",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,1,NA,1,5
+"Similkameen 16-1","Similkameen River","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","1","1",0.289937829844472,5,1,5,5,5,1,5,1,NA,"NA",NA,1,NA,1,1
+"Similkameen 16-2","Similkameen River","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","1","1",0.392226717716027,5,1,5,5,5,1,3,1,NA,"NA",NA,1,NA,1,1
+"Similkameen 16-3","Similkameen River","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","1","1",0.512291200709168,5,1,1,1,1,3,1,1,1,"NA",NA,1,NA,1,1
+"Similkameen 16-4","Similkameen River","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","1","1",0.503351146256966,5,1,5,5,5,1,5,1,1,"NA",NA,1,NA,1,1
+"Similkameen 16-5","Similkameen River","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","1","1",0.629274055804117,5,1,5,5,5,3,5,1,5,"NA",NA,1,NA,1,1
+"Similkameen 16-6","Similkameen River","Okanogan",1,"no","yes",0,7,"Not a Priority","Not a Priority","1","1",0.517816624879269,5,1,5,5,5,3,1,1,5,"NA",NA,1,NA,1,1
+"Siwash 16-1","Siwash Creek-Lower DS","Okanogan",5,"no","no",0,0,"Not a Priority","Not a Priority","3","3",NA,NA,NA,NA,NA,NA,1,NA,1,5,"NA",NA,1,NA,1,1
 "Skinney Creek 01","Chiwaukum Creek","Wenatchee",5,"yes","yes",4,4,"3","2","2","2",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,NA,NA,NA,5
 "Skinney Creek 02","Chiwaukum Creek","Wenatchee",5,"yes","yes",2,4,"3","2","2","2",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,NA,NA,NA,5
 "Skinney Creek 03","Chiwaukum Creek","Wenatchee",5,"yes","yes",2,4,"3","2","2","2",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,NA,NA,NA,5
@@ -612,15 +613,15 @@
 "Smith Canyon Creek 05","Libby Creek","Methow",1,"no","yes",0,2,"3","3","2","2",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,NA,NA,NA,5
 "South Creek 01","South Creek","Methow",5,"yes","no",4,0,"3","3","3","3",0.866666666666667,3,3,3,5,4,5,5,5,5,"1",5,5,3,4,5
 "Spromberg Canyon 01","Chumstick Creek","Wenatchee",5,"yes","yes",3,5,"2","3","2","1",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,NA,NA,NA,5
-"Stapaloop 16-1","Omak Creek-Middle DS","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","2",0,5,1,3,3,3,NA,1,1,NA,"NA",NA,1,NA,1,5
-"Stapaloop 16-2","Omak Creek-Middle DS","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,NA,5,3,NA,"NA",NA,1,NA,1,3
+"Stapaloop 16-1","Omak Creek-Middle DS","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","2",0,5,1,3,3,3,1,1,1,5,"NA",NA,1,NA,1,1
+"Stapaloop 16-2","Omak Creek-Middle DS","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,1,5,3,5,"NA",NA,1,NA,1,3
 "Stormy Creek 01","Entiat River-Potato Creek","Entiat",5,"yes","yes",5,4,"1","1","1","1",NA,NA,NA,NA,NA,NA,5,5,3,3,"1",1,NA,NA,NA,5
 "Stormy Creek 02","Entiat River-Potato Creek","Entiat",1,"no","yes",0,3,"1","1","1","1",NA,NA,NA,NA,NA,NA,NA,NA,3,NA,"NA",NA,NA,NA,NA,5
 "Stormy Creek 03","Entiat River-Potato Creek","Entiat",1,"no","yes",0,3,"1","1","1","1",NA,NA,NA,NA,NA,NA,NA,NA,3,NA,"NA",NA,NA,NA,NA,5
 "Sunitsch Canyon 01","Chumstick Creek","Wenatchee",5,"yes","yes",1,5,"2","3","2","1",NA,NA,NA,NA,NA,NA,5,5,1,NA,"5",NA,NA,NA,NA,5
 "Swaram Creek 01","Swaram Creek","Methow",1,"no","yes",0,2,"Not a Priority","Not a Priority","3","3",NA,NA,NA,NA,NA,NA,NA,NA,3,NA,"NA",NA,3,1,2,3
 "Swaram Creek 02","Swaram Creek","Methow",1,"no","yes",0,2,"Not a Priority","Not a Priority","3","3",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,NA,1,1,5
-"Swimptkin 16-1","Omak Creek-Middle DS","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,NA,1,1,NA,"NA",NA,1,NA,1,3
+"Swimptkin 16-1","Omak Creek-Middle DS","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,1,1,1,5,"NA",NA,1,NA,1,3
 "Tamarack Creek 01","Roaring Creek","Entiat",1,"no","yes",0,2,"3","3","2","2",NA,NA,NA,NA,NA,NA,NA,NA,3,NA,"NA",NA,5,3,4,5
 "Tamarack Creek 02","Roaring Creek","Entiat",1,"no","yes",0,2,"3","3","2","2",NA,NA,NA,NA,NA,NA,NA,NA,3,NA,"NA",NA,NA,NA,NA,5
 "Tillicum Creek 01","Tillicum Creek","Entiat",1,"yes","yes",4,6,"3","3","2","3",NA,NA,NA,NA,NA,NA,3,5,5,3,"1",1,NA,NA,NA,5
@@ -628,9 +629,9 @@
 "Tillicum Creek 03","Tillicum Creek","Entiat",1,"yes","yes",4,6,"3","3","2","3",NA,NA,NA,NA,NA,NA,3,3,3,3,"1",5,NA,NA,NA,5
 "Tillicum Creek 04","Tillicum Creek","Entiat",1,"yes","yes",2,3,"3","3","2","3",NA,NA,NA,NA,NA,NA,3,3,5,3,"NA",1,NA,NA,NA,5
 "Tommy Creek 01","Entiat River-Lake Creek","Entiat",1,"no","no",0,0,"1","1","2","2",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,NA,NA,NA,5
-"Tonasket 16-1","Tonasket Creek DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","1",0.287380965486902,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,3
-"Tonasket 16-2","Tonasket Creek DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","1",1,1,5,5,5,5,NA,3,3,NA,"NA",NA,3,NA,3,3
-"Trail 16-1","Omak Creek-Upper DS","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,NA,1,3,NA,"NA",NA,3,NA,3,3
+"Tonasket 16-1","Tonasket Creek DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","1",0.287380965486902,5,1,5,5,5,3,5,1,5,"NA",NA,1,NA,1,1
+"Tonasket 16-2","Tonasket Creek DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","2","1",1,1,5,5,5,5,3,3,3,5,"NA",NA,3,NA,3,1
+"Trail 16-1","Omak Creek-Upper DS","Okanogan",5,"no","yes",0,5,"Not a Priority","Not a Priority","2","2",0,5,1,5,5,5,1,1,3,5,"NA",NA,3,NA,3,3
 "Tronsen Creek 01","Upper Peshastin Creek","Wenatchee",1,"yes","yes",4,5,"2","3","2","2",NA,NA,NA,NA,NA,NA,3,5,3,5,"NA",1,NA,NA,NA,1
 "Tronsen Creek 02","Upper Peshastin Creek","Wenatchee",1,"yes","yes",4,5,"2","3","2","2",NA,NA,NA,NA,NA,NA,NA,3,3,5,"NA",1,NA,NA,NA,1
 "Tronsen Creek 03","Upper Peshastin Creek","Wenatchee",1,"no","yes",0,2,"2","3","2","2",NA,NA,NA,NA,NA,NA,3,3,1,3,"1",1,NA,NA,NA,5
@@ -638,7 +639,7 @@
 "Trout Creek 02","West Fork Methow River","Methow",1,"yes","no",4,0,"3","3","3","3",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,NA,NA,NA,5
 "Trout Creek 03","West Fork Methow River","Methow",1,"yes","no",4,0,"3","3","3","3",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,NA,NA,NA,5
 "Trout Creek 04","West Fork Methow River","Methow",1,"yes","no",4,0,"3","3","3","3",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,NA,NA,NA,5
-"Tunk 16-1","Tunk Creek-Lower DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","3","2",0,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,5
+"Tunk 16-1","Tunk Creek-Lower DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","3","2",0,5,1,5,5,5,1,5,1,5,"NA",NA,1,NA,1,1
 "Twentymile Creek 01","Twenty Mile Creek","Methow",5,"yes","yes",4,5,"Not a Priority","Not a Priority","Not a Priority","Not a Priority",0.422222222222222,5,1,1,1,1,3,1,3,1,"1",3,1,1,1,5
 "Twisp River Headwaters 01","Twisp River Headwaters","Methow",5,"yes","yes",4,5,"3","3","3","2",0.977777777777778,1,5,5,5,5,5,5,5,5,"5",5,5,3,4,5
 "Twisp River Headwaters 02","Twisp River Headwaters","Methow",1,"yes","yes",4,2,"3","3","3","2",0.844444444444444,3,3,5,5,5,5,1,3,5,"5",5,5,3,4,5
@@ -666,9 +667,9 @@
 "Twisp River Upper 03","Upper Twisp River","Methow",5,"yes","yes",6,6,"2","2","2","2",NA,NA,NA,5,5,5,5,1,NA,5,"5",3,5,1,3,5
 "Twisp River Upper 04","Twisp River Headwaters","Methow",5,"yes","yes",5,6,"3","3","3","2",0.888888888888889,3,3,5,5,5,5,1,5,5,"5",5,5,3,4,5
 "Tyee Creek 01","Entiat River-Potato Creek","Entiat",5,"yes","yes",3,6,"1","1","1","1",NA,NA,NA,NA,NA,NA,NA,NA,3,NA,"NA",NA,5,NA,5,5
-"Wanacut 16-1","Wanacut Creek DS","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","3","2",0.0626946243656019,5,1,5,5,5,NA,3,1,NA,"NA",NA,1,NA,1,5
-"Wanacut 16-2","Wanacut Creek DS","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","3","2",0.0292506829513117,5,1,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,5
-"Wanacut 16-3","Wanacut Creek DS","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","3","2",0.0334077127996523,5,1,5,5,5,NA,3,1,NA,"NA",NA,1,NA,1,5
+"Wanacut 16-1","Wanacut Creek DS","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","3","2",0.0626946243656019,5,1,5,5,5,1,3,1,NA,"NA",NA,1,NA,1,1
+"Wanacut 16-2","Wanacut Creek DS","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","3","2",0.0292506829513117,5,1,5,5,5,1,5,1,NA,"NA",NA,1,NA,1,1
+"Wanacut 16-3","Wanacut Creek DS","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","3","2",0.0334077127996523,5,1,5,5,5,1,3,1,5,"NA",NA,1,NA,1,1
 "War Creek 01","War Creek","Methow",5,"yes","yes",4,5,"3","3","3","3",0.822222222222222,3,3,3,5,4,5,5,5,5,"1",5,5,3,4,3
 "War Creek 02","War Creek","Methow",1,"yes","yes",4,4,"3","3","3","3",0.777777777777778,5,3,3,5,4,5,5,1,5,"1",5,5,3,4,5
 "Wenatchee River Beaver 01","Wenatchee River-Beaver Creek","Wenatchee",5,"yes","yes",7,7,"1","2","1","2",0.822222222222222,3,3,5,5,5,5,5,1,5,"5",5,5,5,5,1
@@ -720,11 +721,11 @@
 "White River Lower 09","Lower White River","Wenatchee",5,"yes","yes",7,5,"2","1","3","3",NA,NA,NA,5,5,5,NA,NA,5,5,"5",NA,NA,NA,NA,3
 "White River Upper 01","Upper White River","Wenatchee",5,"yes","yes",5,4,"3","2","3","3",NA,NA,NA,NA,NA,NA,NA,NA,5,NA,"NA",NA,NA,NA,NA,3
 "Whitepine Creek 01","Whitepine Creek","Wenatchee",5,"yes","yes",4,4,"Not a Priority","Not a Priority","3","2",NA,NA,NA,NA,NA,NA,5,3,5,1,"NA",1,NA,NA,NA,1
-"Whitestone 16-1","Whitestone Creek","Okanogan",5,"no","no",0,0,"Not a Priority","Not a Priority","3","3",NA,NA,NA,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,1
-"Whitestone 16-2","Whitestone Creek","Okanogan",1,"no","no",0,0,"Not a Priority","Not a Priority","3","3",NA,NA,NA,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,1
-"Whitestone 16-3","Whitestone Creek","Okanogan",5,"no","no",0,0,"Not a Priority","Not a Priority","3","3",NA,NA,NA,5,5,5,NA,5,1,NA,"NA",NA,1,NA,1,1
-"Wildhorse 16-1","Wildhorse Spring Creek","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","3","3",0,5,1,5,5,5,NA,5,1,NA,"NA",NA,NA,NA,NA,5
-"Wildhorse 16-2","Wildhorse Spring Creek","Okanogan",1,"no","yes",0,7,"Not a Priority","Not a Priority","3","3",0,5,1,5,5,5,NA,5,1,NA,"NA",NA,NA,NA,NA,5
+"Whitestone 16-1","Whitestone Creek","Okanogan",5,"no","no",0,0,"Not a Priority","Not a Priority","3","3",NA,NA,NA,5,5,5,1,5,1,NA,"NA",NA,1,NA,1,1
+"Whitestone 16-2","Whitestone Creek","Okanogan",1,"no","no",0,0,"Not a Priority","Not a Priority","3","3",NA,NA,NA,5,5,5,1,5,1,NA,"NA",NA,1,NA,1,1
+"Whitestone 16-3","Whitestone Creek","Okanogan",5,"no","no",0,0,"Not a Priority","Not a Priority","3","3",NA,NA,NA,5,5,5,1,5,1,NA,"NA",NA,1,NA,1,1
+"Wildhorse 16-1","Wildhorse Spring Creek","Okanogan",5,"no","yes",0,7,"Not a Priority","Not a Priority","3","3",0,5,1,5,5,5,1,5,1,5,"NA",NA,NA,NA,NA,5
+"Wildhorse 16-2","Wildhorse Spring Creek","Okanogan",1,"no","yes",0,7,"Not a Priority","Not a Priority","3","3",0,5,1,5,5,5,1,5,1,5,"NA",NA,NA,NA,NA,5
 "Williams Creek 01","Upper Twisp River","Methow",5,"no","yes",0,1,"2","2","2","2",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,NA,NA,NA,5
 "Wolf Creek 01","Wolf Creek","Methow",5,"yes","yes",6,5,"2","2","2","2",0.4,5,1,1,1,1,5,1,1,1,"1",1,3,1,2,5
 "Wolf Creek 02","Wolf Creek","Methow",5,"yes","yes",6,4,"2","2","2","2",0.711111111111111,5,3,5,5,5,5,3,1,5,"3",1,5,3,4,5

@@ -59,33 +59,33 @@ Habitat_Attributes_List = list(
 # ----------------------- list of Level 2 habitat attribute names in Okanogan EDT Results --------------
 
 Habitat_Attributes_List_OKANOGAN = list(
-  '% Fines/Embeddedness' = c('EDT Level 2 Fine Sediment Functional Condition', 'EDT Level 2 Embeddedness  Functional Condition'),
-  'Bank Stability' = c('EDT Level 2 Confinement Artificial Functional Condition'),
+  '% Fines/Embeddedness' = c('EDT_Level 2 Fine Sediment', 'EDT_Level 2 Embeddedness'),
+  'Bank Stability' = c('EDT_Level 2 Confinement: Artificial'),
   'Brook Trout' = c(),
-  'Channel Stability' = c('EDT Level 2 Confinement Artificial Functional Condition'),
-  'Coarse Substrate' = c('EDT Level 2 Large Cobble Riffle Functional Condition', 'EDT Level 2 Small Cobble Riffle Functional Condition'),
+  'Channel Stability' = c('EDT_Level 2 Confinement: Artificial'),
+  'Coarse Substrate' = c('EDT_UCSRBCoarseSub pct'),
   'Contaminants' = c( 'Contaminants_303d', 'EDT Level 2 Metals in Sediments Functional Condition','EDT Level 2 Metals in Water Functional Condition','EDT Level 2 Miscellaneous Toxins Functional Condition'),
   'Cover- Boulders'  = c( ), 
   'Cover- Undercut Banks' = c( ), 
-  'Cover- Wood' = c('EDT Level 2 Woody Debris Functional Condition' ), 
+  'Cover- Wood' = c('EDT_Woody Debris' ), 
   'Entrainment/Stranding' = c('PROFESSIONAL JUDGEMENT'),
-  'Flow- Scour' = c( 'EDT Level 2 Bed Scour Functional Condition','EDT Level 2 Flow: Inter-annual High Flow Variation Functional Condition'), 
-  'Flow- Summer Base Flow' = c( 'EDT Level 2 Width Functional Condition','EDT Level 2 Flow: Inter-annual Low Flow Variation Functional Condition', 'PROSPER' , 'PROFESSIONAL JUDGEMENT','ATLAS_Flow'), 
-  'Food- Food Web Resources' = c('PROFESSIONAL JUDGEMENT',  'EDT Level 2 Benthic Richness Functional Condition', 'EDT Level 2 Temperature: Food Effect Functional Condition'), 
+  'Flow- Scour' = c( 'EDT_Level 2 Bed scour','EDT_Level 2 Flow: Inter-Annual Low Flow Variation'), 
+  'Flow- Summer Base Flow' = c( 'EDT_Width','EDT_Level 2 Flow: Inter-Annual Low Flow Variation', 'PROSPER' , 'PROFESSIONAL JUDGEMENT','ATLAS_Flow'), 
+  'Food- Food Web Resources' = c('PROFESSIONAL JUDGEMENT',  'EDT_Level 2 Benthic Richness', 'EDT_Temperature: Food Effect'), 
   'Harassment' = c('PROFESSIONAL JUDGEMENT' ), 
   'Icing' = c( 'PROFESSIONAL JUDGEMENT'), 
-  'Off-Channel- Floodplain' = c( 'EDT Level 2 Backwater Pools Functional Condition' , 'EDT Level 2 Floodplain Ponds Functional Condition', 'EDT Level 2 Seasonnally Inundated Floodplain Functional Condition'),
+  'Off-Channel- Floodplain' = c( 'EDT_Floodplain pct'),
   'Off-Channel- Side-Channels' = c('EDT Level 2 Side Channel Functional Condition'  ),
   'Pool Quantity & Quality' = c( 'EDT Level 2 Beaver Ponds Functional Condition', 'EDT Level 2 Scour Pools Functional Condition'), 
   'Pools- Deep Pools' = c(  ),
   'Predators- Adults' = c( 'PROFESSIONAL JUDGEMENT'), 
-  'Predators- Juveniles' = c( 'PROFESSIONAL JUDGEMENT', 'EDT Level 2 Predation Risk Functional Condition'),
+  'Predators- Juveniles' = c( 'PROFESSIONAL JUDGEMENT', 'EDT_Level 2 Predation Risk'),
   'Riparian- Canopy Cover' = c( 'UCSRB_CanopyCoverPct' , 'Canopy_Cover_NORWEST'),
-  'Riparian-Disturbance' = c('Disturbance_CATEGORY_1' , 'UCSRB_RiparianDisturbancePct' ),
+  'Riparian-Disturbance' = c('UCSRB_RiparianDisturbancePct' ),
   'Superimposition' = list('PROFESSIONAL JUDGEMENT' ), 
-  'Temperature- Adult Holding' = c( 'NORWEST_Temperature', '305bListings_Temperature',  'EDT Level 2 Temperature: Daily Maximum Functional Condition' ), 
-  'Temperature- Adult Spawning' = c('NORWEST_Temperature', '305bListings_Temperature',  'EDT Level 2 Temperature: Daily Maximum Functional Condition'), 
-  'Temperature- Rearing'  = c('NORWEST_Temperature', '305bListings_Temperature',  'EDT Level 2 Temperature: Daily Maximum Functional Condition' )
+  'Temperature- Adult Holding' = c( 'NORWEST_Temperature', '305bListings_Temperature',  'EDT_Temperature: Daily Maximum' ), 
+  'Temperature- Adult Spawning' = c('NORWEST_Temperature', '305bListings_Temperature',  'EDT_Temperature: Daily Maximum'), 
+  'Temperature- Rearing'  = c('NORWEST_Temperature', '305bListings_Temperature',  'EDT_Temperature: Daily Maximum' )
 )
 
 
