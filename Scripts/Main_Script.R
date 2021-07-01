@@ -34,6 +34,7 @@ update_Okanogan_reach_names = "no"  # if "yes" - update Okanogan reach names (sh
 HQ_add_life_stage = "no"   # IF "yes" generate life stages for HQ pathway based on life stage presence in reaches, for combining into ONE Data frame across all pathways and scores
 HQ_priority_life_stages = "yes"  # "yes" if use AU Life stages priority reach layer to generate life stages for habitat quality pathway
 EDT_convert_Level3_Flow_to_Flow_Variability = "yes" # Level2_Level3_EDT_Crosswalk has "Flow Variability", Limiting_Factors_Okanogan_EDT and HabitatAttribute_Ratings_Level3
+core_metric_missing_data_species = c("Steelhead", "Spring Chinook") # species to use for core metrics in missing data (based on data layer Attribute_LifeStage_Crosswalk)
 
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #   Directories of Input and Output data  
