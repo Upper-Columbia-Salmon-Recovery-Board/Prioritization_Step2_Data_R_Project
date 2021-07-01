@@ -1415,8 +1415,14 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     # ----------------------------------------------------------------------------------- 
     
     # ------------------ add Threats Score ----------
+    #Protection_Scores_Output = left_join(Protection_Scores_Output, 
+    #                                     Degraded_Floodplain_Data[,c("ReachName","Degraded_Area_Percent")], by = c("ReachName" = "ReachName"))
+    
+    Threatened_data_frame = habitat_raw_data[,c("ReachName","UCSRB_RiparianDisturbancePct")]
+    colnames(Threatened_data_frame) = c("ReachName", "Threats_Percent")
     Protection_Scores_Output = left_join(Protection_Scores_Output, 
-                                         Degraded_Floodplain_Data[,c("ReachName","Degraded_Area_Percent")], by = c("ReachName" = "ReachName"))
+                                         Threatened_data_frame[,c("ReachName","Threats_Percent")], by = c("ReachName" = "ReachName"))
+    
     
     # ----------------------------------------------------------------------------------- 
     #
@@ -1436,15 +1442,17 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     # ----------------------------------------------------------------------------------- 
     
     # ------------------ add Threats Score ----------
+    Protected_data_frame = habitat_raw_data[,c("ReachName","UCSRB_pctProtected")]
+    colnames(Protected_data_frame) = c("ReachName", "Protected_Percent")
     Protection_Scores_Output = left_join(Protection_Scores_Output, 
-                                         Protected_Percentage_Data[,c("ReachName","Protected_Percent")], by = c("ReachName" = "ReachName"))
+                                         Protected_data_frame[,c("ReachName","Protected_Percent")], by = c("ReachName" = "ReachName"))
     
     # ----------------------------------------------------------------------------------- 
     #
     #       Add all the Percents for a Total
     #
     # ----------------------------------------------------------------------------------- 
-    Protection_Scores_Output$Reach_Rank_Total_Score = rowSums(Protection_Scores_Output[ , c("Unconfined_Percent", "Habitat_Quality_Percent","Degraded_Area_Percent", "Protected_Percent" )])
+    Protection_Scores_Output$Reach_Rank_Total_Score = rowSums(Protection_Scores_Output[ , c("Unconfined_Percent", "Habitat_Quality_Percent","Threats_Percent", "Protected_Percent" )])
     
     # ----------------------------------------------------------------------------------- 
     #
