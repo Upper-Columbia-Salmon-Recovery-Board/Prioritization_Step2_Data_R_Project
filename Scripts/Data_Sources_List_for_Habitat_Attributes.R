@@ -43,7 +43,7 @@ Habitat_Attributes_List = list(
   'Off-Channel- Floodplain' = c( 'Floodplain_Connectivity_CATEGORY_1', 'Entrenchment_CATEGORY_2', 'Channel_Confinementor_or_Entrenchment_Ratio_INDICATOR_9', 'UCSRB_OffChannel_Floodplain' ),   # Data Sources listes first HabAtr as Floodplain_Connectivity_CATEGORY_1
   'Off-Channel- Side-Channels' = c('Connectivity_CATEGORY_1', 'Side_Channel_Habitat_Prcnt_INDICATOR_6', 'WetSC_Pct_Average', 'UCSRB_OffChannel_SideChannels'  ),
   'Pool Quantity & Quality' = c( 'Pools_CATEGORY_1', 'Pool_Habitat_Prcnt_INDICATOR_4', 'Pools_per_mile_INDICATOR_2'), 
-  'Pools- Deep Pools' = c('Pools_deeper_3_ft_prcnt_INDICATOR_3', 'Pools_deeper_3_ft_per_mile_INDICATOR_4'  ), 
+  'Pools- Deep Pools' = c('Pools_deeper_3_ft_prcnt_INDICATOR_3', 'Pools_deeper_3_ft_per_mile_INDICATOR_4', 'Pools_deeper_5_ft_per_mile_INDICATOR_5'  ), 
   'Predators- Adults' = c( 'PROFESSIONAL JUDGEMENT'), 
   'Predators- Juveniles' = c( 'PROFESSIONAL JUDGEMENT'),
   'Riparian- Canopy Cover' = c('Canopy_Cover_CATEGORY_1', 'UCSRB_CanopyCoverPct'),
@@ -129,7 +129,7 @@ habitat_quality_scores_colnames_ALL = c("BankStability_score", "ChannelStability
 
 # ----------------------- list of habitat attribute names in habitat raw data data frame --------------
 # NOTE: as of March 2021 - R Code pulls habitat attribute (limiting factor) scores for this HQ pathway, unless
-#               a paritcular attribute is not present in the habitat attribute scores
+#               a particular attribute is not present in the habitat attribute scores
 # a few data sources are in the Channel_Unit_Raw or CHAMP_data_per_reach data frames, see list below
 # data frame: habitat_raw_data (each of these data sources is a column in habitat_raw_data)
 # NOTE: order of the list is order data are pulled - so the first data source listed for each habitat attribute
@@ -155,9 +155,7 @@ REI_Default_List = c(
   'Cover- Wood' , 
   'Off-Channel- Floodplain',
   'Off-Channel- Side-Channels' ,
-  'Pool Quantity & Quality',
-  'Riparian-Disturbance' ,
-  'Riparian- Canopy Cover'
+  'Pool Quantity & Quality'
 )
 
 

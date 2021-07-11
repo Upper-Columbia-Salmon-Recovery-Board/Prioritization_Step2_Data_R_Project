@@ -470,7 +470,7 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   # list "yes" or "no" if it has a limiting factor in a high priority life stage (maybe list the limiting factor OR life stage?)
   # ----------- loop through each reach and identify if the reach has a limiting factor in a priority life stage
   Output_LF_all = c()
-  for(reach_x in Output_Spring_Chinook_All$ReachName[which(Output_Spring_Chinook_All$Basin != "Okanogan")]){
+  for(reach_x in Output_Spring_Chinook_All$ReachName[which(Output_Spring_Chinook_All$Basin != "Okanogan")] ){
     
     # ------------------ pull the priority life stages in this reach -------------------
     output_life_stages_x = FUNCTION_pull_High_Priority_Life_Stages_for_a_reach(reach_x, "Spring Chinook")
@@ -2189,7 +2189,7 @@ FUNCTION_calc_Limiting_Factor_Score = function(Habitat_Quality_Pathway_Restorati
 
 #FUNCTION_calc_Limiting_Factor_Score(Habitat_Quality_Pathway_Restoration) 
 
-test_x = TRUE
+test_x = FALSE
 if(test_x){
   Habitat_Quality_Pathway_Restoration = Output_Spring_Chinook_All
   species_all = "Spring Chinook"
@@ -2804,7 +2804,11 @@ FUNCTION_Add_Barrier_Data_Rankings = function(Barriers_Pathways_Data,  exclude_b
 #               Function to pull all the High Priority life stages 
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------------
-species_x = "Steelhead"
+test_x = TRUE
+if(test_x){
+  species_x = "Spring Chinook"
+}
+  
 
 FUNCTION_pull_High_Priority_Life_Stages_for_a_reach = function(reach_x, species_x){
   

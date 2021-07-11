@@ -130,8 +130,8 @@ FUNCTION_match_INDIVIDUAL_core_metrics_from_habitat_attributes_SPECIES = functio
 
 
 # To Test
-test = TRUE
-if(test){
+test_x = FALSE
+if(test_x){
   HQ_spring_chinook = Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']]
   HQ_steelhead = Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']]
   HQ_bull_trout = Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']]
@@ -139,7 +139,7 @@ if(test){
   LF_steelhead = Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']]
   LF_bull_trout = Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']]
   columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
-  exclude_bull_trout = "yes"
+  #exclude_bull_trout = "no"
 }
 
 

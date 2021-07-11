@@ -471,7 +471,7 @@ Barriers_Okanogan_EDT_updated_for_merge$Habitat_Attributes =  rep(Barriers_Pathw
 Barriers_Okanogan_EDT_updated_for_merge$Pathways =  rep(Barriers_Pathways_Data$Pathways[1], length.out=nrow(Barriers_Okanogan_EDT_updated))
 
 
-# -------------- remove Barriers John Arterburn (May 11, 2021) said had already been fixed -----
+# -------------- remove Barriers John Arterburn (May 11, 2021) communicated which barriers had already had passage restored -----
 #  NOTE: on June 2, 2021, John Arterburn responded and verified which to take out and which to keep
 reach_barriers_do_not_exist = c("Antoine 16-2","Johnson 16-1", "Johnson 16-2", "Omak 16-1",
                                 "Omak 16-5", "Antoine 16-1","Johnson 16-5",

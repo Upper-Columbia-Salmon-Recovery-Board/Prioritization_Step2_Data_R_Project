@@ -224,6 +224,7 @@ source(paste(script_path, 'Limiting_Factor_Pathway_Filter.R', sep=""))
 # ------- Limiting Factor Pathway Filter for the Okanogan ---------------
 source( paste(script_path, 'Limiting_Factor_Pathway_Filter_OKANOGAN.R', sep="") )
 
+
 # ---------------- Generate Limiting Factor Output for Each Species ----------------
 Limiting_Factor_Pathway_Spring_Chinook = Generate_Limiting_Factor_Output_Table("Spring Chinook", basins_to_include)
 Limiting_Factor_Pathway_Steelhead = Generate_Limiting_Factor_Output_Table("Steelhead", basins_to_include)
@@ -540,6 +541,9 @@ Restoration_Prioritization_Output_for_WebMap_column_order = c("Reach Name","Basi
                                                               "Unacceptable Limiting Factors" ,"At-Risk Limiting Factors", "Action Categories" )
 Restoration_Prioritization_Output_for_WebMap = Restoration_Prioritization_Output_for_WebMap[,Restoration_Prioritization_Output_for_WebMap_column_order]
 
+# ----------------------- update habit at attribute names ------
+Restoration_Prioritization_Output_for_WebMap = FUNCTION_update_habitat_attributes_Restoration(Restoration_Prioritization_Output_for_WebMap)
+
 # ---------------------------------------------------------------------------
 #   Add Reach Rank and other output to Protection_Prioritization_Output
 # ---------------------------------------------------------------------------
@@ -558,14 +562,18 @@ for(row_i in 1:nrow( Protection_Prioritization_Output) ){
 }
 
 # ------------------- order columns and give them correct names --------------
-Protection_Prioritization_Output_column_order = c("ReachName","Basin", "Assessment.Unit", "Pathway","Reach_Rank",  "Life_Stages","Action")
+Protection_Prioritization_Output_column_order =         c("ReachName","Basin", "Assessment.Unit",      "Pathway",    "Reach_Rank",  "Life_Stages","Action")
 
-Protection_Prioritization_Output_column_UPDATED_names = c("Reach Name", "Basin", "Assessment Unit", "Prioritization Pathway","Reach Rank", "Priority Life Stages", "Priority Actions")
+Protection_Prioritization_Output_column_UPDATED_names = c("Reach Name", "Basin", "Assessment Unit", "Priority Actions","Reach Rank", "Priority Life Stages", "Action Categories")
 
 # ---------------- re-order columns for WebMap ------
 Protection_Prioritization_Output_for_WebMap = Protection_Prioritization_Output[,Protection_Prioritization_Output_column_order]
 # --------------- correct names for output ------------
 colnames(Protection_Prioritization_Output_for_WebMap) = Protection_Prioritization_Output_column_UPDATED_names
+
+# ----------------------- update habit at attribute names ------
+Protection_Prioritization_Output_for_WebMap = FUNCTION_update_Protection_results(Protection_Prioritization_Output_for_WebMap)
+
 
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #
@@ -677,6 +685,7 @@ write_xlsx(Reach_Habitat_Attribute_Life_Stage_Restoration_Output,output_path_x )
 colnames(Reach_Habitat_Attribute_Life_Stage_Species_Restoration_Output)[colnames(Reach_Habitat_Attribute_Life_Stage_Species_Restoration_Output) == "Habitat_Attribute"] <- "Limiting_Factor"
 output_path_x =  paste(output_path,'Reach_Habitat_Attribute_Life_Stage_Species_Restoration_Output.xlsx', sep="")
 write_xlsx(Reach_Habitat_Attribute_Life_Stage_Species_Restoration_Output,output_path_x )
+
 # ----------- Outward Facing Table (pops up when reach is clicked on) - RESTORATION -----------
 output_path_x =  paste(output_path,'Restoration_Prioritization_Output_for_WebMap_Table.xlsx', sep="")
 write_xlsx(Restoration_Prioritization_Output_for_WebMap,output_path_x )

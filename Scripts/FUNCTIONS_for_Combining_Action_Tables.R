@@ -831,7 +831,7 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
 #
 # ------------------------------------------------------------------------------------------
 
-test_x = TRUE
+test_x = FALSE
 if(test_x){
   HQ_pathway_df = Habitat_Quality_Restoration_Unacceptable
   LF_pathway_df = Limiting_Factor_Restoration_Unacceptable
@@ -1815,7 +1815,8 @@ FUNCTION_Add_Barrier_Data_to_WebMap_Flat_Tables = function(HQ_LF_Combined, Barri
 
 # ------------------------------------------------------------
 #
-#   Function to A) remove all Bull Trout, B) make Species Name,
+#   Function to A) remove all Bull Trout, B) remove underscore in Species Name, 
+#              C) update habitat attribute names to remove & and %
 #
 # ------------------------------------------------------------
 
@@ -1918,13 +1919,140 @@ FUNCTION_prepare_outward_facing_table = function(data_frame_x, colnames_outward_
 }
 
 
+
+
 # ------------------------------------------------------------
 #
-#   Function to update Reach Information
+#   Function to  update habitat attribute names to remove & and % for Restoratoin results
 #
 # ------------------------------------------------------------
 
+test_x = FALSE
+if(test_x){
+  data_frame_x = Restoration_Prioritization_Output_for_WebMap
+}
+FUNCTION_update_habitat_attributes_Restoration = function(data_frame_x){
+  
+  # ------------------------------------------------------------
+  #   Update References for WebMap: PRCT (%), AND (&), and the "/" as a space
+  # ------------------------------------------------------------
+  
+  # ------------------------------------------------------------
+  #   Update Unacceptable Limiting Factors
+  # ------------------------------------------------------------
+  
+  # -------------------- Fines/Embeddedness ------------------
+  data_frame_x$`Unacceptable Limiting Factors`  = gsub("%Fines/Embeddedness", "PRCNT Fines and Embeddedness", data_frame_x$`Unacceptable Limiting Factors` )
+  # -------------------- Pool Quantity and Quality ------------------
+  data_frame_x$`Unacceptable Limiting Factors` = gsub("PoolQuantity&Quality", "Pool Quantity and Quality", data_frame_x$`Unacceptable Limiting Factors` )
+  # -------------------- Entrainment and Stranding ------------------
+  data_frame_x$`Unacceptable Limiting Factors` = gsub("Entrainment/Stranding", "Entrainment and Stranding", data_frame_x$`Unacceptable Limiting Factors` )
+  # ---------------- update the column names as necessary ------------
+  data_frame_x$`Unacceptable Limiting Factors` = gsub("CoarseSubstrate", "Coarse Substrate", data_frame_x$`Unacceptable Limiting Factors` )
+  data_frame_x$`Unacceptable Limiting Factors` = gsub("Cover-Wood", "Cover- Wood", data_frame_x$`Unacceptable Limiting Factors` )
+  data_frame_x$`Unacceptable Limiting Factors` = gsub("Off-Channel-Floodplain", "Off-Channel- Floodplain", data_frame_x$`Unacceptable Limiting Factors` )
+  data_frame_x$`Unacceptable Limiting Factors` = gsub("Off-Channel-Side-Channels", "Off-Channel- Side-Channels", data_frame_x$`Unacceptable Limiting Factors` )
+  data_frame_x$`Unacceptable Limiting Factors` = gsub("Cover-Undercut Banks", "Cover- Undercut Banks", data_frame_x$`Unacceptable Limiting Factors` )
+  data_frame_x$`Unacceptable Limiting Factors` = gsub("Cover-UndercutBanks", "Cover- Undercut Banks", data_frame_x$`Unacceptable Limiting Factors` )
+  data_frame_x$`Unacceptable Limiting Factors` = gsub("Temperature-AdultSpawning", "Temperature- Adult Spawning", data_frame_x$`Unacceptable Limiting Factors` )
+  data_frame_x$`Unacceptable Limiting Factors` = gsub("Temperature-Rearing", "Temperature- Rearing", data_frame_x$`Unacceptable Limiting Factors` )
+  data_frame_x$`Unacceptable Limiting Factors` = gsub("Flow-SummerBaseFlow", "Flow- Summer Base Flow", data_frame_x$`Unacceptable Limiting Factors` )
+  data_frame_x$`Unacceptable Limiting Factors` = gsub("Cover-Boulders", "Cover- Boulders", data_frame_x$`Unacceptable Limiting Factors` )
+  data_frame_x$`Unacceptable Limiting Factors` = gsub("BrookTrout", "Brook Trout", data_frame_x$`Unacceptable Limiting Factors` )
+  
+  data_frame_x$`Unacceptable Limiting Factors` = gsub("Temperature-AdultHolding", "Temperature- Adult Holding", data_frame_x$`Unacceptable Limiting Factors` )
+  data_frame_x$`Unacceptable Limiting Factors` = gsub("Pools-DeepPools", "Pools- Deep Pools", data_frame_x$`Unacceptable Limiting Factors` )
+  data_frame_x$`Unacceptable Limiting Factors` = gsub("Food-FoodWebResources", "Food- Food Web Resources", data_frame_x$`Unacceptable Limiting Factors` )
+  data_frame_x$`Unacceptable Limiting Factors` = gsub("BankStability_score", "Bank Stability", data_frame_x$`Unacceptable Limiting Factors` )
+  data_frame_x$`Unacceptable Limiting Factors` = gsub("ChannelStability_score", "Channel Stability", data_frame_x$`Unacceptable Limiting Factors` )
+  data_frame_x$`Unacceptable Limiting Factors` = gsub("Stability_Mean", "Stability", data_frame_x$`Unacceptable Limiting Factors` )
+  data_frame_x$`Unacceptable Limiting Factors` = gsub("_score", "", data_frame_x$`Unacceptable Limiting Factors` )
+  data_frame_x$`Unacceptable Limiting Factors` = gsub("Riparian_Mean", "Riparian Mean", data_frame_x$`Unacceptable Limiting Factors` )
+  
+  # ----------------- remove leading columns ----------
+  data_frame_x$`Unacceptable Limiting Factors` = gsub('^\\,|\\.$', '', data_frame_x$`Unacceptable Limiting Factors`)
+  
+  # ------------------------------------------------------------
+  #   Update At-Risk Limiting Factors
+  # ------------------------------------------------------------
 
+  # -------------------- Fines/Embeddedness ------------------
+  data_frame_x$`At-Risk Limiting Factors`  = gsub("%Fines/Embeddedness", "PRCNT Fines and Embeddedness", data_frame_x$`At-Risk Limiting Factors` )
+  # -------------------- Pool Quantity and Quality ------------------
+  data_frame_x$`At-Risk Limiting Factors` = gsub("PoolQuantity&Quality", "Pool Quantity and Quality", data_frame_x$`At-Risk Limiting Factors` )
+  # -------------------- Entrainment and Stranding ------------------
+  data_frame_x$`At-Risk Limiting Factors` = gsub("Entrainment/Stranding", "Entrainment and Stranding", data_frame_x$`At-Risk Limiting Factors` )
+  # ---------------- update the column names as necessary ------------
+  data_frame_x$`At-Risk Limiting Factors` = gsub("CoarseSubstrate", "Coarse Substrate", data_frame_x$`At-Risk Limiting Factors` )
+  data_frame_x$`At-Risk Limiting Factors` = gsub("Cover-Wood", "Cover- Wood", data_frame_x$`At-Risk Limiting Factors` )
+  data_frame_x$`At-Risk Limiting Factors` = gsub("Off-Channel-Floodplain", "Off-Channel- Floodplain", data_frame_x$`At-Risk Limiting Factors` )
+  data_frame_x$`At-Risk Limiting Factors` = gsub("Off-Channel-Side-Channels", "Off-Channel- Side-Channels", data_frame_x$`At-Risk Limiting Factors` )
+  data_frame_x$`At-Risk Limiting Factors` = gsub("Cover-Undercut Banks", "Cover- Undercut Banks", data_frame_x$`At-Risk Limiting Factors` )
+  data_frame_x$`At-Risk Limiting Factors` = gsub("Cover-UndercutBanks", "Cover- Undercut Banks", data_frame_x$`At-Risk Limiting Factors` )
+  data_frame_x$`At-Risk Limiting Factors` = gsub("Temperature-AdultSpawning", "Temperature- Adult Spawning", data_frame_x$`At-Risk Limiting Factors` )
+  
+  data_frame_x$`At-Risk Limiting Factors` = gsub("Temperature-AdultHolding", "Temperature- Adult Holding", data_frame_x$`At-Risk Limiting Factors` )
+  data_frame_x$`At-Risk Limiting Factors` = gsub("Pools-DeepPools", "Pools- Deep Pools", data_frame_x$`At-Risk Limiting Factors` )
+  data_frame_x$`At-Risk Limiting Factors` = gsub("Food-FoodWebResources", "Food- Food Web Resources", data_frame_x$`At-Risk Limiting Factors` )
+  data_frame_x$`At-Risk Limiting Factors` = gsub("BankStability_score", "Bank Stability", data_frame_x$`At-Risk Limiting Factors` )
+  data_frame_x$`At-Risk Limiting Factors` = gsub("ChannelStability_score", "Channel Stability", data_frame_x$`At-Risk Limiting Factors` )
+  data_frame_x$`At-Risk Limiting Factors` = gsub("Stability_Mean", "Stability", data_frame_x$`At-Risk Limiting Factors` )
+  data_frame_x$`At-Risk Limiting Factors` = gsub("_score", "", data_frame_x$`At-Risk Limiting Factors` )
+  data_frame_x$`At-Risk Limiting Factors` = gsub("Riparian_Mean", "Riparian Mean", data_frame_x$`At-Risk Limiting Factors` )
+  
+  data_frame_x$`At-Risk Limiting Factors` = gsub("Temperature-Rearing", "Temperature- Rearing", data_frame_x$`At-Risk Limiting Factors` )
+  data_frame_x$`At-Risk Limiting Factors` = gsub("Flow-SummerBaseFlow", "Flow- Summer Base Flow", data_frame_x$`At-Risk Limiting Factors` )
+  data_frame_x$`At-Risk Limiting Factors` = gsub("Cover-Boulders", "Cover- Boulders", data_frame_x$`At-Risk Limiting Factors` )
+  data_frame_x$`At-Risk Limiting Factors` = gsub("BrookTrout", "Brook Trout", data_frame_x$`At-Risk Limiting Factors` )
+
+  # ----------------- remove leading columns ----------
+  data_frame_x$`At-Risk Limiting Factors` = gsub('^\\,|\\.$', '', data_frame_x$`At-Risk Limiting Factors`)
+  
+  # --------------------------- remove leading column in Actoin Categories ---------------------------
+  data_frame_x$`Action Categories`= gsub('^\\,|\\.$', '', data_frame_x$`Action Categories`)
+  
+  
+  return(data_frame_x)
+  
+}
+
+
+# ------------------------------------------------------------
+#
+#   Function to update Protection Results
+#
+# ------------------------------------------------------------
+FUNCTION_update_Protection_results= function(data_frame_x){
+  
+
+  # ------------------------------------------------------------
+  #   Update Unacceptable Limiting Factors
+  # ------------------------------------------------------------
+  
+  # -------------------- HQ Pathway -> "Maintain Reach Function" ------------------
+  data_frame_x$`Priority Actions` = gsub("HQ_spring_chinook", "Maintain Reach Function", data_frame_x$`Priority Actions` )
+  data_frame_x$`Priority Actions` = gsub("HQ_steelhead", "Maintain Reach Function", data_frame_x$`Priority Actions` )
+  data_frame_x$`Priority Actions` = gsub("HQ_bull_trout", "Maintain Reach Function", data_frame_x$`Priority Actions` )
+  
+  # -------------------- HQ Pathway -> "Maintain Reach Function" ------------------
+  data_frame_x$`Priority Actions` = gsub("LF_spring_chinook", "Prevent Limiting Factors", data_frame_x$`Priority Actions` )
+  data_frame_x$`Priority Actions` = gsub("LF_steelhead", "Prevent Limiting Factors", data_frame_x$`Priority Actions` )
+  data_frame_x$`Priority Actions` = gsub("LF_bull_trout", "Prevent Limiting Factors", data_frame_x$`Priority Actions` )
+  
+  
+  # ----------------------- remove duplicate Priority Actions -------
+  for(row_x in 1:nrow(data_frame_x)){
+    # ------------ pull single cell of priority actoins -----
+    priority_action_x = data_frame_x$`Priority Actions`[row_x]
+    # ----------- remove duplicates ------
+    priority_action_x <- unlist(strsplit(priority_action_x, split=","))
+    priority_action_x = paste(unique(priority_action_x), collapse = ',')
+    data_frame_x$`Priority Actions`[row_x] = priority_action_x
+  }
+
+  return(data_frame_x)
+  
+}
 
 # ------------------------------------------------------------
 #

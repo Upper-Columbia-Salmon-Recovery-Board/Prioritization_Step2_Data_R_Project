@@ -73,12 +73,12 @@
 "Chewuch River Doe 06","Chewuch River-Doe Creek","Methow",5,"yes","yes",7,6,"1","1","1","2",0.688888888888889,5,1,5,5,5,5,1,3,5,"5",3,5,1,3,1
 "Chewuch River Doe 07","Chewuch River-Doe Creek","Methow",5,"yes","yes",7,6,"1","1","1","2",0.622222222222222,5,1,3,1,2,3,1,3,3,"5",3,3,3,3,5
 "Chewuch River Doe 08","Chewuch River-Doe Creek","Methow",5,"yes","yes",7,6,"1","1","1","2",0.622222222222222,5,1,3,1,2,3,1,3,3,"5",3,3,3,3,5
-"Chewuch River Doe 09","Chewuch River-Doe Creek","Methow",5,"yes","yes",7,6,"1","1","1","2",0.577777777777778,5,1,3,1,2,5,1,3,3,"1",3,3,3,3,5
+"Chewuch River Doe 09","Chewuch River-Doe Creek","Methow",5,"yes","yes",7,6,"1","1","1","2",0.555555555555556,5,1,3,1,2,5,1,3,3,"1",3,3,1,2,5
 "Chewuch River Kay 01","Chewuch River-Kay Creek","Methow",5,"yes","yes",7,6,"2","2","2","3",NA,NA,NA,NA,NA,NA,3,5,5,NA,"NA",1,5,1,3,5
 "Chewuch River Kay 02","Chewuch River-Kay Creek","Methow",5,"yes","yes",6,4,"2","2","2","3",NA,NA,NA,NA,NA,NA,3,5,5,NA,"NA",5,5,NA,5,5
 "Chewuch River Kay 03","Chewuch River-Kay Creek","Methow",5,"yes","yes",6,4,"2","2","2","3",NA,NA,NA,NA,NA,NA,5,5,3,NA,"NA",1,NA,NA,NA,5
-"Chewuch River Pearrygin 01","Chewuch River-Pearrygin Creek","Methow",5,"yes","yes",7,6,"1","1","1","2",0.688888888888889,5,1,5,5,5,3,1,3,5,"5",5,5,1,3,1
-"Chewuch River Pearrygin 02","Chewuch River-Pearrygin Creek","Methow",5,"yes","yes",7,6,"1","1","1","2",0.688888888888889,5,1,5,5,5,3,1,3,5,"5",5,5,1,3,1
+"Chewuch River Pearrygin 01","Chewuch River-Pearrygin Creek","Methow",5,"yes","yes",7,6,"1","1","1","2",0.666666666666667,5,1,5,5,5,3,1,3,5,"5",5,3,1,2,1
+"Chewuch River Pearrygin 02","Chewuch River-Pearrygin Creek","Methow",5,"yes","yes",7,6,"1","1","1","2",0.666666666666667,5,1,5,5,5,3,1,3,5,"5",5,3,1,2,1
 "Chewuch River Pearrygin 03","Chewuch River-Pearrygin Creek","Methow",5,"yes","yes",7,6,"1","1","1","2",0.622222222222222,5,1,5,5,5,5,1,3,3,"3",5,3,1,2,1
 "Chewuch River Pearrygin 04","Chewuch River-Pearrygin Creek","Methow",5,"yes","yes",7,6,"1","1","1","2",0.622222222222222,5,1,5,5,5,5,1,3,3,"3",5,3,1,2,1
 "Chewuch River Pearrygin 05","Chewuch River-Pearrygin Creek","Methow",5,"yes","yes",7,6,"1","1","1","2",0.644444444444444,5,1,3,5,4,5,1,3,3,"3",5,5,3,4,1
@@ -87,7 +87,7 @@
 "Chewuch River Pearrygin 08","Chewuch River-Pearrygin Creek","Methow",5,"yes","yes",7,6,"1","1","1","2",0.755555555555556,5,3,5,5,5,5,1,3,5,"5",5,5,3,4,1
 "Chewuch River Pearrygin 09","Chewuch River-Pearrygin Creek","Methow",5,"yes","yes",7,6,"1","1","1","2",0.577777777777778,5,1,3,5,4,5,1,3,1,"3",5,5,1,3,1
 "Chewuch River Pearrygin 10","Chewuch River-Pearrygin Creek","Methow",5,"yes","yes",7,6,"1","1","1","2",0.577777777777778,5,1,3,5,4,5,1,3,1,"3",5,5,1,3,1
-"Chewuch River Pearrygin 11","Chewuch River-Pearrygin Creek","Methow",5,"yes","yes",7,6,"1","1","1","2",0.577777777777778,5,1,3,5,4,5,1,3,1,"3",5,5,1,3,1
+"Chewuch River Pearrygin 11","Chewuch River-Pearrygin Creek","Methow",5,"yes","yes",7,6,"1","1","1","2",0.555555555555556,5,1,3,5,4,5,1,3,1,"3",5,3,1,2,1
 "Chewuch River Thirtymile 01","Chewuch River-Thirtymile Creek","Methow",5,"yes","yes",7,6,"1","2","1","2",0.666666666666667,5,1,3,1,2,3,5,3,5,"1",3,3,3,3,5
 "Chewuch River Thirtymile 02","Chewuch River-Thirtymile Creek","Methow",5,"yes","yes",7,6,"1","2","1","2",0.755555555555556,5,3,3,1,2,3,5,3,5,"5",3,3,3,3,5
 "Chewuch River Thirtymile 03","Chewuch River-Thirtymile Creek","Methow",5,"yes","yes",7,6,"1","2","1","2",0.911111111111111,1,5,5,5,5,3,5,5,5,"5",5,5,1,3,5
@@ -163,22 +163,22 @@
 "Eight Mile Creek 08","Eight Mile Creek","Methow",5,"yes","yes",4,2,"2","2","2","2",NA,NA,NA,NA,NA,NA,5,5,5,NA,"NA",5,3,3,3,5
 "Eight Mile Creek 09","Eight Mile Creek","Methow",5,"yes","yes",4,2,"2","2","2","2",NA,NA,NA,NA,NA,NA,5,5,5,NA,"NA",5,5,3,4,5
 "Entiat River Lake 01","Entiat River-Lake Creek","Entiat",5,"yes","yes",7,3,"1","1","2","2",0.8,3,3,5,5,5,5,1,3,5,"3",5,5,3,4,5
-"Entiat River Lake 02","Entiat River-Lake Creek","Entiat",5,"yes","yes",7,3,"1","1","2","2",0.622222222222222,5,1,1,3,2,5,1,3,1,"3",5,1,5,3,5
-"Entiat River Lake 03","Entiat River-Lake Creek","Entiat",5,"yes","yes",7,3,"1","1","2","2",0.911111111111111,1,5,5,5,5,5,3,3,5,"5",5,5,5,5,5
-"Entiat River Lake 04","Entiat River-Lake Creek","Entiat",5,"yes","yes",7,3,"1","1","2","2",0.733333333333333,5,3,5,5,5,5,1,3,5,"3",1,5,5,5,5
-"Entiat River Lake 05","Entiat River-Lake Creek","Entiat",5,"yes","yes",7,3,"1","1","2","2",0.911111111111111,1,5,5,5,5,5,3,3,5,"5",5,5,5,5,5
-"Entiat River Lake 06","Entiat River-Lake Creek","Entiat",1,"yes","yes",5,3,"1","1","2","2",0.844444444444444,3,3,5,5,5,5,5,3,5,"3",3,3,5,4,5
+"Entiat River Lake 02","Entiat River-Lake Creek","Entiat",5,"yes","yes",7,3,"1","1","2","2",0.6,5,1,1,3,2,5,1,3,1,"3",5,1,3,2,5
+"Entiat River Lake 03","Entiat River-Lake Creek","Entiat",5,"yes","yes",7,3,"1","1","2","2",0.866666666666667,3,3,5,5,5,5,3,3,5,"5",5,3,3,3,5
+"Entiat River Lake 04","Entiat River-Lake Creek","Entiat",5,"yes","yes",7,3,"1","1","2","2",0.711111111111111,5,3,5,5,5,5,1,3,5,"3",1,5,3,4,5
+"Entiat River Lake 05","Entiat River-Lake Creek","Entiat",5,"yes","yes",7,3,"1","1","2","2",0.888888888888889,3,3,5,5,5,5,3,3,5,"5",5,5,3,4,5
+"Entiat River Lake 06","Entiat River-Lake Creek","Entiat",1,"yes","yes",5,3,"1","1","2","2",0.822222222222222,3,3,5,5,5,5,5,3,5,"3",3,3,3,3,5
 "Entiat River Lake 07","Entiat River-Lake Creek","Entiat",1,"yes","yes",5,2,"1","1","2","2",0.777777777777778,5,3,3,3,3,5,1,5,5,"3",3,5,5,5,5
 "Entiat River Lake 08","Entiat River-Lake Creek","Entiat",5,"yes","yes",5,2,"1","1","2","2",0.822222222222222,3,3,5,5,5,5,1,5,5,"3",3,5,5,5,5
 "Entiat River Lake 09","Entiat River-Lake Creek","Entiat",5,"yes","yes",3,2,"1","1","2","2",0.822222222222222,3,3,5,5,5,5,1,5,5,"3",3,5,5,5,5
 "Entiat River Lake 10","Entiat River-Lake Creek","Entiat",5,"yes","yes",5,2,"1","1","2","2",0.822222222222222,3,3,5,5,5,5,1,5,5,"3",3,5,5,5,5
 "Entiat River Lake 11","Entiat River-Lake Creek","Entiat",5,"yes","yes",5,2,"1","1","2","2",NA,NA,NA,NA,NA,NA,5,3,1,NA,"1",NA,5,3,4,5
 "Entiat River Mills 01","Entiat River-Mills Creek","Entiat",5,"yes","yes",5,7,"2","3","1","1",NA,NA,NA,3,3,3,NA,NA,1,5,"5",NA,1,1,1,1
-"Entiat River Mills 02","Entiat River-Mills Creek","Entiat",5,"yes","yes",6,7,"2","3","1","1",0.577777777777778,5,1,5,5,5,5,3,1,3,"3",3,3,1,2,1
-"Entiat River Mills 03","Entiat River-Mills Creek","Entiat",5,"yes","yes",6,7,"2","3","1","1",0.577777777777778,5,1,5,5,5,5,3,1,3,"3",3,3,1,2,1
-"Entiat River Mills 04","Entiat River-Mills Creek","Entiat",5,"yes","yes",6,7,"2","3","1","1",0.577777777777778,5,1,5,5,5,5,1,1,3,"3",3,3,1,2,3
-"Entiat River Mills 05","Entiat River-Mills Creek","Entiat",5,"yes","yes",6,7,"2","3","1","1",0.622222222222222,5,1,5,5,5,5,3,1,3,"3",3,3,1,2,3
-"Entiat River Mills 06","Entiat River-Mills Creek","Entiat",5,"yes","yes",6,7,"2","3","1","1",0.622222222222222,5,1,5,5,5,5,3,1,3,"3",3,3,1,2,3
+"Entiat River Mills 02","Entiat River-Mills Creek","Entiat",5,"yes","yes",6,7,"2","3","1","1",0.555555555555556,5,1,5,5,5,5,3,1,3,"3",3,1,1,1,1
+"Entiat River Mills 03","Entiat River-Mills Creek","Entiat",5,"yes","yes",6,7,"2","3","1","1",0.555555555555556,5,1,5,5,5,5,3,1,3,"3",3,1,1,1,1
+"Entiat River Mills 04","Entiat River-Mills Creek","Entiat",5,"yes","yes",6,7,"2","3","1","1",0.555555555555556,5,1,5,5,5,5,1,1,3,"3",3,1,1,1,3
+"Entiat River Mills 05","Entiat River-Mills Creek","Entiat",5,"yes","yes",6,7,"2","3","1","1",0.6,5,1,5,5,5,5,3,1,3,"3",3,1,1,1,3
+"Entiat River Mills 06","Entiat River-Mills Creek","Entiat",5,"yes","yes",6,7,"2","3","1","1",0.6,5,1,5,5,5,5,3,1,3,"3",3,1,1,1,3
 "Entiat River Mills 07","Entiat River-Mills Creek","Entiat",5,"yes","yes",6,7,"2","3","1","1",NA,NA,NA,5,5,5,5,1,3,3,"3",NA,1,1,1,3
 "Entiat River Mills 08","Entiat River-Mills Creek","Entiat",5,"yes","yes",6,7,"2","3","1","1",NA,NA,NA,5,5,5,5,3,3,3,"1",NA,1,1,1,3
 "Entiat River Potato 01","Entiat River-Potato Creek","Entiat",5,"yes","yes",7,6,"1","1","1","1",NA,NA,NA,3,3,3,5,1,3,3,"1",NA,1,1,1,5
@@ -187,9 +187,9 @@
 "Entiat River Potato 04","Entiat River-Potato Creek","Entiat",5,"yes","yes",7,6,"1","1","1","1",NA,NA,NA,3,3,3,3,3,3,3,"1",NA,5,1,3,5
 "Entiat River Potato 05","Entiat River-Potato Creek","Entiat",5,"yes","yes",7,6,"1","1","1","1",0.866666666666667,3,3,5,5,5,5,3,5,5,"5",5,3,3,3,3
 "Entiat River Potato 06","Entiat River-Potato Creek","Entiat",5,"yes","yes",7,6,"1","1","1","1",0.8,3,3,5,5,5,5,5,3,3,"3",5,5,3,4,3
-"Entiat River Potato 07","Entiat River-Potato Creek","Entiat",5,"yes","yes",7,6,"1","1","1","1",0.711111111111111,5,3,3,3,3,5,3,3,3,"3",5,3,5,4,3
+"Entiat River Potato 07","Entiat River-Potato Creek","Entiat",5,"yes","yes",7,6,"1","1","1","1",0.688888888888889,5,1,3,3,3,5,3,3,3,"3",5,3,3,3,3
 "Entiat River Potato 08","Entiat River-Potato Creek","Entiat",5,"yes","yes",7,6,"1","1","1","1",0.733333333333333,5,3,3,3,3,5,5,3,3,"3",5,3,3,3,3
-"Entiat River Preston 01","Entiat River-Preston Creek","Entiat",5,"yes","yes",7,6,"1","1","1","2",0.666666666666667,5,1,3,3,3,5,3,3,3,"3",3,3,5,4,3
+"Entiat River Preston 01","Entiat River-Preston Creek","Entiat",5,"yes","yes",7,6,"1","1","1","2",0.644444444444444,5,1,3,3,3,5,3,3,3,"3",3,3,3,3,3
 "Entiat River Preston 02","Entiat River-Preston Creek","Entiat",5,"yes","yes",7,6,"1","1","1","2",0.733333333333333,5,3,3,3,3,5,5,3,3,"3",5,3,3,3,3
 "Entiat River Preston 03","Entiat River-Preston Creek","Entiat",5,"yes","yes",7,6,"1","1","1","2",0.688888888888889,5,1,3,5,4,5,1,3,5,"3",3,1,3,2,5
 "Entiat River Preston 04","Entiat River-Preston Creek","Entiat",5,"yes","yes",7,6,"1","1","1","2",0.688888888888889,5,1,5,5,5,5,1,3,5,"3",1,3,3,3,5
@@ -341,7 +341,7 @@
 "Loup Loup 16-1","Loup Loup Creek-Lower DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.413821612609874,5,1,1,1,1,5,1,1,NA,"NA",NA,1,NA,1,1
 "Loup Loup 16-2","Loup Loup Creek-Lower DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.486404503282982,5,1,5,5,5,5,1,1,5,"NA",NA,1,NA,1,1
 "Loup Loup 16-3","Loup Loup Creek-Lower DS","Okanogan",5,"no","yes",0,6,"Not a Priority","Not a Priority","1","1",0.40183470139682,5,1,5,5,5,5,1,1,5,"NA",NA,1,NA,1,1
-"Mad River Lower 01","Lower Mad River","Entiat",5,"yes","yes",6,6,"2","3","1","2",0.4,5,1,1,1,1,3,1,3,1,"1",1,3,1,2,5
+"Mad River Lower 01","Lower Mad River","Entiat",5,"yes","yes",6,6,"2","3","1","2",0.377777777777778,5,1,1,1,1,3,1,3,1,"1",1,1,1,1,5
 "Mad River Lower 02","Lower Mad River","Entiat",1,"yes","yes",6,6,"2","3","1","2",0.555555555555556,5,1,3,3,3,3,1,5,3,"1",1,5,1,3,5
 "Mad River Lower 03","Lower Mad River","Entiat",1,"yes","yes",5,6,"2","3","1","2",0.644444444444444,5,1,3,5,4,3,3,5,3,"1",1,5,3,4,5
 "Mad River Lower 04","Lower Mad River","Entiat",5,"yes","yes",5,6,"2","3","1","2",0.822222222222222,3,3,5,5,5,5,5,5,5,"3",1,5,1,3,5
@@ -357,26 +357,26 @@
 "Mad River Upper 04","Upper Mad River","Entiat",1,"yes","no",2,0,"3","3","3","3",NA,NA,NA,NA,NA,NA,NA,5,5,5,"NA",1,5,1,3,5
 "Mad River Upper 05","Upper Mad River","Entiat",5,"yes","no",2,0,"3","3","3","3",NA,NA,NA,NA,NA,NA,NA,1,5,5,"NA",1,NA,NA,NA,5
 "Maple Creek 01","Upper Chiwawa River","Wenatchee",5,"no","no",0,0,"2","1","3","3",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,NA,NA,NA,5
-"Methow River Alder 01","Methow River-Alder Creek","Methow",5,"yes","yes",6,7,"2","3","2","2",0.488888888888889,5,1,3,NA,3,5,1,1,3,"3",1,1,3,2,3
-"Methow River Alder 02","Methow River-Alder Creek","Methow",5,"yes","yes",6,7,"2","3","2","2",0.488888888888889,5,1,3,NA,3,5,1,1,3,"3",1,1,3,2,3
-"Methow River Alder 03","Methow River-Alder Creek","Methow",5,"yes","yes",6,7,"2","3","2","2",0.488888888888889,5,1,3,NA,3,5,1,1,3,"3",1,1,3,2,3
-"Methow River Alder 04","Methow River-Alder Creek","Methow",5,"yes","yes",6,7,"2","3","2","2",0.311111111111111,5,1,1,NA,1,5,1,1,1,"1",1,1,3,2,1
-"Methow River Alder 05","Methow River-Alder Creek","Methow",5,"yes","yes",6,7,"2","3","2","2",0.311111111111111,5,1,1,NA,1,5,1,1,1,"1",1,1,3,2,1
-"Methow River Alder 06","Methow River-Alder Creek","Methow",5,"yes","yes",6,7,"2","3","2","2",0.333333333333333,5,1,1,NA,1,5,1,1,1,"1",1,3,3,3,1
-"Methow River Alder 07","Methow River-Alder Creek","Methow",5,"yes","yes",6,7,"2","3","2","2",0.333333333333333,5,1,1,NA,1,5,1,1,1,"1",1,3,3,3,1
-"Methow River Alder 08","Methow River-Alder Creek","Methow",5,"yes","yes",6,7,"2","3","2","2",0.444444444444444,5,1,3,NA,3,5,1,1,3,"3",1,1,3,2,1
+"Methow River Alder 01","Methow River-Alder Creek","Methow",5,"yes","yes",6,7,"2","3","2","2",0.466666666666667,5,1,3,NA,3,5,1,1,3,"3",1,1,1,1,3
+"Methow River Alder 02","Methow River-Alder Creek","Methow",5,"yes","yes",6,7,"2","3","2","2",0.466666666666667,5,1,3,NA,3,5,1,1,3,"3",1,1,1,1,3
+"Methow River Alder 03","Methow River-Alder Creek","Methow",5,"yes","yes",6,7,"2","3","2","2",0.466666666666667,5,1,3,NA,3,5,1,1,3,"3",1,1,1,1,3
+"Methow River Alder 04","Methow River-Alder Creek","Methow",5,"yes","yes",6,7,"2","3","2","2",0.288888888888889,5,1,1,NA,1,5,1,1,1,"1",1,1,1,1,1
+"Methow River Alder 05","Methow River-Alder Creek","Methow",5,"yes","yes",6,7,"2","3","2","2",0.288888888888889,5,1,1,NA,1,5,1,1,1,"1",1,1,1,1,1
+"Methow River Alder 06","Methow River-Alder Creek","Methow",5,"yes","yes",6,7,"2","3","2","2",0.311111111111111,5,1,1,NA,1,5,1,1,1,"1",1,3,1,2,1
+"Methow River Alder 07","Methow River-Alder Creek","Methow",5,"yes","yes",6,7,"2","3","2","2",0.311111111111111,5,1,1,NA,1,5,1,1,1,"1",1,3,1,2,1
+"Methow River Alder 08","Methow River-Alder Creek","Methow",5,"yes","yes",6,7,"2","3","2","2",0.422222222222222,5,1,3,NA,3,5,1,1,3,"3",1,1,1,1,1
 "Methow River Alta Coulee 01","Methow River-Alta Coulee","Methow",5,"yes","yes",6,7,"2","3","1","2",NA,NA,NA,1,3,2,NA,NA,1,3,"3",NA,1,1,1,3
 "Methow River Alta Coulee 02","Methow River-Alta Coulee","Methow",5,"yes","yes",6,7,"2","3","1","2",0.422222222222222,5,1,3,3,3,3,1,1,3,"3",1,1,1,1,3
 "Methow River Alta Coulee 03","Methow River-Alta Coulee","Methow",5,"yes","yes",6,7,"2","3","1","2",0.377777777777778,5,1,3,3,3,3,1,1,3,"3",1,1,1,1,1
 "Methow River Alta Coulee 04","Methow River-Alta Coulee","Methow",5,"yes","yes",6,7,"2","3","1","2",0.377777777777778,5,1,3,3,3,3,1,1,3,"3",1,1,1,1,1
 "Methow River Alta Coulee 05","Methow River-Alta Coulee","Methow",5,"yes","yes",6,7,"2","3","1","2",0.422222222222222,5,1,3,3,3,3,1,1,3,"3",1,1,1,1,3
 "Methow River Alta Coulee 06","Methow River-Alta Coulee","Methow",1,"yes","yes",6,7,"2","3","1","2",0.466666666666667,5,1,3,3,3,3,1,3,3,"3",1,1,1,1,3
-"Methow River Fawn 01","Methow River-Fawn Creek","Methow",5,"yes","yes",7,6,"1","1","1","1",0.688888888888889,5,1,3,5,4,5,5,1,3,"3",5,3,5,4,1
-"Methow River Fawn 02","Methow River-Fawn Creek","Methow",5,"yes","yes",7,6,"1","1","1","1",0.688888888888889,5,1,3,5,4,5,3,3,3,"3",5,5,3,4,1
-"Methow River Fawn 03","Methow River-Fawn Creek","Methow",5,"yes","yes",7,6,"1","1","1","1",0.622222222222222,5,1,5,3,4,5,3,3,1,"3",5,5,1,3,1
+"Methow River Fawn 01","Methow River-Fawn Creek","Methow",5,"yes","yes",7,6,"1","1","1","1",0.644444444444444,5,1,3,5,4,5,5,1,3,"3",5,3,1,2,1
+"Methow River Fawn 02","Methow River-Fawn Creek","Methow",5,"yes","yes",7,6,"1","1","1","1",0.644444444444444,5,1,3,5,4,5,3,3,3,"3",5,3,1,2,1
+"Methow River Fawn 03","Methow River-Fawn Creek","Methow",5,"yes","yes",7,6,"1","1","1","1",0.6,5,1,5,3,4,5,3,3,1,"3",5,3,1,2,1
 "Methow River Fawn 04","Methow River-Fawn Creek","Methow",5,"yes","yes",7,6,"1","1","1","1",0.8,3,3,5,5,5,5,3,3,5,"5",5,5,3,4,1
-"Methow River Fawn 05","Methow River-Fawn Creek","Methow",5,"yes","yes",7,6,"1","1","1","1",0.577777777777778,5,1,3,5,4,5,3,1,3,"3",3,5,1,3,1
-"Methow River Fawn 06","Methow River-Fawn Creek","Methow",5,"yes","yes",7,6,"1","1","1","1",0.422222222222222,5,1,1,3,2,5,1,1,1,"1",1,3,1,2,5
+"Methow River Fawn 05","Methow River-Fawn Creek","Methow",5,"yes","yes",7,6,"1","1","1","1",0.555555555555556,5,1,3,5,4,5,3,1,3,"3",3,3,1,2,1
+"Methow River Fawn 06","Methow River-Fawn Creek","Methow",5,"yes","yes",7,6,"1","1","1","1",0.4,5,1,1,3,2,5,1,1,1,"1",1,1,1,1,5
 "Methow River Fawn 07","Methow River-Fawn Creek","Methow",5,"yes","yes",7,6,"1","1","1","1",0.511111111111111,5,1,1,3,2,5,1,3,1,"1",3,3,1,2,5
 "Methow River Fawn 08","Methow River-Fawn Creek","Methow",5,"yes","yes",7,6,"1","1","1","1",0.466666666666667,5,1,1,3,2,5,1,1,1,"1",3,3,1,2,5
 "Methow River Fawn 09","Methow River-Fawn Creek","Methow",5,"yes","yes",7,6,"1","1","1","1",0.511111111111111,5,1,3,3,3,5,1,1,3,"1",3,1,1,1,5
@@ -389,24 +389,24 @@
 "Methow River McFarland 05","Methow River-McFarland Creek","Methow",5,"yes","yes",6,7,"2","3","1","2",0.422222222222222,5,1,3,3,3,3,1,1,3,"3",1,1,1,1,3
 "Methow River McFarland 06","Methow River-McFarland Creek","Methow",5,"yes","yes",6,7,"2","3","1","2",0.511111111111111,5,1,3,3,3,3,1,5,3,"3",1,1,1,1,3
 "Methow River Rattlesnake 01","Methow River-Rattlesnake Creek","Methow",5,"yes","yes",7,5,"1","1","2","2",0.711111111111111,5,3,3,3,3,5,3,1,3,"5",5,3,1,2,5
-"Methow River Rattlesnake 02","Methow River-Rattlesnake Creek","Methow",5,"yes","yes",7,5,"1","1","2","2",0.555555555555556,5,1,1,3,2,5,1,1,1,"3",5,1,3,2,5
+"Methow River Rattlesnake 02","Methow River-Rattlesnake Creek","Methow",5,"yes","yes",7,5,"1","1","2","2",0.533333333333333,5,1,1,3,2,5,1,1,1,"3",5,1,1,1,5
 "Methow River Rattlesnake 03","Methow River-Rattlesnake Creek","Methow",5,"yes","yes",7,5,"1","1","2","2",0.511111111111111,5,1,1,3,2,5,1,1,1,"3",5,1,3,2,3
 "Methow River Rattlesnake 04","Methow River-Rattlesnake Creek","Methow",5,"yes","yes",7,5,"1","1","2","2",0.644444444444444,5,1,5,5,5,5,1,1,5,"3",3,3,3,3,3
-"Methow River Rattlesnake 05","Methow River-Rattlesnake Creek","Methow",5,"yes","yes",5,5,"1","1","2","2",0.844444444444444,3,3,5,5,5,5,1,5,5,"5",3,3,5,4,5
+"Methow River Rattlesnake 05","Methow River-Rattlesnake Creek","Methow",5,"yes","yes",5,5,"1","1","2","2",0.822222222222222,3,3,5,5,5,5,1,5,5,"5",3,3,3,3,5
 "Methow River Rattlesnake 06","Methow River-Rattlesnake Creek","Methow",5,"yes","yes",5,4,"1","1","2","2",0.911111111111111,1,5,5,5,5,5,5,1,5,"5",5,5,5,5,5
 "Methow River Texas 01","Methow River-Texas Creek","Methow",5,"yes","yes",6,7,"2","3","2","2",0.422222222222222,5,1,3,3,3,3,1,1,3,"3",1,1,1,1,3
 "Methow River Texas 02","Methow River-Texas Creek","Methow",5,"yes","yes",6,7,"2","3","2","2",0.422222222222222,5,1,3,3,3,3,1,1,3,"3",1,1,1,1,3
 "Methow River Texas 03","Methow River-Texas Creek","Methow",5,"yes","yes",6,7,"2","3","2","2",0.422222222222222,5,1,3,3,3,3,1,1,3,"3",1,1,1,1,3
 "Methow River Texas 04","Methow River-Texas Creek","Methow",5,"yes","yes",6,7,"2","3","2","2",0.466666666666667,5,1,3,3,3,3,1,3,3,"3",1,1,1,1,3
-"Methow River Thompson 01","Methow River-Thompson Creek","Methow",5,"yes","yes",7,7,"2","1","2","1",0.577777777777778,5,1,3,3,3,5,3,3,3,"3",3,1,3,2,1
-"Methow River Thompson 02","Methow River-Thompson Creek","Methow",5,"yes","yes",7,7,"2","1","2","1",0.622222222222222,5,1,3,3,3,5,3,3,3,"3",3,1,3,2,3
-"Methow River Thompson 03","Methow River-Thompson Creek","Methow",5,"yes","yes",7,7,"2","1","2","1",0.622222222222222,5,1,3,3,3,5,3,3,3,"3",3,1,3,2,3
-"Methow River Thompson 04","Methow River-Thompson Creek","Methow",5,"yes","yes",7,7,"2","1","2","1",0.622222222222222,5,1,3,3,3,5,3,3,3,"3",3,1,3,2,3
-"Methow River Thompson 05","Methow River-Thompson Creek","Methow",5,"yes","yes",7,7,"2","1","2","1",0.622222222222222,5,1,3,3,3,5,3,3,3,"3",3,1,3,2,3
-"Methow River Thompson 06","Methow River-Thompson Creek","Methow",5,"yes","yes",7,7,"2","1","2","1",0.577777777777778,5,1,3,3,3,5,3,1,3,"3",3,1,3,2,3
-"Methow River Thompson 07","Methow River-Thompson Creek","Methow",5,"yes","yes",7,7,"2","1","2","1",0.777777777777778,5,3,3,5,4,5,5,1,3,"3",5,3,5,4,5
-"Methow River Thompson 08","Methow River-Thompson Creek","Methow",5,"yes","yes",7,7,"2","1","2","1",0.777777777777778,5,3,3,5,4,5,5,1,3,"3",5,3,5,4,5
-"Methow River Thompson 09","Methow River-Thompson Creek","Methow",5,"yes","yes",7,7,"2","1","2","1",0.733333333333333,5,3,3,5,4,5,5,1,3,"3",5,3,5,4,3
+"Methow River Thompson 01","Methow River-Thompson Creek","Methow",5,"yes","yes",7,7,"2","1","2","1",0.555555555555556,5,1,3,3,3,5,3,3,3,"3",3,1,1,1,1
+"Methow River Thompson 02","Methow River-Thompson Creek","Methow",5,"yes","yes",7,7,"2","1","2","1",0.6,5,1,3,3,3,5,3,3,3,"3",3,1,1,1,3
+"Methow River Thompson 03","Methow River-Thompson Creek","Methow",5,"yes","yes",7,7,"2","1","2","1",0.6,5,1,3,3,3,5,3,3,3,"3",3,1,1,1,3
+"Methow River Thompson 04","Methow River-Thompson Creek","Methow",5,"yes","yes",7,7,"2","1","2","1",0.6,5,1,3,3,3,5,3,3,3,"3",3,1,1,1,3
+"Methow River Thompson 05","Methow River-Thompson Creek","Methow",5,"yes","yes",7,7,"2","1","2","1",0.6,5,1,3,3,3,5,3,3,3,"3",3,1,1,1,3
+"Methow River Thompson 06","Methow River-Thompson Creek","Methow",5,"yes","yes",7,7,"2","1","2","1",0.555555555555556,5,1,3,3,3,5,3,1,3,"3",3,1,1,1,3
+"Methow River Thompson 07","Methow River-Thompson Creek","Methow",5,"yes","yes",7,7,"2","1","2","1",0.711111111111111,5,3,3,5,4,5,5,1,3,"3",5,1,1,1,5
+"Methow River Thompson 08","Methow River-Thompson Creek","Methow",5,"yes","yes",7,7,"2","1","2","1",0.711111111111111,5,3,3,5,4,5,5,1,3,"3",5,1,1,1,5
+"Methow River Thompson 09","Methow River-Thompson Creek","Methow",5,"yes","yes",7,7,"2","1","2","1",0.666666666666667,5,1,3,5,4,5,5,1,3,"3",5,1,1,1,3
 "Methow River West Fork 01","West Fork Methow River","Methow",5,"yes","yes",4,2,"3","3","3","3",NA,NA,NA,NA,NA,NA,5,NA,5,NA,"NA",5,NA,NA,NA,5
 "Methow River West Fork 02","West Fork Methow River","Methow",5,"yes","yes",4,2,"3","3","3","3",NA,NA,NA,NA,NA,NA,5,5,5,NA,"NA",5,NA,NA,NA,5
 "Methow River West Fork 03","West Fork Methow River","Methow",5,"yes","yes",4,2,"3","3","3","3",NA,NA,NA,NA,NA,NA,5,5,5,NA,"NA",5,NA,NA,NA,5
@@ -432,16 +432,16 @@
 "Mud Creek 02","Mud Creek","Entiat",1,"yes","no",2,0,"2","3","2","3",NA,NA,NA,NA,NA,NA,NA,1,1,5,"NA",1,NA,NA,NA,5
 "Napeequa River 01","Napeequa River","Wenatchee",5,"yes","yes",6,5,"3","2","3","3",0.555555555555556,5,1,3,3,3,5,3,1,1,"3",1,5,1,3,5
 "Napeequa River 02","Napeequa River","Wenatchee",5,"yes","yes",4,4,"3","2","3","3",NA,NA,NA,5,5,5,NA,NA,1,5,"5",NA,NA,NA,NA,5
-"Nason Creek Lower 01","Lower Nason Creek","Wenatchee",5,"yes","yes",7,6,"1","1","1","1",0.844444444444444,3,3,3,5,4,5,5,5,3,"5",5,5,5,5,1
+"Nason Creek Lower 01","Lower Nason Creek","Wenatchee",5,"yes","yes",7,6,"1","1","1","1",0.8,3,3,3,5,4,5,5,5,3,"5",5,3,3,3,1
 "Nason Creek Lower 02","Lower Nason Creek","Wenatchee",5,"yes","yes",7,6,"1","1","1","1",0.888888888888889,3,3,3,5,4,5,5,5,3,"5",5,5,5,5,3
-"Nason Creek Lower 03","Lower Nason Creek","Wenatchee",5,"yes","yes",7,6,"1","1","1","1",0.8,3,3,3,5,4,5,5,3,3,"5",5,5,5,5,1
+"Nason Creek Lower 03","Lower Nason Creek","Wenatchee",5,"yes","yes",7,6,"1","1","1","1",0.755555555555556,5,3,3,5,4,5,5,3,3,"5",5,3,3,3,1
 "Nason Creek Lower 04","Lower Nason Creek","Wenatchee",5,"yes","yes",7,6,"1","1","1","1",0.555555555555556,5,1,3,3,3,5,3,3,3,"3",1,3,3,3,1
-"Nason Creek Lower 05","Lower Nason Creek","Wenatchee",5,"yes","yes",7,6,"1","1","1","1",0.555555555555556,5,1,3,3,3,5,3,3,3,"3",1,3,3,3,1
+"Nason Creek Lower 05","Lower Nason Creek","Wenatchee",5,"yes","yes",7,6,"1","1","1","1",0.533333333333333,5,1,3,3,3,5,3,3,3,"3",1,3,1,2,1
 "Nason Creek Lower 06","Lower Nason Creek","Wenatchee",5,"yes","yes",7,6,"1","1","1","1",0.555555555555556,5,1,3,3,3,5,3,3,3,"3",1,3,3,3,1
 "Nason Creek Lower 07","Lower Nason Creek","Wenatchee",5,"yes","yes",7,6,"1","1","1","1",0.555555555555556,5,1,3,3,3,5,3,3,3,"3",1,3,3,3,1
 "Nason Creek Lower 08","Lower Nason Creek","Wenatchee",5,"yes","yes",7,6,"1","1","1","1",0.444444444444444,5,1,3,NA,3,5,3,3,1,"1",1,1,3,2,1
 "Nason Creek Lower 09","Lower Nason Creek","Wenatchee",5,"yes","yes",7,6,"1","1","1","1",0.422222222222222,5,1,1,3,2,5,1,3,1,"1",3,3,1,2,1
-"Nason Creek Lower 10","Lower Nason Creek","Wenatchee",5,"yes","yes",7,6,"1","1","1","1",0.422222222222222,5,1,1,3,2,5,1,3,1,"1",3,3,1,2,1
+"Nason Creek Lower 10","Lower Nason Creek","Wenatchee",5,"yes","yes",7,6,"1","1","1","1",0.4,5,1,1,3,2,5,1,3,1,"1",3,1,1,1,1
 "Nason Creek Lower 11","Lower Nason Creek","Wenatchee",5,"yes","yes",7,6,"1","1","1","1",0.444444444444444,5,1,3,3,3,3,3,3,3,"1",1,1,3,2,1
 "Nason Creek Lower 12","Lower Nason Creek","Wenatchee",5,"yes","yes",7,6,"1","1","1","1",0.466666666666667,5,1,3,3,3,3,1,3,3,"3",3,1,1,1,1
 "Nason Creek Lower 13","Lower Nason Creek","Wenatchee",5,"yes","yes",7,6,"1","1","1","1",0.466666666666667,5,1,3,3,3,3,1,3,3,"3",3,1,1,1,1
@@ -532,8 +532,8 @@
 "Peshastin Creek Lower 02","Lower Peshastin Creek","Wenatchee",5,"yes","yes",7,6,"2","2","2","1",0.355555555555556,5,1,1,3,2,5,1,1,1,"1",3,1,1,1,1
 "Peshastin Creek Lower 03","Lower Peshastin Creek","Wenatchee",5,"yes","yes",7,6,"2","2","2","1",0.355555555555556,5,1,1,3,2,5,1,1,1,"1",3,1,1,1,1
 "Peshastin Creek Lower 04","Lower Peshastin Creek","Wenatchee",5,"yes","yes",7,6,"2","2","2","1",0.355555555555556,5,1,1,3,2,5,1,1,1,"1",3,1,1,1,1
-"Peshastin Creek Lower 05","Lower Peshastin Creek","Wenatchee",5,"yes","yes",7,6,"2","2","2","1",0.377777777777778,5,1,3,3,3,3,1,1,1,"3",1,3,3,3,1
-"Peshastin Creek Lower 06","Lower Peshastin Creek","Wenatchee",5,"yes","yes",7,6,"2","2","2","1",0.555555555555556,5,1,5,3,4,3,3,1,1,"5",3,5,3,4,1
+"Peshastin Creek Lower 05","Lower Peshastin Creek","Wenatchee",5,"yes","yes",7,6,"2","2","2","1",0.333333333333333,5,1,3,3,3,3,1,1,1,"3",1,1,1,1,1
+"Peshastin Creek Lower 06","Lower Peshastin Creek","Wenatchee",5,"yes","yes",7,6,"2","2","2","1",0.533333333333333,5,1,5,3,4,3,3,1,1,"5",3,3,3,3,1
 "Peshastin Creek Lower 07","Lower Peshastin Creek","Wenatchee",5,"yes","yes",7,6,"2","2","2","1",0.333333333333333,5,1,1,1,1,3,1,1,1,"3",3,1,1,1,1
 "Peshastin Creek Lower 08","Lower Peshastin Creek","Wenatchee",5,"yes","yes",7,6,"2","2","2","1",0.377777777777778,5,1,1,1,1,3,1,3,1,"5",1,1,1,1,1
 "Peshastin Creek Upper 01","Upper Peshastin Creek","Wenatchee",5,"yes","yes",4,5,"2","3","2","2",NA,NA,NA,NA,NA,NA,3,NA,5,1,"NA",1,1,1,1,1
@@ -676,33 +676,33 @@
 "Wenatchee River Beaver 02","Wenatchee River-Beaver Creek","Wenatchee",5,"yes","yes",7,7,"1","2","1","2",0.711111111111111,5,3,5,5,5,5,1,1,5,"5",3,5,3,4,3
 "Wenatchee River Beaver 03","Wenatchee River-Beaver Creek","Wenatchee",5,"yes","yes",7,7,"1","2","1","2",0.555555555555556,5,1,1,3,2,5,3,1,3,"3",3,1,3,2,3
 "Wenatchee River Beaver 04","Wenatchee River-Beaver Creek","Wenatchee",5,"yes","yes",7,7,"1","2","1","2",0.555555555555556,5,1,1,3,2,5,3,1,3,"3",3,1,3,2,3
-"Wenatchee River Beaver 05","Wenatchee River-Beaver Creek","Wenatchee",5,"yes","yes",7,7,"1","2","1","2",0.377777777777778,5,1,1,1,1,3,1,1,1,"1",3,3,3,3,3
+"Wenatchee River Beaver 05","Wenatchee River-Beaver Creek","Wenatchee",5,"yes","yes",7,7,"1","2","1","2",0.355555555555556,5,1,1,1,1,3,1,1,1,"1",3,1,3,2,3
 "Wenatchee River Beaver 06","Wenatchee River-Beaver Creek","Wenatchee",5,"yes","yes",7,7,"1","2","1","2",0.4,5,1,1,3,2,5,1,1,1,"1",3,1,1,1,3
 "Wenatchee River Beaver 07","Wenatchee River-Beaver Creek","Wenatchee",5,"yes","yes",7,7,"1","2","1","2",0.4,5,1,1,3,2,5,1,1,1,"1",3,1,1,1,3
 "Wenatchee River Beaver 08","Wenatchee River-Beaver Creek","Wenatchee",5,"yes","yes",7,7,"1","2","1","2",0.4,5,1,3,3,3,5,1,1,1,"3",1,1,3,2,1
 "Wenatchee River Beaver 09","Wenatchee River-Beaver Creek","Wenatchee",5,"yes","yes",7,7,"1","2","1","2",0.4,5,1,5,3,4,5,1,1,1,"1",1,3,3,3,1
 "Wenatchee River Beaver 10","Wenatchee River-Beaver Creek","Wenatchee",5,"yes","yes",7,7,"1","2","1","2",0.533333333333333,5,1,5,3,4,3,3,1,3,"3",3,3,3,3,1
-"Wenatchee River Beaver 11","Wenatchee River-Beaver Creek","Wenatchee",5,"yes","yes",7,7,"1","2","1","2",0.488888888888889,5,1,5,1,3,3,1,1,3,"3",3,3,5,4,1
+"Wenatchee River Beaver 11","Wenatchee River-Beaver Creek","Wenatchee",5,"yes","yes",7,7,"1","2","1","2",0.466666666666667,5,1,5,1,3,3,1,1,3,"3",3,3,3,3,1
 "Wenatchee River Beaver 12","Wenatchee River-Beaver Creek","Wenatchee",5,"yes","yes",7,7,"1","2","1","2",0.488888888888889,5,1,1,3,2,5,1,1,3,"3",3,3,3,3,1
 "Wenatchee River Beaver 13","Wenatchee River-Beaver Creek","Wenatchee",1,"yes","yes",7,7,"1","2","1","2",0.622222222222222,5,1,5,3,4,5,1,3,5,"3",3,3,3,3,1
-"Wenatchee River Derby 01","Wenatchee River-Derby Canyon","Wenatchee",5,"yes","yes",6,7,"2","3","1","3",0.511111111111111,5,1,3,5,4,5,1,1,5,"1",3,3,1,2,1
-"Wenatchee River Derby 02","Wenatchee River-Derby Canyon","Wenatchee",5,"yes","yes",6,7,"2","3","1","3",0.555555555555556,5,1,3,5,4,5,1,3,5,"1",3,3,1,2,1
-"Wenatchee River Derby 03","Wenatchee River-Derby Canyon","Wenatchee",5,"yes","yes",6,7,"2","3","1","3",0.511111111111111,5,1,3,5,4,5,1,1,5,"1",3,3,1,2,1
-"Wenatchee River Derby 04","Wenatchee River-Derby Canyon","Wenatchee",5,"yes","yes",6,7,"2","3","1","3",0.577777777777778,5,1,5,5,5,3,1,1,5,"5",3,3,1,2,1
-"Wenatchee River Derby 05","Wenatchee River-Derby Canyon","Wenatchee",5,"yes","yes",6,7,"2","3","1","3",0.622222222222222,5,1,5,5,5,3,1,3,5,"5",3,3,1,2,1
+"Wenatchee River Derby 01","Wenatchee River-Derby Canyon","Wenatchee",5,"yes","yes",6,7,"2","3","1","3",0.488888888888889,5,1,3,5,4,5,1,1,5,"1",3,1,1,1,1
+"Wenatchee River Derby 02","Wenatchee River-Derby Canyon","Wenatchee",5,"yes","yes",6,7,"2","3","1","3",0.533333333333333,5,1,3,5,4,5,1,3,5,"1",3,1,1,1,1
+"Wenatchee River Derby 03","Wenatchee River-Derby Canyon","Wenatchee",5,"yes","yes",6,7,"2","3","1","3",0.488888888888889,5,1,3,5,4,5,1,1,5,"1",3,1,1,1,1
+"Wenatchee River Derby 04","Wenatchee River-Derby Canyon","Wenatchee",5,"yes","yes",6,7,"2","3","1","3",0.555555555555556,5,1,5,5,5,3,1,1,5,"5",3,1,1,1,1
+"Wenatchee River Derby 05","Wenatchee River-Derby Canyon","Wenatchee",5,"yes","yes",6,7,"2","3","1","3",0.6,5,1,5,5,5,3,1,3,5,"5",3,1,1,1,1
 "Wenatchee River Derby 06","Wenatchee River-Tumwater Canyon","Wenatchee",5,"yes","yes",6,7,"2","2","1","2",0.555555555555556,5,1,5,3,4,5,1,3,3,"3",3,3,1,2,1
-"Wenatchee River Nahahum 01","Wenatchee River-Nahahum Canyon","Wenatchee",5,"yes","yes",6,7,"3","3","2","2",0.4,5,1,1,5,3,1,1,3,1,"3",3,3,1,2,1
-"Wenatchee River Nahahum 02","Wenatchee River-Nahahum Canyon","Wenatchee",5,"yes","yes",6,7,"3","3","2","2",0.555555555555556,5,1,5,3,4,5,1,3,5,"1",3,3,1,2,1
-"Wenatchee River Nahahum 03","Wenatchee River-Nahahum Canyon","Wenatchee",5,"yes","yes",6,7,"3","3","2","2",0.488888888888889,5,1,1,1,1,5,1,3,3,"3",3,3,1,2,1
-"Wenatchee River Nahahum 04","Wenatchee River-Nahahum Canyon","Wenatchee",5,"yes","yes",6,7,"3","3","2","2",0.533333333333333,5,1,1,1,1,5,1,3,3,"3",3,3,1,2,3
+"Wenatchee River Nahahum 01","Wenatchee River-Nahahum Canyon","Wenatchee",5,"yes","yes",6,7,"3","3","2","2",0.377777777777778,5,1,1,5,3,1,1,3,1,"3",3,1,1,1,1
+"Wenatchee River Nahahum 02","Wenatchee River-Nahahum Canyon","Wenatchee",5,"yes","yes",6,7,"3","3","2","2",0.533333333333333,5,1,5,3,4,5,1,3,5,"1",3,1,1,1,1
+"Wenatchee River Nahahum 03","Wenatchee River-Nahahum Canyon","Wenatchee",5,"yes","yes",6,7,"3","3","2","2",0.466666666666667,5,1,1,1,1,5,1,3,3,"3",3,1,1,1,1
+"Wenatchee River Nahahum 04","Wenatchee River-Nahahum Canyon","Wenatchee",5,"yes","yes",6,7,"3","3","2","2",0.511111111111111,5,1,1,1,1,5,1,3,3,"3",3,1,1,1,3
 "Wenatchee River Nahahum 05","Wenatchee River-Nahahum Canyon","Wenatchee",5,"yes","yes",6,7,"3","3","2","2",0.466666666666667,5,1,1,1,1,5,1,3,3,"1",3,1,1,1,3
 "Wenatchee River Nahahum 06","Wenatchee River-Nahahum Canyon","Wenatchee",5,"yes","yes",6,7,"3","3","2","2",0.422222222222222,5,1,1,1,1,5,1,3,3,"1",3,1,1,1,1
 "Wenatchee River Nahahum 07","Wenatchee River-Ollala Canyon","Wenatchee",5,"yes","yes",6,7,"3","3","1","3",0.422222222222222,5,1,1,1,1,5,1,3,3,"1",3,1,1,1,1
 "Wenatchee River Ollala 01","Wenatchee River-Ollala Canyon","Wenatchee",5,"yes","yes",6,7,"3","3","1","3",0.422222222222222,5,1,1,1,1,5,1,3,3,"1",3,1,1,1,1
 "Wenatchee River Ollala 02","Wenatchee River-Ollala Canyon","Wenatchee",5,"yes","yes",6,7,"3","3","1","3",0.444444444444444,5,1,1,3,2,5,1,3,3,"1",3,1,1,1,1
 "Wenatchee River Ollala 03","Wenatchee River-Ollala Canyon","Wenatchee",5,"yes","yes",6,7,"3","3","1","3",0.4,5,1,1,3,2,5,1,1,3,"1",3,1,1,1,1
-"Wenatchee River Tumwater 01","Wenatchee River-Tumwater Canyon","Wenatchee",5,"yes","yes",7,7,"2","2","1","2",0.511111111111111,5,1,5,3,4,5,1,1,3,"3",3,3,1,2,1
-"Wenatchee River Tumwater 02","Wenatchee River-Tumwater Canyon","Wenatchee",5,"yes","yes",7,7,"2","2","1","2",0.533333333333333,5,1,1,5,3,3,1,1,5,"5",3,3,1,2,1
+"Wenatchee River Tumwater 01","Wenatchee River-Tumwater Canyon","Wenatchee",5,"yes","yes",7,7,"2","2","1","2",0.488888888888889,5,1,5,3,4,5,1,1,3,"3",3,1,1,1,1
+"Wenatchee River Tumwater 02","Wenatchee River-Tumwater Canyon","Wenatchee",5,"yes","yes",7,7,"2","2","1","2",0.511111111111111,5,1,1,5,3,3,1,1,5,"5",3,1,1,1,1
 "Wenatchee River Tumwater 03","Wenatchee River-Tumwater Canyon","Wenatchee",5,"yes","yes",7,7,"2","2","1","2",NA,NA,NA,5,5,5,NA,NA,1,5,"5",NA,1,1,1,1
 "Wenatchee River Tumwater 04","Wenatchee River-Tumwater Canyon","Wenatchee",5,"yes","yes",7,7,"2","2","1","2",NA,NA,NA,5,5,5,NA,NA,1,5,"5",NA,1,1,1,1
 "Wenatchee River Tumwater 05","Wenatchee River-Tumwater Canyon","Wenatchee",5,"yes","yes",7,7,"2","2","1","2",NA,NA,NA,3,3,3,NA,NA,1,3,"3",NA,3,3,3,1
@@ -729,7 +729,7 @@
 "Williams Creek 01","Upper Twisp River","Methow",5,"no","yes",0,1,"2","2","2","2",NA,NA,NA,NA,NA,NA,NA,NA,1,NA,"NA",NA,NA,NA,NA,5
 "Wolf Creek 01","Wolf Creek","Methow",5,"yes","yes",6,5,"2","2","2","2",0.4,5,1,1,1,1,5,1,1,1,"1",1,3,1,2,5
 "Wolf Creek 02","Wolf Creek","Methow",5,"yes","yes",6,4,"2","2","2","2",0.711111111111111,5,3,5,5,5,5,3,1,5,"3",1,5,3,4,5
-"Wolf Creek 03","Wolf Creek","Methow",1,"yes","yes",6,4,"2","2","2","2",0.822222222222222,3,3,5,5,5,5,5,1,5,"5",1,5,5,5,5
+"Wolf Creek 03","Wolf Creek","Methow",1,"yes","yes",6,4,"2","2","2","2",0.8,3,3,5,5,5,5,5,1,5,"5",1,5,3,4,5
 "Wolf Creek 04","Wolf Creek","Methow",5,"yes","yes",4,4,"2","2","2","2",0.977777777777778,1,5,5,5,5,5,5,5,5,"5",5,5,3,4,5
 "Wolf Creek 05","Wolf Creek","Methow",1,"yes","yes",4,2,"2","2","2","2",0.911111111111111,1,5,5,NA,5,3,5,5,5,"5",5,NA,3,3,5
 "Wolf Creek 06","Wolf Creek","Methow",1,"yes","yes",4,2,"2","2","2","2",0.911111111111111,1,5,5,NA,5,3,5,5,5,"5",5,NA,3,3,5
