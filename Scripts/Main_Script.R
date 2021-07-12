@@ -224,7 +224,6 @@ source(paste(script_path, 'Limiting_Factor_Pathway_Filter.R', sep=""))
 # ------- Limiting Factor Pathway Filter for the Okanogan ---------------
 source( paste(script_path, 'Limiting_Factor_Pathway_Filter_OKANOGAN.R', sep="") )
 
-
 # ---------------- Generate Limiting Factor Output for Each Species ----------------
 Limiting_Factor_Pathway_Spring_Chinook = Generate_Limiting_Factor_Output_Table("Spring Chinook", basins_to_include)
 Limiting_Factor_Pathway_Steelhead = Generate_Limiting_Factor_Output_Table("Steelhead", basins_to_include)

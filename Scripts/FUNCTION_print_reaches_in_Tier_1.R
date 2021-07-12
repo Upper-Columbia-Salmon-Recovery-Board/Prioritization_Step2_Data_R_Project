@@ -34,7 +34,19 @@ if(run_x){
   Protection_Rank_Tier_1_comparison2 = FUNCTION_compare_tier_1_reaches_to_an_output_ranks("protection", Protection_Prioritization_Output_for_WebMap$`Reach Name`, species_restoration_x, species_protection_x)
 }
 
+# ---------------- Run JUST for Bull Trout
+run_x = TRUE
+if(run_x){
+  Restoration_WebMap_Tier_1_comparison_Bull_Trout = FUNCTION_compare_tier_1_reaches_to_an_output_ranks("restoration", Restoration_Prioritization_Output_for_WebMap$`Reach Name`, "BTTier_Restoration", "BTTier_Protection")
+  Protection_WebMap_Tier_1_comparison_Bull_Trout = FUNCTION_compare_tier_1_reaches_to_an_output_ranks("protection", Protection_Prioritization_Output_for_WebMap$`Reach Name`, "BTTier_Restoration", "BTTier_Protection")
+}
 
+# ---------------- Run JUST for Bull Trout
+run_x = TRUE
+if(run_x){
+  Restoration_Rank_Tier_1_comparison_Bull_Trout = FUNCTION_compare_tier_1_reaches_to_an_output_ranks("restoration", Reach_Rankings_Output_Restoration$ReachName, "BTTier_Restoration", "BTTier_Protection")
+  Protection_Rank_Tier_1_comparison_Bull_Trout = FUNCTION_compare_tier_1_reaches_to_an_output_ranks("protection", Reach_Rankings_Output_Protection$ReachName, "BTTier_Restoration", "BTTier_Protection")
+}
 
 # ---------- print restoration and protection AUs not with priority reaches ------------
 Restoration_Rank_Tier_1_comparison_NO_PRIORITY_REACH = Restoration_Rank_Tier_1_comparison[which(Restoration_Rank_Tier_1_comparison$Priority_Reaches == ""), c(1,3)]

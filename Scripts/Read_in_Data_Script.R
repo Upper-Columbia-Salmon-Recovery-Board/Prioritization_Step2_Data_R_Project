@@ -70,6 +70,17 @@ habitat_raw_data[cols.num] <- sapply(habitat_raw_data[cols.num],as.numeric)
 
 Barriers_Pathways_Data = read_excel( paste(habitat_data_path,'Barriers_Pathway_Data.xlsx', sep="") )
 
+# ---------------------------------------------------------------------------
+#
+#    DeWater Reaches data
+#     based on professional opinion
+#     NOTE - this data is only used for reach ranking - given automatic rank of 1 in Restoratoin (NOT use in flow habitat attributes)
+#
+# ---------------------------------------------------------------------------
+
+DeWater_ORIG_Data = read_excel( paste(ranking_data_path,'DeWatering_Reaches_for_Reach_Ranks.xlsx', sep="") )
+# ----------- generate data frame ONLY for reaches that de-water -------------
+DeWater_Reaches_Data = DeWater_ORIG_Data[which(DeWater_ORIG_Data$DeWater_Reach == "yes"), ]
 
 # ---------------------------------------------------------------------------
 #

@@ -49,7 +49,7 @@ for(habitat_attribute_x in unique(Habitat_Attribute_Scores$Habitat_Attribute)[or
 
 test_x = FALSE
 if(test_x){
-  species = "Spring Chinook"
+  species = "Bull Trout"
   basins = c("Methow",  "Entiat","Wenatchee", "Okanogan")
 }
 
@@ -251,15 +251,27 @@ Generate_Limiting_Factor_Output_Table = function(species, basins){
   
   print(paste("Protection - total after HQ score filter: ", length(unique(Limiting_Factor_Pathway_Protection$ReachName)), sep=""))
   
-  # --------------------- but Restoration and Protectoin into a list --------------
+  #  ---------------------------------------------------------------------------------
+  #            Filter out to select for Limiting Factor PROTECTION ONLY with HQ > 50% (June 2021)
+  #  ---------------------------------------------------------------------------------
+  # ------- merge reach scores with current filtered protection reaches ---------
+  Limiting_Factor_reaches_HQ_scores = merge(Limiting_Factor_Pathway_Protection[,c("ReachName","Basin")],
+                                            Habitat_Quality_Scores[,c("ReachName","HQ_Pct")], by="ReachName", all.x=TRUE)
+  # ----------------- remove HQ_Score below level -----------
+  Limiting_Factor_reaches_HQ_scores = Limiting_Factor_reaches_HQ_scores[which(Limiting_Factor_reaches_HQ_scores$HQ_Pct > HQ_Pct_for_LF_PCT_in_Ranks), ]
+  # ----------------- only move these reaches forward ---------------
+  x_row = c()
+  for(reach_x in unique(Limiting_Factor_reaches_HQ_scores$ReachName)){
+    x = which(Limiting_Factor_Pathway_Protection$ReachName == reach_x)
+    x_row = c(x_row,x)
+  }
+  Limiting_Factor_Pathway_Protection = Limiting_Factor_Pathway_Protection[x_row,] 
+  
+  # --------------------- but Restoration and Protection into a list --------------
   Limiting_Factor_Pathway_Output = list( 
     "Limiting_Factor_Pathway_Restoration" = Limiting_Factor_Pathway_Restoration,
     "Limiting_Factor_Pathway_Protection" = Limiting_Factor_Pathway_Protection
   )
-  
-  
-  
-  
   
   # ------------- empty data frame IF A) is Bull Trout and B) is to be excluded -----------
   if(exclude_bull_trout == "yes" & species == "Bull Trout"){

@@ -193,6 +193,10 @@ for(habitat_attribute_x in names(Habitat_Attributes_List) ){
 
   # --------------- only replace professional judgment where new score (1,3,5) is generated --------------
   if( !is.na(prof_judgement_score_notes_x$score[1]) ){
+    
+    # ---------------- only use professional judgement reaches WITH a score -----------
+    prof_judgement_score_notes_x = prof_judgement_score_notes_x[which( as.numeric(prof_judgement_score_notes_x$score) > 0) ,  ]
+    
     # --------- merge habitat data frame with professional judgement ----------
     habitat_attribute_x_data_frame_Merge = merge(habitat_attribute_x_data_frame,prof_judgement_score_notes_x, by="ReachName", all.x=TRUE)
     # ------------------- remove duplicate rows -------------
