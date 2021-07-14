@@ -1117,7 +1117,7 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
 
     # ------------------ add Confinement Percent ----------
     Restoration_Scores_Output = left_join(Restoration_Scores_Output, 
-                                          Confinement_Scores_Restoration[,c("ReachName","Unconfined_Pct")], by = c("ReachName" = "ReachName"))
+                                          Confinement_Scores[,c("ReachName","Unconfined_Pct")], by = c("ReachName" = "ReachName"))
     # ---------- rename Unconfined_Pct column to "Unconfined_Percent" ---------
     colnames(Restoration_Scores_Output)[which(colnames(Restoration_Scores_Output) == "Unconfined_Pct")] = "Unconfined_Percent"
     # ------------------ indicator ratings  -----------------------
@@ -2047,7 +2047,7 @@ FUNCTION_calc_Limiting_Factor_Score = function(Habitat_Quality_Pathway_Restorati
     # --------------------------------------------------------------------------
     # -------------- Get unique life stages ---------------------
     life_stages_unique = unique(Attribute_LifeStage_Crosswalk$`Life Stage`[which(Attribute_LifeStage_Crosswalk$Species == species_x)])
-    life_stage_x = life_stages_unique[2]
+    life_stage_x = life_stages_unique[1]
     
     for(life_stage_x in life_stages_unique){
       print(life_stage_x)
