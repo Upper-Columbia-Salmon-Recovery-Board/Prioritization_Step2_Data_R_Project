@@ -582,11 +582,11 @@ Protection_Prioritization_Output_for_WebMap = FUNCTION_update_Protection_results
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 
-Habitat_Attribute_Scores_columns_to_pull  = c("% Fines/Embeddedness", "Brook Trout", "Coarse Substrate" ,"Contaminants",
-                                           "Cover- Boulders", "Cover- Undercut Banks", "Cover- Wood", "Entrainment/Stranding", "Flow- Scour",
-                                           "Flow- Summer Base Flow", "Food- Food Web Resources", "Harassment", "Icing", "Off-Channel- Floodplain",
-                                           "Off-Channel- Side-Channels","Pool Quantity & Quality" , "Pools- Deep Pools", "Predators- Adults", "Predators- Juveniles",
-                                           "Superimposition", "Temperature- Adult Holding", "Temperature- Adult Spawning", "Temperature- Rearing")
+Habitat_Attribute_Scores_columns_to_pull  = c("Bank Stability","Channel Stability",  "Coarse Substrate",
+                                              "Cover- Wood", "Flow- Summer Base Flow",
+                                              "Off-Channel- Floodplain", "Off-Channel- Side-Channels","Pool Quantity & Quality", # <- REI Values
+                                              "Riparian- Canopy Cover"  ,    "Riparian-Disturbance" , 
+                                              "Temperature- Rearing")
 
 Habitat_Quality_Scores_columns_to_pull = c("ReachName","Basin", "BankStability_score","ChannelStability_score","Stability_Mean","CoarseSubstrate_score","Cover-Wood_score","Flow-SummerBaseFlow_score",
                                              "Off-Channel-Floodplain_score","Off-Channel-Side-Channels_score","PoolQuantity&Quality_score","Riparian-Disturbance_score",
@@ -600,16 +600,21 @@ Reach_Information_data_columns_new_names = c("Reach Name","Basin","Assessment Un
                                              "Data Gap","Length (miles)",  "Length (meters)" ,"RM Start", "RM End")
 
 # ORDER: REI ratings -> core metrics -> then the rest of them
-Order_of_Habitat_Attribute_Rating_Table_Columns = c("Coarse Substrate","% Fines/Embeddedness", "Cover- Wood","Pool Quantity & Quality", # <- REI Values
-                                                    "Off-Channel- Floodplain", "Off-Channel- Side-Channels", "Cover- Undercut Banks", #  <- REI Values
-                                                    "ChannelStability_score", "Stability_Mean", "Riparian-Disturbance_score",         # <- HQ scores based on REI Values
-                                                    "Riparian-CanopyCover_score", "Riparian_Mean",                                   # <- HQ scores based on REI Values
-                                                    "Contaminants","Entrainment/Stranding","Predators- Juveniles",                  # <- Spr Chn and STLDH core metrics
-                                                    "Cover- Boulders", "Flow- Scour", "Flow- Summer Base Flow","Food- Food Web Resources",  # <- one species core metric
-                                                    "Harassment", "Icing", "Superimposition", "Temperature- Adult Holding",               # <- one species core metric
-                                                    "Temperature- Adult Spawning", "Temperature- Rearing",                              # <- one species core metric
-                                                    "Brook Trout", "Pools- Deep Pools", "Predators- Adults")                           # <- not a core metric
-
+# Order_of_Habitat_Attribute_Rating_Table_Columns = c("Coarse Substrate","% Fines/Embeddedness", "Cover- Wood","Pool Quantity & Quality", # <- REI Values
+                                                   # "Off-Channel- Floodplain", "Off-Channel- Side-Channels", "Cover- Undercut Banks", #  <- REI Values
+                                                   # "ChannelStability_score", "Stability_Mean", "Riparian-Disturbance_score",         # <- HQ scores based on REI Values
+                                                   # "Riparian-CanopyCover_score", "Riparian_Mean",                                   # <- HQ scores based on REI Values
+                                                   # "Contaminants","Entrainment/Stranding","Predators- Juveniles",                  # <- Spr Chn and STLDH core metrics
+                                                  #  "Cover- Boulders", "Flow- Scour", "Flow- Summer Base Flow","Food- Food Web Resources",  # <- one species core metric
+                                                  #  "Harassment", "Icing", "Superimposition", "Temperature- Adult Holding",               # <- one species core metric
+                                                  #  "Temperature- Adult Spawning", "Temperature- Rearing",                              # <- one species core metric
+                                                  #  "Brook Trout", "Pools- Deep Pools", "Predators- Adults")                           # <- not a core metric
+Order_of_Habitat_Attribute_Rating_Table_Columns = c("Bank Stability","Channel Stability",  "Coarse Substrate",
+                                                     "Cover- Wood", "Flow- Summer Base Flow",
+                                                    "Off-Channel- Floodplain", "Off-Channel- Side-Channels","Pool Quantity & Quality", # <- REI Values
+                                                    "Riparian- Canopy Cover"  ,    "Riparian-Disturbance" , 
+                                                    "Temperature- Rearing" )        # <- HQ scores based on REI Values
+                                                     
 # just runs script - output is Habitat_Attributes_Ratings_Table
 source(paste(script_path, "FUNCTIONS_for_Habitat_Attribute_Rating_Table_for_WebMap.R", sep=""))
 
@@ -685,6 +690,10 @@ colnames(Reach_Habitat_Attribute_Life_Stage_Species_Restoration_Output)[colnames
 output_path_x =  paste(output_path,'Reach_Habitat_Attribute_Life_Stage_Species_Restoration_Output.xlsx', sep="")
 write_xlsx(Reach_Habitat_Attribute_Life_Stage_Species_Restoration_Output,output_path_x )
 
+#- --------------- convert reach rank to ingeger -----------
+Restoration_Prioritization_Output_for_WebMap$`Reach Rank` = as.character(Restoration_Prioritization_Output_for_WebMap$`Reach Rank`)
+Protection_Prioritization_Output_for_WebMap$`Reach Rank` = as.character(Protection_Prioritization_Output_for_WebMap$`Reach Rank`)
+
 # ----------- Outward Facing Table (pops up when reach is clicked on) - RESTORATION -----------
 output_path_x =  paste(output_path,'Restoration_Prioritization_Output_for_WebMap_Table.xlsx', sep="")
 write_xlsx(Restoration_Prioritization_Output_for_WebMap,output_path_x )
@@ -693,7 +702,7 @@ output_path_x =  paste(output_path,'Protection_Prioritization_Output_for_WebMap_
 write_xlsx(Protection_Prioritization_Output_for_WebMap,output_path_x )
 
 # ----------- Habitat Attributes Table w/ Ratings (to put in WebMap) -----------
-output_path_x =  paste(output_path,'Habitat_Attributes_Ratings_Table.xlsx', sep="")
+output_path_x =  paste(output_path,'Habitat_Attributes_Ratings_Table_for_WebMap.xlsx', sep="")
 write_xlsx(Habitat_Attributes_Ratings_Table,output_path_x )
 
 
@@ -758,3 +767,39 @@ write.xlsx(data_output_x,   file = output_path_x,  sheetName = sheet_name ,  app
 
 print(paste("Time to complete ENTIRE tool: ", paste(round((proc.time()[3] - time1)/60, 2), " minutes")    ))
 
+# -----------------------------------------------------------------
+#      Get unique
+# -----------------------------------------------------------------
+
+habitat_attributes_all_x = unique(Habitat_Attribute_Scores$Habitat_Attribute)
+priority_reach_all_attributes_unacceptable = paste( Restoration_Prioritization_Output_for_WebMap$`Unacceptable Limiting Factors`,  collapse=",")
+priority_reach_all_attributes_at_risk= paste( Restoration_Prioritization_Output_for_WebMap$`At-Risk Limiting Factors`,  collapse=",")
+
+unnaceptable_habitat_attributes_x = c()
+for(habitat_attribute_x in habitat_attributes_all_x){
+  if( str_detect(priority_reach_all_attributes_unacceptable, habitat_attribute_x, negate = FALSE) ){
+    unnaceptable_habitat_attributes_x = c(unnaceptable_habitat_attributes_x,habitat_attribute_x )
+  }
+}
+at_risk_habitat_attributes_x = c()
+for(habitat_attribute_x in habitat_attributes_all_x){
+  
+  if( str_detect(priority_reach_all_attributes_at_risk, habitat_attribute_x, negate = FALSE) ){
+    at_risk_habitat_attributes_x = c(at_risk_habitat_attributes_x,habitat_attribute_x )
+  }
+  
+  
+}
+
+
+action_categories_all_x = unique(Crosswalk_Habitat_Attributes_and_Actions$`Action Category`)
+
+action_categories_x = c()
+for(habitat_attribute_x in action_categories_all_x){
+  
+  if( str_detect(priority_reach_all_attributes_at_risk, habitat_attribute_x, negate = FALSE) ){
+    action_categories_x = c(action_categories_x,habitat_attribute_x )
+  }
+  
+  
+}

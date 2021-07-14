@@ -110,6 +110,17 @@ habitat_raw_data_x = habitat_raw_data[,c("ReachName","Data_Source")]
 colnames(habitat_raw_data_x) = c("ReachName", "Primary_Data_Source")
 Habitat_Quality_Data_Gaps = merge(Habitat_Quality_Data_Gaps, habitat_raw_data_x, by="ReachName", all.x=TRUE)
 
+# -----------------------------------------------------------------------------------------------------------------------------------------------
+#      IF no data is missing - add "no data are missing"
+# -----------------------------------------------------------------------------------------------------------------------------------------------
+no_data_missing_x = which(Habitat_Quality_Data_Gaps$Data_Gap == "")
+Habitat_Quality_Data_Gaps$Data_Gap[no_data_missing_x] = "no data are missing"
+
+# -----------------------------------------------------------------------------------------------------------------------------------------------
+#      IF okanogan - add EDT 
+# -----------------------------------------------------------------------------------------------------------------------------------------------
+Okanogan_Basin_x = which(Habitat_Quality_Data_Gaps$Basin == "Okanogan")
+Habitat_Quality_Data_Gaps$Primary_Data_Source[Okanogan_Basin_x] = "Okanogan EDT"
 
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #      Save Data Layer

@@ -382,6 +382,39 @@ if(output_Habitat_Quality_and_Habitat_Attribute_Scores == "yes"){
 }
 
 
+
+# ------------------------------------------------------------------------------------- 
+#                merge existing Habitat_Attribute_Scores with Okanogan 
+# ------------------------------------------------------------------------------------- 
+
+# ------------ convert Habitat_Quality_Scores to regular data frame ---------
+Habitat_Attribute_Scores = as.data.frame(Habitat_Attribute_Scores)
+
+# -----------------------  -----------
+for(row_OK in 1:nrow(Habitat_Attribute_Scores_Okanogan) ){
+  # ----------- identify Habitat_Quality_Scores row for this reach ------
+  x = which(Habitat_Attribute_Scores$ReachName == Habitat_Attribute_Scores_Okanogan$ReachName[row_OK] &
+              Habitat_Attribute_Scores$Habitat_Attribute == Habitat_Attribute_Scores_Okanogan$Habitat_Attribute[row_OK])
+  # ---------- replace this row for new Okangoan row -----
+  Habitat_Attribute_Scores[x,] = Habitat_Attribute_Scores_Okanogan[row_OK,]
+}
+
+# ------------------ output data -------------------------
+if(output_Habitat_Quality_and_Habitat_Attribute_Scores == "yes"){
+  Habitat_Attribute_Scores = as.data.frame(Habitat_Attribute_Scores)
+  output_path_x =  paste(output_path,'Habitat_Attribute_Scores.xlsx', sep="")
+  write.xlsx(
+    Habitat_Attribute_Scores,
+    output_path_x,
+    col.names = TRUE,
+    row.names = FALSE,
+    append = FALSE,
+    showNA = TRUE,
+    password = NULL
+  )
+}
+
+
 # ------------------------------------------------------------------------------------- 
 #                 Save the data
 # ------------------------------------------------------------------------------------- 

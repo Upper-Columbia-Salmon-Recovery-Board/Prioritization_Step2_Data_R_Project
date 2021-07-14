@@ -29,7 +29,7 @@ FUNCTION_score_numeric_to_word = function(column_data){
 #    Start the Table with Basin Information
 # ---------------------------------------------------------------------------
 
-Habitat_Attributes_Ratings_Table = as.data.frame(Reach_Information_data[,c("ReachName","Basin")])
+Habitat_Attributes_Ratings_Table = as.data.frame(Reach_Information_data[,c("ReachName","Assessment.Unit", "Basin")])
 
 # ---------------------------------------------------------------------------
 #   Loop through each habitat attribute and get score
@@ -64,6 +64,12 @@ for(habitat_attribute_x in Order_of_Habitat_Attribute_Rating_Table_Columns){
   
   
 }
+
+# -----------------------------------------------------
+#  Add HQ Sum and PCT
+# --------------------------------------------
+Habitat_Quality_Scores_for_merge_x = Habitat_Quality_Scores[,c("ReachName","HQ_Sum","HQ_Pct" )]
+Habitat_Attributes_Ratings_Table = merge(Habitat_Attributes_Ratings_Table,Habitat_Quality_Scores_for_merge_x, by="ReachName", all.x=TRUE )
 
 # -----------------------------------------------------
 #   Only include desired basins
