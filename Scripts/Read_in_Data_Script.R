@@ -3,7 +3,7 @@
 #
 #      SCRIPT: Read in Data
 #
-#      R Project to generate Priority Action Categories Based on Habitat Quality 
+#      R Project to generate Priority Actfion Categories Based on Habitat Quality 
 #          and Limiting Factor Analysis from Step 2 of RTT Prioritization Process
 #
 #          Author: Ryan Niemeyer, Upper Columbia Salmon Recovery Board
@@ -28,7 +28,27 @@
 #
 # ---------------------------------------------------------------------------
 
-habitat_raw_data = read_excel(  paste(habitat_data_path,'Habitat_Data_Raw.xlsx', sep="")   )
+# habitat_raw_data = read_excel(  paste(habitat_data_path,'Habitat_Data_Raw.xlsx', sep="")   )
+
+# --------------- read in Habitat Raw Data from MASTER -------------
+if(read_MASTER_directly){
+  
+  # --------------- read in Habitat Raw Data from UCSRB server ----------
+  habitat_raw_data = read_excel( MASTER_Data_path , sheet="Habitat_Data_RAW")
+  habitat_raw_data_colnames = habitat_raw_data[1,]   # pull the colnames
+  habitat_raw_data = habitat_raw_data[2:nrow(habitat_raw_data),] # remove the top layer
+  colnames(habitat_raw_data) = habitat_raw_data_colnames # update column names
+  
+  # -------------- write locally --------------
+  if(write_MASTER_locally){
+    write_xlsx( habitat_raw_data,  paste(habitat_data_path,'Habitat_Data_Raw.xlsx', sep="")  )
+  }
+  
+# --------------- read in Habitat Raw Data Locally -------------
+}else{
+  habitat_raw_data = read_excel(  paste(habitat_data_path,'Habitat_Data_Raw.xlsx', sep="")   )
+}
+
 
 # ----------- update columns that are numeric to numeric ------------
 cols.num <- c( 'Sand_occular_prcnt_INDICATOR_1',	'Gravel_occular_prcnt_INDICATOR_2',
@@ -88,13 +108,30 @@ DeWater_Reaches_Data = DeWater_ORIG_Data[which(DeWater_ORIG_Data$DeWater_Reach =
 #
 # ---------------------------------------------------------------------------
 
-AU_Ranks_data = read_excel( paste(ranking_data_path,'AU_Ranks.xlsx', sep="") )
+# --------------- read in Habitat Raw Data from MASTER -------------
+if(read_MASTER_directly){
+  
+  # --------------- read in Habitat Raw Data from UCSRB server ----------
+  AU_Ranks_data = read_excel( MASTER_Data_path , sheet="AU Ratings")
 
+  # -------------- write locally --------------
+  if(write_MASTER_locally){
+    write_xlsx( AU_Ranks_data,  paste(ranking_data_path,'AU_Ranks.xlsx', sep="")  )
+  }
+  
+  # --------------- read in Habitat Raw Data Locally -------------
+}else{
+  AU_Ranks_data = read_excel( paste(ranking_data_path,'AU_Ranks.xlsx', sep="") )
+}
+# ------ update column names to match prevoius data column names -------
+colnames(AU_Ranks_data) = c( "Assessment Unit" ,"Subbasin" , "HUC12","Spring Chinook_Restoration", "SPCHNTier_Restoration","Steelhead_Restoration" ,  "STLTier_Restoration"  ,"BullTrout_Restoration" ,    
+         "BTTier_Restoration" ,"Spring Chinook_Protection","SPCHNTier_Protection","Steelhead_Protection", "STLTier_Protection","BullTrout_Protection","BTTier_Protection"       )
 # ----------- update columns that are numeric to numeric ------------
 cols.num = c('Spring Chinook_Restoration',	'SPCHNTier_Restoration',	'Steelhead_Restoration',	'STLTier_Restoration',
              'BullTrout_Restoration',	'BTTier_Restoration',	'Spring Chinook_Protection',	'SPCHNTier_Protection',
              'Steelhead_Protection',	'STLTier_Protection',	'BullTrout_Protection',	'BTTier_Protection')
 AU_Ranks_data[cols.num] <- sapply(AU_Ranks_data[cols.num],as.numeric)
+
 
 # ---------------------------------------------------------------------------
 #
@@ -111,6 +148,27 @@ Life_Stage_Priorities_AU_only_data = read_excel( paste(ranking_data_path,'LifeSt
 # ---------------------------------------------------------------------------
 
 Life_Stage_Priorities_AU_and_Reach_data = read_excel( paste(ranking_data_path,'LifeStagePriorities_AUandReach.xlsx', sep="") )
+
+
+# --------------- read in Habitat Raw Data from MASTER -------------
+if(read_MASTER_directly){
+  
+  # --------------- read in Habitat Raw Data from UCSRB server ----------
+  Life_Stage_Priorities_AU_and_Reach_data = read_excel( MASTER_Data_path , sheet="ReachesandLSpriorities")
+  Life_Stage_Priorities_AU_and_Reach_data_colnames = Life_Stage_Priorities_AU_and_Reach_data[1,]   # pull the colnames
+  Life_Stage_Priorities_AU_and_Reach_data = Life_Stage_Priorities_AU_and_Reach_data[2:nrow(Life_Stage_Priorities_AU_and_Reach_data),] # remove the top layer
+  colnames(Life_Stage_Priorities_AU_and_Reach_data) = Life_Stage_Priorities_AU_and_Reach_data_colnames # update column names
+  
+  # -------------- write locally --------------
+  if(write_MASTER_locally){
+    write_xlsx( Life_Stage_Priorities_AU_and_Reach_data,  paste(ranking_data_path,'LifeStagePriorities_AUandReach.xlsx', sep="")  )
+  }
+  
+  # --------------- read in Habitat Raw Data Locally -------------
+}else{
+  Life_Stage_Priorities_AU_and_Reach_data = read_excel(  paste(ranking_data_path,'LifeStagePriorities_AUandReach.xlsx', sep="")  )
+}
+
 
 # ---------------------- match column names to life stages ------------------------------ 
 spring_chinook_life_stages = list("Adult Migration" = "SPCH Adult Migration  AU LS Priority",	  
@@ -180,7 +238,23 @@ Attribute_LifeStage_Crosswalk$Habitat_Attribute_2 = gsub(" ", "", Attribute_Life
 #
 # ---------------------------------------------------------------------------
 
-Channel_Unit_Raw = read_excel( paste(habitat_data_path,'Channel_Unit_Raw.xlsx', sep="") )
+if(read_MASTER_directly){
+  # --------------- read in Data from UCSRB server ----------
+  Channel_Unit_Raw = read_excel( MASTER_Data_path , sheet="ChannelUnit_RAW")
+  Channel_Unit_Raw_colnames = Channel_Unit_Raw[1,]   # pull the colnames
+  Channel_Unit_Raw = Channel_Unit_Raw[2:nrow(Channel_Unit_Raw),] # remove the top row (it's just a number ber column)
+  colnames(Channel_Unit_Raw) = Channel_Unit_Raw_colnames # update column names
+  
+  # -------------- write locally --------------
+  if(write_MASTER_locally){
+    write_xlsx( Channel_Unit_Raw,   paste(habitat_data_path,'Channel_Unit_Raw.xlsx', sep="")   )
+  }
+  
+  # --------------- read in locally (will already be written with Reach_Information_data) -------------
+}else{
+  Channel_Unit_Raw = read_excel( paste(habitat_data_path,'Channel_Unit_Raw.xlsx', sep="") )
+}
+
 
 # ----------- update columns that are numeric to numeric ------------
 cols.num = c('Riffle_Habitat_Prcnt_INDICATOR_1' , 'Rapid_Habitat_Prcnt_INDICATOR_2' , 'Glide_Habitat_Prcnt_INDICATOR_3',
@@ -194,7 +268,30 @@ Channel_Unit_Raw[cols.num] <- sapply(Channel_Unit_Raw[cols.num],as.numeric)
 #
 # ---------------------------------------------------------------------------
 
+# NOTE: currently CHAMP data is copied over into columns in the habitat_raw_data tab in Excel, so these data are not used
+
 CHAMP_data_per_reach = read_excel( paste(habitat_data_path,'CHAMP_data_per_reach.xlsx', sep="") )
+
+
+if(read_MASTER_directly){
+  # --------------- read in Data from UCSRB server ----------
+  CHAMP_data_per_reach = read_excel( MASTER_Data_path , sheet="CHaMP data per reach")
+  CHAMP_data_per_reach_colnames = CHAMP_data_per_reach[1,]   # pull the colnames
+  CHAMP_data_per_reach = Channel_Unit_Raw[2:nrow(CHAMP_data_per_reach),] # remove the top row (it's just a number ber column)
+  colnames(CHAMP_data_per_reach) = CHAMP_data_per_reach_colnames # update column names
+  
+  
+  # -------------- write locally --------------
+  if(write_MASTER_locally){
+    write_xlsx( CHAMP_data_per_reach,   paste(habitat_data_path,'CHAMP_data_per_reach.xlsx', sep="")   )
+  }
+  
+  # --------------- read in locally (will already be written with Reach_Information_data) -------------
+}else{
+  CHAMP_data_per_reach = read_excel( paste(habitat_data_path,'CHAMP_data_per_reach.xlsx', sep="") )
+  
+}
+
 
 # ----------- update columns that are numeric to numeric ------------
 cols.num = c('NumberofCHaMPDataPoints', 'SlowWater_Pct_Average',	'SlowWater_Pct_StandardDeviation',	'FstTurb_Pct_Average',
@@ -237,7 +334,41 @@ CHAMP_data_Updated = merge(CHAMP_data_Updated, CHAMP_data_per_reach, by = "Reach
 #
 # ---------------------------------------------------------------------------
 
-Reach_Information_data = read_excel( paste(habitat_data_path,'ReachInfo.xlsx', sep="") )
+#OLD: Reach_Information_data = read_excel( paste(habitat_data_path,'ReachInfo.xlsx', sep="") )
+
+if(read_MASTER_directly){
+  # --------------- read in Data from UCSRB server ----------
+  Reach_Information_data = read_excel( MASTER_Data_path , sheet="Reach Info")
+  
+  # -------------- write locally --------------
+  # NOTE: doing this in Stream Width - since it is added
+  
+  # --------------- read in Data Locally -------------
+}
+# NOTE: not reading in locally since doing that in Stream_Widths
+
+# ---------------------------------------------------------------------------
+#    Add Stream Width to Reach_Information_data
+# ---------------------------------------------------------------------------
+
+if(read_MASTER_directly){
+  # --------------- read in Data from UCSRB server ----------
+  Stream_Widths = read_excel( MASTER_Data_path , sheet="StreamWidth")
+  # ------------------- add Stream Widths to Reach_Information_data ------------------
+  Reach_Information_data = merge(Reach_Information_data,Stream_Widths, by="ReachName", all.x=TRUE)
+  # -------------------- print message if number of rows in Reach_Information_data is different from Stream_Widths -----
+  if(nrow(Reach_Information_data) != nrow(Stream_Widths) ){print("Reach_Information_data has different number of rows than Stream_Widths")}
+  
+  # -------------- write locally --------------
+  if(write_MASTER_locally){
+    write_xlsx( Reach_Information_data,   paste(habitat_data_path,'ReachInfo.xlsx', sep="")   )
+  }
+  
+  # --------------- read in locally (will already be written with Reach_Information_data) -------------
+}else{
+  Reach_Information_data = read_excel(  paste(habitat_data_path,'ReachInfo.xlsx', sep="")  )
+}
+
 
 
 # ---------------------------------------------------------------------------
@@ -345,10 +476,28 @@ for(rowx in rownames(Habitat_Limiting_Factor_Rating_Criteria)){
 # ---------------------------------------------------------------------------
 
 # -------------------- Confinement Excel ------------------
-Confinement_Scores = read_excel( paste(habitat_data_path,'Confinement_Scores.xlsx', sep="") )
+#Confinement_Scores = read_excel( paste(habitat_data_path,'Confinement_Scores.xlsx', sep="") )
 # --------------------- Read in Confinement Scores -----------------
-Confinement_Scores_Criteria = read_excel( paste(habitat_data_path,'Confinement_Scores.xlsx', sep="") )
+#Confinement_Scores_Criteria = read_excel( paste(habitat_data_path,'Confinement_Scores.xlsx', sep="") )
 # ----------------- Update Scores -------------
+
+
+
+# --------------- read in Confinement Scores from MASTER -------------
+if(read_MASTER_directly){
+  # --------------- read in Habitat Raw Data from UCSRB server ----------
+  Confinement_Scores = read_excel( MASTER_Data_path , sheet="Confinement_Scores")
+  
+  # -------------- write locally --------------
+  if(write_MASTER_locally){
+    write_xlsx( Confinement_Scores,  paste(habitat_data_path,'Confinement_Scores.xlsx', sep="")    )
+  }
+  
+  # --------------- read in Data Locally -------------
+}else{
+  Confinement_Scores = read_excel(  paste(habitat_data_path,'Confinement_Scores.xlsx', sep="")  )
+}
+
 
 
 # ------------------- update geomorphic potential/confinement scores with criteria ---------------
@@ -359,7 +508,7 @@ FUNCTION_update_Confinement_Scores(Confinement_Scores, Geomorphic_Criteria)
 
 # ---------------------------------------------------------------------------
 #
-#   Floodplain Disturbance and Proteciton Data
+#   Floodplain Disturbance and Protection Data
 #
 # ---------------------------------------------------------------------------
 

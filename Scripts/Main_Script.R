@@ -27,6 +27,8 @@ library(readxl)
 # ---------------------------------------------------------------------------
 #  Script Criteria for output
 # ---------------------------------------------------------------------------
+read_MASTER_directly = TRUE # if TRUE - read MASTER from UCSRB servers, if FALSE - read from local 
+write_MASTER_locally = TRUE # if TRUE -  write tabs in MASTER from UCSRB servers, if FALSE - do not write
 basins_to_include = c("Methow",  "Entiat","Wenatchee" , "Okanogan")  # basins to include in simulation    
 exclude_bull_trout = "no"  # if "yes" -> remove bull trout for WebMap applications
 output_Habitat_Quality_and_Habitat_Attribute_Scores = "no"  # enter "yes" or "no" if you want the "flat table" Habitat Attribute output (doubles time to run script)
@@ -53,6 +55,11 @@ crosswalks_path = paste(master_path,"Crosswalks/", sep="")  # various crosswalks
 criteria_and_scoring_path = paste(master_path,"Criteria_and_Scoring/", sep="") # Criteria and Scores for prioritization (Restoration and Protection)
 Okanogan_EDT_path = paste(master_path,'Okanogan_EDT/', sep="")   # Data from Okanogan EDT results
 reach_assessment_projects_path = paste(master_path,'Reach_Assessment_Projects/', sep="")  # data for projects from Reach Assessments
+
+# -------------- MASTER path and file ----------
+folder_x = "Y:/UCRTT/Prioritization/Step 2/Habitat Evaluation/"
+master_file = "MASTER_Step2_REVIEWDRAFT_071321.xlsx"
+MASTER_Data_path = paste(folder_x,master_file, sep="")   # Data from Okanogan EDT results
 
 # ----------- directory for output (where results are saved) ---------
 output_path = 'Output/'
@@ -619,6 +626,7 @@ Order_of_Habitat_Attribute_Rating_Table_Columns = c("Bank Stability","Channel St
 source(paste(script_path, "FUNCTIONS_for_Habitat_Attribute_Rating_Table_for_WebMap.R", sep=""))
 
 #  generate missing data layer (HQ habitat attributes that are missing) for WebMap
+reaches_remove = c("Lake ")
 source(paste(script_path, "Generate_Habitat_Quality_Scores_Missing_Data_Layer.R", sep=""))
 
 

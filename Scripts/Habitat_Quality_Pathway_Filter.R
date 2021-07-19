@@ -19,7 +19,7 @@
 # ---------------------------------------------------------------------------
 
 #  to test
-species = "Bull Trout"
+species = "Spring Chinook"
 basins = c("Methow",  "Entiat","Wenatchee")
 
 Generate_Habitat_Quality_Output_Table = function(species, basins, habitat_quality_scores_colnames_for_sum ){
@@ -184,7 +184,7 @@ Generate_Habitat_Quality_Output_Table = function(species, basins, habitat_qualit
   
   
   #  ---------------------------------------------------------------------------------
-  #           Reach Confinement (NOTE - only used for Restoration, not for Protection)
+  #           Reach Confinement (Restoration and Protection)
   #  ---------------------------------------------------------------------------------
   
   # ----------------------- filter out for Habitat_Quality_Scores reaches with Habitat Quality Score criteria --------------
@@ -192,6 +192,9 @@ Generate_Habitat_Quality_Output_Table = function(species, basins, habitat_qualit
     filter(Score   >=   Reach_Confinement_SCORE_Criteria)
   # ------------------------ identify AUs that pass this filter in reach-based table ----------
   Habitat_Quality_Pathway_Restoration = Habitat_Quality_Pathway_Restoration %>%  
+    filter(ReachName   %in%   Confinement_Scores_Restoration$`ReachName`)
+  # ------------------------ identify AUs that pass this filter in reach-based table ----------
+  Habitat_Quality_Pathway_Protection = Habitat_Quality_Pathway_Protection %>%  
     filter(ReachName   %in%   Confinement_Scores_Restoration$`ReachName`)
   
   print(paste("HQ Pathway-RESTORATION - total reaches after reach confinement filter: ", nrow(Habitat_Quality_Pathway_Restoration), sep=""))
