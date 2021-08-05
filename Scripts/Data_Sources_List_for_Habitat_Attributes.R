@@ -30,18 +30,18 @@ Habitat_Attributes_List = list(
   'Brook Trout' = c('PROFESSIONAL JUDGEMENT', 'Step1 results'),
   'Channel Stability' = c('Vertical_Channel_Stability_CATEGORY_1', 'UCSRB_ChannelStability'),
   'Coarse Substrate' = c('Dominant_Substrate_CATEGORY_1', 'GravelCobble_UCSRB_pct', 'GRVL_COBL_UCSRB_CHAMP'),
-  'Contaminants' = c( 'Contaminants_303d'),
+  'Contaminants' = c( 'Contaminants_303d (not pH, bacteria, or DO listings)'),
   'Cover- Boulders'  = c( 'Boulder_UCSRB_pct',  'SubEstBldr_CHAMP'), 
   'Cover- Undercut Banks' = c('Bank_Stability_CATEGORY_1', 'Structure_CATEGORY_1', 'Undercut_Area_Pct_CHAMP' ), 
   'Cover- Wood' = c('Pieces_per_mile_CATEGORY_1', 'Pieces_per_mile_INDICATOR_1', 'LWFreq_Bf_CHAMP' ), 
   'Entrainment/Stranding' = c('PROFESSIONAL JUDGEMENT'),
   'Flow- Scour' = c( 'PROFESSIONAL JUDGEMENT'), 
-  'Flow- Summer Base Flow' = c( 'RAWatershed_Rating_Flow', 'Flow_305bList', 'PROSPER', 'PROFESSIONAL JUDGEMENT', 'ATLAS_Flow'), 
+  'Flow- Summer Base Flow' = c( 'RAWatershed_Rating_Flow', 'Flow_305bList', 'PROSPER', 'PROFESSIONAL JUDGEMENT', 'ATLAS Flow'), 
   'Food- Food Web Resources' = c( 'PROFESSIONAL JUDGEMENT'), 
   'Harassment' = c('PROFESSIONAL JUDGEMENT' ), 
   'Icing' = c( 'PROFESSIONAL JUDGEMENT'), 
-  'Off-Channel- Floodplain' = c( 'Floodplain_Connectivity_CATEGORY_1', 'Entrenchment_CATEGORY_2', 'Channel_Confinementor_or_Entrenchment_Ratio_INDICATOR_9', 'UCSRB_OffChannel_Floodplain' ),   # Data Sources listes first HabAtr as Floodplain_Connectivity_CATEGORY_1
-  'Off-Channel- Side-Channels' = c('Connectivity_CATEGORY_1', 'Side_Channel_Habitat_Prcnt_INDICATOR_6', 'WetSC_Pct_Average', 'UCSRB_OffChannel_SideChannels'  ),
+  'Floodplain Connectivity' = c( 'Floodplain_Connectivity_CATEGORY_1', 'Entrenchment_CATEGORY_2', 'Channel_Confinementor_or_Entrenchment_Ratio_INDICATOR_9', 'UCSRB_OffChannel_Floodplain' ),   # Old: "Off-Channel- Floodplain"
+  'Off-Channel/Side-Channels' = c('Connectivity_CATEGORY_1', 'Side_Channel_Habitat_Prcnt_INDICATOR_6', 'WetSC_Pct_Average', 'UCSRB_OffChannel_SideChannels'  ),
   'Pool Quantity & Quality' = c( 'Pools_CATEGORY_1', 'Pool_Habitat_Prcnt_INDICATOR_4', 'Pools_per_mile_INDICATOR_2'), 
   'Pools- Deep Pools' = c('Pools_deeper_3_ft_prcnt_INDICATOR_3', 'Pools_deeper_3_ft_per_mile_INDICATOR_4', 'Pools_deeper_5_ft_per_mile_INDICATOR_5'  ), 
   'Predators- Adults' = c( 'PROFESSIONAL JUDGEMENT'), 
@@ -64,18 +64,18 @@ Habitat_Attributes_List_OKANOGAN = list(
   'Brook Trout' = c(),
   'Channel Stability' = c('EDT_Level 2 Confinement: Artificial'),
   'Coarse Substrate' = c('EDT_UCSRBCoarseSub pct'),
-  'Contaminants' = c( 'Contaminants_303d', 'EDT Level 2 Metals in Sediments Functional Condition','EDT Level 2 Metals in Water Functional Condition','EDT Level 2 Miscellaneous Toxins Functional Condition'),
+  'Contaminants' = c( 'Contaminants_303d (not pH, bacteria, or DO listings)', 'EDT Level 2 Metals in Sediments Functional Condition','EDT Level 2 Metals in Water Functional Condition','EDT Level 2 Miscellaneous Toxins Functional Condition'),
   'Cover- Boulders'  = c( ), 
   'Cover- Undercut Banks' = c( ), 
   'Cover- Wood' = c('EDT_Woody Debris' ), 
   'Entrainment/Stranding' = c('PROFESSIONAL JUDGEMENT'),
   'Flow- Scour' = c( 'EDT_Level 2 Bed scour','EDT_Level 2 Flow: Inter-Annual Low Flow Variation'), 
-  'Flow- Summer Base Flow' = c( 'EDT_Width','EDT_Level 2 Flow: Inter-Annual Low Flow Variation', 'PROSPER' , 'PROFESSIONAL JUDGEMENT','ATLAS_Flow'), 
+  'Flow- Summer Base Flow' = c( 'EDT_Width','EDT_Level 2 Flow: Inter-Annual Low Flow Variation', 'PROSPER' , 'PROFESSIONAL JUDGEMENT','ATLAS Flow'), 
   'Food- Food Web Resources' = c('PROFESSIONAL JUDGEMENT',  'EDT_Level 2 Benthic Richness', 'EDT_Temperature: Food Effect'), 
   'Harassment' = c('PROFESSIONAL JUDGEMENT' ), 
   'Icing' = c( 'PROFESSIONAL JUDGEMENT'), 
-  'Off-Channel- Floodplain' = c( 'EDT_Floodplain pct'),
-  'Off-Channel- Side-Channels' = c('EDT Level 2 Side Channel Functional Condition'  ),
+  'Floodplain Connectivity' = c( 'EDT_Floodplain pct'),
+  'Off-Channel/Side-Channels' = c('EDT Level 2 Side Channel Functional Condition'  ),
   'Pool Quantity & Quality' = c( 'EDT_Scour Pool pct'), 
   'Pools- Deep Pools' = c(  ),
   'Predators- Adults' = c( 'PROFESSIONAL JUDGEMENT'), 
@@ -97,23 +97,23 @@ Level2_Data_Sources_Name_Crosswalk = read_excel( paste(Okanogan_EDT_path,'Level2
 #    Data listed here should pull data from Channel_Unit_Raw data frame (not habitat_raw_data)
 # data frame: Channel_Unit_Raw
 # the number is the location in the list of data sources (so 2 means it is the second data pulled for that habitat attribute)
-Channel_Unit_Raw_data_use = list('Off-Channel- Side-Channels' = 2,
+Channel_Unit_Raw_data_use = list('Off-Channel/Side-Channels' = 2,
                                  'Pool Quantity & Quality'  = 2)
-Channel_Unit_Raw_data_sources = list('Off-Channel- Side-Channels' = 'Side_Channel_Habitat_Prcnt_INDICATOR_6',
+Channel_Unit_Raw_data_sources = list('Off-Channel/Side-Channels' = 'Side_Channel_Habitat_Prcnt_INDICATOR_6',
                                  'Pool Quantity & Quality'  = 'Pool_Habitat_Prcnt_INDICATOR_4')
 
 # ------------- habitat attribute AND habitat attribute number/location of data FROM CHAMP data table -------
 #    Data listed here should pull data from Channel_Unit_Raw data frame (not habitat_raw_data)
 # data frame: CHAMP_data_per_reach
 # the number is the location in the list of data sources (so 3 means it is the third data pulled for that habitat attribute)
-CHAMP_data_per_reach_data_use = list('Off-Channel- Side-Channels' = 3,
+CHAMP_data_per_reach_data_use = list('Off-Channel/Side-Channels' = 3,
                                      'Coarse Substrate' = 4)
-CHAMP_data_per_reach_data_sources = list('Off-Channel- Side-Channels' = 'WetSC_Pct_Average',
+CHAMP_data_per_reach_data_sources = list('Off-Channel/Side-Channels' = 'WetSC_Pct_Average',
                                      'Coarse Substrate' = 'SubEstSandFines_Average' )  # TRIEd: 'GRVL_COBL_UCSRB_CHAMP' 
 #------------------------- column names of Habitat_Quality_Scores - HQ scores output (generated scores for pathway) -------
 habitat_quality_scores_colnames_for_sum = c('Stability_Mean','CoarseSubstrate_score','Cover-Wood_score',
-                                    'Flow-SummerBaseFlow_score', 'Off-Channel-Floodplain_score',
-                                    'Off-Channel-Side-Channels_score','PoolQuantity&Quality_score','Riparian_Mean',
+                                    'Flow-SummerBaseFlow_score', 'FloodplainConnectivity_score',
+                                    'Off-Channel/Side-Channels_score','PoolQuantity&Quality_score','Riparian_Mean',
                                     'Temperature-Rearing_score')
 
 habitat_quality_scores_colnames_ALL = c("BankStability_score", "ChannelStability_score",'Stability_Mean','CoarseSubstrate_score','Cover-Wood_score',
@@ -140,9 +140,9 @@ Habitat_Quality_Habitat_Attributes_List = list(
   'Channel Stability' = c('Vertical_Channel_Stability_CATEGORY_1', 'UCSRB_ChannelStability'),
   'Coarse Substrate' = c('Dominant_Substrate_CATEGORY_1', 'GravelCobble_UCSRB_pct', 'GRVL_COBL_UCSRB_CHAMP'),
   'Cover- Wood' = c('Pieces_per_mile_CATEGORY_1', 'Pieces_per_mile_INDICATOR_1', 'LWFreq_Bf_CHAMP' ), 
-  'Flow- Summer Base Flow' = c( 'RAWatershed_Rating_Flow', 'Flow_305bList', 'PROSPER', 'PROFESSIONAL JUDGEMENT', 'ATLAS_Flow'), 
-  'Off-Channel- Floodplain' = c( 'Floodplain_Connectivity_CATEGORY_1', 'Entrenchment_CATEGORY_2', 'Channel_Confinementor_or_Entrenchment_Ratio_INDICATOR_9', 'UCSRB_OffChannel_Floodplain' ),   # Data Sources listes first HabAtr as Floodplain_Connectivity_CATEGORY_1
-  'Off-Channel- Side-Channels' = c('Connectivity_CATEGORY_1', 'Side_Channel_Habitat_Prcnt_INDICATOR_6', 'WetSC_Pct_Average', 'UCSRB_OffChannel_SideChannels'  ),
+  'Flow- Summer Base Flow' = c( 'RAWatershed_Rating_Flow', 'Flow_305bList', 'PROSPER', 'PROFESSIONAL JUDGEMENT', 'ATLAS Flow'), 
+  'Floodplain Connectivity' = c( 'Floodplain_Connectivity_CATEGORY_1', 'Entrenchment_CATEGORY_2', 'Channel_Confinementor_or_Entrenchment_Ratio_INDICATOR_9', 'UCSRB_OffChannel_Floodplain' ),   # Data Sources listes first HabAtr as Floodplain_Connectivity_CATEGORY_1
+  'Off-Channel/Side-Channels' = c('Connectivity_CATEGORY_1', 'Side_Channel_Habitat_Prcnt_INDICATOR_6', 'WetSC_Pct_Average', 'UCSRB_OffChannel_SideChannels'  ),
   'Pool Quantity & Quality' = c( 'Pools_CATEGORY_1', 'Pool_Habitat_Prcnt_INDICATOR_4', 'Pools_per_mile_INDICATOR_2'), 
   'Riparian- Canopy Cover' = c( 'UCSRB_CanopyCoverPct' , 'Canopy_Cover_NORWEST'),
   'Riparian-Disturbance' = c('Disturbance_CATEGORY_1' , 'UCSRB_RiparianDisturbancePct' ),
@@ -151,11 +151,14 @@ Habitat_Quality_Habitat_Attributes_List = list(
 
 # ----------------------- Habitat Attributes to default to REI if those data are available ------
 REI_Default_List = c(
+  'Bank Stability',
+  'Channel Stability',
   'Coarse Substrate' ,
   'Cover- Wood' , 
-  'Off-Channel- Floodplain',
-  'Off-Channel- Side-Channels' ,
-  'Pool Quantity & Quality'
+  'Floodplain Connectivity',
+  'Off-Channel/Side-Channels' ,
+  'Pool Quantity & Quality',
+  'Riparian-Disturbance'
 )
 
 

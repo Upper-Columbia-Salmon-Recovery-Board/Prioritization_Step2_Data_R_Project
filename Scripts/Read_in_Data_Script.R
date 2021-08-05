@@ -78,6 +78,8 @@ cols.num <- c( 'Sand_occular_prcnt_INDICATOR_1',	'Gravel_occular_prcnt_INDICATOR
 # ---- convert all columns listed above to numeric ----------              
 habitat_raw_data[cols.num] <- sapply(habitat_raw_data[cols.num],as.numeric)
 
+# ISSUES with MASTER (column names slightly off): "PROSER" ""GravelCobble_ UCSRB_pct" "UCSRB_OffChannel__Floodplain" "UCSRB_OffChannel_SideChannels"
+
 # ONLY for USE for interactive (COULD just have a person edit a CSV)
 # habitat_raw_data_new <- data_edit(habitat_raw_data, save_as = "habitat_raw_data_updated.csv")
 
@@ -147,7 +149,7 @@ Life_Stage_Priorities_AU_only_data = read_excel( paste(ranking_data_path,'LifeSt
 #
 # ---------------------------------------------------------------------------
 
-Life_Stage_Priorities_AU_and_Reach_data = read_excel( paste(ranking_data_path,'LifeStagePriorities_AUandReach.xlsx', sep="") )
+# Life_Stage_Priorities_AU_and_Reach_data = read_excel( paste(ranking_data_path,'LifeStagePriorities_AUandReach.xlsx', sep="") )
 
 
 # --------------- read in Habitat Raw Data from MASTER -------------
@@ -270,14 +272,14 @@ Channel_Unit_Raw[cols.num] <- sapply(Channel_Unit_Raw[cols.num],as.numeric)
 
 # NOTE: currently CHAMP data is copied over into columns in the habitat_raw_data tab in Excel, so these data are not used
 
-CHAMP_data_per_reach = read_excel( paste(habitat_data_path,'CHAMP_data_per_reach.xlsx', sep="") )
+#CHAMP_data_per_reach = read_excel( paste(habitat_data_path,'CHAMP_data_per_reach.xlsx', sep="") )
 
 
 if(read_MASTER_directly){
   # --------------- read in Data from UCSRB server ----------
-  CHAMP_data_per_reach = read_excel( MASTER_Data_path , sheet="CHaMP data per reach")
+  CHAMP_data_per_reach = read_excel( MASTER_Data_path , sheet="CHAMP data per reach")
   CHAMP_data_per_reach_colnames = CHAMP_data_per_reach[1,]   # pull the colnames
-  CHAMP_data_per_reach = Channel_Unit_Raw[2:nrow(CHAMP_data_per_reach),] # remove the top row (it's just a number ber column)
+  CHAMP_data_per_reach = CHAMP_data_per_reach[2:nrow(CHAMP_data_per_reach),] # remove the top row (it's just a number ber column)
   colnames(CHAMP_data_per_reach) = CHAMP_data_per_reach_colnames # update column names
   
   
@@ -355,9 +357,12 @@ if(read_MASTER_directly){
   # --------------- read in Data from UCSRB server ----------
   Stream_Widths = read_excel( MASTER_Data_path , sheet="StreamWidth")
   # ------------------- add Stream Widths to Reach_Information_data ------------------
-  Reach_Information_data = merge(Reach_Information_data,Stream_Widths, by="ReachName", all.x=TRUE)
+  Stream_Widths["ReachName"] = Stream_Widths["ReachName_updated"] # update Reach Name
+  Stream_Widths_trimmed = Stream_Widths[, c("ReachName","Length_AvgWettedWidth_Meters" , "Wetted_Width_less_than_5m" ,"PFC_Pool_Freq_Code_1_2_3_bins_20ft_50ft",            
+                           "PFC_Channel_Width_BINS_5_10_15_20_25_50_75_100_feet", "PFC_POOL_Freq_per_mile")]
+  Reach_Information_data = merge(Reach_Information_data,Stream_Widths_trimmed, by="ReachName", all.x=TRUE)
   # -------------------- print message if number of rows in Reach_Information_data is different from Stream_Widths -----
-  if(nrow(Reach_Information_data) != nrow(Stream_Widths) ){print("Reach_Information_data has different number of rows than Stream_Widths")}
+  if(nrow(Reach_Information_data) != nrow(Stream_Widths_trimmed) ){print("Reach_Information_data has different number of rows than Stream_Widths")}
   
   # -------------- write locally --------------
   if(write_MASTER_locally){

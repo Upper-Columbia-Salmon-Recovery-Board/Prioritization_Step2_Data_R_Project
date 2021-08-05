@@ -5,9 +5,9 @@
 # 
 # ------------------------------------------------------------------------------------------------------------------
 
-test_x = FALSE
+test_x = TRUE
 if(test_x){
-  species="Bull Trout"
+  species="Spring Chinook"
   basins = c("Methow"  ,  "Entiat"  ,  "Wenatchee", "Okanogan" )
   
 }
@@ -26,7 +26,7 @@ Generate_Habitat_Quality_Output_Table_WITH_FILTERS = function(species, basins, h
     # ---------------- species AU Rank PROTECTION ----------
     AU_rank_name_protection = 'SPCHNTier_Protection'
     # --------------- Life stage Sum column name ----------
-    life_stage_sum_column = 'SPCH_Life_Stage_Sum'
+    life_stage_sum_column = 'SPCHN Number of Life Stages'
     # ------------------- output names ----------------------
     restoration_output_name = paste(paste("Spring_Chinook_Habitat_Quality_RESTORATION" , 
                                           paste(basins_to_include, collapse = "_"), sep="_"),
@@ -44,7 +44,7 @@ Generate_Habitat_Quality_Output_Table_WITH_FILTERS = function(species, basins, h
     # ---------------- species AU Rank PROTECTION ----------
     AU_rank_name_protection = 'STLTier_Protection'
     # --------------- Life stage Sum column name ----------
-    life_stage_sum_column = 'SH_Life_Stage_Sum'
+    life_stage_sum_column = 'SH Number of Life Stages'
     # ------------------- output names ----------------------
     restoration_output_name = paste(paste("Steelhead_Habitat_Quality_RESTORATION" , 
                                           paste(basins_to_include, collapse = "_"), sep="_"),
@@ -61,7 +61,7 @@ Generate_Habitat_Quality_Output_Table_WITH_FILTERS = function(species, basins, h
     # ---------------- species AU Rank PROTECTION ----------
     AU_rank_name_protection = 'BTTier_Protection'
     # --------------- Life stage Sum column name ----------
-    life_stage_sum_column = 'BT_Life_Stage_Sum'
+    life_stage_sum_column = 'BT Num Life Stages'
     # ------------------- output names ----------------------
     restoration_output_name = paste(paste("Bull_Trout_Habitat_Quality_RESTORATION" , 
                                           paste(basins_to_include, collapse = "_"), sep="_"),
@@ -247,7 +247,7 @@ Generate_Habitat_Quality_Output_Table_WITH_FILTERS = function(species, basins, h
 #
 #  ---------------------------------------------------------------------------------
 
-test_x = FALSE
+test_x = TRUE
 if(test_x){
   HQ_Spring_Chinook= Habitat_Quality_Scores_ALL_Spring_Chinook
   HQ_Steelhead = Habitat_Quality_Scores_ALL_Steelhead
@@ -309,10 +309,10 @@ FUNCTION_combine_HQ_ALL_Filters_no_Bull_Trout = function(HQ_Spring_Chinook, HQ_S
   Habitat_Quality_Scores_ALL_Species$"Cover-Wood_score"[blank_x] = replace_blank_x
   blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$"Flow-SummerBaseFlow_score"  ))
   Habitat_Quality_Scores_ALL_Species$"Flow-SummerBaseFlow_score"[blank_x] = replace_blank_x
-  blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$"Off-Channel-Floodplain_score"  ))
-  Habitat_Quality_Scores_ALL_Species$"Off-Channel-Floodplain_score"[blank_x] = replace_blank_x
-  blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$"Off-Channel-Side-Channels_score"  ))
-  Habitat_Quality_Scores_ALL_Species$"Off-Channel-Side-Channels_score"[blank_x] = replace_blank_x
+  blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$"FloodplainConnectivity_score"  ))
+  Habitat_Quality_Scores_ALL_Species$"FloodplainConnectivity_score"[blank_x] = replace_blank_x
+  blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$"Off-Channel/Side-Channels_score"  ))
+  Habitat_Quality_Scores_ALL_Species$"Off-Channel/Side-Channels_score"[blank_x] = replace_blank_x
   blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$"PoolQuantity&Quality_score"  ))
   Habitat_Quality_Scores_ALL_Species$"PoolQuantity&Quality_score"[blank_x] = replace_blank_x
   blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$"Riparian-Disturbance_score"  ))
@@ -335,7 +335,7 @@ FUNCTION_combine_HQ_ALL_Filters_no_Bull_Trout = function(HQ_Spring_Chinook, HQ_S
   Habitat_Quality_Scores_ALL_Species$CoarseSubstrate_score = as.numeric(Habitat_Quality_Scores_ALL_Species$CoarseSubstrate_score)
   Habitat_Quality_Scores_ALL_Species$"Cover-Wood_score" = as.numeric(Habitat_Quality_Scores_ALL_Species$"Cover-Wood_score")
   Habitat_Quality_Scores_ALL_Species$"Flow-SummerBaseFlow_score" = as.numeric(Habitat_Quality_Scores_ALL_Species$"Flow-SummerBaseFlow_score")
-  Habitat_Quality_Scores_ALL_Species$"Off-Channel-Floodplain_score" = as.numeric(Habitat_Quality_Scores_ALL_Species$"Off-Channel-Floodplain_score")
+  Habitat_Quality_Scores_ALL_Species$"FloodplainConnectivity_score" = as.numeric(Habitat_Quality_Scores_ALL_Species$"FloodplainConnectivity_score")
   Habitat_Quality_Scores_ALL_Species$"PoolQuantity&Quality_score" = as.numeric(Habitat_Quality_Scores_ALL_Species$"PoolQuantity&Quality_score")
   Habitat_Quality_Scores_ALL_Species$"Riparian-Disturbance_score" = as.numeric(Habitat_Quality_Scores_ALL_Species$"Riparian-Disturbance_score")
   Habitat_Quality_Scores_ALL_Species$"Riparian-CanopyCover_score" = as.numeric(Habitat_Quality_Scores_ALL_Species$"Riparian-CanopyCover_score")

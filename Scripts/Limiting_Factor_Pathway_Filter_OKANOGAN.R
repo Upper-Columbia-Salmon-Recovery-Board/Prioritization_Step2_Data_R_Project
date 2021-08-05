@@ -40,7 +40,7 @@ Generate_Limiting_Factor_Output_Table_Okanogan = function(species, basins){
     # ---------------- species AU Rank PROTECTION ----------
     AU_rank_name_protection = 'AU Protection Rank'
     # --------------- Life stage Sum column name ----------
-    life_stage_sum_column = 'SH_Life_Stage_Sum'
+    life_stage_sum_column = 'SH Number of Life Stages'
     # ---------------- life stage priority names ---------
     life_stages_priorities_species_specific =  life_stages_priorities[['steelhead_life_stages']]
     # ----------------------- life stage presence in reach -------------
@@ -948,7 +948,7 @@ Generate_Limiting_Factor_Output_Table_Okanogan_ALL = function(species, basins){
     # ---------------- species AU Rank PROTECTION ----------
     AU_rank_name_protection = 'AU Protection Rank'
     # --------------- Life stage Sum column name ----------
-    life_stage_sum_column = 'SH_Life_Stage_Sum'
+    life_stage_sum_column = 'SH Number of Life Stages'
     # ---------------- life stage priority names ---------
     life_stages_priorities_species_specific =  life_stages_priorities[['steelhead_life_stages']]
     # ----------------------- life stage presence in reach -------------
@@ -1207,7 +1207,7 @@ Generate_Limiting_Factor_Output_Table_Okanogan_no_level3 = function(species, bas
     # ---------------- species AU Rank PROTECTION ----------
     AU_rank_name_protection = 'AU Protection Rank'
     # --------------- Life stage Sum column name ----------
-    life_stage_sum_column = 'SH_Life_Stage_Sum'
+    life_stage_sum_column = 'SH Number of Life Stages'
     # ---------------- life stage priority names ---------
     life_stages_priorities_species_specific =  life_stages_priorities[['steelhead_life_stages']]
     # ----------------------- life stage presence in reach -------------

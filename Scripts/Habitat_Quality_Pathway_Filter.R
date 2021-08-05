@@ -36,7 +36,7 @@ Generate_Habitat_Quality_Output_Table = function(species, basins, habitat_qualit
     # ---------------- species AU Rank PROTECTION ----------
     AU_rank_name_protection = 'SPCHNTier_Protection'
     # --------------- Life stage Sum column name ----------
-    life_stage_sum_column = 'SPCH_Life_Stage_Sum'
+    life_stage_sum_column = 'SPCHN Number of Life Stages'
     # ------------------- output names ----------------------
     restoration_output_name = paste(paste("Spring_Chinook_Habitat_Quality_RESTORATION" , 
                                     paste(basins_to_include, collapse = "_"), sep="_"),
@@ -54,7 +54,7 @@ Generate_Habitat_Quality_Output_Table = function(species, basins, habitat_qualit
     # ---------------- species AU Rank PROTECTION ----------
     AU_rank_name_protection = 'STLTier_Protection'
     # --------------- Life stage Sum column name ----------
-    life_stage_sum_column = 'SH_Life_Stage_Sum'
+    life_stage_sum_column = 'SH Number of Life Stages'
     # ------------------- output names ----------------------
     restoration_output_name = paste(paste("Steelhead_Habitat_Quality_RESTORATION" , 
                                           paste(basins_to_include, collapse = "_"), sep="_"),
@@ -71,7 +71,7 @@ Generate_Habitat_Quality_Output_Table = function(species, basins, habitat_qualit
   # ---------------- species AU Rank PROTECTION ----------
   AU_rank_name_protection = 'BTTier_Protection'
   # --------------- Life stage Sum column name ----------
-  life_stage_sum_column = 'BT_Life_Stage_Sum'
+  life_stage_sum_column = 'BT Num Life Stages'
   # ------------------- output names ----------------------
   restoration_output_name = paste(paste("Bull_Trout_Habitat_Quality_RESTORATION" , 
                                         paste(basins_to_include, collapse = "_"), sep="_"),

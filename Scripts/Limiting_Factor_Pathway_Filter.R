@@ -69,7 +69,7 @@ Generate_Limiting_Factor_Output_Table = function(species, basins){
     # ---------------- species AU Rank PROTECTION ----------
     AU_rank_name_protection = 'SPCHNTier_Protection'
     # --------------- Life stage Sum column name ----------
-    life_stage_sum_column = 'SPCH_Life_Stage_Sum'
+    life_stage_sum_column = 'SPCHN Number of Life Stages'
     # ---------------- life stage priority names ---------
     life_stages_priorities_species_specific =  life_stages_priorities[['spring_chinook_life_stages']]
 
@@ -90,7 +90,7 @@ Generate_Limiting_Factor_Output_Table = function(species, basins){
     # ---------------- species AU Rank PROTECTION ----------
     AU_rank_name_protection = 'STLTier_Protection'
     # --------------- Life stage Sum column name ----------
-    life_stage_sum_column = 'SH_Life_Stage_Sum'
+    life_stage_sum_column = 'SH Number of Life Stages'
     # ---------------- life stage priority names ---------
     life_stages_priorities_species_specific =  life_stages_priorities[['steelhead_life_stages']]
     # ------------------- output names ----------------------
@@ -109,7 +109,7 @@ Generate_Limiting_Factor_Output_Table = function(species, basins){
     # ---------------- species AU Rank PROTECTION ----------
     AU_rank_name_protection = 'BTTier_Protection'
     # --------------- Life stage Sum column name ----------
-    life_stage_sum_column = 'BT_Life_Stage_Sum'
+    life_stage_sum_column = 'BT Num Life Stages'
     # ---------------- life stage priority names ---------
     life_stages_priorities_species_specific =  life_stages_priorities[['bull_trout_life_stages']]
     
@@ -324,7 +324,7 @@ Generate_Limiting_Factor_Output_Table_NO_FILTERS = function(species, basins){
     # ---------------- species AU Rank PROTECTION ----------
     AU_rank_name_protection = 'SPCHNTier_Protection'
     # --------------- Life stage Sum column name ----------
-    life_stage_sum_column = 'SPCH_Life_Stage_Sum'
+    life_stage_sum_column = 'SPCHN Number of Life Stages'
     # ---------------- life stage priority names ---------
     life_stages_priorities_species_specific =  life_stages_priorities[['spring_chinook_life_stages']]
     
@@ -345,7 +345,7 @@ Generate_Limiting_Factor_Output_Table_NO_FILTERS = function(species, basins){
     # ---------------- species AU Rank PROTECTION ----------
     AU_rank_name_protection = 'STLTier_Protection'
     # --------------- Life stage Sum column name ----------
-    life_stage_sum_column = 'SH_Life_Stage_Sum'
+    life_stage_sum_column = 'SH Number of Life Stages'
     # ---------------- life stage priority names ---------
     life_stages_priorities_species_specific =  life_stages_priorities[['steelhead_life_stages']]
     # ------------------- output names ----------------------
@@ -364,7 +364,7 @@ Generate_Limiting_Factor_Output_Table_NO_FILTERS = function(species, basins){
     # ---------------- species AU Rank PROTECTION ----------
     AU_rank_name_protection = 'BTTier_Protection'
     # --------------- Life stage Sum column name ----------
-    life_stage_sum_column = 'BT_Life_Stage_Sum'
+    life_stage_sum_column = 'BT Num Life Stages'
     # ---------------- life stage priority names ---------
     life_stages_priorities_species_specific =  life_stages_priorities[['bull_trout_life_stages']]
     
@@ -853,7 +853,7 @@ Generate_Species_Output_Table_for_ALL_REACHES_and_ALL_LIFE_STAGES = function(spe
     # ---------------- species AU Rank PROTECTION ----------
     AU_rank_name_protection = 'SPCHNTier_Protection'
     # --------------- Life stage Sum column name ----------
-    life_stage_sum_column = 'SPCH_Life_Stage_Sum'
+    life_stage_sum_column = 'SPCHN Number of Life Stages'
     # ---------------- life stage priority names ---------
     life_stages_priorities_species_specific =  life_stages_priorities[['spring_chinook_life_stages']]
     # ---------------- life stage presence ------------
@@ -867,7 +867,7 @@ Generate_Species_Output_Table_for_ALL_REACHES_and_ALL_LIFE_STAGES = function(spe
     # ---------------- species AU Rank PROTECTION ----------
     AU_rank_name_protection = 'STLTier_Protection'
     # --------------- Life stage Sum column name ----------
-    life_stage_sum_column = 'SH_Life_Stage_Sum'
+    life_stage_sum_column = 'SH Number of Life Stages'
     # ---------------- life stage priority names ---------
     life_stages_priorities_species_specific =  life_stages_priorities[['steelhead_life_stages']]
     # ---------------- life stage presence ------------
@@ -881,7 +881,7 @@ Generate_Species_Output_Table_for_ALL_REACHES_and_ALL_LIFE_STAGES = function(spe
     # ---------------- species AU Rank PROTECTION ----------
     AU_rank_name_protection = 'BTTier_Protection'
     # --------------- Life stage Sum column name ----------
-    life_stage_sum_column = 'BT_Life_Stage_Sum'
+    life_stage_sum_column = 'BT Num Life Stages'
     # ---------------- life stage priority names ---------
     life_stages_priorities_species_specific =  life_stages_priorities[['bull_trout_life_stages']]
     # ---------------- life stage presence ------------

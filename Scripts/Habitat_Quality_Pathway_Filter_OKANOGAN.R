@@ -45,7 +45,7 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species, colnames_HQ_
     # ---------------- species AU Rank PROTECTION ----------
     AU_rank_name_protection = 'AU Protection Rank'
     # --------------- Life stage Sum column name ----------
-    life_stage_sum_column = 'SH_Life_Stage_Sum'
+    life_stage_sum_column = 'SH Number of Life Stages'
     # ------------------- output names ----------------------
     restoration_output_name = paste(paste("Steelhead_Habitat_Quality_RESTORATION_Okanogan" , ".xlsx", sep="") )
     protection_output_name = paste(paste("Steelhead_Habitat_Quality_PROTECTION_Okanogan" ,".xlsx", sep=""))
@@ -520,6 +520,9 @@ if(test_x){
 
 Combine_MetEntWen_and_Okanogan_Habitat_Quality_Output = function(MetEntWen_data_frame,   Okanogan_data_frame,  habitat_quality_scores_colnames_for_combo){
   
+  # ----------------- remove Okanogan reaches from original Okanogan data frame 
+  MetEntWen_data_frame = MetEntWen_data_frame[-which(MetEntWen_data_frame$Basin == "Okanogan"), ]
+  
   # -------------- update "Riparian_Mean" name ---------------
   x = which(habitat_quality_scores_colnames_for_combo == "Riparian_Mean")
   habitat_quality_scores_colnames_for_combo[x] = "Riparian_Mean_score"
@@ -581,6 +584,7 @@ Combine_MetEntWen_and_Okanogan_Habitat_Quality_Output = function(MetEntWen_data_
   x = which(colnames(df_add_to_MetEntWen) == "Riparian_Mean_score")
   colnames(df_add_to_MetEntWen)[x] = "Riparian_Mean"
   
+
   # ----------------- combine prepared Okanogan data frame with MetEntWen data frame -----
   MetEntWen_data_frame_updated = rbind(MetEntWen_data_frame,  df_add_to_MetEntWen)
   

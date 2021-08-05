@@ -167,7 +167,7 @@ source(paste(script_path, 'Habitat_Quality_Pathway_Filter_OKANOGAN.R', sep="")) 
 
 # ----- set names of Habitat Quality Scores to sum ------
 habitat_quality_scores_colnames_for_sum = c("Stability_Mean" , "CoarseSubstrate_score" ,"Cover-Wood_score", "Flow-SummerBaseFlow_score",
-                                            "Off-Channel-Floodplain_score", "Off-Channel-Side-Channels_score","PoolQuantity&Quality_score",
+                                            "FloodplainConnectivity_score", "Off-Channel/Side-Channels_score","PoolQuantity&Quality_score",
                                             "Riparian_Mean","Temperature-Rearing_score")
 
 # --------------- generate for all basins except Okanogan ---------------
@@ -184,7 +184,7 @@ colnames_HQ_habitat_attributes = colnames_HQ_output[7:19]  # habitat attributes 
 Habitat_Quality_Pathway_Steelhead_OKANOGAN = Generate_Habitat_Quality_Output_Table_Okanogan("Steelhead" , colnames_HQ_output, colnames_HQ_habitat_attributes)
 # View(Habitat_Quality_Pathway_Steelhead_OKANOGAN[['Habitat_Quality_Pathway_Restoration']])
 # View(Habitat_Quality_Pathway_Steelhead_OKANOGAN[['Habitat_Quality_Pathway_Protection']])
-
+# Habitat_Quality_Pathway_Steelhead_EXTRA = Habitat_Quality_Pathway_Steelhead
 # ---------------- Restoration: add Okanogan to Methow-Wenatchee-Okanogan HQ Output ------------
 habitat_quality_scores_colnames_for_combo = colnames(Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']])[7:(ncol(Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']])-7)]
 Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']] = Combine_MetEntWen_and_Okanogan_Habitat_Quality_Output(Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']],
@@ -209,7 +209,7 @@ source(paste(script_path, 'Compare_EDT_and_RTT_output_data.R', sep=""))  # for M
 # ---------------  Combine Habitat_Quality_Scores with all filters (for all basins) ------
 source(paste(script_path, 'Generate_Habitat_Quality_Scores_ALL_FILTERS.R', sep=""))  
 habitat_quality_scores_colnames_output = c("BankStability_score" ,"ChannelStability_score", "Stability_Mean" , "CoarseSubstrate_score" ,"Cover-Wood_score", "Flow-SummerBaseFlow_score",
-                                            "Off-Channel-Floodplain_score", "Off-Channel-Side-Channels_score","PoolQuantity&Quality_score",
+                                            "FloodplainConnectivity_score", "Off-Channel/Side-Channels_score","PoolQuantity&Quality_score",
                                            "Riparian-Disturbance_score", "Riparian-CanopyCover_score", "Riparian_Mean","Temperature-Rearing_score")
 Habitat_Quality_Scores_ALL_Spring_Chinook = Generate_Habitat_Quality_Output_Table_WITH_FILTERS("Spring Chinook",basins_to_include, habitat_quality_scores_colnames_output)
 Habitat_Quality_Scores_ALL_Steelhead = Generate_Habitat_Quality_Output_Table_WITH_FILTERS("Steelhead",basins_to_include, habitat_quality_scores_colnames_output)

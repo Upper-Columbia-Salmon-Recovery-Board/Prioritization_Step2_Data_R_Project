@@ -21,7 +21,7 @@
 
 test_x = FALSE
 if(test_x){
-  score_1_or_3 = "two and three"
+  score_1_or_3 = "one"
   restoration_or_protection = 'restoration'
 }
 
@@ -343,6 +343,7 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
                                       steelhead_actions, number_of_steelhead_actions,
                                       bull_trout_actions, number_of_bull_trout_actions, 
                                       life_stage_list, life_stage_spring_chinook_output, life_stage_steelhead_output, life_stage_bull_trout_output )    ) )
+    if(nrow(output_row_x)>1){output_row_x = t(output_row_x)} # if output needs to be transposed (prepped as rows, not columns)
     colnames(output_row_x) = c("ReachName", "Spring_Chinook_Actions_Present_Yes_No", "SprCh_STLD_BullTr_All_Present_Yes_No",
                                "Pathways","Number_of_Pathways", 
                                "Impaired_Habitat_Attributes_All_Species","Number_Impaired_Habitat_Attributes_All_Species",

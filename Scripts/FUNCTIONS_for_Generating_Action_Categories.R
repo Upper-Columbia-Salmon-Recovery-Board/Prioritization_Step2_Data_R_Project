@@ -25,8 +25,11 @@
 
 # ------------------------ Function to generate column of action categories for the habitat attributes ---------
 # NOTE: data must have columns with "unacceptable_1_indiv_habitat_attributes", "at_risk_2_or_3_indiv_habitat_attributes", "unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes"
-data_frame_with_habitat_attributes = Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']]
-data_frame_with_habitat_attributes = Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']]
+test_x = TRUE
+if(test_x){
+  data_frame_with_habitat_attributes = Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']]
+}
+
 FUNCTION_to_generate_Action_Categories = function(data_frame_with_habitat_attributes){
   
   # ------------------ generate action categories for Unacceptable (1) habitat attributes ------------
