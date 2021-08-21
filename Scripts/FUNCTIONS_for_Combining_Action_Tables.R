@@ -342,9 +342,10 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
                                       spring_chinook_actions_x, number_of_spring_chinook_actions_x,
                                       steelhead_actions_x, number_of_steelhead_actions_x,
                                       bull_trout_actions_x, number_of_bull_trout_actions_x, 
-                                      life_stage_list, life_stage_spring_chinook_output, life_stage_steelhead_output, life_stage_bull_trout_output )    ) )
+                                      life_stage_list, 
+                                      life_stage_spring_chinook_output, life_stage_steelhead_output, life_stage_bull_trout_output )    ) )
     if(nrow(output_row_x)>1){output_row_x = t(output_row_x)} # if output needs to be transposed (prepped as rows, not columns)
-    colnames(output_row_x) = c("ReachName", "spring_chinook_actions_x_Present_Yes_No", "SprCh_STLD_BullTr_All_Present_Yes_No",
+    colnames(output_row_x) = c("ReachName", "Spring_Chinook_Actions_Present_Yes_No", "SprCh_STLD_BullTr_All_Present_Yes_No",
                                "Pathways","Number_of_Pathways", 
                                "Impaired_Habitat_Attributes_All_Species","Number_Impaired_Habitat_Attributes_All_Species",
                                "Impaired_Habitat_Attributes_SpringChinook","Number_Impaired_Habitat_Attributes_SpringChinook",
@@ -353,7 +354,8 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
                                "Action_Categories_All_Species", "Number_Action_Categories_All_Species",
                                "Action_Categories_SpringChinook", "Number_Action_Categories_SpringChinook",
                                "Action_Categories_Steelhead", "Number_Action_Categories_Steelhead",
-                               "Action_Categories_BullTrout", "Number_Action_Categories_BullTrout", "Life_Stage_All",
+                               "Action_Categories_BullTrout", "Number_Action_Categories_BullTrout", 
+                               "Life_Stage_All",
                                "Life_Stage_Spring_Chinook", "Life_Stage_Steelhead", "Life_Stage_Bull_Trout")
     Pathway_Output_x = rbind(Pathway_Output_x, output_row_x)
   }
@@ -794,7 +796,7 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
                                       steelhead_life_stages_x, number_of_steelhead_life_stages_x,
                                       bull_trout_life_stages_x, number_of_bull_trout_life_stages_x
                                       )  )  
-    colnames(output_row_x) = c("ReachName", "Basin","Assessment.Unit","Spring.Chinook.Reach","Steelhead.Reach","Bull.Trout.Reach", "spring_chinook_actions_x_Present_Yes_No", "SprCh_STLD_BullTr_All_Present_Yes_No",
+    colnames(output_row_x) = c("ReachName", "Basin","Assessment.Unit","Spring.Chinook.Reach","Steelhead.Reach","Bull.Trout.Reach", "Spring_Chinook_Actions_Present_Yes_No", "SprCh_STLD_BullTr_All_Present_Yes_No",
                                "Pathways","Number_of_Pathways", 
                                
                                "Impaired_Habitat_Attributes_All_Species","Number_Impaired_Habitat_Attributes_All_Species",
@@ -860,7 +862,7 @@ FUNCTION_combine_across_pathways = function(HQ_pathway_df, LF_pathway_df){
     # ------------------------------------------------------------
     #     Add Reach Information Data 
     # ------------------------------------------------------------
-    if( length(HQ_reach_index ) > 0){
+    if( length(HQ_reach_index ) > 0 ){
       HQ_and_LF_combo_x = as.data.frame(HQ_pathway_df[HQ_reach_index, columns_info])
     }else{
       HQ_and_LF_combo_x = as.data.frame(LF_pathway_df[LF_reach_index, columns_info])
@@ -879,6 +881,7 @@ FUNCTION_combine_across_pathways = function(HQ_pathway_df, LF_pathway_df){
       # ------------- create data frame with column ------
       combo_x_output = substr(combo_x_output,2,nchar(combo_x_output))   # remove the leading comma
       combo_x_output = gsub(" ", "", combo_x_output, fixed = TRUE) # remove blank spaces (since HQ pathway habitat attributes have no blank spaces)
+      combo_x_output = gsub(",NA", "", combo_x_output, fixed = TRUE) # remove NAs
       combo_x_output = paste(unique( unlist(strsplit(combo_x_output, ",")) ), collapse=",")  # just get unique 
       combo_x_output = as.data.frame(combo_x_output)
       colnames(combo_x_output) = combo_x
@@ -1167,7 +1170,7 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
     # ------------- Benefit all species ----------
     HQ_and_LF_combo_x$SprCh_STLD_BullTr_All_Benefit = HQ_LF_Both[HQ_LF_Both_index, "SprCh_STLD_BullTr_All_Present_Yes_No"]
     # ------------- Benefit Spring Chinook ----------
-    HQ_and_LF_combo_x$Spring_Chinook_Benefit = HQ_LF_Both[HQ_LF_Both_index, "spring_chinook_actions_x_Present_Yes_No"]
+    HQ_and_LF_combo_x$Spring_Chinook_Benefit = HQ_LF_Both[HQ_LF_Both_index, "Spring_Chinook_Actions_Present_Yes_No"]
     
     # ------------------------------------------------------------
     #   Generate Species-specific columns of habitat attributes and actions - for 
@@ -1179,7 +1182,7 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
     HQ_and_LF_combo_x$Spring_Chinook_Habitat_Attributes = HQ_LF_Both$Impaired_Habitat_Attributes_SpringChinook[HQ_LF_Both_index]
     if( is.na(HQ_LF_Unacceptable_index) ){  HQ_and_LF_combo_x$Spring_Chinook_Unacceptable_Actions = NA }else{ HQ_and_LF_combo_x$Spring_Chinook_Unacceptable_Actions = HQ_LF_Unacceptable$Action_Categories_SpringChinook[HQ_LF_Unacceptable_index] }
     if( is.na(HQ_LF_At_Risk_index) ){ HQ_and_LF_combo_x$Spring_Chinook_At_Risk_Actions = NA }else{ HQ_and_LF_combo_x$Spring_Chinook_At_Risk_Actions = HQ_LF_At_Risk$Action_Categories_SpringChinook[HQ_LF_At_Risk_index]}
-    HQ_and_LF_combo_x$spring_chinook_actions_x = HQ_LF_Both$Action_Categories_SpringChinook[HQ_LF_Both_index]
+    HQ_and_LF_combo_x$Spring_Chinook_Actions = HQ_LF_Both$Action_Categories_SpringChinook[HQ_LF_Both_index]
     
     # ---------- Steelhead ----------------
     if( is.na(HQ_LF_Unacceptable_index) ){ HQ_and_LF_combo_x$Steelhead_Habitat_Attributes_Unacceptable = NA }else{ HQ_and_LF_combo_x$Steelhead_Habitat_Attributes_Unacceptable = HQ_LF_Unacceptable$Impaired_Habitat_Attributes_Steelhead[HQ_LF_Unacceptable_index] }
@@ -1187,7 +1190,7 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
     HQ_and_LF_combo_x$Steelhead_Habitat_Attributes = HQ_LF_Both$Impaired_Habitat_Attributes_Steelhead[HQ_LF_Both_index]
     if( is.na(HQ_LF_Unacceptable_index) ){ HQ_and_LF_combo_x$Steelhead_Unacceptable_Actions = NA }else{ HQ_and_LF_combo_x$Steelhead_Unacceptable_Actions = HQ_LF_Unacceptable$Action_Categories_Steelhead[HQ_LF_Unacceptable_index] }
     if( is.na(HQ_LF_At_Risk_index) ){ HQ_and_LF_combo_x$Steelhead_At_Risk_Actions = NA }else{ HQ_and_LF_combo_x$Steelhead_At_Risk_Actions = HQ_LF_At_Risk$Action_Categories_Steelhead[HQ_LF_At_Risk_index] }
-    HQ_and_LF_combo_x$steelhead_actions_x = HQ_LF_Both$Action_Categories_Steelhead[HQ_LF_Both_index]
+    HQ_and_LF_combo_x$Steelhead_Actions = HQ_LF_Both$Action_Categories_Steelhead[HQ_LF_Both_index]
     
     # ---------- Bull Trout ----------------
     if(exclude_bull_trout == "no"){
@@ -1196,14 +1199,14 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
       HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes = HQ_LF_Both$Impaired_Habitat_Attributes_BullTrout[HQ_LF_Both_index]
       if( is.na(HQ_LF_Unacceptable_index) ){ HQ_and_LF_combo_x$Bull_Trout_Unacceptable_Actions = NA }else{  HQ_and_LF_combo_x$Bull_Trout_Unacceptable_Actions = HQ_LF_Unacceptable$Action_Categories_BullTrout[HQ_LF_Unacceptable_index] }
       if( is.na(HQ_LF_At_Risk_index) ){ HQ_and_LF_combo_x$Bull_Trout_At_Risk_Actions  = NA }else{  HQ_and_LF_combo_x$Bull_Trout_At_Risk_Actions = HQ_LF_At_Risk$Action_Categories_BullTrout[HQ_LF_At_Risk_index] }
-      HQ_and_LF_combo_x$bull_trout_actions_x = HQ_LF_Both$Action_Categories_BullTrout[HQ_LF_Both_index]
+      HQ_and_LF_combo_x$Bull_Trout_Actions = HQ_LF_Both$Action_Categories_BullTrout[HQ_LF_Both_index]
     }else{
       HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes_Unacceptable = NA
       HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes_At_Risk = NA
       HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes = NA
       HQ_and_LF_combo_x$Bull_Trout_Unacceptable_Actions = NA
       HQ_and_LF_combo_x$Bull_Trout_At_Risk_Actions = NA
-      HQ_and_LF_combo_x$bull_trout_actions_x = NA
+      HQ_and_LF_combo_x$Bull_Trout_Actions = NA # bull_trout_actions_x
     }
     
     # ------------------------------------------------------------
@@ -1478,7 +1481,7 @@ FUNCTION_output_life_stages_based_on_species_and_life_stage_presence_FISH_BARRIE
   Life_Stage_Priorities_AU_and_Reach_data_REACH_X = Life_Stage_Priorities_AU_and_Reach_data[ which(Life_Stage_Priorities_AU_and_Reach_data$ReachName == reach_x), ] 
   
   # --------------- spring chinook -----------
-  spring_chinook_col_names = unlist( spring_chinook_life_stages_x_presence[names(spring_chinook_life_stages_x_presence)] )
+  spring_chinook_col_names = unlist( spring_chinook_life_stages_presence[names(spring_chinook_life_stages_presence)] )
   life_stage_names = names(spring_chinook_col_names)
   life_stage_presence_numbers = Life_Stage_Priorities_AU_and_Reach_data_REACH_X[ spring_chinook_col_names ]
   if( any(life_stage_presence_numbers == 1) ){
@@ -1490,7 +1493,7 @@ FUNCTION_output_life_stages_based_on_species_and_life_stage_presence_FISH_BARRIE
   }
   
   # --------------- steelhead -----------
-  steelhead_col_names = unlist( steelhead_life_stages_x_presence[names(steelhead_life_stages_x_presence)] )
+  steelhead_col_names = unlist( steelhead_life_stages_presence[names(steelhead_life_stages_presence)] )
   life_stage_names = names(steelhead_col_names)
   life_stage_presence_numbers = Life_Stage_Priorities_AU_and_Reach_data_REACH_X[ steelhead_col_names ]
   if(any(life_stage_presence_numbers == 1)){
@@ -1504,7 +1507,7 @@ FUNCTION_output_life_stages_based_on_species_and_life_stage_presence_FISH_BARRIE
   # --------------- bull trout -----------
   if(exclude_bull_trout == "no"){
     
-    bull_trout_col_names = unlist( bull_trout_life_stages_x_presence[names(bull_trout_life_stages_x_presence)] )
+    bull_trout_col_names = unlist( bull_trout_life_stages_presence[names(bull_trout_life_stages_presence)] )
     life_stage_names = names(bull_trout_col_names)
     life_stage_presence_numbers = Life_Stage_Priorities_AU_and_Reach_data_REACH_X[ bull_trout_col_names ]
     if(any(life_stage_presence_numbers == 1)){
@@ -1545,9 +1548,9 @@ FUNCTION_generate_life_stage_list_for_species_reach_FLAT_TABLE = function(specie
   # --------- Spring Chinook --------
   if(species_x == "spring_chinook"){
     
-    for(life_stage_i in names(spring_chinook_life_stages_x_presence)){
+    for(life_stage_i in names(spring_chinook_life_stages_presence)){
       # ------- generate name of column for this life stage --------
-      life_stage_i2 = spring_chinook_life_stages_x_presence[[life_stage_i]]
+      life_stage_i2 = spring_chinook_life_stages_presence[[life_stage_i]]
       # -------------- pull the value -------
       life_stage_presence_0_1 = Life_Stage_Priorities_AU_and_Reach_data_REACH_X[[life_stage_i2]]
       # -------- add life stage name -------
@@ -1559,9 +1562,9 @@ FUNCTION_generate_life_stage_list_for_species_reach_FLAT_TABLE = function(specie
   # --------- Steelhead --------
   if(species_x == "steelhead"){
     
-    for(life_stage_i in names(steelhead_life_stages_x_presence)){
+    for(life_stage_i in names(steelhead_life_stages_presence)){
       # ------- generate name of column for this life stage --------
-      life_stage_i2 = steelhead_life_stages_x_presence[[life_stage_i]]
+      life_stage_i2 = steelhead_life_stages_presence[[life_stage_i]]
       # -------------- pull the value -------
       life_stage_presence_0_1 = Life_Stage_Priorities_AU_and_Reach_data_REACH_X[[life_stage_i2]]
       # -------- add life stage name -------
@@ -1572,9 +1575,9 @@ FUNCTION_generate_life_stage_list_for_species_reach_FLAT_TABLE = function(specie
   # --------- Bull Trout --------
   if(species_x == "bull_trout"){
     
-    for(life_stage_i in names(bull_trout_life_stages_x_presence)){
+    for(life_stage_i in names(bull_trout_life_stages_presence)){
       # ------- generate name of column for this life stage --------
-      life_stage_i2 = bull_trout_life_stages_x_presence[[life_stage_i]]
+      life_stage_i2 = bull_trout_life_stages_presence[[life_stage_i]]
       # -------------- pull the value -------
       life_stage_presence_0_1 = Life_Stage_Priorities_AU_and_Reach_data_REACH_X[[life_stage_i2]]
       # -------- add life stage name -------
@@ -1656,8 +1659,8 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined,  Barriers_Pathways_Data,  e
           HQ_LF_Combined$Actions_Spring_Chinook[HQ_LF_index] = paste(HQ_LF_Combined$Actions_Spring_Chinook[HQ_LF_index] ,"Restore Fish Passage",sep=",")
           if( substr( HQ_LF_Combined$Actions_Spring_Chinook[HQ_LF_index], 1, 3  ) == "NA,"  ){  HQ_LF_Combined$Actions_Spring_Chinook[HQ_LF_index] = substr( HQ_LF_Combined$Actions_Spring_Chinook[HQ_LF_index], 4, nchar(HQ_LF_Combined$Actions_Spring_Chinook[HQ_LF_index])  )   }
           # ------------------------- Action Category --------------------
-          HQ_LF_Combined$spring_chinook_actions_x[HQ_LF_index] = paste(HQ_LF_Combined$spring_chinook_actions_x[HQ_LF_index] ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
-          if( substr( HQ_LF_Combined$spring_chinook_actions_x[HQ_LF_index], 1, 3  ) == "NA,"  ){  HQ_LF_Combined$spring_chinook_actions_x[HQ_LF_index] = substr( HQ_LF_Combined$spring_chinook_actions_x[HQ_LF_index], 4, nchar(HQ_LF_Combined$spring_chinook_actions_x[HQ_LF_index])  )   }
+          HQ_LF_Combined$Spring_Chinook_Actions[HQ_LF_index] = paste(HQ_LF_Combined$Spring_Chinook_Actions[HQ_LF_index] ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
+          if( substr( HQ_LF_Combined$Spring_Chinook_Actions[HQ_LF_index], 1, 3  ) == "NA,"  ){  HQ_LF_Combined$Spring_Chinook_Actions[HQ_LF_index] = substr( HQ_LF_Combined$Spring_Chinook_Actions[HQ_LF_index], 4, nchar(HQ_LF_Combined$Spring_Chinook_Actions[HQ_LF_index])  )   }  # spring_chinook_actions_x
           # ------------------------- Unacceptable Actions --------------------
           HQ_LF_Combined$Spring_Chinook_Unacceptable_Actions[HQ_LF_index] = paste(HQ_LF_Combined$Spring_Chinook_Unacceptable_Actions[HQ_LF_index] ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
           if( substr( HQ_LF_Combined$Spring_Chinook_Unacceptable_Actions[HQ_LF_index], 1, 3  ) == "NA,"  ){  HQ_LF_Combined$Spring_Chinook_Unacceptable_Actions[HQ_LF_index] = substr( HQ_LF_Combined$Spring_Chinook_Unacceptable_Actions[HQ_LF_index], 4, nchar(HQ_LF_Combined$Spring_Chinook_Unacceptable_Actions[HQ_LF_index])  )   }
@@ -1674,8 +1677,8 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined,  Barriers_Pathways_Data,  e
           HQ_LF_Combined$Actions_Steelhead[HQ_LF_index] = paste(HQ_LF_Combined$Actions_Steelhead[HQ_LF_index] ,"Restore Fish Passage",sep=",")
           if( substr( HQ_LF_Combined$Actions_Steelhead[HQ_LF_index], 1, 3  ) == "NA,"  ){  HQ_LF_Combined$Actions_Steelhead[HQ_LF_index] = substr( HQ_LF_Combined$Actions_Steelhead[HQ_LF_index], 4, nchar(HQ_LF_Combined$Actions_Steelhead[HQ_LF_index])  )   }
           # ------------------------- Action Category --------------------
-          HQ_LF_Combined$steelhead_actions_x[HQ_LF_index] = paste(HQ_LF_Combined$steelhead_actions_x[HQ_LF_index] ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
-          if( substr( HQ_LF_Combined$steelhead_actions_x[HQ_LF_index], 1, 3  ) == "NA,"  ){  HQ_LF_Combined$steelhead_actions_x[HQ_LF_index] = substr( HQ_LF_Combined$steelhead_actions_x[HQ_LF_index], 4, nchar(HQ_LF_Combined$steelhead_actions_x[HQ_LF_index])  )   }
+          HQ_LF_Combined$Steelhead_Actions[HQ_LF_index] = paste(HQ_LF_Combined$Steelhead_Actions[HQ_LF_index] ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
+          if( substr( HQ_LF_Combined$Steelhead_Actions[HQ_LF_index], 1, 3  ) == "NA,"  ){  HQ_LF_Combined$Steelhead_Actions[HQ_LF_index] = substr( HQ_LF_Combined$Steelhead_Actions[HQ_LF_index], 4, nchar(HQ_LF_Combined$Steelhead_Actions[HQ_LF_index])  )   }
           # ------------------------- Unacceptable Actions --------------------
           HQ_LF_Combined$Steelhead_Unacceptable_Actions[HQ_LF_index] = paste(HQ_LF_Combined$Steelhead_Unacceptable_Actions[HQ_LF_index] ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
           if( substr( HQ_LF_Combined$Steelhead_Unacceptable_Actions[HQ_LF_index], 1, 3  ) == "NA,"  ){  HQ_LF_Combined$Steelhead_Unacceptable_Actions[HQ_LF_index] = substr( HQ_LF_Combined$Steelhead_Unacceptable_Actions[HQ_LF_index], 4, nchar(HQ_LF_Combined$Steelhead_Unacceptable_Actions[HQ_LF_index])  )   }
@@ -1690,8 +1693,8 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined,  Barriers_Pathways_Data,  e
           HQ_LF_Combined$Actions_Bull_Trout[HQ_LF_index] = paste(HQ_LF_Combined$Actions_Bull_Trout[HQ_LF_index] ,"Restore Fish Passage",sep=",")
           if( substr( HQ_LF_Combined$Actions_Bull_Trout[HQ_LF_index], 1, 3  ) == "NA,"  ){  HQ_LF_Combined$Actions_Bull_Trout[HQ_LF_index] = substr( HQ_LF_Combined$Actions_Bull_Trout[HQ_LF_index], 4, nchar(HQ_LF_Combined$Actions_Bull_Trout[HQ_LF_index])  )   }
           # ------------------------- Action Category --------------------
-          HQ_LF_Combined$bull_trout_actions_x[HQ_LF_index] = paste(HQ_LF_Combined$bull_trout_actions_x[HQ_LF_index] ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
-          if( substr( HQ_LF_Combined$bull_trout_actions_x[HQ_LF_index], 1, 3  ) == "NA,"  ){  HQ_LF_Combined$bull_trout_actions_x[HQ_LF_index] = substr( HQ_LF_Combined$bull_trout_actions_x[HQ_LF_index], 4, nchar(HQ_LF_Combined$bull_trout_actions_x[HQ_LF_index])  )   }
+          HQ_LF_Combined$Bull_Trout_Actions[HQ_LF_index] = paste(HQ_LF_Combined$Bull_Trout_Actions[HQ_LF_index] ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
+          if( substr( HQ_LF_Combined$Bull_Trout_Actions[HQ_LF_index], 1, 3  ) == "NA,"  ){  HQ_LF_Combined$Bull_Trout_Actions[HQ_LF_index] = substr( HQ_LF_Combined$Bull_Trout_Actions[HQ_LF_index], 4, nchar(HQ_LF_Combined$Bull_Trout_Actions[HQ_LF_index])  )   }
           # ------------------------- Unacceptable Actions --------------------
           HQ_LF_Combined$Bull_Trout_Unacceptable_Actions[HQ_LF_index] = paste(HQ_LF_Combined$Bull_Trout_Unacceptable_Actions[HQ_LF_index] ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
           if( substr( HQ_LF_Combined$Bull_Trout_Unacceptable_Actions[HQ_LF_index], 1, 3  ) == "NA,"  ){  HQ_LF_Combined$Bull_Trout_Unacceptable_Actions[HQ_LF_index] = substr( HQ_LF_Combined$Bull_Trout_Unacceptable_Actions[HQ_LF_index], 4, nchar(HQ_LF_Combined$Bull_Trout_Unacceptable_Actions[HQ_LF_index])  )   }
@@ -1755,19 +1758,19 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined,  Barriers_Pathways_Data,  e
       HQ_and_LF_combo_x$Spring_Chinook_Habitat_Attributes = NA   
       HQ_and_LF_combo_x$Spring_Chinook_Unacceptable_Actions = NA                      
       HQ_and_LF_combo_x$Spring_Chinook_At_Risk_Actions = NA
-      HQ_and_LF_combo_x$spring_chinook_actions_x = NA   
+      HQ_and_LF_combo_x$Spring_Chinook_Actions = NA   
       HQ_and_LF_combo_x$Steelhead_Habitat_Attributes_Unacceptable = NA
       HQ_and_LF_combo_x$Steelhead_Habitat_Attributes_At_Risk = NA
       HQ_and_LF_combo_x$Steelhead_Habitat_Attributes = NA   
       HQ_and_LF_combo_x$Steelhead_Unacceptable_Actions = NA                           
       HQ_and_LF_combo_x$Steelhead_At_Risk_Actions = NA
-      HQ_and_LF_combo_x$steelhead_actions_x = NA 
+      HQ_and_LF_combo_x$Steelhead_Actions = NA 
       HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes_Unacceptable = NA                
       HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes_At_Risk = NA
       HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes = NA 
       HQ_and_LF_combo_x$Bull_Trout_Unacceptable_Actions = NA                           
       HQ_and_LF_combo_x$Bull_Trout_At_Risk_Actions = NA
-      HQ_and_LF_combo_x$bull_trout_actions_x = NA
+      HQ_and_LF_combo_x$Bull_Trout_Actions = NA
       HQ_and_LF_combo_x$Life_Stages = NA
       HQ_and_LF_combo_x$Life_Stages_SpringChinook = NA
       HQ_and_LF_combo_x$Life_Stages_Steelhead = NA
@@ -1798,8 +1801,8 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined,  Barriers_Pathways_Data,  e
         HQ_and_LF_combo_x$Actions_Spring_Chinook = paste(HQ_and_LF_combo_x$Actions_Spring_Chinook ,"Restore Fish Passage",sep=",")
         if( substr( HQ_and_LF_combo_x$Actions_Spring_Chinook, 1, 3  ) == "NA,"  ){  HQ_and_LF_combo_x$Actions_Spring_Chinook = substr( HQ_and_LF_combo_x$Actions_Spring_Chinook, 4, nchar(HQ_and_LF_combo_x$Actions_Spring_Chinook)  )   }
         # ------------------------- Action Category --------------------
-        HQ_and_LF_combo_x$spring_chinook_actions_x = paste(HQ_and_LF_combo_x$spring_chinook_actions_x ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
-        if( substr( HQ_and_LF_combo_x$spring_chinook_actions_x, 1, 3  ) == "NA,"  ){  HQ_and_LF_combo_x$spring_chinook_actions_x = substr( HQ_and_LF_combo_x$spring_chinook_actions_x, 4, nchar(HQ_and_LF_combo_x$spring_chinook_actions_x)  )   }
+        HQ_and_LF_combo_x$Spring_Chinook_Actions = paste(HQ_and_LF_combo_x$Spring_Chinook_Actions ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
+        if( substr( HQ_and_LF_combo_x$Spring_Chinook_Actions, 1, 3  ) == "NA,"  ){  HQ_and_LF_combo_x$Spring_Chinook_Actions = substr( HQ_and_LF_combo_x$Spring_Chinook_Actions, 4, nchar(HQ_and_LF_combo_x$Spring_Chinook_Actions)  )   }
         # ------------------------- Unacceptable Actions --------------------
         HQ_and_LF_combo_x$Spring_Chinook_Unacceptable_Actions = paste(HQ_and_LF_combo_x$Spring_Chinook_Unacceptable_Actions ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
         if( substr( HQ_and_LF_combo_x$Spring_Chinook_Unacceptable_Actions, 1, 3  ) == "NA,"  ){  HQ_and_LF_combo_x$Spring_Chinook_Unacceptable_Actions = substr( HQ_and_LF_combo_x$Spring_Chinook_Unacceptable_Actions, 4, nchar(HQ_and_LF_combo_x$Spring_Chinook_Unacceptable_Actions)  )   }
@@ -1815,8 +1818,8 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined,  Barriers_Pathways_Data,  e
         HQ_and_LF_combo_x$Actions_Steelhead = paste(HQ_and_LF_combo_x$Actions_Steelhead ,"Restore Fish Passage",sep=",")
         if( substr( HQ_and_LF_combo_x$Actions_Steelhead, 1, 3  ) == "NA,"  ){  HQ_and_LF_combo_x$Actions_Steelhead = substr( HQ_and_LF_combo_x$Actions_Steelhead, 4, nchar(HQ_and_LF_combo_x$Actions_Steelhead)  )   }
         # ------------------------- Action Category --------------------
-        HQ_and_LF_combo_x$steelhead_actions_x = paste(HQ_and_LF_combo_x$steelhead_actions_x ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
-        if( substr( HQ_and_LF_combo_x$steelhead_actions_x, 1, 3  ) == "NA,"  ){  HQ_and_LF_combo_x$steelhead_actions_x = substr( HQ_and_LF_combo_x$steelhead_actions_x, 4, nchar(HQ_and_LF_combo_x$steelhead_actions_x)  )   }
+        HQ_and_LF_combo_x$Steelhead_Actions = paste(HQ_and_LF_combo_x$Steelhead_Actions ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
+        if( substr( HQ_and_LF_combo_x$Steelhead_Actions, 1, 3  ) == "NA,"  ){  HQ_and_LF_combo_x$Steelhead_Actions = substr( HQ_and_LF_combo_x$Steelhead_Actions, 4, nchar(HQ_and_LF_combo_x$Steelhead_Actions)  )   }
         # ------------------------- Unacceptable Actions --------------------
         HQ_and_LF_combo_x$Steelhead_Unacceptable_Actions = paste(HQ_and_LF_combo_x$Steelhead_Unacceptable_Actions ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
         if( substr( HQ_and_LF_combo_x$Steelhead_Unacceptable_Actions, 1, 3  ) == "NA,"  ){  HQ_and_LF_combo_x$Steelhead_Unacceptable_Actions = substr( HQ_and_LF_combo_x$Steelhead_Unacceptable_Actions, 4, nchar(HQ_and_LF_combo_x$Steelhead_Unacceptable_Actions)  )   }
@@ -1831,8 +1834,8 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined,  Barriers_Pathways_Data,  e
         HQ_and_LF_combo_x$Actions_Bull_Trout = paste(HQ_and_LF_combo_x$Actions_Bull_Trout ,"Restore Fish Passage",sep=",")
         if( substr( HQ_and_LF_combo_x$Actions_Bull_Trout, 1, 3  ) == "NA,"  ){  HQ_and_LF_combo_x$Actions_Bull_Trout = substr( HQ_and_LF_combo_x$Actions_Bull_Trout, 4, nchar(HQ_and_LF_combo_x$Actions_Bull_Trout)  )   }
         # ------------------------- Action Category --------------------
-        HQ_and_LF_combo_x$bull_trout_actions_x = paste(HQ_and_LF_combo_x$bull_trout_actions_x ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
-        if( substr( HQ_and_LF_combo_x$bull_trout_actions_x, 1, 3  ) == "NA,"  ){  HQ_and_LF_combo_x$bull_trout_actions_x = substr( HQ_and_LF_combo_x$bull_trout_actions_x, 4, nchar(HQ_and_LF_combo_x$bull_trout_actions_x)  )   }
+        HQ_and_LF_combo_x$Bull_Trout_Actions = paste(HQ_and_LF_combo_x$Bull_Trout_Actions ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
+        if( substr( HQ_and_LF_combo_x$Bull_Trout_Actions, 1, 3  ) == "NA,"  ){  HQ_and_LF_combo_x$Bull_Trout_Actions = substr( HQ_and_LF_combo_x$Bull_Trout_Actions, 4, nchar(HQ_and_LF_combo_x$Bull_Trout_Actions)  )   }
         # ------------------------- Unacceptable Actions --------------------
         HQ_and_LF_combo_x$Bull_Trout_Unacceptable_Actions = paste(HQ_and_LF_combo_x$Bull_Trout_Unacceptable_Actions ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
         if( substr( HQ_and_LF_combo_x$Bull_Trout_Unacceptable_Actions, 1, 3  ) == "NA,"  ){  HQ_and_LF_combo_x$Bull_Trout_Unacceptable_Actions = substr( HQ_and_LF_combo_x$Bull_Trout_Unacceptable_Actions, 4, nchar(HQ_and_LF_combo_x$Bull_Trout_Unacceptable_Actions)  )   }
@@ -1973,11 +1976,11 @@ FUNCTION_Add_Barrier_Data_to_WebMap_Flat_Tables = function(HQ_LF_Combined, Barri
       HQ_and_LF_combo_x$SprCh_STLD_BullTr_All_Benefit = NA
       HQ_and_LF_combo_x$Spring_Chinook_Benefit = NA
       HQ_and_LF_combo_x$Spring_Chinook_Habitat_Attributes = NA                    
-      HQ_and_LF_combo_x$spring_chinook_actions_x = NA                                       
+      HQ_and_LF_combo_x$Spring_Chinook_Actions = NA                                       
       HQ_and_LF_combo_x$Steelhead_Habitat_Attributes = NA                               
-      HQ_and_LF_combo_x$steelhead_actions_x = NA 
+      HQ_and_LF_combo_x$Steelhead_Actions = NA 
       HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes = NA                             
-      HQ_and_LF_combo_x$bull_trout_actions_x = NA
+      HQ_and_LF_combo_x$Bull_Trout_Actions = NA
       HQ_and_LF_combo_x$Life_Stages = NA
       HQ_and_LF_combo_x$Life_Stages_Presence = NA
       
@@ -2488,6 +2491,11 @@ FUNCTION_Add_Reach_Rank_and_Misc_Updates_for_WebMap_Restoration = function(Resto
     Restoration_Prioritization_Output_for_WebMap_Updated$`Priority Species`[reach_to_add_species_x] = species_to_add_to_reach[x_i]
   }
 
+  # ------------------------------------------------------------------------------------ 
+  #              Update "Off-Channel- Floodplain" to "Floodplain Connectivity"
+  # ------------------------------------------------------------------------------------
+  Restoration_Prioritization_Output_for_WebMap_Updated$`Unacceptable Limiting Factors` = gsub("Off-Channel- Floodplain", "Floodplain Connectivity", Restoration_Prioritization_Output_for_WebMap_Updated$`Unacceptable Limiting Factors`)
+  Restoration_Prioritization_Output_for_WebMap_Updated$`At-Risk Limiting Factors` = gsub("Off-Channel- Floodplain", "Floodplain Connectivity", Restoration_Prioritization_Output_for_WebMap_Updated$`At-Risk Limiting Factors`)
   
   return(Restoration_Prioritization_Output_for_WebMap_Updated)
 }
@@ -2623,7 +2631,12 @@ FUNCTION_Add_Reach_Rank_and_Misc_Updates_for_WebMap_Restoration_INDIV_SPECIES = 
     
   }
   
-
+  # ------------------------------------------------------------------------------------ 
+  #              Update "Off-Channel- Floodplain" to "Floodplain Connectivity"
+  # ------------------------------------------------------------------------------------
+  indiv_restoration_output_Updated$`Unacceptable Limiting Factors` = gsub("Off-Channel- Floodplain", "Floodplain Connectivity", indiv_restoration_output_Updated$`Unacceptable Limiting Factors`)
+  indiv_restoration_output_Updated$`At-Risk Limiting Factors` = gsub("Off-Channel- Floodplain", "Floodplain Connectivity", indiv_restoration_output_Updated$`At-Risk Limiting Factors`)
+  
   
   return(indiv_restoration_output_Updated)
 }
@@ -2676,8 +2689,8 @@ FUNCTION_Add_Reach_Rank_and_Misc_Updates_for_WebMap_Protection = function(Protec
 
 test_x = FALSE
 if(test_x){
-  Protection_Prioritization_Output_indiv_species = Protection_Prioritization_Output_Steelhead
-  species_x = "Steelhead"
+  Protection_Prioritization_Output_indiv_species = Protection_Prioritization_Output_Spring_Chinook
+  species_x = "Spring Chinook"
 }
 
 FUNCTION_Add_Reach_Rank_and_Misc_Updates_for_WebMap_Protection_INDIV_SPECIES = function(Protection_Prioritization_Output_indiv_species, species_x){
@@ -2697,11 +2710,11 @@ FUNCTION_Add_Reach_Rank_and_Misc_Updates_for_WebMap_Protection_INDIV_SPECIES = f
   
   # ------------------- order columns and give them correct names --------------
   if(species_x == "Spring Chinook"){
-    Protection_Prioritization_Output_Updated_column_order = c("ReachName", "Assessment.Unit", "Basin",      "Spring_Chinook_Pathways",    "Reach_Rank",  "spring_chinook_life_stages_x","Action")
+    Protection_Prioritization_Output_Updated_column_order = c("ReachName", "Assessment.Unit", "Basin",      "Spring_Chinook_Pathways",    "Reach_Rank",  "Spring_Chinook_Life_Stages","Action")
   }else if(species_x == "Steelhead"){
-    Protection_Prioritization_Output_Updated_column_order = c("ReachName", "Assessment.Unit", "Basin",      "Steelhead_Pathways",    "Reach_Rank",  "steelhead_life_stages_x","Action")
+    Protection_Prioritization_Output_Updated_column_order = c("ReachName", "Assessment.Unit", "Basin",      "Steelhead_Pathways",    "Reach_Rank",  "Steelhead_Life_Stages","Action")
   }else if(species_x == "Bull Trout"){
-    Protection_Prioritization_Output_Updated_column_order = c("ReachName", "Assessment.Unit", "Basin",      "Bull_Trout_Pathways",    "Reach_Rank",  "bull_trout_life_stages_x","Action")
+    Protection_Prioritization_Output_Updated_column_order = c("ReachName", "Assessment.Unit", "Basin",      "Bull_Trout_Pathways",    "Reach_Rank",  "Bull_Trout_Life_Stages","Action")
   }
     
   Protection_Prioritization_Output_Updated_column_UPDATED_names = c("Reach Name","Assessment Unit", "Basin",  "Priority Actions","Reach Rank", "Priority Life Stages", "Action Categories")

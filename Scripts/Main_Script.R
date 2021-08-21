@@ -406,13 +406,15 @@ colnames_outward_facing_WebMap = c("ReachName","Assessment.Unit","Species","Acti
 colnames_reach_info = c("RM_Start", "RM_End")  # data that is in the reach geospatial layer to add to these data
 colnames_outward_facing_WebMap_ORDER = c("ReachName","Assessment.Unit","Actions","Species", "Life_Stages","Impaired_Habitat_Attributes_All_Species","Action_Categories_All_Species" )
 colnames_outward_facing_WebMap_UPDATED = c("Reach Name","Assessment Unit","Priority Actions","Priority Species","Priority Life Stages","Limiting Factors","Action Categories" )
+
+## OLD
 # ------- filter out for specific columns ----------
-Restoration_Prioritization_Output_for_WebMap = Restoration_Prioritization_Output[,colnames_outward_facing_WebMap]
+#Restoration_Prioritization_Output_for_WebMap = Restoration_Prioritization_Output[,colnames_outward_facing_WebMap]
 # ----------- add Reach information ------------
 # NOTE: this was to add river miles - BUT updated Okanogan reach names are not in the GIS layer with river miles
 #Restoration_Prioritization_Output_for_WebMap  =  FUNCTION_add_reach_information(Restoration_Prioritization_Output_for_WebMap,  colnames_reach_info)
 # ------------ do MISC processing for output ---------
-Restoration_Prioritization_Output_for_WebMap = FUNCTION_prepare_outward_facing_table( Restoration_Prioritization_Output_for_WebMap , colnames_outward_facing_WebMap_ORDER, colnames_outward_facing_WebMap_UPDATED, exclude_bull_trout)
+#Restoration_Prioritization_Output_for_WebMap = FUNCTION_prepare_outward_facing_table( Restoration_Prioritization_Output_for_WebMap , colnames_outward_facing_WebMap_ORDER, colnames_outward_facing_WebMap_UPDATED, exclude_bull_trout)
 
 # ---------------------------------------------------------------------------
 #  Reduce for "Outward Facing" table in WebMap: INDIVIDUAL SPECIES 
