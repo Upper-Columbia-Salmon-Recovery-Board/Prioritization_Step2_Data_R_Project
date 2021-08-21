@@ -49,8 +49,8 @@ for(habitat_attribute_x in unique(Habitat_Attribute_Scores$Habitat_Attribute)[or
 
 test_x = FALSE
 if(test_x){
-  species = "Bull Trout"
-  basins = c("Methow",  "Entiat","Wenatchee", "Okanogan")
+  species = "Spring Chinook"
+  basins = c("Methow", "Entiat", "Wenatchee", "Okanogan")
 }
 
 
@@ -60,7 +60,7 @@ Generate_Limiting_Factor_Output_Table = function(species, basins){
   # ------------------------------------------------------------------------------
   #       Establish species-specific variable names
   # ------------------------------------------------------------------------------
-  
+  print("species")
   if(species == "Spring Chinook"){
     # ---------------- species reach ---------------
     species_reach = 'Spring.Chinook.Reach'
@@ -125,6 +125,9 @@ Generate_Limiting_Factor_Output_Table = function(species, basins){
     print('Incorrectly entered species name - re-type species name')
     
   }
+  
+  print("life stage priorities")
+  print(life_stages_priorities_species_specific)
   
   #  ---------------------------------------------------------------------------------
   #           Establish Reach Information Data Frame Just for this Output
@@ -197,7 +200,7 @@ Generate_Limiting_Factor_Output_Table = function(species, basins){
   #          Generate Life Stage Tables and Score for Restoration and Protection (not considering filters above)
   #  ---------------------------------------------------------------------------------
   
-  Reaches_Limiting_Factor_Pathway_FILTERED = Generate_Species_Output_Table(species)
+  Reaches_Limiting_Factor_Pathway_FILTERED = Generate_Species_Output_Table(species, life_stages_priorities_species_specific)
   # NOTE: Reaches_Limiting_Factor_Pathway_FILTERED will potentially have duplicated reaches 
   #        since a reach could be priority for multiple life stages
   # NOTE: above function filters based on life stage priority at AU level as well
@@ -230,8 +233,9 @@ Generate_Limiting_Factor_Output_Table = function(species, basins){
   #  ---------------------------------------------------------------------------------
   
   # ----------------------- filter out for Habitat_Quality_Scores reaches with Habitat Quality Score criteria --------------
-  Limiting_Factor_Scores_Restoration = Reaches_Limiting_Factor_Pathway_FILTERED %>%  
-    filter(LF_Score_Restoration   >=   SCORE_Criteria_Habitat_Quality_Pathway_Restoration)
+  #Limiting_Factor_Scores_Restoration = Reaches_Limiting_Factor_Pathway_FILTERED %>%      # not using the LF score
+  #  filter(LF_Score_Restoration   >=   SCORE_Criteria_Habitat_Quality_Pathway_Restoration)
+  Limiting_Factor_Scores_Restoration = Reaches_Limiting_Factor_Pathway_FILTERED
   # ------------------------ identify AUs that pass this filter in reach-based table ----------
   Limiting_Factor_Pathway_Restoration = Limiting_Factor_Scores_Restoration %>%  
     filter(ReachName   %in%   Species_Reach_Information_data_restoration$`ReachName`)
@@ -411,7 +415,7 @@ Generate_Limiting_Factor_Output_Table_NO_FILTERS = function(species, basins){
   #          Generate Life Stage Tables and Score for Restoration and Protection (not considering filters above)
   #  ---------------------------------------------------------------------------------
   
-  Limiting_Factor_Scores_All = Generate_Species_Output_Table_ALL_LIFE_STAGES(species)
+  Limiting_Factor_Scores_All = Generate_Species_Output_Table_ALL_LIFE_STAGES(species, life_stages_priorities_species_specific)
   
   # NOTE: Reaches_Limiting_Factor_Pathway_FILTERED will potentially have duplicated reaches 
   #        since a reach could be priority for multiple life stages
@@ -484,7 +488,7 @@ Generate_Limiting_Factor_Output_Table_NO_FILTERS = function(species, basins){
 #
 # ---------------------------------------------------------------------------
 
-Generate_Species_Output_Table = function(species){
+Generate_Species_Output_Table = function(species, life_stages_priorities_species_specific){
 
   # -------------------------------------------------------
   #     Generate list of life stages for this species
@@ -529,7 +533,7 @@ Generate_Species_Output_Table = function(species){
     #     Filter based on priority AU Life Stage, Generate and combine in list of filtered life stages
     # ----------------------------------------------------------------
     # ---------------------- use life stage (reach-level) priority filter ----------
-    Habitat_Attribute_Scores_for_individual_Life_Stage_Filtered = Life_Stage_Priority_Filter_Function(life_stage_x, Habitat_Attribute_Scores_for_individual_Life_Stage, Life_Stage_Priority)
+    Habitat_Attribute_Scores_for_individual_Life_Stage_Filtered = Life_Stage_Priority_Filter_Function(life_stage_x, Habitat_Attribute_Scores_for_individual_Life_Stage, Life_Stage_Priority, life_stages_priorities_species_specific)
     
     # ------------------- add the data frame for this life stage to the list for the species ----------
     # -------- if no life stages in list -------
@@ -567,7 +571,7 @@ Generate_Species_Output_Table = function(species){
 #
 # ---------------------------------------------------------------------------
 
-Generate_Species_Output_Table_ALL_LIFE_STAGES = function(species){
+Generate_Species_Output_Table_ALL_LIFE_STAGES = function(species,life_stages_priorities_species_specific ){
   
   # -------------------------------------------------------
   #     Generate list of life stages for this species
@@ -612,7 +616,7 @@ Generate_Species_Output_Table_ALL_LIFE_STAGES = function(species){
     #     Generate and combine in list of filtered life stages
     # ----------------------------------------------------------------
     # ---------------------- use life stage (reach-level) priority filter ----------
-    Habitat_Attribute_Scores_for_individual_Life_Stage_Filtered = Life_Stage_Priority_Filter_Function(life_stage_x, Habitat_Attribute_Scores_for_individual_Life_Stage, Life_Stage_Priority)
+    Habitat_Attribute_Scores_for_individual_Life_Stage_Filtered = Life_Stage_Priority_Filter_Function(life_stage_x, Habitat_Attribute_Scores_for_individual_Life_Stage, Life_Stage_Priority, life_stages_priorities_species_specific)
     
     # ------------------- add the data frame for this life stage to the list for the species ----------
     # -------- if no life stages in list -------
@@ -793,7 +797,7 @@ list_indiv_habitat_attributes_low_FUNCTION <- function(habitat_row, colnames_x){
 # -----------------------------------------------------------------------------------------
 
 # life_stage = "Fry"
-Life_Stage_Priority_Filter_Function = function(life_stage, Habitat_Attribute_Scores_for_individual_Life_Stage, Life_Stage_Priority){
+Life_Stage_Priority_Filter_Function = function(life_stage, Habitat_Attribute_Scores_for_individual_Life_Stage, Life_Stage_Priority, life_stages_priorities_species_specific){
   
   # -------------------------------------------------------
   #     Get reaches with this life stage as the specified life stage priority

@@ -66,32 +66,54 @@ FUNCTION_Combine_Protection_Output = function(HQ_spring_chinook, HQ_steelhead, H
     #     Pathway
     # -----------------------------------
     pathway_x = c()
+    pathway_spring_chinook_x = c()
+    pathway_steelhead_x = c()
+    pathway_bull_trout_x = c()
+    species_x = c()
     if( any(HQ_spring_chinook$ReachName == reach_x) ){
       pathway_x = paste(pathway_x, "HQ_spring_chinook", sep=",")
+      pathway_spring_chinook_x = paste(pathway_spring_chinook_x, "HQ_spring_chinook", sep=",") 
+      species_x = paste(species_x, "Spring Chinook", sep=",")
     }
     if( any(HQ_steelhead$ReachName == reach_x) ){
       pathway_x = paste(pathway_x, "HQ_steelhead", sep=",")
+      pathway_steelhead_x = paste(pathway_steelhead_x, "HQ_steelhead", sep=",")
+      species_x = paste(species_x, "Steelhead", sep=",")
     }
     
     if( any(LF_spring_chinook$ReachName == reach_x) ){
       pathway_x = paste(pathway_x, "LF_spring_chinook", sep=",")
+      pathway_spring_chinook_x = paste(pathway_spring_chinook_x, "LF_spring_chinook", sep=",")
+      if( any(HQ_spring_chinook$ReachName == reach_x) == FALSE ){
+        species_x = paste(species_x, "Spring Chinook", sep=",")} # to not duplicate species names
     }
+    
     if( any(LF_steelhead$ReachName == reach_x) ){
       pathway_x = paste(pathway_x, "LF_steelhead", sep=",")
+      pathway_steelhead_x = paste(pathway_steelhead_x, "LF_steelhead", sep=",")
+      if( any(HQ_steelhead$ReachName == reach_x) == FALSE ){
+        species_x = paste(species_x, "Steelhead", sep=",")
+      } # to not duplicate species names
     }
     
     if(exclude_bull_trout == "no"){
       if( any(HQ_bull_trout$ReachName == reach_x) ){
         pathway_x = paste(pathway_x, "HQ_bull_trout", sep=",")
+        pathway_bull_trout_x = paste(pathway_bull_trout_x, "HQ_bull_trout", sep=",")
+        species_x = paste(species_x, "Bull Trout", sep=",")
       }
       if( any(LF_bull_trout$ReachName == reach_x) ){
         pathway_x = paste(pathway_x, "LF_bull_trout", sep=",")
+        pathway_bull_trout_x = paste(pathway_bull_trout_x, "LF_bull_trout", sep=",")
+        if( any(HQ_bull_trout$ReachName == reach_x) == FALSE ){ 
+          species_x = paste(species_x, "Bull Trout", sep=",") } # to not duplicate species names
       }
       
     }
 
     # ---------------- remove leading comma -------
     pathway_x = substr(pathway_x,2,nchar(pathway_x))
+    species_x = substr(species_x,2,nchar(species_x))
     
     # ------------- Number of Pathways -------------------
     number_of_pathways_x =  length( unlist(strsplit(pathway_x, ",")) )
@@ -100,17 +122,22 @@ FUNCTION_Combine_Protection_Output = function(HQ_spring_chinook, HQ_steelhead, H
     #      Life Stage
     # -----------------------------------
     life_stage_x = c()
+    life_stage_spring_chinook = c()
+    life_stage_steelhead = c()
+    life_stage_bull_trout = c()
     if( any(LF_spring_chinook$ReachName == reach_x) ){
       life_stages_LF_x = LF_spring_chinook$life_stage[which(LF_spring_chinook$ReachName == reach_x)]
       # make into one element if more than one life stage 
       if(length(life_stages_LF_x) > 1){   life_stages_LF_x = paste(life_stages_LF_x, collapse=",")}
-      life_stage_x = paste(life_stage_x, life_stages_LF_x, sep=",") 
+      life_stage_x = paste(life_stage_x, life_stages_LF_x, sep=",")
+      life_stage_spring_chinook = paste(life_stage_spring_chinook, life_stages_LF_x, sep=",")
     }
     if( any(LF_steelhead$ReachName == reach_x) ){
       life_stages_LF_x = LF_steelhead$life_stage[which(LF_steelhead$ReachName == reach_x)]
       # make into one element if more than one life stage 
       if(length(life_stages_LF_x) > 1){   life_stages_LF_x = paste(life_stages_LF_x, collapse=",")}
       life_stage_x = paste(life_stage_x, life_stages_LF_x, sep=",") 
+      life_stage_steelhead = paste(life_stage_steelhead, life_stages_LF_x, sep=",")
     }
     if(exclude_bull_trout == "no"){
       if( any(LF_bull_trout$ReachName == reach_x) ){
@@ -118,6 +145,7 @@ FUNCTION_Combine_Protection_Output = function(HQ_spring_chinook, HQ_steelhead, H
         # make into one element if more than one life stage 
         if(length(life_stages_LF_x) > 1){   life_stages_LF_x = paste(life_stages_LF_x, collapse=",")}
         life_stage_x = paste(life_stage_x, life_stages_LF_x, sep=",") 
+        life_stage_bull_trout = paste(life_stage_bull_trout, life_stages_LF_x, sep=",")
       }
     }
 
@@ -131,15 +159,46 @@ FUNCTION_Combine_Protection_Output = function(HQ_spring_chinook, HQ_steelhead, H
     }else{
       number_of_life_stage_x = "NA"
     }
+    # ---------------- Prep species-specific life stages ------------
+    if( !is.null(life_stage_spring_chinook) ){
+      life_stage_spring_chinook = substr(life_stage_spring_chinook,2,nchar(life_stage_spring_chinook))   # remove leading comma
+    }else{
+      life_stage_spring_chinook = "NA"
+    }
+    if( !is.null(life_stage_steelhead) ){
+      life_stage_steelhead = substr(life_stage_steelhead,2,nchar(life_stage_steelhead))   # remove leading comma
+    }else{
+      life_stage_steelhead = "NA"
+    }
+    if( !is.null(life_stage_bull_trout) ){
+      life_stage_bull_trout = substr(life_stage_bull_trout,2,nchar(life_stage_bull_trout))   # remove leading comma
+    }else{
+      life_stage_bull_trout = "NA"
+    }
     # ----- make NA if no life stages -----------
     if(is.null(life_stage_x)){life_stage_x = "NA"}
 
-    
+    # ------------- make NA if pathways not present in individual species
+    if( !is.null(pathway_spring_chinook_x) ){
+      pathway_spring_chinook_x = substr(pathway_spring_chinook_x,2,nchar(pathway_spring_chinook_x))
+    }else{
+      pathway_spring_chinook_x = "NA"
+    }
+    if( !is.null(pathway_steelhead_x) ){
+      pathway_steelhead_x = substr(pathway_steelhead_x,2,nchar(pathway_steelhead_x))
+    }else{
+      pathway_steelhead_x = "NA"
+    }
+    if( !is.null(pathway_bull_trout_x) ){
+      pathway_bull_trout_x = substr(pathway_bull_trout_x,2,nchar(pathway_bull_trout_x))
+    }else{
+      pathway_bull_trout_x = "NA"
+    }
     
     # ------------------------------------
     #     Action Categories (based on Protection)
     # -----------------------------------
-    protection_pcnt = habitat_raw_data$UCSRB_pctProtected[which(habitat_raw_data$ReachName == reach_x)]
+    protection_pcnt = Protected_Percentage_Data$ProtectedPercent[which(Protected_Percentage_Data$ReachName == reach_x)]
     
     action_x = Crosswalk_Protection_Action_Categories$`Action Category`[ which(Crosswalk_Protection_Action_Categories$Percent_Protected_Lower <= protection_pcnt &
             Crosswalk_Protection_Action_Categories$Percent_Protected_Upper > protection_pcnt ) ]
@@ -148,11 +207,11 @@ FUNCTION_Combine_Protection_Output = function(HQ_spring_chinook, HQ_steelhead, H
     # ------------------------------------
     #    Combine into one row, then output
     # -----------------------------------
-    output_x = t(as.data.frame( c(reach_x, assessment_unit_x, basin_x, pathway_x, number_of_pathways_x,
-                                life_stage_x, number_of_life_stage_x, action_x )))
+    output_x = t(as.data.frame( c(reach_x, assessment_unit_x, basin_x, species_x, pathway_x,  number_of_pathways_x,  pathway_spring_chinook_x, pathway_steelhead_x, pathway_bull_trout_x ,
+                                life_stage_x, number_of_life_stage_x, life_stage_spring_chinook, life_stage_steelhead, life_stage_bull_trout, action_x )))
     rownames(output_x) = reach_x
-    colnames(output_x) = c("ReachName","Assessment.Unit", "Basin","Pathway", "Number_of_Pathways",
-                           "Life_Stages","Number_of_Life_Stages","Action")
+    colnames(output_x) = c("ReachName","Assessment.Unit", "Basin","Species", "Pathway", "Number_of_Pathways","Spring_Chinook_Pathways", "Steelhead_Pathways","Bull_Trout_Pathways",
+                           "Life_Stages","Number_of_Life_Stages","Spring_Chinook_Life_Stages","Steelhead_Life_Stages","Bull_Trout_Life_Stages",  "Action")
     Protection_Output = rbind(Protection_Output, output_x)
   }
   
@@ -161,7 +220,8 @@ FUNCTION_Combine_Protection_Output = function(HQ_spring_chinook, HQ_steelhead, H
   rownames(Protection_Output) = seq(1,nrow(Protection_Output))
   # ------------ make numeric output numeric ----------------
   Protection_Output$Number_of_Pathways = as.numeric(Protection_Output$Number_of_Pathways )
-  Protection_Output$Number_of_Life_Stages = as.numeric(Protection_Output$Number_of_Life_Stages )
+  Protection_Output$Number_of_Life_Stages[which(Protection_Output$Number_of_Life_Stages  == "NA")] = 0
+  Protection_Output$Number_of_Life_Stages = as.numeric(as.character(Protection_Output$Number_of_Life_Stages ))
   # -------- make blank cells to NA -------
   x_na = which(is.na(Protection_Output$Number_of_Life_Stages))
   Protection_Output$Number_of_Life_Stages[x_na] = 0

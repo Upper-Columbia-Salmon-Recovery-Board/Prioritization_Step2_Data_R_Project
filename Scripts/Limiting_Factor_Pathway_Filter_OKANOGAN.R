@@ -1047,8 +1047,11 @@ Generate_Limiting_Factor_Output_Table_Okanogan_ALL = function(species, basins){
 #             Function to generate habitat attributes for a specific life stage for each reach
 #
 # -----------------------------------------------------------------------------------
-
-colnames_data_frame_to_merge = colnames(Habitat_Attribute_Scores_for_individual_Life_Stage)
+test_x = FALSE
+if(test_x){
+  colnames_data_frame_to_merge = colnames(Habitat_Attribute_Scores_for_individual_Life_Stage)
+  
+}
 
 
 EDT_generate_habitat_attributes_for_a_life_stage <- function(Okanogan_Habitat_Attribute_Scores_for_individual_Life_Stage,  life_stage_x, colnames_data_frame_to_merge){
@@ -1119,6 +1122,9 @@ EDT_generate_habitat_attributes_for_a_life_stage <- function(Okanogan_Habitat_At
     
     # -------------- crosswalk to RTT Habitat Attribute ----------------
     level_2_attributes_x_df_merged = merge(  level_2_attributes_x_df_merged , AttributeCrosswalk_simple, by = "EDT Attribute")
+    
+    # -------------------- renove NA from level_2_attributes_x_df_merged -----------
+    level_2_attributes_x_df_merged = level_2_attributes_x_df_merged[-which( is.na(level_2_attributes_x_df_merged$RTT_Habitat_Attribute) ),]
     
     # ---------------------------------------
     #    Prepare data to output and merge with data frame (Habitat_Attribute_Scores_for_individual_Life_Stage)

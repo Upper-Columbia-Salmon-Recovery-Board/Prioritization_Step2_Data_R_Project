@@ -173,16 +173,16 @@ if(read_MASTER_directly){
 
 
 # ---------------------- match column names to life stages ------------------------------ 
-spring_chinook_life_stages = list("Adult Migration" = "SPCH Adult Migration  AU LS Priority",	  
-                                "Holding"=	"SPCH Holding  AU LS Priority", 
-                                "Holding and Maturation"=	"SPCH Holding  AU LS Priority",
+spring_chinook_life_stages = list("Adult Migration" =       "SPCH Adult Migration  AU LS Priority",	  
+                                "Holding"=	                "SPCH Holding  AU LS Priority", 
+                                "Holding and Maturation"=	  "SPCH Holding  AU LS Priority",
                                 "Spawning and Incubation" = "SPCH Spawning AU LS Priority",	
-                                "Fry Colonization" = "SPCH Fry Colonization  AU LS Priority", 
-                                "Fry" = "SPCH Fry Colonization  AU LS Priority",
-                                "Summer Rearing"  = "SPCH Summer Rearing  AU LS Priority", 
-                                "Winter Rearing" = "SPCH Winter Rearing  AU LS Priority",
-                                "Smolt Outmigration"="SPCH Smolt Emigration  AU LS Priority", 
-                                "Holding and Maturation" = "SPCH Holding")
+                                "Fry Colonization" =        "SPCH Fry Colonization  AU LS Priority", 
+                                "Fry" =                     "SPCH Fry Colonization  AU LS Priority",
+                                "Summer Rearing"  =         "SPCH Summer Rearing  AU LS Priority", 
+                                "Winter Rearing" =          "SPCH Winter Rearing  AU LS Priority",
+                                "Smolt Outmigration"=       "SPCH Smolt Emigration  AU LS Priority", 
+                                "Holding and Maturation" =  "SPCH Holding")
 
 steelhead_life_stages =     life_stage_priority_list = list("Adult Migration"  = "SH Adult Migration  AU LS Priority",
                                                             "Holding"  =  "SH Holding  AU LS Priority",
@@ -518,7 +518,21 @@ FUNCTION_update_Confinement_Scores(Confinement_Scores, Geomorphic_Criteria)
 # ---------------------------------------------------------------------------
 
 # -------------------- Protected_Percentage_Data Excel ------------------
-Protected_Percentage_Data = read_excel( paste(habitat_data_path,'Protected_Percentage_Data.xlsx', sep="") )
+if(read_MASTER_directly){
+  # --------------- read in Habitat Raw Data from UCSRB server ----------
+  Protected_Percentage_Data = read_excel( MASTER_Data_path , sheet="PctProtected")
+  
+  # -------------- write locally --------------
+  if(write_MASTER_locally){
+    write_xlsx( Protected_Percentage_Data,  paste(habitat_data_path,'Protected_Percentage_Data.xlsx', sep="")    )
+  }
+  
+  # --------------- read in Data Locally -------------
+}else{
+  Protected_Percentage_Data = read_excel(  paste(habitat_data_path,'Protected_Percentage_Data.xlsx', sep="")  )
+}
+
+
 # -------------------- Degraded_Floodplain_Data Excel ------------------
 Degraded_Floodplain_Data = read_excel( paste(habitat_data_path,'Degraded_Floodplain_Data.xlsx', sep="") )
 Degraded_Floodplain_Data = Degraded_Floodplain_Data[which( !is.na(Degraded_Floodplain_Data$Degraded_Area_Percent ) ),1:3]
@@ -604,6 +618,14 @@ for(i in 1:nrow(Wilderness_Reaches_Intersect)){
   
 }
 
+# ---------------------------------------------------------------------------
+#
+#   Reaches to add species (reaches prioritized by barriers, but not overlapping with species layer)
+#
+# ---------------------------------------------------------------------------
+
+reach_to_add_species = c("Johnson 16-3")
+species_to_add_to_reach = c("Steelhead")
 
 # ---------------------------------------------------------------------------
 #
@@ -792,4 +814,18 @@ if(comparing_habitat_raw_data_and_reach_layer_T_F){
 
     
 }
+
+
+
+# ------------------------------------------- read in Step 1 ranks and merge with Life Stage Priorities (AU level) - for WebMap ---------------------
+Step1_Scores = read_excel( "Y:/Ryan/2_Habitat_Prioritization/Data/AU_Step1_Priorities.xlsx" , sheet="Sheet1")
+# ---------------- merge with life stage priorites --------------
+Life_Stage_Priorities_AU_and_Reach_data_AU_Only = Life_Stage_Priorities_AU_and_Reach_data[duplicated(Life_Stage_Priorities_AU_and_Reach_data$`Assessment Unit`)==FALSE,c(2,3,seq(4,by=2, length.out=7), seq(19,by=2, length.out=7), seq(34,by=2, length.out=6) )]
+# ---------------- merge with life stage priorites --------------
+pop_up_Step1_scores_life_stage_priorities = merge(Life_Stage_Priorities_AU_and_Reach_data_AU_Only,Step1_Scores, by="Assessment Unit", all.x=TRUE )
+
+
+
+
+
 

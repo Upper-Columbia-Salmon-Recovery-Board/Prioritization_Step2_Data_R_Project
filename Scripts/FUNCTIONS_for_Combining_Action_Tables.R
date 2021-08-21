@@ -21,7 +21,7 @@
 
 test_x = FALSE
 if(test_x){
-  score_1_or_3 = "one"
+  score_1_or_3 = "two and three"
   restoration_or_protection = 'restoration'
 }
 
@@ -87,9 +87,9 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
     steelhead_habitat_attributes = c()
     bull_trout_habitat_attributes = c()
     all_three_species_habitat_attributes = c()
-    spring_chinook_actions = c()
-    steelhead_actions = c()
-    bull_trout_actions = c()
+    spring_chinook_actions_x = c()
+    steelhead_actions_x = c()
+    bull_trout_actions_x = c()
     all_three_species_actions = c()
     
     # ---------------------- Spring_Chinook ----------
@@ -108,7 +108,7 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
         # ----------------- action categories ------------------
         action_categories_x = paste(action_categories_x, HQ_row_x[,actions_column], sep=",")
         # ------------------- specifically add to spring chinook actions --------------
-        spring_chinook_actions = HQ_row_x[,actions_column]
+        spring_chinook_actions_x = HQ_row_x[,actions_column]
       }
     }
     
@@ -128,7 +128,7 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
         # ----------------- action categories ------------------
         action_categories_x = paste(action_categories_x, HQ_row_x[,actions_column], sep=",")
         # ------------------- specifically add to steelhead actions --------------
-        steelhead_actions = HQ_row_x[,actions_column]
+        steelhead_actions_x = HQ_row_x[,actions_column]
       }
     }
    
@@ -151,7 +151,7 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
           # ----------------- action categories ------------------
           action_categories_x = paste(action_categories_x, HQ_row_x[,actions_column], sep=",")
           # ------------------- specifically add to bull trout actions --------------
-          bull_trout_actions = HQ_row_x[,actions_column]
+          bull_trout_actions_x = HQ_row_x[,actions_column]
         }
       }
     }
@@ -224,16 +224,16 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
     }
 
     # -------------- number of action categories -----------
-    if(class(spring_chinook_actions) == "list"){spring_chinook_actions = unlist(spring_chinook_actions)}
+    if(class(spring_chinook_actions_x) == "list"){spring_chinook_actions_x = unlist(spring_chinook_actions_x)}
     
-    if( is.null(spring_chinook_actions) ){
-      spring_chinook_actions = NA   # get list of habitat attributes with NO redundancies
-      number_of_spring_chinook_actions =  0
+    if( is.null(spring_chinook_actions_x) ){
+      spring_chinook_actions_x = NA   # get list of habitat attributes with NO redundancies
+      number_of_spring_chinook_actions_x =  0
     }else{
-      if(class(spring_chinook_actions) == "list"){ spring_chinook_actions = unlist(spring_chinook_actions)}
-      spring_chinook_actions = unique( unlist(strsplit(spring_chinook_actions, ",")) )  # get list of action categories with NO redundancies
-      number_of_spring_chinook_actions =  length( spring_chinook_actions )
-      spring_chinook_actions = paste(spring_chinook_actions, collapse=",")
+      if(class(spring_chinook_actions_x) == "list"){ spring_chinook_actions_x = unlist(spring_chinook_actions_x)}
+      spring_chinook_actions_x = unique( unlist(strsplit(spring_chinook_actions_x, ",")) )  # get list of action categories with NO redundancies
+      number_of_spring_chinook_actions_x =  length( spring_chinook_actions_x )
+      spring_chinook_actions_x = paste(spring_chinook_actions_x, collapse=",")
     }
   
     # -----------------------------------------
@@ -250,16 +250,16 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
       species_count_x = species_count_x + 1
     }
     # -------------- number of action categories -----------
-    if(class(steelhead_actions) == "list"){steelhead_actions = unlist(steelhead_actions)}
+    if(class(steelhead_actions_x) == "list"){steelhead_actions_x = unlist(steelhead_actions_x)}
     
-    if( is.null(steelhead_actions) ){
-      steelhead_actions = NA   # get list of habitat attributes with NO redundancies
-      number_of_steelhead_actions =  0
+    if( is.null(steelhead_actions_x) ){
+      steelhead_actions_x = NA   # get list of habitat attributes with NO redundancies
+      number_of_steelhead_actions_x =  0
     }else{
-      if(class(steelhead_actions) == "list"){ steelhead_actions = unlist(steelhead_actions)}
-      steelhead_actions = unique( unlist(strsplit(steelhead_actions, ",")) )  # get list of action categories with NO redundancies
-      number_of_steelhead_actions =  length( steelhead_actions )
-      steelhead_actions = paste(steelhead_actions, collapse=",")
+      if(class(steelhead_actions_x) == "list"){ steelhead_actions_x = unlist(steelhead_actions_x)}
+      steelhead_actions_x = unique( unlist(strsplit(steelhead_actions_x, ",")) )  # get list of action categories with NO redundancies
+      number_of_steelhead_actions_x =  length( steelhead_actions_x )
+      steelhead_actions_x = paste(steelhead_actions_x, collapse=",")
     }
     
     # -----------------------------------------
@@ -277,16 +277,16 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
     }
     
     # -------------- number of action categories -----------
-    if(class(bull_trout_actions) == "list"){bull_trout_actions = unlist(bull_trout_actions)}
+    if(class(bull_trout_actions_x) == "list"){bull_trout_actions_x = unlist(bull_trout_actions_x)}
     
-    if(is.null(bull_trout_actions)){
-      bull_trout_actions = NA   # get list of habitat attributes with NO redundancies
-      number_of_bull_trout_actions =  0
+    if(is.null(bull_trout_actions_x)){
+      bull_trout_actions_x = NA   # get list of habitat attributes with NO redundancies
+      number_of_bull_trout_actions_x =  0
     }else{
-      if(class(bull_trout_actions) == "list"){ bull_trout_actions = unlist(bull_trout_actions)}
-      bull_trout_actions = unique( unlist(strsplit(bull_trout_actions, ",")) )  # get list of action categories with NO redundancies
-      number_of_bull_trout_actions =  length( bull_trout_actions )
-      bull_trout_actions = paste(bull_trout_actions, collapse=",")
+      if(class(bull_trout_actions_x) == "list"){ bull_trout_actions_x = unlist(bull_trout_actions_x)}
+      bull_trout_actions_x = unique( unlist(strsplit(bull_trout_actions_x, ",")) )  # get list of action categories with NO redundancies
+      number_of_bull_trout_actions_x =  length( bull_trout_actions_x )
+      bull_trout_actions_x = paste(bull_trout_actions_x, collapse=",")
     }
     
     # -------------- if all species are present - yes or no -------------
@@ -339,12 +339,12 @@ FUNCTION_combine_Habitat_Quality_Action_Categories_PER_REACH = function(score_1_
                                       steelhead_habitat_attributes, number_of_steelhead_habitat_attributes,
                                       bull_trout_habitat_attributes, number_of_bull_trout_habitat_attributes,
                                       action_categories_x, number_of_action_categories_x,
-                                      spring_chinook_actions, number_of_spring_chinook_actions,
-                                      steelhead_actions, number_of_steelhead_actions,
-                                      bull_trout_actions, number_of_bull_trout_actions, 
+                                      spring_chinook_actions_x, number_of_spring_chinook_actions_x,
+                                      steelhead_actions_x, number_of_steelhead_actions_x,
+                                      bull_trout_actions_x, number_of_bull_trout_actions_x, 
                                       life_stage_list, life_stage_spring_chinook_output, life_stage_steelhead_output, life_stage_bull_trout_output )    ) )
     if(nrow(output_row_x)>1){output_row_x = t(output_row_x)} # if output needs to be transposed (prepped as rows, not columns)
-    colnames(output_row_x) = c("ReachName", "Spring_Chinook_Actions_Present_Yes_No", "SprCh_STLD_BullTr_All_Present_Yes_No",
+    colnames(output_row_x) = c("ReachName", "spring_chinook_actions_x_Present_Yes_No", "SprCh_STLD_BullTr_All_Present_Yes_No",
                                "Pathways","Number_of_Pathways", 
                                "Impaired_Habitat_Attributes_All_Species","Number_Impaired_Habitat_Attributes_All_Species",
                                "Impaired_Habitat_Attributes_SpringChinook","Number_Impaired_Habitat_Attributes_SpringChinook",
@@ -403,7 +403,7 @@ FUNCTION_life_stage_presence= function(species_x, reachname_x){
 # ---------------------------------------------------------------------------
 test_x = FALSE
 if(test_x){
-  score_1_or_3 = "one thru three"
+  score_1_or_3 = "two and three"
   restoration_or_protection = 'restoration'
 }
 
@@ -468,12 +468,12 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
     steelhead_habitat_attributes = c()
     bull_trout_habitat_attributes = c()
     all_three_species_habitat_attributes = c()
-    spring_chinook_actions = c()
-    steelhead_actions = c()
-    bull_trout_life_stages = c()
-    spring_chinook_life_stages = c()
-    steelhead_life_stages = c()
-    bull_trout_actions = c()
+    spring_chinook_actions_x = c()
+    steelhead_actions_x = c()
+    bull_trout_life_stages_x = c()
+    spring_chinook_life_stages_x = c()
+    steelhead_life_stages_x = c()
+    bull_trout_actions_x = c()
     all_three_species_actions = c()
     
     # --------------- just get important reach information  ----------
@@ -503,9 +503,9 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
           # --------------- habitat attributes related to Spring Chinook actions --------------
           spring_chinook_habitat_attributes =  paste(spring_chinook_habitat_attributes,LF_row_x[life_stage_row_x,attributes_column][[1]], sep=",")
           # ------------------- specifically add to spring chinook actions --------------
-          spring_chinook_actions =    paste(spring_chinook_actions, LF_row_x[life_stage_row_x,actions_column][[1]] , sep=",")
+          spring_chinook_actions_x =    paste(spring_chinook_actions_x, LF_row_x[life_stage_row_x,actions_column][[1]] , sep=",")
           # ------------------- life stages specifically for spring chinook --------------
-          spring_chinook_life_stages =   paste(spring_chinook_life_stages, LF_row_x[life_stage_row_x,"life_stage"][[1]] , sep=",")
+          spring_chinook_life_stages_x =   paste(spring_chinook_life_stages_x, LF_row_x[life_stage_row_x,"life_stage"][[1]] , sep=",")
         }
 
       }
@@ -533,9 +533,9 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
           # --------------- habitat attributes related to Steelhead actions --------------
           steelhead_habitat_attributes = paste(steelhead_habitat_attributes, LF_row_x[life_stage_row_x,attributes_column][[1]] , sep=",")
           # ------------------- specifically add to steelhead actions --------------
-          steelhead_actions =  paste(steelhead_actions, LF_row_x[life_stage_row_x,actions_column][[1]] , sep=",")
+          steelhead_actions_x =  paste(steelhead_actions_x, LF_row_x[life_stage_row_x,actions_column][[1]] , sep=",")
           # ------------------- life stages specifically for spring chinook --------------
-          steelhead_life_stages = paste(steelhead_life_stages, LF_row_x[life_stage_row_x,"life_stage"][[1]] , sep=",")
+          steelhead_life_stages_x = paste(steelhead_life_stages_x, LF_row_x[life_stage_row_x,"life_stage"][[1]] , sep=",")
         }
       }
     }
@@ -565,9 +565,9 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
             # --------------- habitat attributes related to Bull Trout actions --------------
             bull_trout_habitat_attributes =  paste(bull_trout_habitat_attributes, LF_row_x[life_stage_row_x,attributes_column][[1]] , sep=",")
             # ------------------- specifically add to bull trout actions --------------
-            bull_trout_actions = paste(bull_trout_actions, LF_row_x[life_stage_row_x,actions_column][[1]], sep=",")
+            bull_trout_actions_x = paste(bull_trout_actions_x, LF_row_x[life_stage_row_x,actions_column][[1]], sep=",")
             # ------------------- life stages specifically for spring chinook --------------
-            bull_trout_life_stages =  paste(bull_trout_life_stages, LF_row_x[life_stage_row_x,"life_stage"][[1]], sep=",")
+            bull_trout_life_stages_x =  paste(bull_trout_life_stages_x, LF_row_x[life_stage_row_x,"life_stage"][[1]], sep=",")
           }
         }
       }
@@ -656,30 +656,30 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
     }
     
     # -------------- number of action categories -----------
-    if(is.null(spring_chinook_actions)){
-      spring_chinook_actions = NA   # get list of habitat attributes with NO redundancies
-      number_of_spring_chinook_actions =  0
+    if(is.null(spring_chinook_actions_x)){
+      spring_chinook_actions_x = NA   # get list of habitat attributes with NO redundancies
+      number_of_spring_chinook_actions_x =  0
     }else{
       # ---------------- remove leading comma -------
-      spring_chinook_actions = substr(spring_chinook_actions,2,nchar(spring_chinook_actions))
+      spring_chinook_actions_x = substr(spring_chinook_actions_x,2,nchar(spring_chinook_actions_x))
       # ----------------- get list w/ no redundancies and count them ------------
-      if(class(spring_chinook_actions) == "list" ){ spring_chinook_actions = unlist(spring_chinook_actions)}
-      spring_chinook_actions = unique( unlist(strsplit(spring_chinook_actions, ",")) )  # get list of action categories with NO redundancies
-      number_of_spring_chinook_actions =  length( spring_chinook_actions )
-      spring_chinook_actions = paste(spring_chinook_actions, collapse=",")
+      if(class(spring_chinook_actions_x) == "list" ){ spring_chinook_actions_x = unlist(spring_chinook_actions_x)}
+      spring_chinook_actions_x = unique( unlist(strsplit(spring_chinook_actions_x, ",")) )  # get list of action categories with NO redundancies
+      number_of_spring_chinook_actions_x =  length( spring_chinook_actions_x )
+      spring_chinook_actions_x = paste(spring_chinook_actions_x, collapse=",")
     }
     
     # -------------- number of life stages -----------
-    if(is.null(spring_chinook_life_stages)){
-      spring_chinook_life_stages = NA   # get list of habitat attributes with NO redundancies
-      number_of_spring_chinook_life_stages =  0
+    if(is.null(spring_chinook_life_stages_x)){
+      spring_chinook_life_stages_x = NA   # get list of habitat attributes with NO redundancies
+      number_of_spring_chinook_life_stages_x =  0
     }else{
       # ---------------- remove leading comma -------
-      spring_chinook_life_stages = substr(spring_chinook_life_stages,2,nchar(spring_chinook_life_stages))
+      spring_chinook_life_stages_x = substr(spring_chinook_life_stages_x,2,nchar(spring_chinook_life_stages_x))
       # ----------------- get list w/ no redundancies and count them ------------
-      spring_chinook_life_stages = unique(unlist(strsplit(spring_chinook_life_stages, ",")))   # get list of habitat attributes with NO redundancies
-      number_of_spring_chinook_life_stages =  length( spring_chinook_life_stages )
-      spring_chinook_life_stages = paste(spring_chinook_life_stages, collapse=",")
+      spring_chinook_life_stages_x = unique(unlist(strsplit(spring_chinook_life_stages_x, ",")))   # get list of habitat attributes with NO redundancies
+      number_of_spring_chinook_life_stages_x =  length( spring_chinook_life_stages_x )
+      spring_chinook_life_stages_x = paste(spring_chinook_life_stages_x, collapse=",")
     }
     
     # -----------------------------------------
@@ -699,30 +699,30 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
       species_count_x = species_count_x + 1
     }
     # -------------- number of action categories -----------
-    if(is.null(steelhead_actions)){
-      steelhead_actions = NA   # get list of habitat attributes with NO redundancies
-      number_of_steelhead_actions =  0
+    if(is.null(steelhead_actions_x)){
+      steelhead_actions_x = NA   # get list of habitat attributes with NO redundancies
+      number_of_steelhead_actions_x =  0
     }else{
       # ---------------- remove leading comma -------
-      steelhead_actions = substr(steelhead_actions,2,nchar(steelhead_actions))
+      steelhead_actions_x = substr(steelhead_actions_x,2,nchar(steelhead_actions_x))
       # ----------------- get list w/ no redundancies and count them ------------
       
-      if(class(steelhead_actions) == "list" ){ steelhead_actions = unlist(steelhead_actions)}
-      steelhead_actions = unique( unlist(strsplit(steelhead_actions, ",")) )  # get list of action categories with NO redundancies
-      number_of_steelhead_actions =  length( steelhead_actions )
-      steelhead_actions = paste(steelhead_actions, collapse=",")
+      if(class(steelhead_actions_x) == "list" ){ steelhead_actions_x = unlist(steelhead_actions_x)}
+      steelhead_actions_x = unique( unlist(strsplit(steelhead_actions_x, ",")) )  # get list of action categories with NO redundancies
+      number_of_steelhead_actions_x =  length( steelhead_actions_x )
+      steelhead_actions_x = paste(steelhead_actions_x, collapse=",")
     }
     # -------------- number of life stages -----------
-    if(is.null(steelhead_life_stages)){
-      steelhead_life_stages = NA   # get list of habitat attributes with NO redundancies
-      number_of_steelhead_life_stages =  0
+    if(is.null(steelhead_life_stages_x)){
+      steelhead_life_stages_x = NA   # get list of habitat attributes with NO redundancies
+      number_of_steelhead_life_stages_x =  0
     }else{
       # ---------------- remove leading comma -------
-      steelhead_life_stages = substr(steelhead_life_stages,2,nchar(steelhead_life_stages))
+      steelhead_life_stages_x = substr(steelhead_life_stages_x,2,nchar(steelhead_life_stages_x))
       # ----------------- get list w/ no redundancies and count them ------------
-      steelhead_life_stages = unique(unlist(strsplit(steelhead_life_stages, ",")))   # get list of habitat attributes with NO redundancies
-      number_of_steelhead_life_stages =  length( steelhead_life_stages )
-      steelhead_life_stages = paste(steelhead_life_stages, collapse=",")
+      steelhead_life_stages_x = unique(unlist(strsplit(steelhead_life_stages_x, ",")))   # get list of habitat attributes with NO redundancies
+      number_of_steelhead_life_stages_x =  length( steelhead_life_stages_x )
+      steelhead_life_stages_x = paste(steelhead_life_stages_x, collapse=",")
     }
     
     # -----------------------------------------
@@ -743,29 +743,29 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
     }
     
     # -------------- number of action categories -----------
-    if(is.null(bull_trout_actions)){
-      bull_trout_actions = NA   # get list of habitat attributes with NO redundancies
-      number_of_bull_trout_actions =  0
+    if(is.null(bull_trout_actions_x)){
+      bull_trout_actions_x = NA   # get list of habitat attributes with NO redundancies
+      number_of_bull_trout_actions_x =  0
     }else{
       # ---------------- remove leading comma -------
-      bull_trout_actions = substr(bull_trout_actions,2,nchar(bull_trout_actions))
+      bull_trout_actions_x = substr(bull_trout_actions_x,2,nchar(bull_trout_actions_x))
       # ----------------- get list w/ no redundancies and count them ------------
-      if(class(bull_trout_actions) == "list" ){ bull_trout_actions = unlist(bull_trout_actions)}
-      bull_trout_actions = unique( unlist(strsplit(bull_trout_actions, ",")) )  # get list of action categories with NO redundancies
-      number_of_bull_trout_actions =  length( bull_trout_actions )
-      bull_trout_actions = paste(bull_trout_actions, collapse=",")
+      if(class(bull_trout_actions_x) == "list" ){ bull_trout_actions_x = unlist(bull_trout_actions_x)}
+      bull_trout_actions_x = unique( unlist(strsplit(bull_trout_actions_x, ",")) )  # get list of action categories with NO redundancies
+      number_of_bull_trout_actions_x =  length( bull_trout_actions_x )
+      bull_trout_actions_x = paste(bull_trout_actions_x, collapse=",")
     }
     # -------------- number of life stages -----------
-    if(is.null(bull_trout_life_stages)){
-      bull_trout_life_stages = NA   # get list of habitat attributes with NO redundancies
-      number_of_bull_trout_life_stages =  0
+    if(is.null(bull_trout_life_stages_x)){
+      bull_trout_life_stages_x = NA   # get list of habitat attributes with NO redundancies
+      number_of_bull_trout_life_stages_x =  0
     }else{
       # ---------------- remove leading comma -------
-      bull_trout_life_stages = substr(bull_trout_life_stages,2,nchar(bull_trout_life_stages))
+      bull_trout_life_stages_x = substr(bull_trout_life_stages_x,2,nchar(bull_trout_life_stages_x))
       # ----------------- get list w/ no redundancies and count them ------------
-      bull_trout_life_stages = unique(unlist(strsplit(bull_trout_life_stages, ",")))   # get list of habitat attributes with NO redundancies
-      number_of_bull_trout_life_stages =  length( bull_trout_life_stages )
-      bull_trout_life_stages = paste(bull_trout_life_stages, collapse=",")
+      bull_trout_life_stages_x = unique(unlist(strsplit(bull_trout_life_stages_x, ",")))   # get list of habitat attributes with NO redundancies
+      number_of_bull_trout_life_stages_x =  length( bull_trout_life_stages_x )
+      bull_trout_life_stages_x = paste(bull_trout_life_stages_x, collapse=",")
     }
     
     # -------------- if all species are present - yes or no -------------
@@ -785,16 +785,16 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
                                       bull_trout_habitat_attributes, number_of_bull_trout_habitat_attributes,
                                       
                                       action_categories_x, number_of_action_categories_x,
-                                      spring_chinook_actions, number_of_spring_chinook_actions,
-                                      steelhead_actions, number_of_steelhead_actions,
-                                      bull_trout_actions, number_of_bull_trout_actions,
+                                      spring_chinook_actions_x, number_of_spring_chinook_actions_x,
+                                      steelhead_actions_x, number_of_steelhead_actions_x,
+                                      bull_trout_actions_x, number_of_bull_trout_actions_x,
                                       
                                       life_stages_x,number_of_life_stages_x,
-                                      spring_chinook_life_stages, number_of_spring_chinook_life_stages,
-                                      steelhead_life_stages, number_of_steelhead_life_stages,
-                                      bull_trout_life_stages, number_of_bull_trout_life_stages
+                                      spring_chinook_life_stages_x, number_of_spring_chinook_life_stages_x,
+                                      steelhead_life_stages_x, number_of_steelhead_life_stages_x,
+                                      bull_trout_life_stages_x, number_of_bull_trout_life_stages_x
                                       )  )  
-    colnames(output_row_x) = c("ReachName", "Basin","Assessment.Unit","Spring.Chinook.Reach","Steelhead.Reach","Bull.Trout.Reach", "Spring_Chinook_Actions_Present_Yes_No", "SprCh_STLD_BullTr_All_Present_Yes_No",
+    colnames(output_row_x) = c("ReachName", "Basin","Assessment.Unit","Spring.Chinook.Reach","Steelhead.Reach","Bull.Trout.Reach", "spring_chinook_actions_x_Present_Yes_No", "SprCh_STLD_BullTr_All_Present_Yes_No",
                                "Pathways","Number_of_Pathways", 
                                
                                "Impaired_Habitat_Attributes_All_Species","Number_Impaired_Habitat_Attributes_All_Species",
@@ -837,7 +837,6 @@ if(test_x){
   HQ_pathway_df = Habitat_Quality_Restoration_Unacceptable
   LF_pathway_df = Limiting_Factor_Restoration_Unacceptable
   columns_info = c( "ReachName","Basin","Assessment.Unit" )
-  
 }
 
 
@@ -891,7 +890,8 @@ FUNCTION_combine_across_pathways = function(HQ_pathway_df, LF_pathway_df){
     #     Combine Text - LF only
     # ------------------------------------------------------------
     
-    if(length(LF_reach_index ) > 0){
+    # ----------- if Limiting Factor pathway  - life stage presence --------
+    if( length(LF_reach_index ) > 0 ){
       for(combo_x in columns_to_combine_text_LF_only){
         combo_x_output = LF_pathway_df[LF_reach_index, combo_x]
         # ------------- create data frame with column ------
@@ -1023,7 +1023,7 @@ if(test_x){
   HQ_LF_Both = Restoration_Unacceptable_and_At_Risk
   HQ_Both = Habitat_Quality_Restoration_Unacceptable_and_At_Risk
   columns_info = c( "ReachName" ) # columns to automatically add to beginning (left side) of output
-  HQ_add_life_stage == "No"
+  HQ_add_life_stage == "no"
 }
 
 
@@ -1045,8 +1045,8 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
     
     # --------------------- generate HQ and LF index ----------
     HQ_LF_Both_index = which(HQ_LF_Both$ReachName == reach_x)
-    if(any(HQ_LF_Unacceptable$ReachName == reach_x)){ HQ_LF_Unacceptable_index = which(HQ_LF_Unacceptable$ReachName == reach_x) }
-    if(any(HQ_LF_At_Risk$ReachName == reach_x)){ HQ_LF_At_Risk_index = which(HQ_LF_At_Risk$ReachName == reach_x) }
+    if(any(HQ_LF_Unacceptable$ReachName == reach_x)){ HQ_LF_Unacceptable_index = which(HQ_LF_Unacceptable$ReachName == reach_x) }else{HQ_LF_Unacceptable_index = NA}
+    if(any(HQ_LF_At_Risk$ReachName == reach_x)){ HQ_LF_At_Risk_index = which(HQ_LF_At_Risk$ReachName == reach_x) }else{HQ_LF_At_Risk_index = NA}
     HQ_Both_index  = which(HQ_Both$ReachName == reach_x) # data frame with just HQ pathway 
 
     # ----------- IF excluding bull trout and only bull trout pathway - SKIP this ---------
@@ -1062,7 +1062,7 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
     HQ_and_LF_combo_x = merge(HQ_and_LF_combo_x, Reach_Information_data[,c("ReachName", "Basin", "Assessment.Unit")], by="ReachName", all.x=TRUE )
     
     # ------------------------------------------------------------
-    #    Pathways (list and yes/no)
+    #    Pathways (list and yes/no) 
     # ------------------------------------------------------------
     
     # ------------- get pathways --------
@@ -1082,7 +1082,11 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
     HQ_and_LF_combo_x$Pathways = pathway_output
     HQ_and_LF_combo_x$Number_of_Pathways = HQ_LF_Both[HQ_LF_Both_index, "Number_of_Pathways"]
     
-    # ---------------- Generate General "Actions" list ------------------
+    # ------------------------------------------------------------------------------------------------ 
+    #    Generate General Action List (Restore Reach Function or Address Limiting Factors)
+    # ------------------------------------------------------------------------------------------------ 
+    
+    # ---------------- Generate General "Actions" list across all species ------------------
     general_actions = c()
     if( length(grep("HQ",HQ_and_LF_combo_x$Pathways)) > 0){
       general_actions = paste( general_actions , "Restore Reach Function", sep=", ")
@@ -1094,6 +1098,25 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
     HQ_and_LF_combo_x$Actions = general_actions
     
     pathways_x =  unique( unlist(strsplit(HQ_and_LF_combo_x$Pathways, ",")) )
+    
+    # ----------------- Generate General Actions lists for individual species ---------
+    HQ_and_LF_combo_x$Actions_Spring_Chinook = "NA"
+    HQ_and_LF_combo_x$Actions_Steelhead = "NA"
+    HQ_and_LF_combo_x$Actions_Bull_Trout = "NA"
+     
+    # -------- add Restore Reach Function OR Address Limiting Factors -------
+    if(  grepl( "HQ_spring_chinook", HQ_and_LF_combo_x$Pathways, fixed = TRUE)  ){ HQ_and_LF_combo_x$Actions_Spring_Chinook =  paste(HQ_and_LF_combo_x$Actions_Spring_Chinook, "Restore Reach Function", sep=", ")  }
+    if(  grepl( "HQ_steelhead", HQ_and_LF_combo_x$Pathways, fixed = TRUE)  ){ HQ_and_LF_combo_x$Actions_Steelhead = paste(HQ_and_LF_combo_x$Actions_Steelhead, "Restore Reach Function", sep=", ")   }
+    if(  grepl( "HQ_bull_trout", HQ_and_LF_combo_x$Pathways, fixed = TRUE)  ){ HQ_and_LF_combo_x$Actions_Bull_Trout = paste(HQ_and_LF_combo_x$Actions_Bull_Trout, "Restore Reach Function", sep=", ")   }
+    if(  grepl( "LF_spring_chinook", HQ_and_LF_combo_x$Pathways, fixed = TRUE)  ){HQ_and_LF_combo_x$Actions_Spring_Chinook = paste(HQ_and_LF_combo_x$Actions_Spring_Chinook, "Address Limiting Factors", sep=", ") }
+    if(  grepl( "LF_steelhead", HQ_and_LF_combo_x$Pathways, fixed = TRUE)  ){ HQ_and_LF_combo_x$Actions_Steelhead = paste(HQ_and_LF_combo_x$Actions_Steelhead, "Address Limiting Factors", sep=", ") }
+    if(  grepl( "LF_bull_trout", HQ_and_LF_combo_x$Pathways, fixed = TRUE)  ){ HQ_and_LF_combo_x$Actions_Bull_Trout = paste(HQ_and_LF_combo_x$Actions_Bull_Trout, "Address Limiting Factors", sep=", ") } 
+    
+    # -------- remove NAs if one of the pathways pulled ------------
+    if( grepl('NA, ', HQ_and_LF_combo_x$Actions_Spring_Chinook, fixed = TRUE)  ){ HQ_and_LF_combo_x$Actions_Spring_Chinook =  substring( HQ_and_LF_combo_x$Actions_Spring_Chinook, 5,nchar( HQ_and_LF_combo_x$Actions_Spring_Chinook) ) }
+    if( grepl('NA, ', HQ_and_LF_combo_x$Actions_Steelhead)  ){ HQ_and_LF_combo_x$Actions_Steelhead =  substring( HQ_and_LF_combo_x$Actions_Steelhead, 5,nchar( HQ_and_LF_combo_x$Actions_Steelhead) ) }
+    if( grepl('NA, ', HQ_and_LF_combo_x$Actions_Bull_Trout, fixed = TRUE)  ){ HQ_and_LF_combo_x$Actions_Bull_Trout =  substring( HQ_and_LF_combo_x$Actions_Bull_Trout, 5,nchar( HQ_and_LF_combo_x$Actions_Bull_Trout) ) }
+
     # ------------- do yes no for pathways --------
     if(  grepl( "HQ_spring_chinook", HQ_and_LF_combo_x$Pathways, fixed = TRUE)  ){ HQ_spring_chinook_yesno = "yes" }else{ HQ_spring_chinook_yesno = "no" }
     if(  grepl( "HQ_steelhead", HQ_and_LF_combo_x$Pathways, fixed = TRUE)  ){ HQ_steelhead_yesno = "yes" }else{ HQ_steelhead_yesno = "no" }
@@ -1113,6 +1136,7 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
                                       "LimitingFactor_Spring_Chinook_Pathway",	"LimitingFactor_Steelhead_Pathway",	"LimitingFactor_BullTrout_Pathway" )
     row.names(pathway_yes_no_df) = row.names(HQ_and_LF_combo_x)
     HQ_and_LF_combo_x = cbind(HQ_and_LF_combo_x, pathway_yes_no_df)
+    
     # ----------------- add Barriers if present -------------
     Pathway_Barrier_Prioritization = "no" # run other function to add this post-hoc
     HQ_and_LF_combo_x$Barrier_Prioritization_Pathway = Pathway_Barrier_Prioritization
@@ -1143,33 +1167,52 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
     # ------------- Benefit all species ----------
     HQ_and_LF_combo_x$SprCh_STLD_BullTr_All_Benefit = HQ_LF_Both[HQ_LF_Both_index, "SprCh_STLD_BullTr_All_Present_Yes_No"]
     # ------------- Benefit Spring Chinook ----------
-    HQ_and_LF_combo_x$Spring_Chinook_Benefit = HQ_LF_Both[HQ_LF_Both_index, "Spring_Chinook_Actions_Present_Yes_No"]
+    HQ_and_LF_combo_x$Spring_Chinook_Benefit = HQ_LF_Both[HQ_LF_Both_index, "spring_chinook_actions_x_Present_Yes_No"]
     
     # ------------------------------------------------------------
-    #   Generate Species-specific columns of habitat attributes and actions
+    #   Generate Species-specific columns of habitat attributes and actions - for 
     # ------------------------------------------------------------
     
     # ---------- Spring Chinook ----------------
+    if( is.na(HQ_LF_Unacceptable_index) ){ HQ_and_LF_combo_x$Spring_Chinook_Habitat_Attributes_Unacceptable = NA }else{ HQ_and_LF_combo_x$Spring_Chinook_Habitat_Attributes_Unacceptable = HQ_LF_Unacceptable$Impaired_Habitat_Attributes_SpringChinook[HQ_LF_Unacceptable_index] }
+    if( is.na(HQ_LF_At_Risk_index) ){ HQ_and_LF_combo_x$Spring_Chinook_Habitat_Attributes_At_Risk = NA }else{ HQ_and_LF_combo_x$Spring_Chinook_Habitat_Attributes_At_Risk = HQ_LF_At_Risk$Impaired_Habitat_Attributes_SpringChinook[HQ_LF_At_Risk_index] }
     HQ_and_LF_combo_x$Spring_Chinook_Habitat_Attributes = HQ_LF_Both$Impaired_Habitat_Attributes_SpringChinook[HQ_LF_Both_index]
-    HQ_and_LF_combo_x$Spring_Chinook_Actions = HQ_LF_Both$Action_Categories_SpringChinook[HQ_LF_Both_index]
+    if( is.na(HQ_LF_Unacceptable_index) ){  HQ_and_LF_combo_x$Spring_Chinook_Unacceptable_Actions = NA }else{ HQ_and_LF_combo_x$Spring_Chinook_Unacceptable_Actions = HQ_LF_Unacceptable$Action_Categories_SpringChinook[HQ_LF_Unacceptable_index] }
+    if( is.na(HQ_LF_At_Risk_index) ){ HQ_and_LF_combo_x$Spring_Chinook_At_Risk_Actions = NA }else{ HQ_and_LF_combo_x$Spring_Chinook_At_Risk_Actions = HQ_LF_At_Risk$Action_Categories_SpringChinook[HQ_LF_At_Risk_index]}
+    HQ_and_LF_combo_x$spring_chinook_actions_x = HQ_LF_Both$Action_Categories_SpringChinook[HQ_LF_Both_index]
     
     # ---------- Steelhead ----------------
+    if( is.na(HQ_LF_Unacceptable_index) ){ HQ_and_LF_combo_x$Steelhead_Habitat_Attributes_Unacceptable = NA }else{ HQ_and_LF_combo_x$Steelhead_Habitat_Attributes_Unacceptable = HQ_LF_Unacceptable$Impaired_Habitat_Attributes_Steelhead[HQ_LF_Unacceptable_index] }
+    if( is.na(HQ_LF_At_Risk_index) ){ HQ_and_LF_combo_x$Steelhead_Habitat_Attributes_At_Risk  = NA }else{  HQ_and_LF_combo_x$Steelhead_Habitat_Attributes_At_Risk = HQ_LF_At_Risk$Impaired_Habitat_Attributes_Steelhead[HQ_LF_At_Risk_index] }
     HQ_and_LF_combo_x$Steelhead_Habitat_Attributes = HQ_LF_Both$Impaired_Habitat_Attributes_Steelhead[HQ_LF_Both_index]
-    HQ_and_LF_combo_x$Steelhead_Actions = HQ_LF_Both$Action_Categories_Steelhead[HQ_LF_Both_index]
+    if( is.na(HQ_LF_Unacceptable_index) ){ HQ_and_LF_combo_x$Steelhead_Unacceptable_Actions = NA }else{ HQ_and_LF_combo_x$Steelhead_Unacceptable_Actions = HQ_LF_Unacceptable$Action_Categories_Steelhead[HQ_LF_Unacceptable_index] }
+    if( is.na(HQ_LF_At_Risk_index) ){ HQ_and_LF_combo_x$Steelhead_At_Risk_Actions = NA }else{ HQ_and_LF_combo_x$Steelhead_At_Risk_Actions = HQ_LF_At_Risk$Action_Categories_Steelhead[HQ_LF_At_Risk_index] }
+    HQ_and_LF_combo_x$steelhead_actions_x = HQ_LF_Both$Action_Categories_Steelhead[HQ_LF_Both_index]
     
     # ---------- Bull Trout ----------------
     if(exclude_bull_trout == "no"){
+      if( is.na(HQ_LF_Unacceptable_index) ){ HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes_Unacceptable = NA }else{  HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes_Unacceptable = HQ_LF_Unacceptable$Impaired_Habitat_Attributes_BullTrout[HQ_LF_Unacceptable_index] }
+      if( is.na(HQ_LF_At_Risk_index) ){ HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes_At_Risk  = NA }else{  HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes_At_Risk = HQ_LF_At_Risk$Impaired_Habitat_Attributes_BullTrout[HQ_LF_At_Risk_index] }
       HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes = HQ_LF_Both$Impaired_Habitat_Attributes_BullTrout[HQ_LF_Both_index]
-      HQ_and_LF_combo_x$Bull_Trout_Actions = HQ_LF_Both$Action_Categories_BullTrout[HQ_LF_Both_index]
+      if( is.na(HQ_LF_Unacceptable_index) ){ HQ_and_LF_combo_x$Bull_Trout_Unacceptable_Actions = NA }else{  HQ_and_LF_combo_x$Bull_Trout_Unacceptable_Actions = HQ_LF_Unacceptable$Action_Categories_BullTrout[HQ_LF_Unacceptable_index] }
+      if( is.na(HQ_LF_At_Risk_index) ){ HQ_and_LF_combo_x$Bull_Trout_At_Risk_Actions  = NA }else{  HQ_and_LF_combo_x$Bull_Trout_At_Risk_Actions = HQ_LF_At_Risk$Action_Categories_BullTrout[HQ_LF_At_Risk_index] }
+      HQ_and_LF_combo_x$bull_trout_actions_x = HQ_LF_Both$Action_Categories_BullTrout[HQ_LF_Both_index]
     }else{
+      HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes_Unacceptable = NA
+      HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes_At_Risk = NA
       HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes = NA
-      HQ_and_LF_combo_x$Bull_Trout_Actions = NA
+      HQ_and_LF_combo_x$Bull_Trout_Unacceptable_Actions = NA
+      HQ_and_LF_combo_x$Bull_Trout_At_Risk_Actions = NA
+      HQ_and_LF_combo_x$bull_trout_actions_x = NA
     }
     
     # ------------------------------------------------------------
     #   List all life stages
     # ------------------------------------------------------------
-    HQ_and_LF_combo_x$Life_Stages = HQ_LF_Both[HQ_LF_Both_index, "Life_Stages"]
+    HQ_and_LF_combo_x$Life_Stages = HQ_LF_Both[HQ_LF_Both_index, c("Life_Stages" )  ]
+    HQ_and_LF_combo_x$Life_Stages_SpringChinook = HQ_LF_Both[HQ_LF_Both_index, c( "Life_Stages_SpringChinook"  )  ]
+    HQ_and_LF_combo_x$Life_Stages_Steelhead = HQ_LF_Both[HQ_LF_Both_index, c( "Life_Stages_Steelhead"  )  ]
+    HQ_and_LF_combo_x$Life_Stages_BullTrout = HQ_LF_Both[HQ_LF_Both_index, c( "Life_Stages_BullTrout" )  ]
     
     # ------------------------------------------------------------
     #   List all actions
@@ -1194,7 +1237,9 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
     # ------------------------------------------------------------
     #  Unacceptable Habitat Attributes (Yes/No)
     # ------------------------------------------------------------ 
-    if( reach_x == HQ_LF_Unacceptable$ReachName[HQ_LF_Unacceptable_index]   ){
+    if( is.na(HQ_LF_Unacceptable_index)  ){
+      HQ_and_LF_combo_x$Unacceptable_Habitat_Attributes_Presence = "no"
+    }else if( reach_x == HQ_LF_Unacceptable$ReachName[HQ_LF_Unacceptable_index]   ){
       HQ_and_LF_combo_x$Unacceptable_Habitat_Attributes_Presence = "yes"
     }else{
       HQ_and_LF_combo_x$Unacceptable_Habitat_Attributes_Presence = "no"
@@ -1203,7 +1248,9 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
     # ------------------------------------------------------------
     #  Unacceptable Habitat Attributes
     # ------------------------------------------------------------
-    if( reach_x == HQ_LF_Unacceptable$ReachName[HQ_LF_Unacceptable_index]   ){
+    if( is.na(HQ_LF_Unacceptable_index)  ){
+      HQ_and_LF_combo_x$Unacceptable_Impaired_Habitat_Attributes_All_Species = NA
+    }else if( reach_x == HQ_LF_Unacceptable$ReachName[HQ_LF_Unacceptable_index]   ){
       HQ_and_LF_combo_x$Unacceptable_Impaired_Habitat_Attributes_All_Species = HQ_LF_Unacceptable$Impaired_Habitat_Attributes_All_Species[HQ_LF_Unacceptable_index] 
     }else{
       HQ_and_LF_combo_x$Unacceptable_Impaired_Habitat_Attributes_All_Species = NA
@@ -1212,7 +1259,9 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
     # ------------------------------------------------------------
     #  Number of Unacceptable Habitat Attributes
     # ------------------------------------------------------------
-    if( reach_x == HQ_LF_Unacceptable$ReachName[HQ_LF_Unacceptable_index]   ){
+    if( is.na(HQ_LF_Unacceptable_index)  ){
+      HQ_and_LF_combo_x$Unacceptable_Number_Impaired_Habitat_Attributes_All_Species = NA
+    }else if( reach_x == HQ_LF_Unacceptable$ReachName[HQ_LF_Unacceptable_index]   ){
       HQ_and_LF_combo_x$Unacceptable_Number_Impaired_Habitat_Attributes_All_Species = HQ_LF_Unacceptable$Number_Impaired_Habitat_Attributes_All_Species[HQ_LF_Unacceptable_index] 
     }else{
       HQ_and_LF_combo_x$Unacceptable_Number_Impaired_Habitat_Attributes_All_Species = NA
@@ -1221,7 +1270,9 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
     # ------------------------------------------------------------
     #  At Risk Habitat Attributes (Yes/No)
     # ------------------------------------------------------------ 
-    if( reach_x == HQ_LF_At_Risk$ReachName[HQ_LF_At_Risk_index]   ){
+    if( is.na(HQ_LF_At_Risk_index) ){
+      HQ_and_LF_combo_x$At_Risk_Habitat_Attributes_Presence = "no"
+    }else if( reach_x == HQ_LF_At_Risk$ReachName[HQ_LF_At_Risk_index]   ){
       HQ_and_LF_combo_x$At_Risk_Habitat_Attributes_Presence = "yes"
     }else{
       HQ_and_LF_combo_x$At_Risk_Habitat_Attributes_Presence = "no"
@@ -1230,7 +1281,9 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
     # ------------------------------------------------------------
     #  At Risk Habitat Attributes
     # ------------------------------------------------------------
-    if( reach_x == HQ_LF_At_Risk$ReachName[HQ_LF_At_Risk_index]   ){
+    if( is.na(HQ_LF_At_Risk_index) ){
+      HQ_and_LF_combo_x$At_Risk_Impaired_Habitat_Attributes_All_Species = NA
+    }else if( reach_x == HQ_LF_At_Risk$ReachName[HQ_LF_At_Risk_index]   ){
       HQ_and_LF_combo_x$At_Risk_Impaired_Habitat_Attributes_All_Species = HQ_LF_At_Risk$Impaired_Habitat_Attributes_All_Species[HQ_LF_At_Risk_index] 
     }else{
       HQ_and_LF_combo_x$At_Risk_Impaired_Habitat_Attributes_All_Species = NA
@@ -1239,7 +1292,9 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
     # ------------------------------------------------------------
     #  Number of At Risk Habitat Attributes
     # ------------------------------------------------------------
-    if( reach_x == HQ_LF_At_Risk$ReachName[HQ_LF_At_Risk_index]   ){
+    if( is.na(HQ_LF_At_Risk_index) ){
+      HQ_and_LF_combo_x$At_Risk_Number_Impaired_Habitat_Attributes_All_Species = NA
+    }else if( reach_x == HQ_LF_At_Risk$ReachName[HQ_LF_At_Risk_index]   ){
       HQ_and_LF_combo_x$At_Risk_Number_Impaired_Habitat_Attributes_All_Species = HQ_LF_At_Risk$Number_Impaired_Habitat_Attributes_All_Species[HQ_LF_At_Risk_index] 
     }else{
       HQ_and_LF_combo_x$At_Risk_Number_Impaired_Habitat_Attributes_All_Species = NA
@@ -1274,6 +1329,7 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
     #   add HQ life stages presence (if HQ_add_life_stage is yes)
     # ------------------------------------------------------------
     if(HQ_add_life_stage  == "yes"){
+      
       # ---- pull the reach's row in HQ Pathway data frame ---------
       HQ_Both_row = HQ_Both[HQ_Both_index, ]
       # --------------------- Pathways------------------
@@ -1284,7 +1340,7 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
       # ------------- if Okanogan - just do for Steelhead --------------
       if( HQ_LF_Both$Basin[rowx] ==  "Okanogan"){species_list = "steelhead"}
       # ------------ IF Habitat Quality Pathways presence -------------------
-      if( any(pathway_list_letters == "HQ") ){
+      if(  any(pathway_list_letters == "HQ")  ){
         
         # ---------- loop through each species in HQ pathway ---------
         life_stages_all_output = c()
@@ -1323,7 +1379,6 @@ FUNCTION_combine_across_Unacceptable_and_AtRisk = function(HQ_LF_Unacceptable, H
     }
     
   }
-
     
   return(Unacceptable_AtRisk_combined_output)
   
@@ -1422,12 +1477,11 @@ FUNCTION_output_life_stages_based_on_species_and_life_stage_presence_FISH_BARRIE
   # ------------------- generate life stage list for this species (from reach presence data ) ------------------
   Life_Stage_Priorities_AU_and_Reach_data_REACH_X = Life_Stage_Priorities_AU_and_Reach_data[ which(Life_Stage_Priorities_AU_and_Reach_data$ReachName == reach_x), ] 
   
-  
   # --------------- spring chinook -----------
-  spring_chinook_col_names = unlist( spring_chinook_life_stages_presence[names(spring_chinook_life_stages_presence)] )
+  spring_chinook_col_names = unlist( spring_chinook_life_stages_x_presence[names(spring_chinook_life_stages_x_presence)] )
   life_stage_names = names(spring_chinook_col_names)
   life_stage_presence_numbers = Life_Stage_Priorities_AU_and_Reach_data_REACH_X[ spring_chinook_col_names ]
-  if(any(life_stage_presence_numbers == 1)){
+  if( any(life_stage_presence_numbers == 1) ){
     species_x_output = paste(species_x_output, "Spring Chinook", sep=",")
     columns_presence = which(life_stage_presence_numbers == 1)
     life_stages_x = life_stage_names[columns_presence]
@@ -1436,7 +1490,7 @@ FUNCTION_output_life_stages_based_on_species_and_life_stage_presence_FISH_BARRIE
   }
   
   # --------------- steelhead -----------
-  steelhead_col_names = unlist( steelhead_life_stages_presence[names(steelhead_life_stages_presence)] )
+  steelhead_col_names = unlist( steelhead_life_stages_x_presence[names(steelhead_life_stages_x_presence)] )
   life_stage_names = names(steelhead_col_names)
   life_stage_presence_numbers = Life_Stage_Priorities_AU_and_Reach_data_REACH_X[ steelhead_col_names ]
   if(any(life_stage_presence_numbers == 1)){
@@ -1450,7 +1504,7 @@ FUNCTION_output_life_stages_based_on_species_and_life_stage_presence_FISH_BARRIE
   # --------------- bull trout -----------
   if(exclude_bull_trout == "no"){
     
-    bull_trout_col_names = unlist( bull_trout_life_stages_presence[names(bull_trout_life_stages_presence)] )
+    bull_trout_col_names = unlist( bull_trout_life_stages_x_presence[names(bull_trout_life_stages_x_presence)] )
     life_stage_names = names(bull_trout_col_names)
     life_stage_presence_numbers = Life_Stage_Priorities_AU_and_Reach_data_REACH_X[ bull_trout_col_names ]
     if(any(life_stage_presence_numbers == 1)){
@@ -1491,9 +1545,9 @@ FUNCTION_generate_life_stage_list_for_species_reach_FLAT_TABLE = function(specie
   # --------- Spring Chinook --------
   if(species_x == "spring_chinook"){
     
-    for(life_stage_i in names(spring_chinook_life_stages_presence)){
+    for(life_stage_i in names(spring_chinook_life_stages_x_presence)){
       # ------- generate name of column for this life stage --------
-      life_stage_i2 = spring_chinook_life_stages_presence[[life_stage_i]]
+      life_stage_i2 = spring_chinook_life_stages_x_presence[[life_stage_i]]
       # -------------- pull the value -------
       life_stage_presence_0_1 = Life_Stage_Priorities_AU_and_Reach_data_REACH_X[[life_stage_i2]]
       # -------- add life stage name -------
@@ -1505,9 +1559,9 @@ FUNCTION_generate_life_stage_list_for_species_reach_FLAT_TABLE = function(specie
   # --------- Steelhead --------
   if(species_x == "steelhead"){
     
-    for(life_stage_i in names(steelhead_life_stages_presence)){
+    for(life_stage_i in names(steelhead_life_stages_x_presence)){
       # ------- generate name of column for this life stage --------
-      life_stage_i2 = steelhead_life_stages_presence[[life_stage_i]]
+      life_stage_i2 = steelhead_life_stages_x_presence[[life_stage_i]]
       # -------------- pull the value -------
       life_stage_presence_0_1 = Life_Stage_Priorities_AU_and_Reach_data_REACH_X[[life_stage_i2]]
       # -------- add life stage name -------
@@ -1518,9 +1572,9 @@ FUNCTION_generate_life_stage_list_for_species_reach_FLAT_TABLE = function(specie
   # --------- Bull Trout --------
   if(species_x == "bull_trout"){
     
-    for(life_stage_i in names(bull_trout_life_stages_presence)){
+    for(life_stage_i in names(bull_trout_life_stages_x_presence)){
       # ------- generate name of column for this life stage --------
-      life_stage_i2 = bull_trout_life_stages_presence[[life_stage_i]]
+      life_stage_i2 = bull_trout_life_stages_x_presence[[life_stage_i]]
       # -------------- pull the value -------
       life_stage_presence_0_1 = Life_Stage_Priorities_AU_and_Reach_data_REACH_X[[life_stage_i2]]
       # -------- add life stage name -------
@@ -1545,6 +1599,10 @@ FUNCTION_generate_life_stage_list_for_species_reach_FLAT_TABLE = function(specie
 # ------------------------------------------------------------
 
 # HQ_LF_Combined = Restoration_Prioritization_Output
+test_x = FALSE
+if(test_x){
+  HQ_LF_Combined = Restoration_Prioritization_Output
+}
 
 FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined,  Barriers_Pathways_Data,  exclude_bull_trout){
   
@@ -1555,11 +1613,19 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined,  Barriers_Pathways_Data,  e
     barrier_index = which(Barriers_Pathways_Data$ReachName == reach_x)
     barrier_index = barrier_index[1] # if more than one barrier - just pulling the action category and habitat attribute names
     
+    # ---------------- AU ranks ------------
+    AU_rank_spring_chinook = AU_Ranks_data$SPCHNTier_Restoration[which(AU_Ranks_data$`Assessment Unit` == Reach_Information_data$Assessment.Unit[Reach_Information_data$ReachName == reach_x])]
+    if( is.na(AU_rank_spring_chinook) ){ AU_rank_spring_chinook = 0 }
+    AU_rank_steelhead = AU_Ranks_data$STLTier_Restoration[which(AU_Ranks_data$`Assessment Unit` == Reach_Information_data$Assessment.Unit[Reach_Information_data$ReachName == reach_x])]
+    if( is.na(AU_rank_steelhead) ){ AU_rank_steelhead = 0 }
+    AU_rank_bull_trout = AU_Ranks_data$BTTier_Restoration[which(AU_Ranks_data$`Assessment Unit` == Reach_Information_data$Assessment.Unit[Reach_Information_data$ReachName == reach_x])]
+    if( is.na(AU_rank_bull_trout) ){ AU_rank_bull_trout = 0 }
+    
     # ------------------------------------------------------------
     #   IF the barriers reach is in the existing list of prioritized reaches
     # ------------------------------------------------------------
     
-    if( length(HQ_LF_index) > 0){
+    if( length(HQ_LF_index) > 0 ){
         
         # ---------------------------------------------------------------------------
         #    Update Pathways, Action Categories, and Habitat Attributes
@@ -1577,11 +1643,73 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined,  Barriers_Pathways_Data,  e
         HQ_LF_Combined$Number_Action_Categories_All_Species[HQ_LF_index] = HQ_LF_Combined$Number_Action_Categories_All_Species[HQ_LF_index] + 1
         
         # -------------- add Habitat Attributes ------------
-        HQ_LF_Combined$Impaired_Habitat_Attributes_All_Species[HQ_LF_index] = paste( HQ_LF_Combined$Impaired_Habitat_Attributes_All_Species[HQ_LF_index], Barriers_Pathways_Data$Habitat_Attributes[barrier_index], sep=",")    
-        HQ_LF_Combined$Number_Impaired_Habitat_Attributes_All_Species[HQ_LF_index] = HQ_LF_Combined$Number_Action_Categories_All_Species[HQ_LF_index] + 1
+        #HQ_LF_Combined$Impaired_Habitat_Attributes_All_Species[HQ_LF_index] = paste( HQ_LF_Combined$Impaired_Habitat_Attributes_All_Species[HQ_LF_index], Barriers_Pathways_Data$Habitat_Attributes[barrier_index], sep=",")    
+        #HQ_LF_Combined$Number_Impaired_Habitat_Attributes_All_Species[HQ_LF_index] = HQ_LF_Combined$Number_Action_Categories_All_Species[HQ_LF_index] + 1
   
         # -------------- add General Action ------------
-        HQ_LF_Combined$Actions[HQ_LF_index] = paste( HQ_LF_Combined$Actions[HQ_LF_index], "Restore Fish Passage", sep=", ")    
+        HQ_LF_Combined$Actions[HQ_LF_index] = paste( HQ_LF_Combined$Actions[HQ_LF_index], "Restore Fish Passage", sep=", ") 
+        
+        # ------------------------ if Spring Chinook reach ---------------------
+        if( Reach_Information_data$Spring.Chinook.Reach[which(Reach_Information_data$ReachName == reach_x)] == "yes"   |
+            AU_rank_spring_chinook == 1 ){
+          # -------------------------- Action Pathway --------------
+          HQ_LF_Combined$Actions_Spring_Chinook[HQ_LF_index] = paste(HQ_LF_Combined$Actions_Spring_Chinook[HQ_LF_index] ,"Restore Fish Passage",sep=",")
+          if( substr( HQ_LF_Combined$Actions_Spring_Chinook[HQ_LF_index], 1, 3  ) == "NA,"  ){  HQ_LF_Combined$Actions_Spring_Chinook[HQ_LF_index] = substr( HQ_LF_Combined$Actions_Spring_Chinook[HQ_LF_index], 4, nchar(HQ_LF_Combined$Actions_Spring_Chinook[HQ_LF_index])  )   }
+          # ------------------------- Action Category --------------------
+          HQ_LF_Combined$spring_chinook_actions_x[HQ_LF_index] = paste(HQ_LF_Combined$spring_chinook_actions_x[HQ_LF_index] ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
+          if( substr( HQ_LF_Combined$spring_chinook_actions_x[HQ_LF_index], 1, 3  ) == "NA,"  ){  HQ_LF_Combined$spring_chinook_actions_x[HQ_LF_index] = substr( HQ_LF_Combined$spring_chinook_actions_x[HQ_LF_index], 4, nchar(HQ_LF_Combined$spring_chinook_actions_x[HQ_LF_index])  )   }
+          # ------------------------- Unacceptable Actions --------------------
+          HQ_LF_Combined$Spring_Chinook_Unacceptable_Actions[HQ_LF_index] = paste(HQ_LF_Combined$Spring_Chinook_Unacceptable_Actions[HQ_LF_index] ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
+          if( substr( HQ_LF_Combined$Spring_Chinook_Unacceptable_Actions[HQ_LF_index], 1, 3  ) == "NA,"  ){  HQ_LF_Combined$Spring_Chinook_Unacceptable_Actions[HQ_LF_index] = substr( HQ_LF_Combined$Spring_Chinook_Unacceptable_Actions[HQ_LF_index], 4, nchar(HQ_LF_Combined$Spring_Chinook_Unacceptable_Actions[HQ_LF_index])  )   }
+          # ---------------------- Spring Chinook benefit ------------
+          HQ_LF_Combined$Spring_Chinook_Benefit[HQ_LF_index] = "yes" 
+          # ---------------------- Add Spring Chinook to species ------------
+          if( grepl( "Spring_Chinook", HQ_LF_Combined$Species[HQ_LF_index]) == FALSE ){ HQ_LF_Combined$Species[HQ_LF_index] = paste(HQ_LF_Combined$Species[HQ_LF_index], "Spring_Chinook", sep=",")  }
+          
+        }
+        # ------------------------ if Steelhead reach ---------------------
+        if( Reach_Information_data$Steelhead.Reach[which(Reach_Information_data$ReachName == reach_x)] == "yes" |
+           AU_rank_steelhead == 1 ){
+          # -------------------------- Action Pathway --------------
+          HQ_LF_Combined$Actions_Steelhead[HQ_LF_index] = paste(HQ_LF_Combined$Actions_Steelhead[HQ_LF_index] ,"Restore Fish Passage",sep=",")
+          if( substr( HQ_LF_Combined$Actions_Steelhead[HQ_LF_index], 1, 3  ) == "NA,"  ){  HQ_LF_Combined$Actions_Steelhead[HQ_LF_index] = substr( HQ_LF_Combined$Actions_Steelhead[HQ_LF_index], 4, nchar(HQ_LF_Combined$Actions_Steelhead[HQ_LF_index])  )   }
+          # ------------------------- Action Category --------------------
+          HQ_LF_Combined$steelhead_actions_x[HQ_LF_index] = paste(HQ_LF_Combined$steelhead_actions_x[HQ_LF_index] ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
+          if( substr( HQ_LF_Combined$steelhead_actions_x[HQ_LF_index], 1, 3  ) == "NA,"  ){  HQ_LF_Combined$steelhead_actions_x[HQ_LF_index] = substr( HQ_LF_Combined$steelhead_actions_x[HQ_LF_index], 4, nchar(HQ_LF_Combined$steelhead_actions_x[HQ_LF_index])  )   }
+          # ------------------------- Unacceptable Actions --------------------
+          HQ_LF_Combined$Steelhead_Unacceptable_Actions[HQ_LF_index] = paste(HQ_LF_Combined$Steelhead_Unacceptable_Actions[HQ_LF_index] ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
+          if( substr( HQ_LF_Combined$Steelhead_Unacceptable_Actions[HQ_LF_index], 1, 3  ) == "NA,"  ){  HQ_LF_Combined$Steelhead_Unacceptable_Actions[HQ_LF_index] = substr( HQ_LF_Combined$Steelhead_Unacceptable_Actions[HQ_LF_index], 4, nchar(HQ_LF_Combined$Steelhead_Unacceptable_Actions[HQ_LF_index])  )   }
+          # ---------------------- Add Steelhead to species ------------
+          if( grepl( "Steelhead", HQ_LF_Combined$Species[HQ_LF_index]) == FALSE  ){ HQ_LF_Combined$Species[HQ_LF_index] = paste(HQ_LF_Combined$Species[HQ_LF_index], "Steelhead", sep=",")  }
+              
+        }
+        # ------------------------ if Bull Trout reach ---------------------
+        if( Reach_Information_data$Bull.Trout.Reach[which(Reach_Information_data$ReachName == reach_x)] == "yes" |
+           AU_rank_bull_trout == 1 ){
+          # -------------------------- Action Pathway --------------
+          HQ_LF_Combined$Actions_Bull_Trout[HQ_LF_index] = paste(HQ_LF_Combined$Actions_Bull_Trout[HQ_LF_index] ,"Restore Fish Passage",sep=",")
+          if( substr( HQ_LF_Combined$Actions_Bull_Trout[HQ_LF_index], 1, 3  ) == "NA,"  ){  HQ_LF_Combined$Actions_Bull_Trout[HQ_LF_index] = substr( HQ_LF_Combined$Actions_Bull_Trout[HQ_LF_index], 4, nchar(HQ_LF_Combined$Actions_Bull_Trout[HQ_LF_index])  )   }
+          # ------------------------- Action Category --------------------
+          HQ_LF_Combined$bull_trout_actions_x[HQ_LF_index] = paste(HQ_LF_Combined$bull_trout_actions_x[HQ_LF_index] ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
+          if( substr( HQ_LF_Combined$bull_trout_actions_x[HQ_LF_index], 1, 3  ) == "NA,"  ){  HQ_LF_Combined$bull_trout_actions_x[HQ_LF_index] = substr( HQ_LF_Combined$bull_trout_actions_x[HQ_LF_index], 4, nchar(HQ_LF_Combined$bull_trout_actions_x[HQ_LF_index])  )   }
+          # ------------------------- Unacceptable Actions --------------------
+          HQ_LF_Combined$Bull_Trout_Unacceptable_Actions[HQ_LF_index] = paste(HQ_LF_Combined$Bull_Trout_Unacceptable_Actions[HQ_LF_index] ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
+          if( substr( HQ_LF_Combined$Bull_Trout_Unacceptable_Actions[HQ_LF_index], 1, 3  ) == "NA,"  ){  HQ_LF_Combined$Bull_Trout_Unacceptable_Actions[HQ_LF_index] = substr( HQ_LF_Combined$Bull_Trout_Unacceptable_Actions[HQ_LF_index], 4, nchar(HQ_LF_Combined$Bull_Trout_Unacceptable_Actions[HQ_LF_index])  )   }
+          # ---------------------- Add Bull Trout to species ------------
+          if( grepl( "Bull_Trout", HQ_LF_Combined$Species[HQ_LF_index]) == FALSE  ){ HQ_LF_Combined$Species[HQ_LF_index] = paste(HQ_LF_Combined$Species[HQ_LF_index], "Bull_Trout", sep=",")  }
+          
+        }
+        
+        # -------------------- prep the ranks (so set NA to 100) -------------
+        if( is.na(AU_Ranks_data$SPCHNTier_Restoration[which(AU_Ranks_data$`Assessment Unit` == Reach_Information_data$Assessment.Unit[which(Reach_Information_data$ReachName == reach_x)])]) ){AU_rank_spring_chinook= 5}else{AU_rank_spring_chinook = AU_Ranks_data$SPCHNTier_Restoration[which(AU_Ranks_data$`Assessment Unit` == Reach_Information_data$Assessment.Unit[which(Reach_Information_data$ReachName == reach_x)])]}
+        if( is.na(AU_Ranks_data$STLTier_Restoration[which(AU_Ranks_data$`Assessment Unit` == Reach_Information_data$Assessment.Unit[which(Reach_Information_data$ReachName == reach_x)])]) ){AU_rank_steelhead = 5}else{AU_rank_steelhead = AU_Ranks_data$STLTier_Restoration[which(AU_Ranks_data$`Assessment Unit` == Reach_Information_data$Assessment.Unit[which(Reach_Information_data$ReachName == reach_x)])]}
+        if( is.na(AU_Ranks_data$BTTier_Restoration[which(AU_Ranks_data$`Assessment Unit` == Reach_Information_data$Assessment.Unit[which(Reach_Information_data$ReachName == reach_x)])]) ){AU_rank_bull_trout = 5}else{AU_rank_bull_trout = AU_Ranks_data$BTTier_Restoration[which(AU_Ranks_data$`Assessment Unit` == Reach_Information_data$Assessment.Unit[which(Reach_Information_data$ReachName == reach_x)])]}
+        
+        # --------------- remove leading NA if present -------------
+        if( grepl('NA, ', HQ_LF_Combined$Actions[HQ_LF_index], fixed = TRUE)  ){ HQ_LF_Combined$Actions[HQ_LF_index] =  substring( HQ_LF_Combined$Actions[HQ_LF_index], 5,nchar( HQ_LF_Combined$Actions[HQ_LF_index]) ) }
+        if( grepl('NA, ', HQ_LF_Combined$Actions_Spring_Chinook[HQ_LF_index], fixed = TRUE)  ){ HQ_LF_Combined$Actions_Spring_Chinook[HQ_LF_index] =  substring( HQ_LF_Combined$Actions_Spring_Chinook[HQ_LF_index], 5,nchar( HQ_LF_Combined$Actions_Spring_Chinook[HQ_LF_index]) ) }
+        if( grepl('NA, ', HQ_LF_Combined$Actions_Steelhead[HQ_LF_index], fixed = TRUE)  ){ HQ_LF_Combined$Actions_Steelhead[HQ_LF_index] =  substring( HQ_LF_Combined$Actions_Steelhead[HQ_LF_index], 5,nchar( HQ_LF_Combined$Actions_Steelhead[HQ_LF_index]) ) }
+        if( grepl('NA, ', HQ_LF_Combined$Actions_Bull_Trout[HQ_LF_index], fixed = TRUE)  ){ HQ_LF_Combined$Actions_Bull_Trout[HQ_LF_index] =  substring( HQ_LF_Combined$Actions_Bull_Trout[HQ_LF_index], 5,nchar( HQ_LF_Combined$Actions_Bull_Trout[HQ_LF_index]) ) }
         
         
     # ------------------------------------------------------------
@@ -1601,6 +1729,10 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined,  Barriers_Pathways_Data,  e
       HQ_and_LF_combo_x$Number_of_Pathways = 1
       # --------- add General Actions column --------
       HQ_and_LF_combo_x$Actions = "Restore Fish Passage"
+      # ------ for individual species (based on reach having species presence) ------
+      HQ_and_LF_combo_x$Actions_Spring_Chinook = "NA"  
+      HQ_and_LF_combo_x$Actions_Steelhead =  "NA"  
+      HQ_and_LF_combo_x$Actions_Bull_Trout = "NA"  
       
       # ------------ yes or no pathways --------
       HQ_and_LF_combo_x$HabitatQuality_Spring_Chinook_Pathway = "no"
@@ -1615,16 +1747,31 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined,  Barriers_Pathways_Data,  e
       
       # ------------- misc other ----------
       species_and_life_stages = FUNCTION_output_life_stages_based_on_species_and_life_stage_presence_FISH_BARRIERs(reach_x, exclude_bull_trout)
-      HQ_and_LF_combo_x$Species = species_and_life_stages[1]
+      HQ_and_LF_combo_x$Species = "NA"  # species_and_life_stages[1]
       HQ_and_LF_combo_x$SprCh_STLD_BullTr_All_Benefit = NA
       HQ_and_LF_combo_x$Spring_Chinook_Benefit = NA
-      HQ_and_LF_combo_x$Spring_Chinook_Habitat_Attributes = NA                    
-      HQ_and_LF_combo_x$Spring_Chinook_Actions = NA                                       
-      HQ_and_LF_combo_x$Steelhead_Habitat_Attributes = NA                               
-      HQ_and_LF_combo_x$Steelhead_Actions = NA 
-      HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes = NA                             
-      HQ_and_LF_combo_x$Bull_Trout_Actions = NA
+      HQ_and_LF_combo_x$Spring_Chinook_Habitat_Attributes_Unacceptable = NA            
+      HQ_and_LF_combo_x$Spring_Chinook_Habitat_Attributes_At_Risk = NA
+      HQ_and_LF_combo_x$Spring_Chinook_Habitat_Attributes = NA   
+      HQ_and_LF_combo_x$Spring_Chinook_Unacceptable_Actions = NA                      
+      HQ_and_LF_combo_x$Spring_Chinook_At_Risk_Actions = NA
+      HQ_and_LF_combo_x$spring_chinook_actions_x = NA   
+      HQ_and_LF_combo_x$Steelhead_Habitat_Attributes_Unacceptable = NA
+      HQ_and_LF_combo_x$Steelhead_Habitat_Attributes_At_Risk = NA
+      HQ_and_LF_combo_x$Steelhead_Habitat_Attributes = NA   
+      HQ_and_LF_combo_x$Steelhead_Unacceptable_Actions = NA                           
+      HQ_and_LF_combo_x$Steelhead_At_Risk_Actions = NA
+      HQ_and_LF_combo_x$steelhead_actions_x = NA 
+      HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes_Unacceptable = NA                
+      HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes_At_Risk = NA
+      HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes = NA 
+      HQ_and_LF_combo_x$Bull_Trout_Unacceptable_Actions = NA                           
+      HQ_and_LF_combo_x$Bull_Trout_At_Risk_Actions = NA
+      HQ_and_LF_combo_x$bull_trout_actions_x = NA
       HQ_and_LF_combo_x$Life_Stages = NA
+      HQ_and_LF_combo_x$Life_Stages_SpringChinook = NA
+      HQ_and_LF_combo_x$Life_Stages_Steelhead = NA
+      HQ_and_LF_combo_x$Life_Stages_BullTrout = NA
       #HQ_and_LF_combo_x$Life_Stages_Presence = NA
       
       # ----------------- add Action Categories  ------------
@@ -1632,8 +1779,8 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined,  Barriers_Pathways_Data,  e
       HQ_and_LF_combo_x$Number_Action_Categories_All_Species = 1
       
       # -------------- add Habitat Attributes ------------
-      HQ_and_LF_combo_x$Impaired_Habitat_Attributes_All_Species = Barriers_Pathways_Data$Habitat_Attributes[barrier_index]
-      HQ_and_LF_combo_x$Number_Impaired_Habitat_Attributes_All_Species = 1
+      HQ_and_LF_combo_x$Impaired_Habitat_Attributes_All_Species = "NA" # Barriers_Pathways_Data$Habitat_Attributes[barrier_index]
+      HQ_and_LF_combo_x$Number_Impaired_Habitat_Attributes_All_Species = "NA"  # 1
       
       # ------ more misc -------
       HQ_and_LF_combo_x$Unacceptable_Habitat_Attributes_Presence = NA
@@ -1644,11 +1791,59 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined,  Barriers_Pathways_Data,  e
       HQ_and_LF_combo_x$At_Risk_Impaired_Habitat_Attributes_All_Species = NA
       HQ_and_LF_combo_x$At_Risk_Number_Impaired_Habitat_Attributes_All_Species = NA
       
+      # ------------------------ if Spring Chinook reach ---------------------
+      if( Reach_Information_data$Spring.Chinook.Reach[which(Reach_Information_data$ReachName == reach_x)] == "yes"   |
+          AU_rank_spring_chinook == 1 ){
+        # -------------------------- Action Pathway --------------
+        HQ_and_LF_combo_x$Actions_Spring_Chinook = paste(HQ_and_LF_combo_x$Actions_Spring_Chinook ,"Restore Fish Passage",sep=",")
+        if( substr( HQ_and_LF_combo_x$Actions_Spring_Chinook, 1, 3  ) == "NA,"  ){  HQ_and_LF_combo_x$Actions_Spring_Chinook = substr( HQ_and_LF_combo_x$Actions_Spring_Chinook, 4, nchar(HQ_and_LF_combo_x$Actions_Spring_Chinook)  )   }
+        # ------------------------- Action Category --------------------
+        HQ_and_LF_combo_x$spring_chinook_actions_x = paste(HQ_and_LF_combo_x$spring_chinook_actions_x ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
+        if( substr( HQ_and_LF_combo_x$spring_chinook_actions_x, 1, 3  ) == "NA,"  ){  HQ_and_LF_combo_x$spring_chinook_actions_x = substr( HQ_and_LF_combo_x$spring_chinook_actions_x, 4, nchar(HQ_and_LF_combo_x$spring_chinook_actions_x)  )   }
+        # ------------------------- Unacceptable Actions --------------------
+        HQ_and_LF_combo_x$Spring_Chinook_Unacceptable_Actions = paste(HQ_and_LF_combo_x$Spring_Chinook_Unacceptable_Actions ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
+        if( substr( HQ_and_LF_combo_x$Spring_Chinook_Unacceptable_Actions, 1, 3  ) == "NA,"  ){  HQ_and_LF_combo_x$Spring_Chinook_Unacceptable_Actions = substr( HQ_and_LF_combo_x$Spring_Chinook_Unacceptable_Actions, 4, nchar(HQ_and_LF_combo_x$Spring_Chinook_Unacceptable_Actions)  )   }
+        # ---------------------- Spring Chinook benefit ------------
+        HQ_and_LF_combo_x$Spring_Chinook_Benefit = "yes" 
+        # ------------------------ add species name ------------
+        HQ_and_LF_combo_x$Species = "Spring_Chinook"
+      }
+      # ------------------------ if Steelhead reach ---------------------
+      if( Reach_Information_data$Steelhead.Reach[which(Reach_Information_data$ReachName == reach_x)] == "yes" |
+         AU_rank_steelhead == 1 ){
+        # -------------------------- Action Pathway --------------
+        HQ_and_LF_combo_x$Actions_Steelhead = paste(HQ_and_LF_combo_x$Actions_Steelhead ,"Restore Fish Passage",sep=",")
+        if( substr( HQ_and_LF_combo_x$Actions_Steelhead, 1, 3  ) == "NA,"  ){  HQ_and_LF_combo_x$Actions_Steelhead = substr( HQ_and_LF_combo_x$Actions_Steelhead, 4, nchar(HQ_and_LF_combo_x$Actions_Steelhead)  )   }
+        # ------------------------- Action Category --------------------
+        HQ_and_LF_combo_x$steelhead_actions_x = paste(HQ_and_LF_combo_x$steelhead_actions_x ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
+        if( substr( HQ_and_LF_combo_x$steelhead_actions_x, 1, 3  ) == "NA,"  ){  HQ_and_LF_combo_x$steelhead_actions_x = substr( HQ_and_LF_combo_x$steelhead_actions_x, 4, nchar(HQ_and_LF_combo_x$steelhead_actions_x)  )   }
+        # ------------------------- Unacceptable Actions --------------------
+        HQ_and_LF_combo_x$Steelhead_Unacceptable_Actions = paste(HQ_and_LF_combo_x$Steelhead_Unacceptable_Actions ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
+        if( substr( HQ_and_LF_combo_x$Steelhead_Unacceptable_Actions, 1, 3  ) == "NA,"  ){  HQ_and_LF_combo_x$Steelhead_Unacceptable_Actions = substr( HQ_and_LF_combo_x$Steelhead_Unacceptable_Actions, 4, nchar(HQ_and_LF_combo_x$Steelhead_Unacceptable_Actions)  )   }
+        # ------------------------ add species name ------------
+        HQ_and_LF_combo_x$Species = paste(HQ_and_LF_combo_x$Species,"Steelhead",sep=",")
+        if( substr( HQ_and_LF_combo_x$Species, 1, 3  ) == "NA,"  ){  HQ_and_LF_combo_x$Species = substr( HQ_and_LF_combo_x$Species, 4, nchar( HQ_and_LF_combo_x$Species )  )   }
+      }
+      # ------------------------ if Bull Trout reach ---------------------
+      if( Reach_Information_data$Bull.Trout.Reach[which(Reach_Information_data$ReachName == reach_x)] == "yes" |
+         AU_rank_bull_trout == 1 ){
+        # -------------------------- Action Pathway --------------
+        HQ_and_LF_combo_x$Actions_Bull_Trout = paste(HQ_and_LF_combo_x$Actions_Bull_Trout ,"Restore Fish Passage",sep=",")
+        if( substr( HQ_and_LF_combo_x$Actions_Bull_Trout, 1, 3  ) == "NA,"  ){  HQ_and_LF_combo_x$Actions_Bull_Trout = substr( HQ_and_LF_combo_x$Actions_Bull_Trout, 4, nchar(HQ_and_LF_combo_x$Actions_Bull_Trout)  )   }
+        # ------------------------- Action Category --------------------
+        HQ_and_LF_combo_x$bull_trout_actions_x = paste(HQ_and_LF_combo_x$bull_trout_actions_x ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
+        if( substr( HQ_and_LF_combo_x$bull_trout_actions_x, 1, 3  ) == "NA,"  ){  HQ_and_LF_combo_x$bull_trout_actions_x = substr( HQ_and_LF_combo_x$bull_trout_actions_x, 4, nchar(HQ_and_LF_combo_x$bull_trout_actions_x)  )   }
+        # ------------------------- Unacceptable Actions --------------------
+        HQ_and_LF_combo_x$Bull_Trout_Unacceptable_Actions = paste(HQ_and_LF_combo_x$Bull_Trout_Unacceptable_Actions ,Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"],sep=",")
+        if( substr( HQ_and_LF_combo_x$Bull_Trout_Unacceptable_Actions, 1, 3  ) == "NA,"  ){  HQ_and_LF_combo_x$Bull_Trout_Unacceptable_Actions = substr( HQ_and_LF_combo_x$Bull_Trout_Unacceptable_Actions, 4, nchar(HQ_and_LF_combo_x$Bull_Trout_Unacceptable_Actions)  )   }
+        # ------------------------ add species name ------------
+        HQ_and_LF_combo_x$Species = paste(HQ_and_LF_combo_x$Species,"Bull_Trout",sep=",")
+        if( substr( HQ_and_LF_combo_x$Species, 1, 3  ) == "NA,"  ){  HQ_and_LF_combo_x$Species = substr( HQ_and_LF_combo_x$Species, 4, nchar( HQ_and_LF_combo_x$Species)  )   }
+      }
+      
       # ------ Add another row to output ------
       colnames(HQ_and_LF_combo_x) = colnames(HQ_LF_Combined)
       HQ_LF_Combined = rbind(HQ_LF_Combined, HQ_and_LF_combo_x)
-      
-      
     }
     
   }
@@ -1665,13 +1860,36 @@ FUNCTION_Add_Barrier_Data = function(HQ_LF_Combined,  Barriers_Pathways_Data,  e
   HQ_LF_Combined$At_Risk_Habitat_Attributes_Presence[ which( is.na(HQ_LF_Combined$At_Risk_Habitat_Attributes_Presence) ) ] = "NA"
   HQ_LF_Combined$At_Risk_Impaired_Habitat_Attributes_All_Species[ which( is.na(HQ_LF_Combined$At_Risk_Impaired_Habitat_Attributes_All_Species) ) ] = "NA"
   
-  
-  
   # ------------------- convert NAs in numeric to 0 -------------
   HQ_LF_Combined$Unacceptable_Number_Impaired_Habitat_Attributes_All_Species[ which( is.na(HQ_LF_Combined$Unacceptable_Number_Impaired_Habitat_Attributes_All_Species) ) ] = 0
   
   HQ_LF_Combined$At_Risk_Number_Impaired_Habitat_Attributes_All_Species[ which( is.na(HQ_LF_Combined$At_Risk_Number_Impaired_Habitat_Attributes_All_Species) ) ] = 0
   
+  # ---------------------------------------
+  #  Add species to reach pulled for fish passage (and not in current species reach layer)
+  # ---------------------------------------
+  x_i = 0
+  for(reach_x in reach_to_add_species){
+    x_i = x_i + 1
+    reach_to_add_species_x = which(HQ_LF_Combined$ReachName == reach_x)
+    # ------------------ add species name ----------
+    HQ_LF_Combined$Species[reach_to_add_species_x] = species_to_add_to_reach[x_i]
+    # ------------------ add barrier to action category ----------
+    if(species_to_add_to_reach == "Steelhead"){
+      HQ_LF_Combined$steelhead_actions_x[reach_to_add_species_x] = paste(HQ_LF_Combined$steelhead_actions_x[reach_to_add_species_x], Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"], sep=",")
+      HQ_LF_Combined$Action_Categories_All_Species[reach_to_add_species_x] = paste(HQ_LF_Combined$Action_Categories_All_Species[reach_to_add_species_x], Crosswalk_Habitat_Attributes_and_Actions$`Action Category`[Crosswalk_Habitat_Attributes_and_Actions$Pathway == "Barriers"], sep=",")
+      HQ_LF_Combined$Actions_Steelhead[reach_to_add_species_x] = paste(HQ_LF_Combined$Actions_Steelhead[reach_to_add_species_x], "Restore Fish Passage", sep=",")
+      
+      # ------------- remove leading NA or comma ----------------
+      if( grepl("NA,", HQ_LF_Combined$steelhead_actions_x[reach_to_add_species_x] )  ){  HQ_LF_Combined$steelhead_actions_x[reach_to_add_species_x] = substr(HQ_LF_Combined$steelhead_actions_x[reach_to_add_species_x], 4,nchar(HQ_LF_Combined$steelhead_actions_x[reach_to_add_species_x]))  }
+      if( grepl("NA,", HQ_LF_Combined$Action_Categories_All_Species[reach_to_add_species_x] )  ){  HQ_LF_Combined$Action_Categories_All_Species[reach_to_add_species_x] = substr(HQ_LF_Combined$Action_Categories_All_Species[reach_to_add_species_x], 4,nchar(HQ_LF_Combined$Action_Categories_All_Species[reach_to_add_species_x]))  }
+      if( grepl("NA,", HQ_LF_Combined$Actions_Steelhead[reach_to_add_species_x] )  ){  HQ_LF_Combined$Actions_Steelhead[reach_to_add_species_x] = substr(HQ_LF_Combined$Actions_Steelhead[reach_to_add_species_x], 4,nchar(HQ_LF_Combined$Actions_Steelhead[reach_to_add_species_x]))  }
+      
+      
+    }
+    
+    
+  }
   
   return(HQ_LF_Combined)
 
@@ -1755,11 +1973,11 @@ FUNCTION_Add_Barrier_Data_to_WebMap_Flat_Tables = function(HQ_LF_Combined, Barri
       HQ_and_LF_combo_x$SprCh_STLD_BullTr_All_Benefit = NA
       HQ_and_LF_combo_x$Spring_Chinook_Benefit = NA
       HQ_and_LF_combo_x$Spring_Chinook_Habitat_Attributes = NA                    
-      HQ_and_LF_combo_x$Spring_Chinook_Actions = NA                                       
+      HQ_and_LF_combo_x$spring_chinook_actions_x = NA                                       
       HQ_and_LF_combo_x$Steelhead_Habitat_Attributes = NA                               
-      HQ_and_LF_combo_x$Steelhead_Actions = NA 
+      HQ_and_LF_combo_x$steelhead_actions_x = NA 
       HQ_and_LF_combo_x$Bull_Trout_Habitat_Attributes = NA                             
-      HQ_and_LF_combo_x$Bull_Trout_Actions = NA
+      HQ_and_LF_combo_x$bull_trout_actions_x = NA
       HQ_and_LF_combo_x$Life_Stages = NA
       HQ_and_LF_combo_x$Life_Stages_Presence = NA
       
@@ -1879,6 +2097,14 @@ FUNCTION_prepare_outward_facing_table = function(data_frame_x, colnames_outward_
   data_frame_x$Impaired_Habitat_Attributes_All_Species = gsub("PoolQuantity&Quality", "Pool Quantity and Quality", data_frame_x$Impaired_Habitat_Attributes_All_Species )
   # -------------------- Entrainment and Stranding ------------------
   data_frame_x$Impaired_Habitat_Attributes_All_Species = gsub("Entrainment/Stranding", "Entrainment and Stranding", data_frame_x$Impaired_Habitat_Attributes_All_Species )
+  # -------------------- Floodplain Connectivity ------------------
+  data_frame_x$Impaired_Habitat_Attributes_All_Species = gsub("FloodplainConnectivity", "Off-Channel- Floodplain", data_frame_x$Impaired_Habitat_Attributes_All_Species )
+  # -------------------- Off-Channel/Side-Channels------------------
+  data_frame_x$Impaired_Habitat_Attributes_All_Species = gsub("Off-Channel/Side-Channels", "Off-Channel- Side-Channels", data_frame_x$Impaired_Habitat_Attributes_All_Species )
+  # -------------------- Off-Channel/Side-Channels------------------
+  data_frame_x$Impaired_Habitat_Attributes_All_Species = gsub(",,,", ",", data_frame_x$Impaired_Habitat_Attributes_All_Species )
+  data_frame_x$Impaired_Habitat_Attributes_All_Species = gsub(",,", ",", data_frame_x$Impaired_Habitat_Attributes_All_Species )
+  
   # ---------------- update the column names as necessary ------------
   data_frame_x$Impaired_Habitat_Attributes_All_Species = gsub("CoarseSubstrate", "Coarse Substrate", data_frame_x$Impaired_Habitat_Attributes_All_Species )
   data_frame_x$Impaired_Habitat_Attributes_All_Species = gsub("Cover-Wood", "Cover- Wood", data_frame_x$Impaired_Habitat_Attributes_All_Species )
@@ -1948,6 +2174,15 @@ FUNCTION_update_habitat_attributes_Restoration = function(data_frame_x){
   data_frame_x$`Unacceptable Limiting Factors` = gsub("PoolQuantity&Quality", "Pool Quantity and Quality", data_frame_x$`Unacceptable Limiting Factors` )
   # -------------------- Entrainment and Stranding ------------------
   data_frame_x$`Unacceptable Limiting Factors` = gsub("Entrainment/Stranding", "Entrainment and Stranding", data_frame_x$`Unacceptable Limiting Factors` )
+  # -------------------- Floodplain Connectivity ------------------
+  data_frame_x$`Unacceptable Limiting Factors` = gsub("FloodplainConnectivity", "Off-Channel- Floodplain", data_frame_x$`Unacceptable Limiting Factors` )
+  # -------------------- Off-Channel/Side-Channels ------------------
+  data_frame_x$`Unacceptable Limiting Factors` = gsub("Off-Channel/Side-Channels", "Off-Channel- Side-Channels", data_frame_x$`Unacceptable Limiting Factors` )
+  # -------------------- Off-Channel/Side-Channels ------------------
+  data_frame_x$`Unacceptable Limiting Factors` = gsub(",,,", ",", data_frame_x$`Unacceptable Limiting Factors` )
+  data_frame_x$`Unacceptable Limiting Factors` = gsub(",,", ",", data_frame_x$`Unacceptable Limiting Factors` )
+  
+  
   # ---------------- update the column names as necessary ------------
   data_frame_x$`Unacceptable Limiting Factors` = gsub("CoarseSubstrate", "Coarse Substrate", data_frame_x$`Unacceptable Limiting Factors` )
   data_frame_x$`Unacceptable Limiting Factors` = gsub("Cover-Wood", "Cover- Wood", data_frame_x$`Unacceptable Limiting Factors` )
@@ -1983,6 +2218,15 @@ FUNCTION_update_habitat_attributes_Restoration = function(data_frame_x){
   data_frame_x$`At-Risk Limiting Factors` = gsub("PoolQuantity&Quality", "Pool Quantity and Quality", data_frame_x$`At-Risk Limiting Factors` )
   # -------------------- Entrainment and Stranding ------------------
   data_frame_x$`At-Risk Limiting Factors` = gsub("Entrainment/Stranding", "Entrainment and Stranding", data_frame_x$`At-Risk Limiting Factors` )
+  # -------------------- Floodplain Connectivity ------------------
+  data_frame_x$`At-Risk Limiting Factors` = gsub("FloodplainConnectivity", "Off-Channel- Floodplain", data_frame_x$`At-Risk Limiting Factors` )
+  # -------------------- Off-Channel/Side-Channels ------------------
+  data_frame_x$`At-Risk Limiting Factors` = gsub("Off-Channel/Side-Channels", "Off-Channel- Side-Channels", data_frame_x$`At-Risk Limiting Factors` )
+  # --------------- remove empty spaces -----------------
+  data_frame_x$`At-Risk Limiting Factors` = gsub(",,,", ",", data_frame_x$`At-Risk Limiting Factors` )
+  data_frame_x$`At-Risk Limiting Factors` = gsub(",,", ",", data_frame_x$`At-Risk Limiting Factors` )
+  
+  
   # ---------------- update the column names as necessary ------------
   data_frame_x$`At-Risk Limiting Factors` = gsub("CoarseSubstrate", "Coarse Substrate", data_frame_x$`At-Risk Limiting Factors` )
   data_frame_x$`At-Risk Limiting Factors` = gsub("Cover-Wood", "Cover- Wood", data_frame_x$`At-Risk Limiting Factors` )
@@ -2106,3 +2350,372 @@ if(compare_x){
   }
 }
 
+
+
+# ---------------------------------------------------------------------------
+#    
+#   Misc updates for Prioritization and Restoratoin to Prepare for WebMap
+#     Add Reach Rank and Organize data
+#
+# ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+#    Prepare Restoration
+# ---------------------------------------------------------------------------
+
+FUNCTION_Add_Reach_Rank_and_Misc_Updates_for_WebMap_Restoration = function(Restoration_Prioritization_Output_for_WebMap){
+  
+  # ------------ make the data frame updated -----------
+  Restoration_Prioritization_Output_for_WebMap_Updated = Restoration_Prioritization_Output_for_WebMap
+  
+  columns_to_add_Restoration_Output = c()
+  for(reach_x in Restoration_Prioritization_Output_for_WebMap_Updated$ReachName){
+    
+    # ---------------------- Add Basin ------------------
+    basin_x = Reach_Information_data$Basin[which(Reach_Information_data$ReachName == reach_x)]
+    
+    # ------------------- Add Reach Rank ---------------
+    reach_rank_x = Reach_Rankings_Output_Restoration$AU_level_Reach_Rank[which(Reach_Rankings_Output_Restoration$ReachName == reach_x)]
+    if(length(reach_rank_x) == 0){ reach_rank_x = NA}
+     
+    # -------------- Unacceptable Limiting Factors ----------------
+    unacceptable_limiting_factors_x = Restoration_Prioritization_Output$Unacceptable_Impaired_Habitat_Attributes_All_Species[which(Restoration_Prioritization_Output$ReachName == reach_x)]
+    
+    # ------------ Add At-Risk Limiting Factors  ----------------
+    at_risk_limiting_factors_x = Restoration_Prioritization_Output$At_Risk_Impaired_Habitat_Attributes_All_Species[which(Restoration_Prioritization_Output$ReachName == reach_x)]
+    
+    # --------------- combine all the output -------------
+    output_x = t( as.data.frame( c(basin_x, reach_rank_x,unacceptable_limiting_factors_x, at_risk_limiting_factors_x )  )  )
+    colnames(output_x) = c("Basin","Reach Rank", "Unacceptable Limiting Factors", "At-Risk Limiting Factors")
+    columns_to_add_Restoration_Output = rbind(columns_to_add_Restoration_Output,  output_x )
+    
+  }
+  rownames(columns_to_add_Restoration_Output) = rownames(Restoration_Prioritization_Output_for_WebMap_Updated)
+  Restoration_Prioritization_Output_for_WebMap_Updated = cbind(Restoration_Prioritization_Output_for_WebMap_Updated, columns_to_add_Restoration_Output)
+  
+  # ---------------- Update Column Names --------
+  if(any(colnames(Restoration_Prioritization_Output_for_WebMap_Updated) == "ReachName")){
+    colx = which(colnames( Restoration_Prioritization_Output_for_WebMap_Updated ) == "ReachName")
+    colnames( Restoration_Prioritization_Output_for_WebMap_Updated )[colx] = "Reach Name"
+  }
+  if(any(colnames(Restoration_Prioritization_Output_for_WebMap_Updated) == "Assessment.Unit")){
+    colx = which(colnames( Restoration_Prioritization_Output_for_WebMap_Updated ) == "Assessment.Unit")
+    colnames( Restoration_Prioritization_Output_for_WebMap_Updated )[colx] = "Assessment Unit"
+  }
+  if(any(colnames(Restoration_Prioritization_Output_for_WebMap_Updated) == "Actions")){
+    colx = which(colnames( Restoration_Prioritization_Output_for_WebMap_Updated ) == "Actions")
+    colnames( Restoration_Prioritization_Output_for_WebMap_Updated )[colx] = "Priority Actions"
+  }
+  if(any(colnames(Restoration_Prioritization_Output_for_WebMap_Updated) == "Life_Stages")){
+    colx = which(colnames( Restoration_Prioritization_Output_for_WebMap_Updated ) == "Life_Stages")
+    colnames( Restoration_Prioritization_Output_for_WebMap_Updated )[colx] = "Priority Life Stages"
+  }
+  if(any(colnames(Restoration_Prioritization_Output_for_WebMap_Updated) == "Species")){
+    colx = which(colnames( Restoration_Prioritization_Output_for_WebMap_Updated ) == "Species")
+    colnames( Restoration_Prioritization_Output_for_WebMap_Updated )[colx] = "Priority Species"
+  }
+  if(any(colnames(Restoration_Prioritization_Output_for_WebMap_Updated) == "Action_Categories_All_Species")){
+    colx = which(colnames( Restoration_Prioritization_Output_for_WebMap_Updated ) == "Action_Categories_All_Species")
+    colnames( Restoration_Prioritization_Output_for_WebMap_Updated )[colx] = "Action Categories"
+  }
+  
+  # --------------------------- re-order reaches to be in correct order ---------------------------------
+  # NOTE: these are also the correct column names (as of 24.June.2021)
+  Restoration_Prioritization_Output_for_WebMap_Updated_column_order = c("Reach Name","Basin", "Assessment Unit" ,"Priority Actions" ,"Reach Rank",            
+                                                                        "Priority Species" , "Priority Life Stages" ,                 
+                                                                        "Unacceptable Limiting Factors" ,"At-Risk Limiting Factors", "Action Categories" )
+  Restoration_Prioritization_Output_for_WebMap_Updated = Restoration_Prioritization_Output_for_WebMap_Updated[,Restoration_Prioritization_Output_for_WebMap_Updated_column_order]
+  
+  # ----------------------- update habit at attribute names ------
+  Restoration_Prioritization_Output_for_WebMap_Updated = FUNCTION_update_habitat_attributes_Restoration(Restoration_Prioritization_Output_for_WebMap_Updated)
+  
+  #---------------- convert reach rank to integer -----------
+  Restoration_Prioritization_Output_for_WebMap_Updated$`Reach Rank` = as.character(Restoration_Prioritization_Output_for_WebMap_Updated$`Reach Rank`)
+  
+  # ------------------------------------------------------------------------------------ 
+  #                     update action category names and species names
+  # ------------------------------------------------------------------------------------ 
+  
+  Crosswalk_Habitat_Attributes_and_Actions_Unique = Crosswalk_Habitat_Attributes_and_Actions[which(  duplicated(Crosswalk_Habitat_Attributes_and_Actions$Action_Category_2) == FALSE ), ]
+  Crosswalk_Habitat_Attributes_and_Actions_Unique = Crosswalk_Habitat_Attributes_and_Actions_Unique[order(Crosswalk_Habitat_Attributes_and_Actions_Unique$Action_Category_2), ]
+  
+  for(row_x in 1:nrow(Restoration_Prioritization_Output_for_WebMap_Updated) ){
+    
+    # ----------------------------------------------------
+    #     Update action category names (so spaces between woords)
+    # ----------------------------------------------------
+    
+    action_x = Restoration_Prioritization_Output_for_WebMap_Updated$'Action Categories'[row_x]
+    
+    # ------------- loop thorugh all actions and update names --------
+    actions_new_x = NA
+    for(row_action_name_x in 1:nrow(Crosswalk_Habitat_Attributes_and_Actions_Unique) ){
+      if( grepl(Crosswalk_Habitat_Attributes_and_Actions_Unique$Action_Category_2[row_action_name_x], action_x, fixed=TRUE  ) ){
+        actions_new_x = paste(actions_new_x, Crosswalk_Habitat_Attributes_and_Actions_Unique$`Action Category`[row_action_name_x], sep=", ")
+      }
+    }
+    # -------- remove leading NA ---------
+    if( grepl("NA, ", actions_new_x, fixed=TRUE  ) ){ actions_new_x = substring(actions_new_x, 5, nchar(actions_new_x)) }
+    # --------------- update action categories --------
+    Restoration_Prioritization_Output_for_WebMap_Updated$'Action Categories'[row_x] = actions_new_x
+    
+    # ----------------------------------------------------
+    #     Update species names (so no undersscore between Spring and Chinook)
+    # ----------------------------------------------------
+    
+    species_x = Restoration_Prioritization_Output_for_WebMap_Updated$`Priority Species`[row_x]
+    species_new_x = "no priority species"
+    
+    if( grepl("Spring_Chinook", species_x, fixed=TRUE  ) |  grepl("Spring Chinook", species_x, fixed=TRUE  )  ){ species_new_x = paste(species_new_x, "Spring Chinook", sep=", ") }
+    if( grepl("Steelhead", species_x, fixed=TRUE  ) ){ species_new_x = paste(species_new_x, "Steelhead", sep=", ") }
+    if( grepl("Bull_Trout", species_x, fixed=TRUE  )  | grepl("Bull Trout", species_x, fixed=TRUE  ) ){ species_new_x = paste(species_new_x, "Bull Trout", sep=", ") }
+    
+    # ------------------ remove "no priority species" is species present
+    if( grepl("no priority species, ", species_new_x, fixed=TRUE  ) ){ species_new_x = substring(species_new_x, 22, nchar(species_new_x)) }
+    
+    # --------------- update action categories --------
+    Restoration_Prioritization_Output_for_WebMap_Updated$`Priority Species`[row_x]= species_new_x
+    
+  }
+  
+  # ------------------------------------------------------------------------------------ 
+  #              Add species to reach pulled for fish passage (and not in current species reach layer)
+  # ------------------------------------------------------------------------------------
+  x_i = 0
+  for(reach_x in reach_to_add_species){
+    x_i = x_i + 1
+    reach_to_add_species_x = which(Restoration_Prioritization_Output_for_WebMap_Updated$`Reach Name` == reach_x)
+    Restoration_Prioritization_Output_for_WebMap_Updated$`Priority Species`[reach_to_add_species_x] = species_to_add_to_reach[x_i]
+  }
+
+  
+  return(Restoration_Prioritization_Output_for_WebMap_Updated)
+}
+
+
+# ---------------------------------------------------------------------------
+#    Prepare Restoration - SINGLE SPECIES
+# ---------------------------------------------------------------------------
+test_x = FALSE
+if(test_x){
+  indiv_restoration_output = Restoration_Prioritization_Output_Steelhead
+}
+
+FUNCTION_Add_Reach_Rank_and_Misc_Updates_for_WebMap_Restoration_INDIV_SPECIES = function(indiv_restoration_output){
+  
+  # ------------ make the data frame updated -----------
+  indiv_restoration_output_Updated = indiv_restoration_output
+  
+  # ---------- add Basin column ------------
+  indiv_restoration_output_Updated$Basin = NA
+  indiv_restoration_output_Updated$ReachRank = NA
+  
+  columns_to_add_Restoration_Output = c()
+  for(reach_x in indiv_restoration_output_Updated$ReachName){
+    
+    # ---------------- pull the row ---------------
+    reach_index_x = which(indiv_restoration_output_Updated$ReachName == reach_x)
+    
+    # ---------------------- Add Basin ------------------
+    indiv_restoration_output_Updated$Basin[reach_index_x] = Reach_Information_data$Basin[which(Reach_Information_data$ReachName == reach_x)]
+    
+    # ------------------- Add Reach Rank ---------------
+    reach_rank_x = Reach_Rankings_Output_Restoration$AU_level_Reach_Rank[which(Reach_Rankings_Output_Restoration$ReachName == reach_x)]
+    if(length(reach_rank_x) == 0){ reach_rank_x = NA}
+    indiv_restoration_output_Updated$ReachRank[reach_index_x] = reach_rank_x
+    
+  }
+  
+  # ----------- identify which columns ------------
+  # ----------- priority action ------
+  action_column_name_index_x = which( grepl("Actions_", colnames(indiv_restoration_output_Updated), fixed=TRUE ) )
+  action_column_name_x = colnames(indiv_restoration_output_Updated)[action_column_name_index_x]
+  # ----------- priority life stage ------
+  life_stage_column_name_index_x = which( grepl("Life_Stages_", colnames(indiv_restoration_output_Updated), fixed=TRUE ) )
+  life_stage_column_name_x = colnames(indiv_restoration_output_Updated)[life_stage_column_name_index_x]
+  # ----------- at risk habitat attributes ------
+  at_risk_column_name_index_x = which( grepl("_Habitat_Attributes_At_Risk", colnames(indiv_restoration_output_Updated), fixed=TRUE ) )
+  at_risk_column_name_x = colnames(indiv_restoration_output_Updated)[at_risk_column_name_index_x]
+  # ----------- unacceptable habitat attributes ------
+  unacceptable_column_name_index_x = which( grepl("_Habitat_Attributes_Unacceptable", colnames(indiv_restoration_output_Updated), fixed=TRUE ) )
+  unacceptable_column_name_x = colnames(indiv_restoration_output_Updated)[unacceptable_column_name_index_x]
+  # ----------- unacceptable habitat attributes ------
+  actions_column_name_index_x = which( grepl("_Actions", colnames(indiv_restoration_output_Updated), fixed=TRUE ) )
+  actions_column_name_x = colnames(indiv_restoration_output_Updated)[actions_column_name_index_x]
+
+  # ---------------- Update Column Names --------
+  if(any(colnames(indiv_restoration_output_Updated) == "ReachName")){
+    colx = which(colnames( indiv_restoration_output_Updated ) == "ReachName")
+    colnames( indiv_restoration_output_Updated )[colx] = "Reach Name"
+  }
+  if(any(colnames(indiv_restoration_output_Updated) == "Assessment.Unit")){
+    colx = which(colnames( indiv_restoration_output_Updated ) == "Assessment.Unit")
+    colnames( indiv_restoration_output_Updated )[colx] = "Assessment Unit"
+  }
+  if(any(colnames(indiv_restoration_output_Updated) == "ReachRank")){
+    colx = which(colnames( indiv_restoration_output_Updated ) == "ReachRank")
+    colnames( indiv_restoration_output_Updated )[colx] = "Reach Rank"
+  }
+  if(any(colnames(indiv_restoration_output_Updated) == action_column_name_x)){
+    colx = which(colnames( indiv_restoration_output_Updated ) == action_column_name_x)
+    colnames( indiv_restoration_output_Updated )[colx] = "Priority Actions"
+  }
+  if(any(colnames(indiv_restoration_output_Updated) == life_stage_column_name_x)){
+    colx = which(colnames( indiv_restoration_output_Updated ) == life_stage_column_name_x)
+    colnames( indiv_restoration_output_Updated )[colx] = "Priority Life Stages"
+  }
+  if(any(colnames(indiv_restoration_output_Updated) == at_risk_column_name_x)){
+    colx = which(colnames( indiv_restoration_output_Updated ) == at_risk_column_name_x)
+    colnames( indiv_restoration_output_Updated )[colx] = "At-Risk Limiting Factors"
+  }
+  if(any(colnames(indiv_restoration_output_Updated) == unacceptable_column_name_x)){
+    colx = which(colnames( indiv_restoration_output_Updated ) == unacceptable_column_name_x)
+    colnames( indiv_restoration_output_Updated )[colx] = "Unacceptable Limiting Factors"
+  }
+  if(any(colnames(indiv_restoration_output_Updated) == actions_column_name_x)){
+    colx = which(colnames( indiv_restoration_output_Updated ) == actions_column_name_x)
+    colnames( indiv_restoration_output_Updated )[colx] = "Action Categories"
+  }
+  
+  
+  # -------------------- Floodplain Connectivity ------------------
+  indiv_restoration_output_Updated$"Unacceptable Limiting Factors" = gsub("FloodplainConnectivity", "Off-Channel- Floodplain", indiv_restoration_output_Updated$"Unacceptable Limiting Factors" )
+  indiv_restoration_output_Updated$"At-Risk Limiting Factors" = gsub("FloodplainConnectivity", "Off-Channel- Floodplain", indiv_restoration_output_Updated$"At-Risk Limiting Factors" )
+  # -------------------- Off-Channel- Side-Channels ------------------
+  indiv_restoration_output_Updated$"Unacceptable Limiting Factors" = gsub("Off-Channel/Side-Channels", "Off-Channel- Side-Channels", indiv_restoration_output_Updated$"Unacceptable Limiting Factors" )
+  indiv_restoration_output_Updated$"At-Risk Limiting Factors" = gsub("Off-Channel/Side-Channels", "Off-Channel- Side-Channels", indiv_restoration_output_Updated$"At-Risk Limiting Factors" )
+  # -------------------- Remove empty spaces ------------------
+  indiv_restoration_output_Updated$"Unacceptable Limiting Factors" = gsub(",,,", ",", indiv_restoration_output_Updated$"Unacceptable Limiting Factors" )
+  indiv_restoration_output_Updated$"At-Risk Limiting Factors" = gsub(",,", ",", indiv_restoration_output_Updated$"At-Risk Limiting Factors" )
+  
+  
+  # --------------------------- re-order reaches to be in correct order ---------------------------------
+  # NOTE: these are also the correct column names (as of 24.June.2021)
+  Indiv_Restoration_Output_for_WebMap_Updated_column_order = c("Reach Name","Basin", "Assessment Unit" ,"Priority Actions" ,"Reach Rank",            
+                                                                         "Priority Life Stages" ,                 
+                                                                        "Unacceptable Limiting Factors" ,"At-Risk Limiting Factors", "Action Categories" )
+  indiv_restoration_output_Updated = indiv_restoration_output_Updated[,Indiv_Restoration_Output_for_WebMap_Updated_column_order]
+  
+  # ----------------------- update habit at attribute names ------
+  indiv_restoration_output_Updated = FUNCTION_update_habitat_attributes_Restoration(indiv_restoration_output_Updated)
+  
+  #---------------- convert reach rank to integer -----------
+  indiv_restoration_output_Updated$`Reach Rank` = as.character(indiv_restoration_output_Updated$`Reach Rank`)
+  
+  # --------------------- update action category names ---------------------
+  Crosswalk_Habitat_Attributes_and_Actions_Unique = Crosswalk_Habitat_Attributes_and_Actions[which(  duplicated(Crosswalk_Habitat_Attributes_and_Actions$Action_Category_2) == FALSE ), ]
+  Crosswalk_Habitat_Attributes_and_Actions_Unique = Crosswalk_Habitat_Attributes_and_Actions_Unique[order(Crosswalk_Habitat_Attributes_and_Actions_Unique$Action_Category_2), ]
+  
+  for(row_x in 1:nrow(indiv_restoration_output_Updated) ){
+    action_x = indiv_restoration_output_Updated$'Action Categories'[row_x]
+    
+    # ------------- loop thorugh all actions and update names --------
+    actions_new_x = NA
+    for(row_action_name_x in 1:nrow(Crosswalk_Habitat_Attributes_and_Actions_Unique) ){
+      if( grepl(Crosswalk_Habitat_Attributes_and_Actions_Unique$Action_Category_2[row_action_name_x], action_x, fixed=TRUE  ) ){
+        actions_new_x = paste(actions_new_x, Crosswalk_Habitat_Attributes_and_Actions_Unique$`Action Category`[row_action_name_x], sep=", ")
+      }
+    }
+    # -------- remove leading NA ---------
+    if( grepl("NA, ", actions_new_x, fixed=TRUE  ) ){ actions_new_x = substring(actions_new_x, 5, nchar(actions_new_x)) }
+    # --------------- update action categories --------
+    indiv_restoration_output_Updated$'Action Categories'[row_x] = actions_new_x
+    
+  }
+  
+
+  
+  return(indiv_restoration_output_Updated)
+}
+
+
+# ---------------------------------------------------------------------------
+#    Prepare Protection
+# ---------------------------------------------------------------------------
+
+FUNCTION_Add_Reach_Rank_and_Misc_Updates_for_WebMap_Protection = function(Protection_Prioritization_Output){
+
+  Protection_Prioritization_Output_Updated = Protection_Prioritization_Output
+  
+  Protection_Prioritization_Output_Updated$Reach_Rank = NA
+  for(row_i in 1:nrow( Protection_Prioritization_Output_Updated) ){
+    
+    # ------------------- Pull Reach Rank ---------------
+    reach_rank_x = Reach_Rankings_Output_Protection$AU_level_Reach_Rank[ which( Reach_Rankings_Output_Protection$ReachName == Protection_Prioritization_Output_Updated$ReachName[row_i] )]
+    
+    # --------------- Add to Ouptut -------------
+    if(length(reach_rank_x) > 0 ){
+      Protection_Prioritization_Output_Updated$Reach_Rank[row_i] = reach_rank_x
+    }
+    
+  }
+  
+  # ------------------- order columns and give them correct names --------------
+  Protection_Prioritization_Output_Updated_column_order =         c("ReachName","Basin", "Assessment.Unit",      "Pathway",    "Reach_Rank",  "Life_Stages","Action")
+  
+  Protection_Prioritization_Output_Updated_column_UPDATED_names = c("Reach Name", "Basin", "Assessment Unit", "Priority Actions","Reach Rank", "Priority Life Stages", "Action Categories")
+  
+  # ---------------- re-order columns for WebMap ------
+  Protection_Prioritization_Output_Updated_for_WebMap = Protection_Prioritization_Output_Updated[,Protection_Prioritization_Output_Updated_column_order]
+  # --------------- correct names for output ------------
+  colnames(Protection_Prioritization_Output_Updated_for_WebMap) = Protection_Prioritization_Output_Updated_column_UPDATED_names
+  
+  # ----------------------- update habit at attribute names ------
+  Protection_Prioritization_Output_Updated_for_WebMap = FUNCTION_update_Protection_results(Protection_Prioritization_Output_Updated_for_WebMap)
+  
+  #---------------- convert reach rank to integer -----------
+  Protection_Prioritization_Output_Updated_for_WebMap$`Reach Rank` = as.character(Protection_Prioritization_Output_Updated_for_WebMap$`Reach Rank`)
+  
+  return(Protection_Prioritization_Output_Updated_for_WebMap)
+}
+
+
+# ---------------------------------------------------------------------------
+#    Prepare Protection - single species
+# ---------------------------------------------------------------------------
+
+test_x = FALSE
+if(test_x){
+  Protection_Prioritization_Output_indiv_species = Protection_Prioritization_Output_Steelhead
+  species_x = "Steelhead"
+}
+
+FUNCTION_Add_Reach_Rank_and_Misc_Updates_for_WebMap_Protection_INDIV_SPECIES = function(Protection_Prioritization_Output_indiv_species, species_x){
+  
+  Protection_Prioritization_Output_indiv_species$Reach_Rank = NA
+  for(row_i in 1:nrow( Protection_Prioritization_Output_indiv_species) ){
+    
+    # ------------------- Pull Reach Rank ---------------
+    reach_rank_x = Reach_Rankings_Output_Protection$AU_level_Reach_Rank[ which( Reach_Rankings_Output_Protection$ReachName == Protection_Prioritization_Output_indiv_species$ReachName[row_i] )]
+    
+    # --------------- Add to Output -------------
+    if(length(reach_rank_x) > 0 ){
+      Protection_Prioritization_Output_indiv_species$Reach_Rank[row_i] = reach_rank_x
+    }
+    
+  }
+  
+  # ------------------- order columns and give them correct names --------------
+  if(species_x == "Spring Chinook"){
+    Protection_Prioritization_Output_Updated_column_order = c("ReachName", "Assessment.Unit", "Basin",      "Spring_Chinook_Pathways",    "Reach_Rank",  "spring_chinook_life_stages_x","Action")
+  }else if(species_x == "Steelhead"){
+    Protection_Prioritization_Output_Updated_column_order = c("ReachName", "Assessment.Unit", "Basin",      "Steelhead_Pathways",    "Reach_Rank",  "steelhead_life_stages_x","Action")
+  }else if(species_x == "Bull Trout"){
+    Protection_Prioritization_Output_Updated_column_order = c("ReachName", "Assessment.Unit", "Basin",      "Bull_Trout_Pathways",    "Reach_Rank",  "bull_trout_life_stages_x","Action")
+  }
+    
+  Protection_Prioritization_Output_Updated_column_UPDATED_names = c("Reach Name","Assessment Unit", "Basin",  "Priority Actions","Reach Rank", "Priority Life Stages", "Action Categories")
+  
+  # ---------------- re-order columns for WebMap ------
+  Protection_Prioritization_Output_Updated_for_WebMap = Protection_Prioritization_Output_indiv_species[,Protection_Prioritization_Output_Updated_column_order]
+  # --------------- correct names for output ------------
+  colnames(Protection_Prioritization_Output_Updated_for_WebMap) = Protection_Prioritization_Output_Updated_column_UPDATED_names
+  
+  # ----------------------- update habit at attribute names ------
+  Protection_Prioritization_Output_Updated_for_WebMap = FUNCTION_update_Protection_results(Protection_Prioritization_Output_Updated_for_WebMap)
+  
+  #---------------- convert reach rank to integer -----------
+  Protection_Prioritization_Output_Updated_for_WebMap$`Reach Rank` = as.character(Protection_Prioritization_Output_Updated_for_WebMap$`Reach Rank`)
+  
+  return(Protection_Prioritization_Output_Updated_for_WebMap)
+}

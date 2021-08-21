@@ -382,6 +382,196 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage = function(HQ_spring_
 
 
 
+# ------------------------------------------------------------------------------------------
+#
+#      Function to combine across Reach - Habitat Attribute - Life Stage - SINGLE SPECIES
+#            NOTE - I ended up not using this
+#
+# ------------------------------------------------------------------------------------------
+
+
+# To Test
+test_x = TRUE
+if(test_x){
+  HQ_data = Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']]
+  LF_data = Limiting_Factor_Pathway_Spring_Chinook[['Limiting_Factor_Pathway_Restoration']]
+  # HQ_data = Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']]
+  # LF_data = Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']]
+  # HQ_data = Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']]
+  # LF_data = Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']]
+  species_x = "Spring Chinook"
+  columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
+  #exclude_bull_trout = "no"
+}
+
+
+FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_SPECIES_ONLY = function(HQ_data,  LF_data, species_x, columns_info){
+  
+  # ------------------------------------------------------------
+  #       Get Unique Reaches
+  # ------------------------------------------------------------
+  unique_reaches = unique( c(HQ_data$ReachName, LF_data$ReachName) )
+  # ------- remove NA reaches ----------
+  unique_reaches = unique_reaches[which( !is.na(unique_reaches) )]
+  # ------------------------------------------------------------
+  #      Loop through each Reach and combine data
+  # ------------------------------------------------------------
+  Reach_Habitat_Attribute_combined_output = c()
+  
+  for(reach_x in unique_reaches){
+    print(reach_x)
+    # --------------------- generate HQ and LF index ----------
+    if( any(HQ_data$ReachName == reach_x)){ HQ_index = which(HQ_data$ReachName == reach_x) }else{HQ_index = NA}
+    if( any(LF_data$ReachName == reach_x)){ LF_index = which(LF_data$ReachName == reach_x) }else{LF_index = NA}
+
+    # ------------------------------------------------------------
+    #     List All the Habitat Attributes
+    # ------------------------------------------------------------
+    habitat_attributes_all = c(
+      
+      if( !is.na(HQ_index) ){HQ_data$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes[HQ_index]},
+      if( !is.na(LF_index[1]) ){  paste(LF_data$unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes[LF_index], collapse=",")  }
+
+    ) 
+    habitat_attributes_all = gsub(" ", "", habitat_attributes_all, fixed = TRUE)
+    habitat_attributes_all = unique( unlist(strsplit(paste(habitat_attributes_all, collapse=","), ",")) )
+    
+    # ------------------------------------------------------------
+    #     List All UNACCEPTABLE Habitat Attributes
+    # ------------------------------------------------------------
+    unique_unacceptable_attributes = c(
+      
+      if(!is.na(HQ_index)){HQ_data$unacceptable_1_indiv_habitat_attributes[HQ_index]},
+      if(!is.na(LF_index[1])){  paste(LF_data$unacceptable_1_indiv_habitat_attributes[LF_index], collapse=",")  }
+
+    ) 
+    unique_unacceptable_attributes = gsub(" ", "", unique_unacceptable_attributes, fixed = TRUE)
+    unique_unacceptable_attributes = unique( unlist(strsplit(paste(unique_unacceptable_attributes, collapse=","), ",")) )
+    unique_unacceptable_attributes = paste(unique_unacceptable_attributes, collapse=",")
+    
+    # ------------------------------------------------------------
+    #     List All AT RISK Habitat Attributes
+    # ------------------------------------------------------------
+    unique_at_risk_attributes = c(
+      
+      if(!is.na(HQ_index)){HQ_data$at_risk_2_or_3_indiv_habitat_attributes[HQ_index]},
+      if(!is.na(LF_index[1])){  paste(LF_data$at_risk_2_or_3_indiv_habitat_attributes[LF_index], collapse=",")  } 
+      
+    ) 
+    unique_at_risk_attributes = gsub(" ", "", unique_at_risk_attributes, fixed = TRUE)
+    unique_at_risk_attributes = unique( unlist(strsplit(paste(unique_at_risk_attributes, collapse=","), ",")) )
+    unique_at_risk_attributes = paste(unique_at_risk_attributes, collapse=",")
+    
+    # ------------------------------------------------------------
+    #     List for Each species
+    # ------------------------------------------------------------
+    life_stages_all = c(
+      if(!is.na(HQ_index)){ "multiple"  },
+      if(!is.na(LF_index[1])){  paste(LF_data$life_stage[LF_index], collapse=",")  }
+    ) 
+    life_stages_all = unique( unlist(strsplit(paste(life_stages_all, collapse=","), ",")) )
+    
+    # ------------------------------------------------------------
+    #    Loop through Each Habitat Attribute 
+    # ------------------------------------------------------------
+    for(habitat_attribute_x in habitat_attributes_all){
+      
+      # ------------------------------------------------------------
+      #    For Each Life Stage -make a new row
+      # ------------------------------------------------------------
+      
+      for(life_stage_x in life_stages_all){
+        #print(" ------------------ ")
+        #print(habitat_attribute_x)
+        #print(life_stage_x)
+        # ------------------------------------------------------------
+        #     Add Reach Information Data 
+        # ------------------------------------------------------------
+        HQ_and_LF_combo_x = as.data.frame(Reach_Information_data[which(Reach_Information_data$ReachName == reach_x), columns_info])
+        
+        # ------------------------------------------------------------
+        #     Add Habitat Attribute
+        # ------------------------------------------------------------
+        HQ_and_LF_combo_x$Habitat_Attribute = habitat_attribute_x
+        
+        # ------------------------------------------------------------
+        #     Add Life Stage
+        # ------------------------------------------------------------
+        HQ_and_LF_combo_x$Life_Stage = life_stage_x 
+        
+        # ------------------------------------------------------------
+        #    Action Categories
+        # ------------------------------------------------------------
+        action_category_x = FUNCTION_match_INDIVIDUAL_habitat_attributes_and_action_categories(habitat_attribute_x)
+        number_of_actions_x = length(action_category_x)
+        action_category_x = paste(action_category_x, collapse=",")
+        # ------ add to row ---------
+        HQ_and_LF_combo_x$Action_Categories = action_category_x
+        HQ_and_LF_combo_x$Number_of_Actions = number_of_actions_x
+        
+        # ------------------------------------------------------------
+        #  Unacceptable Habitat Attributes (Yes/No)
+        # ------------------------------------------------------------ 
+        
+        if(   length(grep(habitat_attribute_x, unique_at_risk_attributes)) > 0  ){
+          HQ_and_LF_combo_x$Unacceptable_Habitat_Attributes_Presence = "yes"
+        }else{
+          HQ_and_LF_combo_x$Unacceptable_Habitat_Attributes_Presence = "no"
+        }
+        
+        # ------------------------------------------------------------
+        #  At Risk Habitat Attributes (Yes/No)
+        # ------------------------------------------------------------ 
+        if( length(grep(habitat_attribute_x, unique_unacceptable_attributes)) > 0   ){
+          HQ_and_LF_combo_x$At_Risk_Habitat_Attributes_Presence = "yes"
+        }else{
+          HQ_and_LF_combo_x$At_Risk_Habitat_Attributes_Presence = "no"
+        }
+        
+        # ------------------------------------------------------------
+        #  Metric a Core metric
+        # ------------------------------------------------------------ 
+        HQ_and_LF_combo_x$Core_Metric = FUNCTION_match_INDIVIDUAL_core_metrics_from_habitat_attributes_SPECIES(species_x, life_stage_x, habitat_attribute_x )
+        
+        # ------------------------------------------------------------
+        #  Reach Rank (FOR NOW just putting a "1")
+        # ------------------------------------------------------------ 
+        HQ_and_LF_combo_x$Reach_Rank = 1
+        
+        # ------------------------------------------------------------
+        # Combine with output data frame
+        # ------------------------------------------------------------ 
+        
+        Reach_Habitat_Attribute_combined_output = rbind(Reach_Habitat_Attribute_combined_output, HQ_and_LF_combo_x)
+        
+      }
+      
+      
+    }
+  }
+  
+  # ------------------------------------------------------------
+  #    Update Habitat Attribute_Names
+  # ------------------------------------------------------------
+  species_habitat_attributes_index = which(Attribute_LifeStage_Crosswalk$Species == species_x)
+  Attribute_LifeStage_Crosswalk_species = Attribute_LifeStage_Crosswalk[species_habitat_attributes_index, ]
+  unique_habitat_attributes = unique(Attribute_LifeStage_Crosswalk_species$Habitat_Attribute_2)
+  for(habitat_attribute_x in unique_habitat_attributes){
+    
+    # ----------- new name (name with spaces in it so it is more readable) -------
+    new_name_x = which(Attribute_LifeStage_Crosswalk_species$Habitat_Attribute_2 == habitat_attribute_x )
+    new_name = Attribute_LifeStage_Crosswalk_species$`Habitat Attribute`[new_name_x[1]]
+    # ------ identify all the places the name exists ---------
+    rows_habitat_attribute_x = which(Reach_Habitat_Attribute_combined_output$Habitat_Attribute == habitat_attribute_x)
+    # ------------ updated wit new name ------------
+    Reach_Habitat_Attribute_combined_output$Habitat_Attribute[rows_habitat_attribute_x] = new_name
+    
+  }
+  
+  return(Reach_Habitat_Attribute_combined_output)
+}
+
+
 
 # ------------------------------------------------------------------------------------------
 #
@@ -561,7 +751,7 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ
       # ------------------------------------------------------------
       #    Habitat Quality Pathways
       # ------------------------------------------------------------
-      if(!is.na(life_stages_HQ)){
+      if( !is.na(life_stages_HQ) ){
         for(life_stage_x in life_stages_HQ){
           
           # ------------------------------------------------------------

@@ -1,17 +1,114 @@
 ---
 title: "Step 2 Prioritization Data Summary and Output"
-output:
-  pdf_document:
-    toc: true
-    toc_depth: 2
-author: Ryan Niemeyer, UCSRB
+author: "Ryan Niemeyer, UCSRB"
+date: "Last Edited: `r format(Sys.time(), '%B %d, %Y')` "
+output: html_document
+  # pdf_document:
+  # toc: true
+  #  toc_depth: 2
 ---
 
 Markdown cheat sheet: https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
 
+
+
+<!-- regular html comment --> 
+
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+```{r data, include = FALSE}
+library(readr)
+library(dplyr)
+library(readxl)
+
+# ----- for mapping ---
+library(ggplot2)
+library(ggmap)
+library(maps)
+library(mapdata)
+
+# !!!!! HERE read in the data you want to print (e.g. Habitat_Attribute_Scores, Reach_Info, etc.)
+# !!!!! probably jsut want to read in the MASTER
+```
+
+```{r Read in Data from MAster, include=FALSE}
+# -------------- MASTER path and file ----------
+folder_x = "Y:/UCRTT/Prioritization/Step 2/Habitat Evaluation/"
+master_file = "MASTER_Step2_REVIEWDRAFT_071321.xlsx"
+MASTER_Data_path = paste(folder_x,master_file, sep="")   # Data from Okanogan EDT results
+Habitat_Quality_Scores_MASTER = read_excel( MASTER_Data_path , sheet="Habitat Quality Pathway", skip=1)
+
+# ----------------- Read in Shapefiles ---------------
+# ------ updated with Okanogan EDT data layers -----------------
+reaches_path = "Y:/UCRTT/Prioritization/Step 2/Data/GIS/Reaches/Reaches.shp"
+reaches <- sf::st_read(reaches_path) # this shapefile does not show up properly
+reaches <- sf::st_transform(reaches, 4326)
+
+```
+
+
+
+```{r Function for categorical output and color, include=FALSE}
+
+# -------------- FUNCTION to generate category and color from REI score (1,3,5) ----------
+REI_category_fxn = function(score_x){
+  if(score_x == 1){
+    category_x = "Unacceptable"
+    color_x = "red"
+  }else if(score_x > 3){
+    category_x = "Adequate"
+    color_x = "forestgreen"
+  }else{
+    category_x = "At Risk"
+    color_x = "gold"
+  }
+  
+  output_x = c(category_x, color_x)
+  return(output_x)
+}
+
+
+
+# ---------- FUNCTION to generate color from a variable --------
+colorize <- function(x, color) {
+  if (knitr::is_latex_output()) {
+    sprintf("\\textcolor{%s}{%s}", color, x)
+  } else if (knitr::is_html_output()) {
+    sprintf("<span style='color: %s;'>%s</span>", color,
+      x)
+  } else x
+}
+
+# ----- Function to pull REI score/category/color based on A) ReachName and B) habitat attribute -----
+
+Habitat_Quality_REI_metric_FUNCTION = function(ReachName_x, Habitat_Attribute_x){
+  
+  habitat_attribute_row_x <- Habitat_Quality_Scores_MASTER %>%
+    filter(ReachName == ReachName_x) 
+  
+  habitat_attribute_numeric_output = habitat_attribute_row_x[1,Habitat_Attribute_x]
+  
+  # ----------- generate category (Unacceptable, At Risk, Adequate), color (red, yellow, green) -----
+  category_output_x = REI_category_fxn(habitat_attribute_numeric_output)
+  category_x = category_output_x[1]
+  color_x = category_output_x[2]
+  output_x = c(habitat_attribute_numeric_output, category_x, color_x)
+  
+  # ---------- if score is not present ----------
+  if( habitat_attribute_numeric_output == "NA" ){
+    output_x = c("NA", "not present", "black")
+  }
+  return(output_x)
+  
+}
+
+
+
+```
+
 
 ## Prioritization Overview
 
@@ -21,22 +118,175 @@ This is the R Code for the Step 2 of the [UCSRB Habitat Prioritization process](
 
 The RTT decided to use three pathways to develop prioritized reaches and actions: Habitat Quality pathway, Limiting Factors pathway, and fish passage pathway. This python tool deals primarily with the Habitat Quality and Limiting Factors pathway, and the fish passage pathways are uploaded to the action categories manually. The filters and criteria for filters (as of October 14th, 2020) are overview in this [google slides presentation](https://docs.google.com/presentation/d/1dEJ-A_LlW1HkxfIjOfLmjRxS1DRR_nWGOsBlZj5khss/edit?usp=sharing).
 
+# Individual Reach Summaries
 
-## Data Overview
+for(reach_name_x in Habitat_Quality_Scores_MASTER$ReachName[c(100,200,220,300,400)]){
 
-(INCLUDE code that outputs the data)
 
-```{r cars}
-summary(cars)
+}
+```{r Reach Name, echo=FALSE}
+reach_name_x = "Entiat River Lake 01"
 ```
 
-## Including Plots
+<h1 style="font-size:40px;">`r colorize(reach_name_x, "blue")`</h1>  
 
-You can also embed plots, for example:
+```{r Map Reach, echo=FALSE}
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+# -------- pull reach row -------
+reach_x_i =  which(reaches$ReachName == reach_name_x )
+df_x = as.data.frame( reaches$geometry[[reach_x_i]][[1]] )
+colnames(df_x) = c("lon", "lat")
+
+downloaded_map <- get_map(location = c(lon = mean(df_x$lon), lat = mean(df_x$lat)), maptype = "satellite", source = "google", zoom = 15)
+
+ggmap(downloaded_map) + 
+  geom_path(data = df_x, color="firebrick1", size = 2, lineend = "round") 
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+### Coarse Substrate 
+```{r Coarse Substrate, echo=FALSE}
+# ----------- generate category (Unacceptable, At Risk, Adequate), color (red, yellow, green) -----
+output_x = Habitat_Quality_REI_metric_FUNCTION(reach_name_x, "Coarse Substrate")
+REI_number_x = output_x[1]
+REI_category_x = output_x[2]
+REI_color_x = output_x[3]
+```
+
+The **Coarse Substrate** rating is **`r colorize(REI_category_x, REI_color_x)`** or  **`r colorize(REI_number_x, REI_color_x)`**.
+
+### Cover- Wood 
+```{r Cover- Wood, echo=FALSE}
+# ----------- generate category (Unacceptable, At Risk, Adequate), color (red, yellow, green) -----
+output_x = Habitat_Quality_REI_metric_FUNCTION(reach_name_x, "Cover- Wood")
+REI_number_x = output_x[1]
+REI_category_x = output_x[2]
+REI_color_x = output_x[3]
+```
+
+The **Cover- Wood** rating is **`r colorize(REI_category_x, REI_color_x)`** or  **`r colorize(REI_number_x, REI_color_x)`**.
+
+### Channel Stability
+```{r Channel Stability, echo=FALSE}
+# ----------- generate category (Unacceptable, At Risk, Adequate), color (red, yellow, green) -----
+output_x = Habitat_Quality_REI_metric_FUNCTION(reach_name_x, "Channel Stability")
+REI_number_x = output_x[1]
+REI_category_x = output_x[2]
+REI_color_x = output_x[3]
+```
+
+The **Channel Stability** rating is **`r colorize(REI_category_x, REI_color_x)`** or  **`r colorize(REI_number_x, REI_color_x)`**.
+
+### Bank Stability
+```{r Bank Stability, echo=FALSE}
+# ----------- generate category (Unacceptable, At Risk, Adequate), color (red, yellow, green) -----
+output_x = Habitat_Quality_REI_metric_FUNCTION(reach_name_x, "Bank Stability")
+REI_number_x = output_x[1]
+REI_category_x = output_x[2]
+REI_color_x = output_x[3]
+```
+
+The **Bank Stability** rating is **`r colorize(REI_category_x, REI_color_x)`** or  **`r colorize(REI_number_x, REI_color_x)`**.
+
+### Stability (average of Channel Stability and Bank Stability)
+```{r Stability, echo=FALSE}
+# ----------- generate category (Unacceptable, At Risk, Adequate), color (red, yellow, green) -----
+output_x = Habitat_Quality_REI_metric_FUNCTION(reach_name_x, "Stability")
+REI_number_x = output_x[1]
+REI_category_x = output_x[2]
+REI_color_x = output_x[3]
+```
+
+The **Stability** rating is **`r colorize(REI_category_x, REI_color_x)`** or  **`r colorize(REI_number_x, REI_color_x)`**.
+
+### Pool Quantity and Quality
+```{r Pool Quantity and Quality, echo=FALSE}
+# ----------- generate category (Unacceptable, At Risk, Adequate), color (red, yellow, green) -----
+output_x = Habitat_Quality_REI_metric_FUNCTION(reach_name_x, "Pool Quantity & Quality")
+REI_number_x = output_x[1]
+REI_category_x = output_x[2]
+REI_color_x = output_x[3]
+```
+
+The **Pool Quantity & Quality** rating is **`r colorize(REI_category_x, REI_color_x)`** or  **`r colorize(REI_number_x, REI_color_x)`**.
+
+### Floodplain Connectivity
+```{r Floodplain Connectivity, echo=FALSE}
+# ----------- generate category (Unacceptable, At Risk, Adequate), color (red, yellow, green) -----
+output_x = Habitat_Quality_REI_metric_FUNCTION(reach_name_x, "Floodplain Connectivity")
+REI_number_x = output_x[1]
+REI_category_x = output_x[2]
+REI_color_x = output_x[3]
+```
+
+The **Floodplain Connectivity** rating is **`r colorize(REI_category_x, REI_color_x)`** or  **`r colorize(REI_number_x, REI_color_x)`**.
+
+### Off-Channel/Side-Channels
+```{r Off-Channel/Side-Channels, echo=FALSE}
+# ----------- generate category (Unacceptable, At Risk, Adequate), color (red, yellow, green) -----
+output_x = Habitat_Quality_REI_metric_FUNCTION(reach_name_x, "Off-Channel/Side-Channels")
+REI_number_x = output_x[1]
+REI_category_x = output_x[2]
+REI_color_x = output_x[3]
+```
+
+The **Off-Channel/Side-Channels** rating is **`r colorize(REI_category_x, REI_color_x)`** or  **`r colorize(REI_number_x, REI_color_x)`**.
+
+### Riparian-Disturbance
+```{r Riparian-Disturbance, echo=FALSE}
+# ----------- generate category (Unacceptable, At Risk, Adequate), color (red, yellow, green) -----
+output_x = Habitat_Quality_REI_metric_FUNCTION(reach_name_x, "Riparian-Disturbance")
+REI_number_x = output_x[1]
+REI_category_x = output_x[2]
+REI_color_x = output_x[3]
+```
+
+The **Riparian-Disturbance** rating is **`r colorize(REI_category_x, REI_color_x)`** or  **`r colorize(REI_number_x, REI_color_x)`**.
+
+### Riparian- Canopy Cover
+```{r Riparian- Canopy Cover, echo=FALSE}
+# ----------- generate category (Unacceptable, At Risk, Adequate), color (red, yellow, green) -----
+output_x = Habitat_Quality_REI_metric_FUNCTION(reach_name_x, "Riparian- Canopy Cover")
+REI_number_x = output_x[1]
+REI_category_x = output_x[2]
+REI_color_x = output_x[3]
+```
+
+The **Riparian- Canopy Cover** rating is **`r colorize(REI_category_x, REI_color_x)`** or  **`r colorize(REI_number_x, REI_color_x)`**.
+
+### Riparian (average of RIparian-Disturbance and Riparian- Canopy Cover)
+```{r Riparian, echo=FALSE}
+# ----------- generate category (Unacceptable, At Risk, Adequate), color (red, yellow, green) -----
+output_x = Habitat_Quality_REI_metric_FUNCTION(reach_name_x, "Riparian")
+REI_number_x = output_x[1]
+REI_category_x = output_x[2]
+REI_color_x = output_x[3]
+```
+
+The **Riparian** rating is **`r colorize(REI_category_x, REI_color_x)`** or  **`r colorize(REI_number_x, REI_color_x)`**.
+
+### Flow- Summer Base Flow
+```{r Flow- Summer Base Flow, echo=FALSE}
+# ----------- generate category (Unacceptable, At Risk, Adequate), color (red, yellow, green) -----
+output_x = Habitat_Quality_REI_metric_FUNCTION(reach_name_x, "Flow- Summer Base Flow")
+REI_number_x = output_x[1]
+REI_category_x = output_x[2]
+REI_color_x = output_x[3]
+```
+
+The **Flow- Summer Base Flow** rating is **`r colorize(REI_category_x, REI_color_x)`** or  **`r colorize(REI_number_x, REI_color_x)`**.
+
+### Temperature- Rearing
+```{r Temperature- Rearing, echo=FALSE}
+# ----------- generate category (Unacceptable, At Risk, Adequate), color (red, yellow, green) -----
+output_x = Habitat_Quality_REI_metric_FUNCTION(reach_name_x, "Temperature- Rearing")
+REI_number_x = output_x[1]
+REI_category_x = output_x[2]
+REI_color_x = output_x[3]
+```
+
+The **Temperature- Rearing** rating is **`r colorize(REI_category_x, REI_color_x)`** or  **`r colorize(REI_number_x, REI_color_x)`**.
+
+### End of code
+
 

@@ -25,9 +25,10 @@
 
 # ------------------------ Function to generate column of action categories for the habitat attributes ---------
 # NOTE: data must have columns with "unacceptable_1_indiv_habitat_attributes", "at_risk_2_or_3_indiv_habitat_attributes", "unacceptable_AND_at_risk_1_to_3_indiv_habitat_attributes"
-test_x = TRUE
+test_x = FALSE
 if(test_x){
-  data_frame_with_habitat_attributes = Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']]
+  #data_frame_with_habitat_attributes = Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']]
+  data_frame_with_habitat_attributes = Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']]
 }
 
 FUNCTION_to_generate_Action_Categories = function(data_frame_with_habitat_attributes){
@@ -47,7 +48,7 @@ FUNCTION_to_generate_Action_Categories = function(data_frame_with_habitat_attrib
 }
 
 
-row_x = data_frame_with_habitat_attributes$unacceptable_1_indiv_habitat_attributes[9]
+row = data_frame_with_habitat_attributes$unacceptable_1_indiv_habitat_attributes[110]
 
 # -------------------  function to take list of habitat attributes to generate action categories ------
 FUNCTION_match_habitat_attributes_and_action_categories = function(row){
@@ -56,6 +57,8 @@ FUNCTION_match_habitat_attributes_and_action_categories = function(row){
   habitat_attributes_row_x2 = unlist(strsplit(row, ","))
   # --------- remove white space ------
   habitat_attributes_row_x2 = gsub(" ", "", habitat_attributes_row_x2, fixed = TRUE)
+  # ----------------- remove "score" ---------------------
+  habitat_attributes_row_x2 = gsub("_score", "", habitat_attributes_row_x2, fixed = TRUE)
   
   # --------------- generation action categories -----------
   Action_Categories_Output = c()

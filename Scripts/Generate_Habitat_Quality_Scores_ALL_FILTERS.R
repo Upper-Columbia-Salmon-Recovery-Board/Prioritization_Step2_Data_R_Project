@@ -5,9 +5,9 @@
 # 
 # ------------------------------------------------------------------------------------------------------------------
 
-test_x = TRUE
+test_x = FALSE
 if(test_x){
-  species="Spring Chinook"
+  species="Steelhead"
   basins = c("Methow"  ,  "Entiat"  ,  "Wenatchee", "Okanogan" )
   
 }
@@ -162,14 +162,19 @@ Generate_Habitat_Quality_Output_Table_WITH_FILTERS = function(species, basins, h
   
   if(species == "Steelhead"){
     
-    tiers_AUs = AU_Ranks_data[ , c("Assessment Unit","Subbasin", "SPCHNTier_Restoration", "STLTier_Restoration","BTTier_Restoration")]
-    AU_Ranks_Okanogan_to_merge = as.data.frame(AU_Ranks_Okanogan$`EDT AU`)
-    colnames(AU_Ranks_Okanogan_to_merge) = "Assessment Unit"
-    AU_Ranks_Okanogan_to_merge$Subbasin = "Okanogan"
-    AU_Ranks_Okanogan_to_merge$SPCHNTier_Restoration = NA
-    AU_Ranks_Okanogan_to_merge$STLTier_Restoration = AU_Ranks_Okanogan$`AU Restoration Rank`
-    AU_Ranks_Okanogan_to_merge$BTTier_Restoration = NA
-    tiers_AUs = rbind(tiers_AUs, AU_Ranks_Okanogan_to_merge)
+    if( any(AU_Ranks_data$Subbasin == "Okanogan") ){
+      tiers_AUs = AU_Ranks_data[ , c("Assessment Unit","Subbasin", "SPCHNTier_Restoration", "STLTier_Restoration","BTTier_Restoration")]
+    }else{
+      tiers_AUs = AU_Ranks_data[ , c("Assessment Unit","Subbasin", "SPCHNTier_Restoration", "STLTier_Restoration","BTTier_Restoration")]
+      AU_Ranks_Okanogan_to_merge = as.data.frame(AU_Ranks_Okanogan$`EDT AU`)
+      colnames(AU_Ranks_Okanogan_to_merge) = "Assessment Unit"
+      AU_Ranks_Okanogan_to_merge$Subbasin = "Okanogan"
+      AU_Ranks_Okanogan_to_merge$SPCHNTier_Restoration = NA
+      AU_Ranks_Okanogan_to_merge$STLTier_Restoration = AU_Ranks_Okanogan$`AU Restoration Rank`
+      AU_Ranks_Okanogan_to_merge$BTTier_Restoration = NA
+      tiers_AUs = rbind(tiers_AUs, AU_Ranks_Okanogan_to_merge)
+    }
+
     
   # ------------- for Spring Chinook of Bull Trout ----------
   }else{
@@ -200,14 +205,20 @@ Generate_Habitat_Quality_Output_Table_WITH_FILTERS = function(species, basins, h
   
   # ----------- add to combined ----------
   if(species == "Steelhead"){
-    tiers_AUs = AU_Ranks_data[, c("Assessment Unit","Subbasin","SPCHNTier_Protection","STLTier_Protection", "BTTier_Protection")]
-    AU_Ranks_Okanogan_to_merge = as.data.frame(AU_Ranks_Okanogan$`EDT AU`)
-    colnames(AU_Ranks_Okanogan_to_merge) = "Assessment Unit"
-    AU_Ranks_Okanogan_to_merge$Subbasin = NA
-    AU_Ranks_Okanogan_to_merge$SPCHNTier_Protection = NA
-    AU_Ranks_Okanogan_to_merge$STLTier_Protection = AU_Ranks_Okanogan$`AU Protection Rank`
-    AU_Ranks_Okanogan_to_merge$BTTier_Protection = NA
-    tiers_AUs = rbind(tiers_AUs, AU_Ranks_Okanogan_to_merge)
+    
+    if( any(AU_Ranks_data$Subbasin == "Okanogan") ){
+      tiers_AUs = AU_Ranks_data[, c("Assessment Unit","Subbasin","SPCHNTier_Protection","STLTier_Protection", "BTTier_Protection")]
+    }else{
+      tiers_AUs = AU_Ranks_data[, c("Assessment Unit","Subbasin","SPCHNTier_Protection","STLTier_Protection", "BTTier_Protection")]
+      AU_Ranks_Okanogan_to_merge = as.data.frame(AU_Ranks_Okanogan$`EDT AU`)
+      colnames(AU_Ranks_Okanogan_to_merge) = "Assessment Unit"
+      AU_Ranks_Okanogan_to_merge$Subbasin = NA
+      AU_Ranks_Okanogan_to_merge$SPCHNTier_Protection = NA
+      AU_Ranks_Okanogan_to_merge$STLTier_Protection = AU_Ranks_Okanogan$`AU Protection Rank`
+      AU_Ranks_Okanogan_to_merge$BTTier_Protection = NA
+      tiers_AUs = rbind(tiers_AUs, AU_Ranks_Okanogan_to_merge)
+    }
+
     
   # ----------------- IF Spring Chinook or Bull Trout ----------  
   }else{
@@ -247,7 +258,7 @@ Generate_Habitat_Quality_Output_Table_WITH_FILTERS = function(species, basins, h
 #
 #  ---------------------------------------------------------------------------------
 
-test_x = TRUE
+test_x = FALSE
 if(test_x){
   HQ_Spring_Chinook= Habitat_Quality_Scores_ALL_Spring_Chinook
   HQ_Steelhead = Habitat_Quality_Scores_ALL_Steelhead

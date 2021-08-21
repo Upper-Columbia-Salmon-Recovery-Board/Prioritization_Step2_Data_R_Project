@@ -26,8 +26,6 @@ if(test_x){
   basins = c( "Wenatchee", "Methow", "Entiat", "Okanogan")
 }
 
-
-
 Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   
   # ------------------------------------------------------------------------------
@@ -42,7 +40,7 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   # ---------------- species AU Rank PROTECTION ----------
   AU_rank_name_protection_Spring_Chinook = 'SPCHNTier_Protection'
   # --------------- Life stage Sum column name ----------
-  life_stage_sum_column_Spring_Chinook = 'SPCH_Life_Stage_Sum'
+  life_stage_sum_column_Spring_Chinook = 'SPCHN Number of Life Stages'
   # ---------------- Limiting Factor Data frame ---------------
   Limiting_Factor_Restoration_data_frame = Limiting_Factor_Spring_Chinook[['Limiting_Factor_Pathway_Restoration']]
   Limiting_Factor_Protection_data_frame = Limiting_Factor_Spring_Chinook[['Limiting_Factor_Pathway_Protection']]
@@ -67,7 +65,7 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   AU_rank_name_protection_Steelhead = 'STLTier_Protection'
   AU_rank_name_protection_Steelhead_Okanogan = 'AU Protection Rank'
   # --------------- Life stage Sum column name ----------
-  life_stage_sum_column_Steelhead = 'SH_Life_Stage_Sum'
+  life_stage_sum_column_Steelhead = 'SH Number of Life Stages'
   # ---------------- Limiting Factor Data frame ---------------
   Limiting_Factor_Restoration_data_frame = Limiting_Factor_Steelhead[['Limiting_Factor_Pathway_Restoration']]
   Limiting_Factor_Protection_data_frame = Limiting_Factor_Steelhead[['Limiting_Factor_Pathway_Protection']]
@@ -90,7 +88,7 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     # ---------------- species AU Rank PROTECTION ----------
     AU_rank_name_protection_Bull_Trout = 'BTTier_Protection'
     # --------------- Life stage Sum column name ----------
-    life_stage_sum_column_Bull_Trout = 'BT_Life_Stage_Sum'
+    life_stage_sum_column_Bull_Trout = 'BT Num Life Stages'
     # ---------------- Limiting Factor Data frame ---------------
     Limiting_Factor_Restoration_data_frame = Limiting_Factor_Bull_Trout[['Limiting_Factor_Pathway_Restoration']]
     Limiting_Factor_Protection_data_frame = Limiting_Factor_Bull_Trout[['Limiting_Factor_Pathway_Protection']]
@@ -249,17 +247,23 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   
   # -------- add to data frame that includes all reaches -----
   # ------------- Spring Chinook --------
-  AU_Rank_Data = Species_AU_Ranks_data_Spring_Chinook [,c("Assessment Unit", "Species_AU_Ranks")]
+  AU_Rank_Data = Species_AU_Ranks_data_Spring_Chinook[,c("Assessment Unit", "Species_AU_Ranks")]
   colnames(AU_Rank_Data) = c("Assessment.Unit", "AU Restoration Rank")
   Output_Spring_Chinook_All = merge(Output_Spring_Chinook_All  ,AU_Rank_Data, by = "Assessment.Unit", all.x= TRUE )
   
   # ----------- Steelhead ----------
-  AU_Rank_Data = Species_AU_Ranks_data_Steelhead_Okanogan[,c("EDT AU","AU Restoration Rank")]
-  colnames(AU_Rank_Data)[1] = "Assessment.Unit"
-  AU_Rank_Data2 = Species_AU_Ranks_data_Steelhead [,c("Assessment Unit", "Species_AU_Ranks")]
-  colnames(AU_Rank_Data2) = c("Assessment.Unit", colnames(AU_Rank_Data)[2])
-  AU_Rank_Data = rbind(AU_Rank_Data, AU_Rank_Data2)
-  Output_Steelhead_All = merge(Output_Steelhead_All  ,AU_Rank_Data, by = "Assessment.Unit", all.x= TRUE )
+  if(any(Species_AU_Ranks_data_Steelhead$Subbasin == "Okanogan")){
+    AU_Rank_Data = Species_AU_Ranks_data_Steelhead[,c("Assessment Unit", "Species_AU_Ranks")]
+    colnames(AU_Rank_Data) = c("Assessment.Unit", "AU Restoration Rank")
+  }else{
+    AU_Rank_Data = Species_AU_Ranks_data_Steelhead_Okanogan[,c("EDT AU","AU Restoration Rank")]
+    colnames(AU_Rank_Data)[1] = "Assessment.Unit"
+    AU_Rank_Data2 = Species_AU_Ranks_data_Steelhead [,c("Assessment Unit", "Species_AU_Ranks")]
+    colnames(AU_Rank_Data2) = c("Assessment.Unit", colnames(AU_Rank_Data)[2])
+    AU_Rank_Data = rbind(AU_Rank_Data, AU_Rank_Data2)
+  }
+
+  Output_Steelhead_All = merge(Output_Steelhead_All  ,  AU_Rank_Data, by = "Assessment.Unit", all.x= TRUE )
   
   #  ---------------------------------------------------------------------------------
   #            Filter out to select for AU rank - PROTECTION
@@ -333,11 +337,16 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   colnames(AU_Rank_Data) = c("Assessment.Unit", "AU Protection Rank")
   Output_Spring_Chinook_All = merge(Output_Spring_Chinook_All  ,AU_Rank_Data, by = "Assessment.Unit", all.x= TRUE )
   # --------- Steelhead ----------
-  AU_Rank_Data = Species_AU_Ranks_data_Steelhead_Okanogan[,c("EDT AU","AU Protection Rank")]
-  colnames(AU_Rank_Data)[1] = "Assessment.Unit"
-  AU_Rank_Data2 = Species_AU_Ranks_data_Steelhead [,c("Assessment Unit", "Species_AU_Ranks")]
-  colnames(AU_Rank_Data2) = c("Assessment.Unit", colnames(AU_Rank_Data)[2])
-  AU_Rank_Data = rbind(AU_Rank_Data, AU_Rank_Data2)
+  if(any(Species_AU_Ranks_data_Steelhead$Subbasin == "Okanogan")){
+    AU_Rank_Data = Species_AU_Ranks_data_Steelhead[,c("Assessment Unit", "Species_AU_Ranks")]
+    colnames(AU_Rank_Data) = c("Assessment.Unit", "AU Protection Rank")
+  }else{
+    AU_Rank_Data = Species_AU_Ranks_data_Steelhead_Okanogan[,c("EDT AU","AU Protection Rank")]
+    colnames(AU_Rank_Data)[1] = "Assessment.Unit"
+    AU_Rank_Data2 = Species_AU_Ranks_data_Steelhead [,c("Assessment Unit", "Species_AU_Ranks")]
+    colnames(AU_Rank_Data2) = c("Assessment.Unit", colnames(AU_Rank_Data)[2])
+    AU_Rank_Data = rbind(AU_Rank_Data, AU_Rank_Data2)
+  }
   Output_Steelhead_All = merge(Output_Steelhead_All  ,AU_Rank_Data, by = "Assessment.Unit", all.x= TRUE )
   
   #  ---------------------------------------------------------------------------------
@@ -510,7 +519,7 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     output_life_stages_x = paste(output_life_stages_x, collapse = ",")
     output_limiting_factor_x = paste(output_limiting_factor_x, collapse = ",")
     Output_LF_x = t(as.data.frame(c(reach_x,output_life_stages_x, output_limiting_factor_x )))
-    colnames(Output_LF_x) = c("ReachName", "Priority_Life_Stages_with_Limiting_Factors","Limiting_Factors_for_Priority_Life_Stages")
+    colnames(Output_LF_x) = c("ReachName", "Priority_Life_Stages","Limiting_Factors_for_Priority_Life_Stages")
     Output_LF_all = rbind(Output_LF_all, Output_LF_x )
   }
   # ------------- combine -------------
@@ -568,11 +577,11 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     output_life_stages_x = paste(output_life_stages_x, collapse = ",")
     output_limiting_factor_x = paste(output_limiting_factor_x, collapse = ",")
     Output_LF_x = t(as.data.frame(c(reach_x,output_life_stages_x, output_limiting_factor_x )))
-    colnames(Output_LF_x) = c("ReachName", "Priority_Life_Stages_with_Limiting_Factors","Limiting_Factors_for_Priority_Life_Stages")
+    colnames(Output_LF_x) = c("ReachName", "Priority_Life_Stages","Limiting_Factors_for_Priority_Life_Stages")
     Output_LF_all = rbind(Output_LF_all, Output_LF_x )
   }
   # ------------- combine -------------
-  Output_Steelhead_All = merge(Output_Steelhead_All  ,Output_LF_all, by = "ReachName", all.x= TRUE )
+  Output_Steelhead_All = merge(Output_Steelhead_All  , Output_LF_all, by = "ReachName", all.x= TRUE )
   
   # ------------- verify which reach passes HQ pathway or LF Pathway for RESTORATION -------------
   HQ_or_LF_RESTORATION_filter_pass = c()
@@ -580,7 +589,7 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     # -------------- pull row with reach --------
     x = which(Output_Steelhead_All$ReachName == reach_x)
     
-    # --------------- if HQ score is NA, set to 100 (so it won't pass through the filter), otherwise, pull the HQ_Pct)
+    # --------------- if HQ score is NA, set to 100 (so it won't pass through the restoration filter), otherwise, pull the HQ_Pct)
     if(is.na(Output_Steelhead_All$HQ_Pct[x])){
       HQ_Pct_x = 100
     }else{
@@ -641,7 +650,7 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
       output_life_stages_x = paste(output_life_stages_x, collapse = ",")
       output_limiting_factor_x = paste(output_limiting_factor_x, collapse = ",")
       Output_LF_x = t(as.data.frame(c(reach_x,output_life_stages_x, output_limiting_factor_x )))
-      colnames(Output_LF_x) = c("ReachName", "Priority_Life_Stages_with_Limiting_Factors","Limiting_Factors_for_Priority_Life_Stages")
+      colnames(Output_LF_x) = c("ReachName", "Priority_Life_Stages","Limiting_Factors_for_Priority_Life_Stages")
       Output_LF_all = rbind(Output_LF_all, Output_LF_x )
     }
     # ------------- combine -------------
@@ -819,7 +828,7 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   confinement_output$Unconfined_more_than_0 = "yes"
   confinement_output$Unconfined_more_than_0[which(confinement_output$Unconfined_Pct == 0)] = "no"
   Output_Spring_Chinook_All = merge(Output_Spring_Chinook_All  ,confinement_output, by = "ReachName" ) 
-  Output_Steelhead_All = merge(Output_Steelhead_All  ,confinement_output, by = "ReachName" ) 
+  Output_Steelhead_All = merge(Output_Steelhead_All  ,confinement_output, by = "ReachName" )   # this row taking a long time to run, figure out why
   if(exclude_bull_trout == "no"){
     Output_Bull_Trout_All = merge(Output_Bull_Trout_All  ,confinement_output, by = "ReachName" ) 
   }
@@ -1043,7 +1052,10 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   Habitat_Quality_Pathway_Restoration_Steelhead_X = HQ_and_LF_Pathway_Restoration_Steelhead[x,]
 
   # ----------- combine ---------------
+  Habitat_Quality_Pathway_Restoration = as.matrix(Habitat_Quality_Pathway_Restoration)
+  Habitat_Quality_Pathway_Restoration_Steelhead_X = as.matrix(Habitat_Quality_Pathway_Restoration_Steelhead_X)
   Habitat_Quality_Pathway_Restoration = rbind(Habitat_Quality_Pathway_Restoration,Habitat_Quality_Pathway_Restoration_Steelhead_X )
+  Habitat_Quality_Pathway_Restoration = as.data.frame(Habitat_Quality_Pathway_Restoration)
   
   # --------------- add Bull Trout -----------------
   if(exclude_bull_trout == "no"){
@@ -1053,7 +1065,10 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     x = HQ_and_LF_Pathway_Restoration_Bull_Trout$ReachName %in% reaches_additional_Bull_Trout 
     Habitat_Quality_Pathway_Restoration_Bull_Trout_X = HQ_and_LF_Pathway_Restoration_Bull_Trout[x,]
     # ----------- combine ---------------
+    Habitat_Quality_Pathway_Restoration = as.matrix(Habitat_Quality_Pathway_Restoration)
+    Habitat_Quality_Pathway_Restoration_Bull_Trout_X = as.matrix(Habitat_Quality_Pathway_Restoration_Bull_Trout_X)
     Habitat_Quality_Pathway_Restoration = rbind(Habitat_Quality_Pathway_Restoration,Habitat_Quality_Pathway_Restoration_Bull_Trout_X )
+    Habitat_Quality_Pathway_Restoration = as.data.frame(Habitat_Quality_Pathway_Restoration)
   }
   
   #  ---------------------------------------------------------------------------------
@@ -1069,7 +1084,10 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   Habitat_Quality_Pathway_Protection_Steelhead_X = HQ_and_LF_Pathway_Protection_Steelhead[x,]
   
   # ----------- combine ---------------
+  Habitat_Quality_Pathway_Protection = as.matrix(Habitat_Quality_Pathway_Protection)
+  Habitat_Quality_Pathway_Protection_Steelhead_X = as.matrix(Habitat_Quality_Pathway_Protection_Steelhead_X)
   Habitat_Quality_Pathway_Protection = rbind(Habitat_Quality_Pathway_Protection,Habitat_Quality_Pathway_Protection_Steelhead_X )
+  Habitat_Quality_Pathway_Protection = as.data.frame(Habitat_Quality_Pathway_Protection)
   
   # --------------- add Bull Trout -----------------
   if(exclude_bull_trout == "no"){
@@ -1079,7 +1097,10 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     x = HQ_and_LF_Pathway_Protection_Bull_Trout$ReachName %in% reaches_additional_Bull_Trout 
     Habitat_Quality_Pathway_Protection_Bull_Trout_X = HQ_and_LF_Pathway_Protection_Bull_Trout[x,]
     # ----------- combine ---------------
+    Habitat_Quality_Pathway_Protection = as.matrix(Habitat_Quality_Pathway_Protection)
+    Habitat_Quality_Pathway_Protection_Bull_Trout_X = as.matrix(Habitat_Quality_Pathway_Protection_Bull_Trout_X)
     Habitat_Quality_Pathway_Protection = rbind(Habitat_Quality_Pathway_Protection,Habitat_Quality_Pathway_Protection_Bull_Trout_X )
+    Habitat_Quality_Pathway_Protection = as.data.frame(Habitat_Quality_Pathway_Protection)
   }
   
   #  ---------------------------------------------------------------------------------
@@ -1143,6 +1164,7 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     # --------------- update HQ_Pct name if necessary ----
     if(any(colnames(Habitat_Quality_Pathway_Restoration) == "HQ_Pct.y")){ colnames(Habitat_Quality_Pathway_Restoration)[which(colnames(Habitat_Quality_Pathway_Restoration) == "HQ_Pct.y")] = "HQ_Pct"  }
     # ------------------ add Habitat Quality Scores ----------
+    Habitat_Quality_Pathway_Restoration$HQ_Pct = as.numeric(Habitat_Quality_Pathway_Restoration$HQ_Pct)
     Habitat_Quality_Pathway_Restoration$Habitat_Quality_Percent = (1 - Habitat_Quality_Pathway_Restoration$HQ_Pct) *100  # need to establish as percent - established per rules from March 2021 PWG
     Restoration_Scores_Output = left_join(Restoration_Scores_Output, 
                                           Habitat_Quality_Pathway_Restoration[,c("ReachName","Habitat_Quality_Percent")], by = c("ReachName" = "ReachName"))
@@ -1555,6 +1577,7 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     # --------------- update HQ_Pct name if necessary ----
     if(any(colnames(Habitat_Quality_Pathway_Protection) == "HQ_Pct.y")){ colnames(Habitat_Quality_Pathway_Protection)[which(colnames(Habitat_Quality_Pathway_Protection) == "HQ_Pct.y")] = "HQ_Pct"  }
     # ------------------ add Habitat Quality Scores ----------
+    Habitat_Quality_Pathway_Protection$HQ_Pct = as.numeric(Habitat_Quality_Pathway_Protection$HQ_Pct)
     Habitat_Quality_Pathway_Protection$Habitat_Quality_Percent = (Habitat_Quality_Pathway_Protection$HQ_Pct) *100  # need to establish as percent - established per rules from March 2021 PWG
     Protection_Scores_Output = left_join(Protection_Scores_Output, 
                                          Habitat_Quality_Pathway_Protection[,c("ReachName","Habitat_Quality_Percent")], by = c("ReachName" = "ReachName"))
@@ -1606,7 +1629,7 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     # ----------------------------------------------------------------------------------- 
     
     # ------------------ add Threats Score ----------
-    Protected_data_frame = habitat_raw_data[,c("ReachName","UCSRB_pctProtected")]
+    Protected_data_frame = Protected_Percentage_Data[,c("ReachName","ProtectedPercent")]
     colnames(Protected_data_frame) = c("ReachName", "Protected_Percent")
     Protection_Scores_Output = left_join(Protection_Scores_Output, 
                                          Protected_data_frame[,c("ReachName","Protected_Percent")], by = c("ReachName" = "ReachName"))
@@ -2971,6 +2994,7 @@ FUNCTION_Add_Barrier_Data_Rankings = function(Barriers_Pathways_Data,  exclude_b
 test_x = TRUE
 if(test_x){
   species_x = "Spring Chinook"
+  reach_x = "Alder Creek 01"
 }
   
 
@@ -3014,6 +3038,8 @@ FUNCTION_pull_High_Priority_Life_Stages_for_a_reach = function(reach_x, species_
       }
     }
   }
+  
+  if( is.null(life_stages_priority_list) ){ life_stages_priority_list = "No priority life stages"}
   
   return(life_stages_priority_list)
 }
