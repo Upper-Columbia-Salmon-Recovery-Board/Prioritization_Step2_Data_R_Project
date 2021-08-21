@@ -130,11 +130,35 @@ Habitat_Quality_Data_Gaps$Primary_Data_Source[Okanogan_Basin_x] = "Okanogan EDT"
 Habitat_Quality_Data_Gaps = Habitat_Quality_Data_Gaps[which(Habitat_Quality_Data_Gaps$Data_Gap != "no data are missing"),]
 
 # -----------------------------------------------------------------------------------------------------------------------------------------------
+#    Update Attribute Names
+# -----------------------------------------------------------------------------------------------------------------------------------------------
+# -------------------- Fines/Embeddedness ------------------
+Habitat_Quality_Data_Gaps$Data_Gap  = gsub("%Fines/Embeddedness", "PRCNT Fines and Embeddedness", Habitat_Quality_Data_Gaps$Data_Gap )
+Habitat_Quality_Data_Gaps$Data_Gap  = gsub("% Fines/Embeddedness", "PRCNT Fines and Embeddedness", Habitat_Quality_Data_Gaps$Data_Gap )
+# -------------------- Pool Quantity and Quality ------------------
+Habitat_Quality_Data_Gaps$Data_Gap = gsub("PoolQuantity&Quality", "Pool Quantity and Quality", Habitat_Quality_Data_Gaps$Data_Gap )
+Habitat_Quality_Data_Gaps$Data_Gap = gsub("Pool Quantity & Quality", "Pool Quantity and Quality", Habitat_Quality_Data_Gaps$Data_Gap )
+# -------------------- Entrainment and Stranding ------------------
+Habitat_Quality_Data_Gaps$Data_Gap = gsub("Entrainment/Stranding", "Entrainment and Stranding", Habitat_Quality_Data_Gaps$Data_Gap )
+# -------------------- Floodplain Connectivity ------------------
+Habitat_Quality_Data_Gaps$Data_Gap = gsub("FloodplainConnectivity", "Off-Channel- Floodplain", Habitat_Quality_Data_Gaps$Data_Gap )
+# -------------------- Off-Channel/Side-Channels------------------
+Habitat_Quality_Data_Gaps$Data_Gap = gsub("Off-Channel/Side-Channels", "Off-Channel- Side-Channels", Habitat_Quality_Data_Gaps$Data_Gap )
+# -------------------- Floodplain Connectivity ------------------
+Habitat_Quality_Data_Gaps$Data_Gap = gsub("FloodplainConnectivity", "Off-Channel- Floodplain", Habitat_Quality_Data_Gaps$Data_Gap )
+# -------------------- Floodplain Connectivity ------------------
+Habitat_Quality_Data_Gaps$Data_Gap = gsub("Off-Channel- Floodplain", "Floodplain Connectivity", Habitat_Quality_Data_Gaps$Data_Gap )
+
+# -----------------------------------------------------------------------------------------------------------------------------------------------
 #    Add whether a reach was a potential reach layer (yes/no)  potential_priority_reach_yes_no
 # -----------------------------------------------------------------------------------------------------------------------------------------------
+Output_ALL_species_and_reaches_SLIM = Output_ALL_species_and_reaches[,c("ReachName","Potential_Priority_Reach_all_species_restoration_or_protection", "Tier_1_all_species_restoration_or_protection")]
+Habitat_Quality_Data_Gaps  = merge(Habitat_Quality_Data_Gaps, Output_ALL_species_and_reaches_SLIM, by="ReachName", all.x=TRUE)
 
+colnames(Habitat_Quality_Data_Gaps) = c("Reach Name", "Basin", "Assessment Unit", "Missing Data", "Primary Data Source", "Potential Priority Reach (yes or no)" , "Tier 1 Restoration or Protection (yes or no)")
+ 
 
-
+  
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #      Save Data Layer
 # -----------------------------------------------------------------------------------------------------------------------------------------------

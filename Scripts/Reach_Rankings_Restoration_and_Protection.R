@@ -984,18 +984,108 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   print(paste("HQ Pathway-RESTORATION Spring Chinook - total reaches after life stage sum filter: ", nrow(HQ_and_LF_Pathway_Restoration_Spring_Chinook), sep=""))
   print(paste("HQ Pathway-RESTORATION Steelhead - total reaches after life stage sum filter: ", nrow(HQ_and_LF_Pathway_Restoration_Steelhead), sep=""))
   
+  #  ---------------------------------------------------------------------------------
+  #          Life Stage Sum - ALL Reaches
+  #  ---------------------------------------------------------------------------------
   # -------- add to total output -----
   life_stage_sum_output = Life_Stage_Priorities_AU_and_Reach_data[,c("ReachName","Life_Stage_Sum_Column_Spring_Chinook")]
+  life_stage_filter_x = rep("no",  length.out = nrow(life_stage_sum_output) )
+  life_stage_filter_x[which(life_stage_sum_output$Life_Stage_Sum_Column_Spring_Chinook >= Life_Stage_Priorities_AU_and_Reach_data_FILTER_Restoration$Category_lower_limit)] = "yes"
+  life_stage_sum_output$Life_Stage_Sum_Filter_yes_no = life_stage_filter_x
   Output_Spring_Chinook_All = merge(Output_Spring_Chinook_All  ,life_stage_sum_output, by = "ReachName" ) 
   
   life_stage_sum_output = Life_Stage_Priorities_AU_and_Reach_data[,c("ReachName","Life_Stage_Sum_Column_Steelhead")]
+  life_stage_filter_x = rep("no",  length.out = nrow(life_stage_sum_output) )
+  life_stage_filter_x[which(life_stage_sum_output$Life_Stage_Sum_Column_Steelhead >= Life_Stage_Priorities_AU_and_Reach_data_FILTER_Restoration$Category_lower_limit)] = "yes"
+  life_stage_sum_output$Life_Stage_Sum_Filter_yes_no = life_stage_filter_x
   Output_Steelhead_All = merge(Output_Steelhead_All  ,life_stage_sum_output, by = "ReachName" ) 
   
   if(exclude_bull_trout == "no"){
     life_stage_sum_output = Life_Stage_Priorities_AU_and_Reach_data[,c("ReachName","Life_Stage_Sum_Column_Bull_Trout")]
+    life_stage_filter_x = rep("no",  length.out = nrow(life_stage_sum_output) )
+    life_stage_filter_x[which(life_stage_sum_output$Life_Stage_Sum_Column_Bull_Trout >= Life_Stage_Priorities_AU_and_Reach_data_FILTER_Restoration$Category_lower_limit)] = "yes"
+    life_stage_sum_output$Life_Stage_Sum_Filter_yes_no = life_stage_filter_x
     Output_Bull_Trout_All = merge(Output_Bull_Trout_All  ,life_stage_sum_output, by = "ReachName" ) 
-    
   }
+  
+  # ----------------------------------------------------------------------------------------------------------------------------------------------------
+  #       Prepare Final Output of All Reaches
+  # ----------------------------------------------------------------------------------------------------------------------------------------------------
+  
+  # ---------------------------- Restoration: Yes/No if pass Species-reach, AU Rank, Confinement, and # of Life Stages filters ------------------------------------
+  Output_Spring_Chinook_All$Restoration_filter_speciesreach_AUrank_confinement_numlifestages = "no"
+  pass_restoration_filters_x = which( Output_Spring_Chinook_All$Spring.Chinook.Reach == "yes"   &  # Species Reach
+                                      Output_Spring_Chinook_All$`AU Restoration Rank` == 1      &  # AU Rank - Restoration
+                                      Output_Spring_Chinook_All$Unconfined_more_than_0 == "yes" &  # Confinement - less than 100 (unconfined more than 0)
+                                      Output_Spring_Chinook_All$Life_Stage_Sum_Filter_yes_no == "yes"  )       # Number of life stages greater than 3
+  Output_Spring_Chinook_All$Restoration_filter_speciesreach_AUrank_confinement_numlifestages[pass_restoration_filters_x] = "yes"
+  
+  Output_Steelhead_All$Restoration_filter_speciesreach_AUrank_confinement_numlifestages = "no"
+  pass_restoration_filters_x = which( Output_Steelhead_All$Steelhead.Reach == "yes"   &  # Species Reach
+                                        Output_Steelhead_All$`AU Restoration Rank` == 1      &  # AU Rank - Restoration
+                                        Output_Steelhead_All$Unconfined_more_than_0 == "yes" &  # Confinement - less than 100 (unconfined more than 0)
+                                        Output_Steelhead_All$Life_Stage_Sum_Filter_yes_no == "yes"  )       # Number of life stages greater than 3
+  Output_Steelhead_All$Restoration_filter_speciesreach_AUrank_confinement_numlifestages[pass_restoration_filters_x] = "yes"
+
+  if(exclude_bull_trout == "no"){
+    Output_Bull_Trout_All$Restoration_filter_speciesreach_AUrank_confinement_numlifestages = "no"
+    pass_restoration_filters_x = which( Output_Bull_Trout_All$Bull.Trout.Reach == "yes"   &  # Species Reach
+                                          Output_Bull_Trout_All$`AU Restoration Rank` == 1      &  # AU Rank - Restoration
+                                          Output_Bull_Trout_All$Unconfined_more_than_0 == "yes" &  # Confinement - less than 100 (unconfined more than 0)
+                                          Output_Bull_Trout_All$Life_Stage_Sum_Filter_yes_no == "yes"  )       # Number of life stages greater than 3
+    Output_Bull_Trout_All$Restoration_filter_speciesreach_AUrank_confinement_numlifestages[pass_restoration_filters_x] = "yes"
+  }
+  # ---------------------------- Protection: Yes/No if pass Species-reach, AU Rank, Confinement, and # of Life Stages filters ------------------------------------
+  Output_Spring_Chinook_All$Protection_filter_speciesreach_AUrank_confinement_numlifestages = "no"
+  pass_Protection_filters_x = which( Output_Spring_Chinook_All$Spring.Chinook.Reach == "yes"   &  # Species Reach
+                                       Output_Spring_Chinook_All$`AU Protection Rank` == 1      &  # AU Rank - Protection
+                                       Output_Spring_Chinook_All$Unconfined_more_than_0 == "yes" &  # Confinement - less than 100 (unconfined more than 0)
+                                       Output_Spring_Chinook_All$Life_Stage_Sum_Filter_yes_no == "yes"  )       # Number of life stages greater than 3
+  Output_Spring_Chinook_All$Protection_filter_speciesreach_AUrank_confinement_numlifestages[pass_Protection_filters_x] = "yes"
+  
+  Output_Steelhead_All$Protection_filter_speciesreach_AUrank_confinement_numlifestages = "no"
+  pass_Protection_filters_x = which( Output_Steelhead_All$Steelhead.Reach == "yes"   &  # Species Reach
+                                       Output_Steelhead_All$`AU Protection Rank` == 1      &  # AU Rank - Protection
+                                       Output_Steelhead_All$Unconfined_more_than_0 == "yes" &  # Confinement - less than 100 (unconfined more than 0)
+                                       Output_Steelhead_All$Life_Stage_Sum_Filter_yes_no == "yes"  )       # Number of life stages greater than 3
+  Output_Steelhead_All$Protection_filter_speciesreach_AUrank_confinement_numlifestages[pass_Protection_filters_x] = "yes"
+  
+  if(exclude_bull_trout == "no"){
+    Output_Bull_Trout_All$Protection_filter_speciesreach_AUrank_confinement_numlifestages = "no"
+    pass_Protection_filters_x = which( Output_Bull_Trout_All$Bull.Trout.Reach == "yes"   &  # Species Reach
+                                         Output_Bull_Trout_All$`AU Protection Rank` == 1      &  # AU Rank - Protection
+                                         Output_Bull_Trout_All$Unconfined_more_than_0 == "yes" &  # Confinement - less than 100 (unconfined more than 0)
+                                         Output_Bull_Trout_All$Life_Stage_Sum_Filter_yes_no == "yes"  )       # Number of life stages greater than 3
+    Output_Bull_Trout_All$Protection_filter_speciesreach_AUrank_confinement_numlifestages[pass_Protection_filters_x] = "yes"
+  }
+  # ------------------- yes/no if a reach is potential priority for ANY species --------------------
+  
+  Restoration_filter_speciesreach_AUrank_confinement_numlifestages_ALL_Species = rep("no", length.out = nrow(Output_Spring_Chinook_All) )
+  if(exclude_bull_trout == "no"){  
+    pass_Restoration_filters_x = which( Output_Spring_Chinook_All$Restoration_filter_speciesreach_AUrank_confinement_numlifestages == "yes"   |  # Spring Chinook
+                                          Output_Steelhead_All$Restoration_filter_speciesreach_AUrank_confinement_numlifestages == "yes"  |  # Steelhead
+                                          Output_Bull_Trout_All$Restoration_filter_speciesreach_AUrank_confinement_numlifestages == "yes"  )       # Bull Trout
+    Restoration_filter_speciesreach_AUrank_confinement_numlifestages_ALL_Species[pass_Restoration_filters_x] = "yes" 
+  }else{
+    pass_Restoration_filters_x = which( Output_Spring_Chinook_All$Restoration_filter_speciesreach_AUrank_confinement_numlifestages == "yes"   |  # Spring Chinook
+                                          Output_Steelhead_All$Restoration_filter_speciesreach_AUrank_confinement_numlifestages == "yes"   )       # Steelhead
+    Restoration_filter_speciesreach_AUrank_confinement_numlifestages_ALL_Species[pass_Restoration_filters_x] = "yes" 
+  }
+  
+  Protection_filter_speciesreach_AUrank_confinement_numlifestages_ALL_Species = rep("no", length.out = nrow(Output_Spring_Chinook_All) )
+  if(exclude_bull_trout == "no"){  
+    pass_Protection_filters_x = which( Output_Spring_Chinook_All$Protection_filter_speciesreach_AUrank_confinement_numlifestages == "yes"   |  # Spring Chinook
+                                         Output_Steelhead_All$Protection_filter_speciesreach_AUrank_confinement_numlifestages == "yes"  |  # Steelhead
+                                         Output_Bull_Trout_All$Protection_filter_speciesreach_AUrank_confinement_numlifestages == "yes"  )       # Bull Trout
+    Protection_filter_speciesreach_AUrank_confinement_numlifestages_ALL_Species[pass_Protection_filters_x] = "yes" 
+  }else{
+    pass_Protection_filters_x = which( Output_Spring_Chinook_All$Protection_filter_speciesreach_AUrank_confinement_numlifestages == "yes"   |  # Spring Chinook
+                                         Output_Steelhead_All$Protection_filter_speciesreach_AUrank_confinement_numlifestages == "yes"   )       # Steelhead
+    Protection_filter_speciesreach_AUrank_confinement_numlifestages_ALL_Species[pass_Protection_filters_x] = "yes" 
+  }
+  
+  
+  
   # ------------- write the Output of the Reaches --------
   # -------- Spring Chinook -------
   output_path_x =  paste(output_path,Output_ALL_Spring_Chinook_file, sep="")
@@ -1013,7 +1103,39 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     # -------- Steelhead -------
     output_path_x =  paste(output_path,Output_ALL_Bull_Trout_file, sep="")
     write_xlsx(Output_Bull_Trout_All,output_path_x )
+    
+    # ------------ combine all the species -------
+    Output_ALL_species_and_reaches = data.frame( "Spring_Chinook" = Output_Spring_Chinook_All, 
+                                                 "Steelhead" = Output_Steelhead_All,
+                                                 "Bull_Trout" = Output_Bull_Trout_All)
+  }else{
+    Output_ALL_species_and_reaches = data.frame( "Spring_Chinook" = Output_Spring_Chinook_All, 
+                                                 "Steelhead" = Output_Steelhead_All)
   }
+  # ------------- potential priority reach - across all species --------
+  Output_ALL_species_and_reaches$Restoration_filter_speciesreach_AUrank_confinement_numlifestages_ALL_Species = Restoration_filter_speciesreach_AUrank_confinement_numlifestages_ALL_Species
+  Output_ALL_species_and_reaches$Protection_filter_speciesreach_AUrank_confinement_numlifestages_ALL_Species = Protection_filter_speciesreach_AUrank_confinement_numlifestages_ALL_Species
+  # ------------- combine across protection and restoration -------------
+  Output_ALL_species_and_reaches$Potential_Priority_Reach_all_species_restoration_or_protection = "no"
+  Potential_Priority_Reach_all_species_restoration_or_protection_index_x = which(
+    Output_ALL_species_and_reaches$Restoration_filter_speciesreach_AUrank_confinement_numlifestages_ALL_Species == "yes" |
+    Output_ALL_species_and_reaches$Protection_filter_speciesreach_AUrank_confinement_numlifestages_ALL_Species == "yes"
+  )
+  Output_ALL_species_and_reaches$Potential_Priority_Reach_all_species_restoration_or_protection[Potential_Priority_Reach_all_species_restoration_or_protection_index_x] = "yes"
+  # ------------------ column that is yes/no if in Tier 1 restoration or protectoin -----------------
+  Output_ALL_species_and_reaches$Tier_1_all_species_restoration_or_protection = "no"
+  Tier_1_all_species_restoration_or_protection_index_x = which(
+    Output_ALL_species_and_reaches$Spring_Chinook.AU.Restoration.Rank == 1 |  # Spring Chinook - Restoration
+    Output_ALL_species_and_reaches$Spring_Chinook.AU.Protection.Rank == 1 |   # Spring Chinook - Protection
+    Output_ALL_species_and_reaches$Steelhead.AU.Restoration.Rank == 1 |  # Steelhead - Restoration
+    Output_ALL_species_and_reaches$Steelhead.AU.Protection.Rank == 1 |   # Steelhead - Protection
+    Output_ALL_species_and_reaches$Bull_Trout.AU.Restoration.Rank == 1 |  # Bull Trout - Restoration
+    Output_ALL_species_and_reaches$Bull_Trout.AU.Protection.Rank == 1    # Bull Trout - Protection
+  )
+  Output_ALL_species_and_reaches$Tier_1_all_species_restoration_or_protection[Tier_1_all_species_restoration_or_protection_index_x] = "yes"
+  
+  # ------------- set first column as reach name --------
+  colnames(Output_ALL_species_and_reaches)[1] = "ReachName"
   
   #  ---------------------------------------------------------------------------------
   #           Life Stage Sum  - PROTECTION
@@ -1856,7 +1978,13 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     "Reach_Ranking_Protection" = Protection_Scores_Output
   )
   
-  return(Reach_Rankings_Combined)
+  # Create list of the reach ranks AND the output of all species and reaches
+  Data_Output = list()
+  Data_Output$Reach_Rankings_Combined = Reach_Rankings_Combined
+  Data_Output$Output_ALL_species_and_reaches = Output_ALL_species_and_reaches
+  
+  
+  return(Data_Output)
 
   
 }

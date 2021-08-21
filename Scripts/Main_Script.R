@@ -475,7 +475,10 @@ Protection_Prioritization_Output_Bull_Trout = Protection_Prioritization_Output[ 
 
 source(paste(script_path, "Reach_Rankings_Restoration_and_Protection.R", sep=""))
 # ------  run the function to generate restoration rankings -------
-Reach_Rankings_Output = Generate_Restoration_or_Protection_Reach_Rankings_Table(basins_to_include )
+Reach_Rankings_and_all_species_Output = Generate_Restoration_or_Protection_Reach_Rankings_Table(basins_to_include )
+Reach_Rankings_Output = Reach_Rankings_and_all_species_Output[["Reach_Rankings_Combined"]]
+Output_ALL_species_and_reaches = Reach_Rankings_and_all_species_Output[["Output_ALL_species_and_reaches"]]
+# Output of all reaches and species: Output_ALL_species_and_reaches
 
 # ----------------- separate into Restoration and Protection ----------------
 Reach_Rankings_Output_Restoration = Reach_Rankings_Output[['Reach_Rankings_Restoration']]
