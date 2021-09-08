@@ -45,7 +45,7 @@ source(paste(script_path, 'FUNCTIONS_for_Habitat_Attribute_Filters.R', sep=""))
 # -------------- to test ------------------------
 test = FALSE
 if(test){
-  habitat_attribute_x = names(Habitat_Attributes_List)[23]
+  habitat_attribute_x = names(Habitat_Attributes_List)[6]
   data_sources_list =  Habitat_Attributes_List[habitat_attribute_x]
   data_source_x = data_sources_list[[1]][1]
 }

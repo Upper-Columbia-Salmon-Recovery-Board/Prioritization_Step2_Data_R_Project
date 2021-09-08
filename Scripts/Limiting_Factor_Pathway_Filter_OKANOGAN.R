@@ -213,6 +213,21 @@ Generate_Limiting_Factor_Output_Table_Okanogan = function(species, basins){
   print(paste("TOTAL reaches passing through LF Protection (Okanogan) Pathway: ", length(unique(Limiting_Factor_Pathway_Protection$ReachName)), sep=""))
   
 
+  #  ---------------------------------------------------------------------------------
+  #            Filter out to select for Limiting Factor PROTECTION ONLY with HQ > 50% (June 2021)
+  #  ---------------------------------------------------------------------------------
+  # ------- merge reach scores with current filtered protection reaches ---------
+  Limiting_Factor_reaches_HQ_scores = merge(Limiting_Factor_Pathway_Protection[,c("ReachName","Basin")],
+                                            Habitat_Quality_Scores_Okanogan[,c("ReachName","HQ_Pct")], by="ReachName", all.x=TRUE)
+  # ----------------- remove HQ_Score below level -----------
+  Limiting_Factor_reaches_HQ_scores = Limiting_Factor_reaches_HQ_scores[which(Limiting_Factor_reaches_HQ_scores$HQ_Pct > HQ_Pct_for_LF_PCT_in_Ranks), ]
+  # ----------------- only move these reaches forward ---------------
+  x_row = c()
+  for(reach_x in unique(Limiting_Factor_reaches_HQ_scores$ReachName)){
+    x = which(Limiting_Factor_Pathway_Protection$ReachName == reach_x)
+    x_row = c(x_row,x)
+  }
+  Limiting_Factor_Pathway_Protection = Limiting_Factor_Pathway_Protection[x_row,] 
   
   
   
@@ -248,10 +263,12 @@ Generate_Limiting_Factor_Output_Table_Okanogan = function(species, basins){
 #Summer_Rearing_LF_Okanogan 
 #Winter_Rearing_LF_Okanogan 
 
+# Okanogan_LF_Pathway_Level2_to_Level_3_yes_no
+
 test_x = FALSE
 if(test_x){
-  Limiting_Factor_Life_Stage_Table = Holding_and_Maturation_LF_Okanogan
-  life_stage_x = "Holding and Maturation" 
+  Limiting_Factor_Life_Stage_Table = Adult_Migration_LF_Okanogan
+  life_stage_x = "Adult Migration" 
 }
 
 
@@ -1308,31 +1325,51 @@ Generate_Limiting_Factor_Output_Table_Okanogan_no_level3 = function(species, bas
   
   for(life_stage_x in life_stages_steelhead){
     print(paste("Starting life stage: ",life_stage_x))
+    
+    # ------------------- get life stage presence and high priority (life stage) reaches ---------------
+    Life_Stage_Priorities_AU_and_Reach_data_LIFE_STAGE_x = Life_Stage_Priorities_AU_and_Reach_data[,c("ReachName" , life_stages_priorities_species_specific[[life_stage_x]], steelhead_life_stages_presence[[life_stage_x]])]
+    Life_Stage_Priorities_AU_and_Reach_data_LIFE_STAGE_FILTER_index = which(Life_Stage_Priorities_AU_and_Reach_data_LIFE_STAGE_x[,life_stages_priorities_species_specific[[life_stage_x]] ] == Life_Stage_Priority   & 
+                                                                              Life_Stage_Priorities_AU_and_Reach_data_LIFE_STAGE_x[,steelhead_life_stages_presence[[life_stage_x]]] == 1  )
+    Life_Stage_Priorities_AU_and_Reach_data_LIFE_STAGE_x = Life_Stage_Priorities_AU_and_Reach_data_LIFE_STAGE_x[Life_Stage_Priorities_AU_and_Reach_data_LIFE_STAGE_FILTER_index,]
+    
     # ----------- pull life stage Table -----------
     if(life_stage_x == "Adult Migration" ){
       Limiting_Factor_Life_Stage_Table = Adult_Migration_LF_Okanogan_no_Level3
+      Limiting_Factor_Life_Stage_Table = merge(Limiting_Factor_Life_Stage_Table, Life_Stage_Priorities_AU_and_Reach_data_LIFE_STAGE_x, by="ReachName" )
     }else if(life_stage_x == "Fry" ){
       Limiting_Factor_Life_Stage_Table = Fry_LF_Okanogan_no_Level3
+      Limiting_Factor_Life_Stage_Table = merge(Limiting_Factor_Life_Stage_Table, Life_Stage_Priorities_AU_and_Reach_data_LIFE_STAGE_x, by="ReachName" )
     }else if(life_stage_x == "Holding and Maturation" ){
       Limiting_Factor_Life_Stage_Table = Holding_and_Maturation_LF_Okanogan_no_Level3
+      Limiting_Factor_Life_Stage_Table = merge(Limiting_Factor_Life_Stage_Table, Life_Stage_Priorities_AU_and_Reach_data_LIFE_STAGE_x, by="ReachName" )
     }else if(life_stage_x == "Smolt Outmigration" ){
       Limiting_Factor_Life_Stage_Table = Smolt_Outmigration_LF_Okanogan_no_Level3
+      Limiting_Factor_Life_Stage_Table = merge(Limiting_Factor_Life_Stage_Table, Life_Stage_Priorities_AU_and_Reach_data_LIFE_STAGE_x, by="ReachName" )
     }else if(life_stage_x == "Spawning and Incubation" ){
       Limiting_Factor_Life_Stage_Table = Spawning_and_Incubation_LF_Okanogan_no_Level3
+      Limiting_Factor_Life_Stage_Table = merge(Limiting_Factor_Life_Stage_Table, Life_Stage_Priorities_AU_and_Reach_data_LIFE_STAGE_x, by="ReachName" )
     }else if(life_stage_x == "Summer Rearing" ){
       Limiting_Factor_Life_Stage_Table = Summer_Rearing_LF_Okanogan_no_Level3
+      Limiting_Factor_Life_Stage_Table = merge(Limiting_Factor_Life_Stage_Table, Life_Stage_Priorities_AU_and_Reach_data_LIFE_STAGE_x, by="ReachName" )
     }else if(life_stage_x == "Winter Rearing" ){
       Limiting_Factor_Life_Stage_Table = Winter_Rearing_LF_Okanogan_no_Level3
+      Limiting_Factor_Life_Stage_Table = merge(Limiting_Factor_Life_Stage_Table, Life_Stage_Priorities_AU_and_Reach_data_LIFE_STAGE_x, by="ReachName" )
     }
     
-    Life_Stage_Output_x = Generate_Species_Output_Table_Okanogan_Restoration_Protection_NO_LEVEL_3(life_stage_x, Limiting_Factor_Life_Stage_Table)
+    if( nrow(Limiting_Factor_Life_Stage_Table) > 0 ){
+      Life_Stage_Output_x = Generate_Species_Output_Table_Okanogan_Restoration_Protection_NO_LEVEL_3(life_stage_x, Limiting_Factor_Life_Stage_Table)
+    }else{
+      Life_Stage_Output_x = Limiting_Factor_Life_Stage_Table
+      print(paste("life stage: ", life_stage_x, " has no priority reaches"))
+    }
+    
     
     # -------------------------------------
     #  combine output for life stages 
     # -------------------------------------
     # NOTE: this output has a single row for each reach-life stage combo
     # ----------------- if no impaired habitat attributes for this life stage
-    if( is.null(Life_Stage_Output_x) ){
+    if( nrow(Limiting_Factor_Life_Stage_Table)==0 ){
       print(paste("Life stage ",life_stage_x, " has no impaired habitat attributes"))
       
       # ----------------- if no EDT attributes that correspond to RTT attributes for this life stage ------- 
@@ -1381,9 +1418,27 @@ Generate_Limiting_Factor_Output_Table_Okanogan_no_level3 = function(species, bas
   
   print(paste("TOTAL reaches passing through LF Protection (Okanogan) Pathway: ", length(unique(Limiting_Factor_Pathway_Protection$ReachName)), sep=""))
   
+  #  ---------------------------------------------------------------------------------
+  #            Filter out to select for Limiting Factor PROTECTION ONLY with HQ > 50% (June 2021)
+  #  ---------------------------------------------------------------------------------
+  # ------- merge reach scores with current filtered protection reaches ---------
+  Limiting_Factor_reaches_HQ_scores = merge(Limiting_Factor_Pathway_Protection[,c("ReachName","Basin")],
+                                            Habitat_Quality_Scores_Okanogan[,c("ReachName","HQ_Pct")], by="ReachName", all.x=TRUE)
+  # ----------------- remove HQ_Score below level -----------
+  Limiting_Factor_reaches_HQ_scores = Limiting_Factor_reaches_HQ_scores[which(Limiting_Factor_reaches_HQ_scores$HQ_Pct > HQ_Pct_for_LF_PCT_in_Ranks), ]
+  # ----------------- only move these reaches forward ---------------
+  x_row = c()
+  for(reach_x in unique(Limiting_Factor_reaches_HQ_scores$ReachName)){
+    x = which(Limiting_Factor_Pathway_Protection$ReachName == reach_x)
+    x_row = c(x_row,x)
+  }
+  Limiting_Factor_Pathway_Protection = Limiting_Factor_Pathway_Protection[x_row,] 
   
-  
-  
+  #  ---------------------------------------------------------------------------------
+  #            Filter out to select for Limiting Factor PROTECTION ONLY with core metric LF_Pct > 70% 
+  #                 the LF_Pct calculated with core metrics
+  #  ---------------------------------------------------------------------------------
+  Limiting_Factor_Pathway_Protection = Limiting_Factor_Pathway_Protection[which(Limiting_Factor_Pathway_Protection$LF_Pct > PRCNT_of_Template_Protection_Score),]
   
   # --------------------- but Restoration and Protection into a list --------------
   Limiting_Factor_Pathway_Output = list( 

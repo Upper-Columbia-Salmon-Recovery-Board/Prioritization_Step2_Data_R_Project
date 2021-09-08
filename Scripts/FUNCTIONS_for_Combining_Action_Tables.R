@@ -405,7 +405,7 @@ FUNCTION_life_stage_presence= function(species_x, reachname_x){
 # ---------------------------------------------------------------------------
 test_x = FALSE
 if(test_x){
-  score_1_or_3 = "two and three"
+  score_1_or_3 = "one thru three"
   restoration_or_protection = 'restoration'
 }
 
@@ -489,25 +489,28 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
       LF_row_x = LF_spring_chinook[which(LF_spring_chinook$ReachName == reachname_x),]
       
       # -------- IF there are habitat attributes for that score (unacceptable, at risk, unacceptable-at risk) -------
-      if(  !is.na(LF_row_x[,attributes_column][[1]]) & nchar(LF_row_x[,attributes_column][[1]]) > 0   ){
+      if(  any(!is.na(LF_row_x[,attributes_column])) & any(nchar(LF_row_x[,attributes_column]) > 0)   ){
         # ---------------- pathway -------------------
         pathways_x = paste(pathways_x, "LF_spring_chinook", sep=",")
         
         # ---------- loop through each life stage in this reach --------
         for(life_stage_row_x in 1:nrow(LF_row_x)){
-          # ----------------- habitat attributes ------------------
-          habitat_attributes_x = paste(habitat_attributes_x, LF_row_x[life_stage_row_x,attributes_column][[1]], sep=",")
-          # ----------------- action categories ------------------
-          action_categories_x = paste(action_categories_x, LF_row_x[life_stage_row_x,actions_column][[1]], sep=",")
-          # ----------------- life stages ---------------------------
-          life_stages_x = paste(life_stages_x, LF_row_x[life_stage_row_x,"life_stage"][[1]], sep=",")
           
-          # --------------- habitat attributes related to Spring Chinook actions --------------
-          spring_chinook_habitat_attributes =  paste(spring_chinook_habitat_attributes,LF_row_x[life_stage_row_x,attributes_column][[1]], sep=",")
-          # ------------------- specifically add to spring chinook actions --------------
-          spring_chinook_actions_x =    paste(spring_chinook_actions_x, LF_row_x[life_stage_row_x,actions_column][[1]] , sep=",")
-          # ------------------- life stages specifically for spring chinook --------------
-          spring_chinook_life_stages_x =   paste(spring_chinook_life_stages_x, LF_row_x[life_stage_row_x,"life_stage"][[1]] , sep=",")
+          if( nchar(LF_row_x[life_stage_row_x,attributes_column][[1]]) > 0 ){
+            # ----------------- habitat attributes ------------------
+            habitat_attributes_x = paste(habitat_attributes_x, LF_row_x[life_stage_row_x,attributes_column][[1]], sep=",")
+            # ----------------- action categories ------------------
+            action_categories_x = paste(action_categories_x, LF_row_x[life_stage_row_x,actions_column][[1]], sep=",")
+            # ----------------- life stages ---------------------------
+            life_stages_x = paste(life_stages_x, LF_row_x[life_stage_row_x,"life_stage"][[1]], sep=",")
+            
+            # --------------- habitat attributes related to Spring Chinook actions --------------
+            spring_chinook_habitat_attributes =  paste(spring_chinook_habitat_attributes,LF_row_x[life_stage_row_x,attributes_column][[1]], sep=",")
+            # ------------------- specifically add to spring chinook actions --------------
+            spring_chinook_actions_x =    paste(spring_chinook_actions_x, LF_row_x[life_stage_row_x,actions_column][[1]] , sep=",")
+            # ------------------- life stages specifically for spring chinook --------------
+            spring_chinook_life_stages_x =   paste(spring_chinook_life_stages_x, LF_row_x[life_stage_row_x,"life_stage"][[1]] , sep=",")
+          }
         }
 
       }
@@ -519,25 +522,28 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
       LF_row_x = LF_steelhead[which(LF_steelhead$ReachName == reachname_x),]
       
       # -------- IF there are habitat attributes for that score (unacceptable, at risk, unacceptable-at risk) -------
-      if(  !is.na(LF_row_x[,attributes_column][[1]]) & nchar(LF_row_x[,attributes_column][[1]]) > 0   ){
+      if(  any(!is.na(LF_row_x[,attributes_column])) & any(nchar(LF_row_x[,attributes_column]) > 0)   ){
         # ---------------- pathway -------------------
         pathways_x = paste(pathways_x, "LF_steelhead", sep=",")
         
         # ---------- loop through each life stage in this reach --------
         for(life_stage_row_x in 1:nrow(LF_row_x)){
-          # ----------------- habitat attributes ------------------
-          habitat_attributes_x = paste(habitat_attributes_x, LF_row_x[life_stage_row_x,attributes_column][[1]], sep=",")
-          # ----------------- action categories ------------------
-          action_categories_x = paste(action_categories_x, LF_row_x[life_stage_row_x,actions_column][[1]], sep=",")
-          # ----------------- life stages ---------------------------
-          life_stages_x = paste(life_stages_x, LF_row_x[life_stage_row_x,"life_stage"][[1]], sep=",")
           
-          # --------------- habitat attributes related to Steelhead actions --------------
-          steelhead_habitat_attributes = paste(steelhead_habitat_attributes, LF_row_x[life_stage_row_x,attributes_column][[1]] , sep=",")
-          # ------------------- specifically add to steelhead actions --------------
-          steelhead_actions_x =  paste(steelhead_actions_x, LF_row_x[life_stage_row_x,actions_column][[1]] , sep=",")
-          # ------------------- life stages specifically for spring chinook --------------
-          steelhead_life_stages_x = paste(steelhead_life_stages_x, LF_row_x[life_stage_row_x,"life_stage"][[1]] , sep=",")
+          if( nchar(LF_row_x[life_stage_row_x,attributes_column][[1]]) > 0 ){
+            # ----------------- habitat attributes ------------------
+            habitat_attributes_x = paste(habitat_attributes_x, LF_row_x[life_stage_row_x,attributes_column][[1]], sep=",")
+            # ----------------- action categories ------------------
+            action_categories_x = paste(action_categories_x, LF_row_x[life_stage_row_x,actions_column][[1]], sep=",")
+            # ----------------- life stages ---------------------------
+            life_stages_x = paste(life_stages_x, LF_row_x[life_stage_row_x,"life_stage"][[1]], sep=",")
+            
+            # --------------- habitat attributes related to Steelhead actions --------------
+            steelhead_habitat_attributes = paste(steelhead_habitat_attributes, LF_row_x[life_stage_row_x,attributes_column][[1]] , sep=",")
+            # ------------------- specifically add to steelhead actions --------------
+            steelhead_actions_x =  paste(steelhead_actions_x, LF_row_x[life_stage_row_x,actions_column][[1]] , sep=",")
+            # ------------------- life stages specifically for spring chinook --------------
+            steelhead_life_stages_x = paste(steelhead_life_stages_x, LF_row_x[life_stage_row_x,"life_stage"][[1]] , sep=",")
+          }
         }
       }
     }
@@ -551,25 +557,29 @@ FUNCTION_combine_Limiting_Factor_Action_Categories_PER_REACH = function(score_1_
         LF_row_x = LF_bull_trout[which(LF_bull_trout$ReachName == reachname_x),]
         
         # -------- IF there are habitat attributes for that score (unacceptable, at risk, unacceptable-at risk) -------
-        if(  !is.na(LF_row_x[,attributes_column][[1]]) & nchar(LF_row_x[,attributes_column][[1]]) > 0   ){
+        if(  any(!is.na(LF_row_x[,attributes_column])) & any(nchar(LF_row_x[,attributes_column]) > 0)   ){
           # ---------------- pathway -------------------
           pathways_x = paste(pathways_x, "LF_bull_trout", sep=",")
           
+          # 
           # ---------- loop through each life stage in this reach --------
           for(life_stage_row_x in 1:nrow(LF_row_x)){
-            # ----------------- habitat attributes ------------------
-            habitat_attributes_x = paste(habitat_attributes_x, LF_row_x[life_stage_row_x,attributes_column][[1]], sep=",")
-            # ----------------- action categories ------------------
-            action_categories_x = paste(action_categories_x, LF_row_x[life_stage_row_x,actions_column][[1]], sep=",")
-            # ----------------- life stages ---------------------------
-            life_stages_x = paste(life_stages_x, LF_row_x[life_stage_row_x,"life_stage"][[1]], sep=",")
             
-            # --------------- habitat attributes related to Bull Trout actions --------------
-            bull_trout_habitat_attributes =  paste(bull_trout_habitat_attributes, LF_row_x[life_stage_row_x,attributes_column][[1]] , sep=",")
-            # ------------------- specifically add to bull trout actions --------------
-            bull_trout_actions_x = paste(bull_trout_actions_x, LF_row_x[life_stage_row_x,actions_column][[1]], sep=",")
-            # ------------------- life stages specifically for spring chinook --------------
-            bull_trout_life_stages_x =  paste(bull_trout_life_stages_x, LF_row_x[life_stage_row_x,"life_stage"][[1]], sep=",")
+            # ----------------- habitat attributes ------------------
+            if( nchar(LF_row_x[life_stage_row_x,attributes_column][[1]]) > 0 ){
+              habitat_attributes_x = paste(habitat_attributes_x, LF_row_x[life_stage_row_x,attributes_column][[1]], sep=",")
+              # ----------------- action categories ------------------
+              action_categories_x = paste(action_categories_x, LF_row_x[life_stage_row_x,actions_column][[1]], sep=",")
+              # ----------------- life stages ---------------------------
+              life_stages_x = paste(life_stages_x, LF_row_x[life_stage_row_x,"life_stage"][[1]], sep=",")
+              
+              # --------------- habitat attributes related to Bull Trout actions --------------
+              bull_trout_habitat_attributes =  paste(bull_trout_habitat_attributes, LF_row_x[life_stage_row_x,attributes_column][[1]] , sep=",")
+              # ------------------- specifically add to bull trout actions --------------
+              bull_trout_actions_x = paste(bull_trout_actions_x, LF_row_x[life_stage_row_x,actions_column][[1]], sep=",")
+              # ------------------- life stages specifically for spring chinook --------------
+              bull_trout_life_stages_x =  paste(bull_trout_life_stages_x, LF_row_x[life_stage_row_x,"life_stage"][[1]], sep=",")
+            }
           }
         }
       }
@@ -2436,7 +2446,7 @@ FUNCTION_Add_Reach_Rank_and_Misc_Updates_for_WebMap_Restoration = function(Resto
   Restoration_Prioritization_Output_for_WebMap_Updated$`Reach Rank` = as.character(Restoration_Prioritization_Output_for_WebMap_Updated$`Reach Rank`)
   
   # ------------------------------------------------------------------------------------ 
-  #                     update action category names and species names
+  #                     update action category names, species names, and habitat attribute names
   # ------------------------------------------------------------------------------------ 
   
   Crosswalk_Habitat_Attributes_and_Actions_Unique = Crosswalk_Habitat_Attributes_and_Actions[which(  duplicated(Crosswalk_Habitat_Attributes_and_Actions$Action_Category_2) == FALSE ), ]
@@ -2479,6 +2489,33 @@ FUNCTION_Add_Reach_Rank_and_Misc_Updates_for_WebMap_Restoration = function(Resto
     # --------------- update action categories --------
     Restoration_Prioritization_Output_for_WebMap_Updated$`Priority Species`[row_x]= species_new_x
     
+    # ----------------------------------------------------
+    #     Update habitat attribute names
+    # ----------------------------------------------------
+    
+    # Riparian Mean -> Riparian
+    # BankStaiblity - Bank Stability
+    # ChannelStaiblity - Channel Stability
+    # Riparian-CanopyCover -> Riparian-Canopy Cover
+    # Flow-Scour -> Flow- Scour
+    
+    unacceptable_x = Restoration_Prioritization_Output_for_WebMap_Updated$`Unacceptable Limiting Factors`[row_x]
+    at_risk_x = Restoration_Prioritization_Output_for_WebMap_Updated$`At-Risk Limiting Factors`[row_x]
+    
+    if( grepl("Riparian Mean", unacceptable_x, fixed=TRUE  )  ){ unacceptable_x = sub( "Riparian Mean","Riparian" , unacceptable_x) }
+    if( grepl("BankStability", unacceptable_x, fixed=TRUE  )  ){ unacceptable_x = sub( "BankStability","Bank Stability" , unacceptable_x) }
+    if( grepl("ChannelStability", unacceptable_x, fixed=TRUE  )  ){ unacceptable_x = sub( "ChannelStability","Channel Stability" , unacceptable_x) }
+    if( grepl("Riparian-CanopyCover", unacceptable_x, fixed=TRUE  )  ){ unacceptable_x = sub( "Riparian-CanopyCover","Riparian-Canopy Cover" , unacceptable_x) }
+    if( grepl("Flow-Scour", unacceptable_x, fixed=TRUE  )  ){ unacceptable_x = sub( "Flow-Scour","Flow- Scour" , unacceptable_x) }
+    
+    if( grepl("Riparian Mean", at_risk_x, fixed=TRUE  )  ){ at_risk_x = sub( "Riparian Mean","Riparian" , at_risk_x) }
+    if( grepl("BankStability", at_risk_x, fixed=TRUE  )  ){ at_risk_x = sub( "BankStability","Bank Stability" , at_risk_x) }
+    if( grepl("ChannelStability", at_risk_x, fixed=TRUE  )  ){ at_risk_x = sub( "ChannelStability","Channel Stability" , at_risk_x) }
+    if( grepl("Riparian-CanopyCover", at_risk_x, fixed=TRUE  )  ){ at_risk_x = sub( "Riparian-CanopyCover","Riparian-Canopy Cover" , at_risk_x) }
+    if( grepl("Flow-Scour", at_risk_x, fixed=TRUE  )  ){ at_risk_x = sub( "Flow-Scour","Flow- Scour" , at_risk_x) }
+    
+    Restoration_Prioritization_Output_for_WebMap_Updated$`Unacceptable Limiting Factors`[row_x] = unacceptable_x
+    Restoration_Prioritization_Output_for_WebMap_Updated$`At-Risk Limiting Factors`[row_x] = at_risk_x
   }
   
   # ------------------------------------------------------------------------------------ 

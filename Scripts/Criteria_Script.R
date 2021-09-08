@@ -64,7 +64,8 @@ HQ_Pct_for_LF_PCT_in_Ranks = 0.5
 AU_Rank = c(1)                        #potential: 1,2,3; 1 is high priority, 5 is low priority
 
 # --------------------- Habitat Attribute Scores-- "DRAFT Habitat Attribute..." data (data in Cumul_Habitat_Attribute_Score)
-Cumul_Habitat_Attribute_Score = c(1)    # potential score: [1, 3, 5]; 1 is unacceptable, 5 is adequate 
+# NOT using - pulling "Unacceptable" and "At Risk" habitat attributes
+# Cumul_Habitat_Attribute_Score = c(1)    # potential score: [1, 3, 5]; 1 is unacceptable, 5 is adequate 
 
 # -------------------------------------------------------------------------------------------------------------
 #        Variables for SPECIFIC life stages

@@ -19,10 +19,10 @@
 # ---------------------------------------------------------------------------
 
 #  to test
-species = "Spring Chinook"
+species = "Steelhead"
 basins = c("Methow",  "Entiat","Wenatchee", "Okanogan")
 
-Generate_Habitat_Quality_Output_Table = function(species, basins, habitat_quality_scores_colnames_for_sum ){
+Generate_Habitat_Quality_Output_Table = function(species, basins, habitat_quality_scores_colnames_for_sum, habitat_quality_scores_colnames_ALL ){
   
   # ------------------------------------------------------------------------------
   #       Establish species-specific variable names
@@ -238,7 +238,7 @@ Generate_Habitat_Quality_Output_Table = function(species, basins, habitat_qualit
     #indiv_habitat_attributes_impaired_restoration = t(as.data.frame(indiv_habitat_attributes_impaired))
     indiv_habitat_attributes_impaired_restoration = c()
     for( rowx in 1:nrow(Habitat_Quality_Pathway_Restoration) ){
-      three_scores_output = list_indiv_habitat_attributes_low_FUNCTION( Habitat_Quality_Pathway_Restoration[rowx, habitat_quality_scores_colnames_for_sum],  habitat_quality_scores_colnames_for_sum)
+      three_scores_output = list_indiv_habitat_attributes_low_FUNCTION( Habitat_Quality_Pathway_Restoration[rowx, habitat_quality_scores_colnames_ALL],  habitat_quality_scores_colnames_for_sum, habitat_quality_scores_colnames_ALL)
       indiv_habitat_attributes_impaired_restoration = rbind( indiv_habitat_attributes_impaired_restoration, three_scores_output )
     }
     
@@ -340,25 +340,25 @@ Generate_Habitat_Quality_Output_Table = function(species, basins, habitat_qualit
 
 test_x = FALSE
 if(test_x){
-  habitat_row = Habitat_Quality_Pathway_Restoration[rowx, habitat_quality_scores_colnames_for_sum]
+  habitat_row = Habitat_Quality_Pathway_Restoration[rowx, habitat_quality_scores_colnames_ALL]
   colnames_x = habitat_quality_scores_colnames_for_sum
 }
 # ------------------ Function to list all the rows below individual habitat criteria -------------------------
-list_indiv_habitat_attributes_low_FUNCTION <- function(habitat_row, colnames_x){
+list_indiv_habitat_attributes_low_FUNCTION <- function(habitat_row, colnames_x, habitat_quality_scores_colnames_ALL){
   
   # ---------------- Individual Habitat Attribute Score: 1  --------
   columns_impaired_x = which(habitat_row <= 1)
-  columns_impaired_x = colnames_x[columns_impaired_x]
+  columns_impaired_x = habitat_quality_scores_colnames_ALL[columns_impaired_x]
   habitat_attributes_impaired_1 = paste(columns_impaired_x, collapse=',' )
   
   # ---------------- Individual Habitat Attribute Score: 3 or lower  --------
   columns_impaired_x = which(habitat_row <= 3 & habitat_row > 1)
-  columns_impaired_x = colnames_x[columns_impaired_x]
+  columns_impaired_x = habitat_quality_scores_colnames_ALL[columns_impaired_x]
   habitat_attributes_impaired_2_or_3 = paste(columns_impaired_x, collapse=',' )
   
   # ---------------- Individual Habitat Attribute Score: 3 or lower  --------
   columns_impaired_x = which(habitat_row <= 3)
-  columns_impaired_x = colnames_x[columns_impaired_x]
+  columns_impaired_x = habitat_quality_scores_colnames_ALL[columns_impaired_x]
   habitat_attributes_impaired_3_or_lower = paste(columns_impaired_x, collapse=',' )
   
   # ------- output -----------

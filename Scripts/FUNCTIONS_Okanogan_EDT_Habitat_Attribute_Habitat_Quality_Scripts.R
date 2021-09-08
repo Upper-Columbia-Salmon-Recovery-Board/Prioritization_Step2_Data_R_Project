@@ -280,8 +280,8 @@ if(output_Habitat_Quality_and_Habitat_Attribute_Scores == "yes"){
 
 # ----------- habitat attributes for HQ output --------
 HQ_columns = c("Bank Stability", "Channel Stability", "Coarse Substrate","Cover- Wood", 	"Flow- Summer Base Flow",
-               "Off-Channel- Floodplain","Off-Channel- Side-Channels", "Pool Quantity & Quality",
-               	"Riparian-Disturbance",	"Riparian- Canopy Cover",		"Temperature- Rearing")
+               "Floodplain Connectivity","Off-Channel/Side-Channels", "Pool Quantity & Quality",
+               "Riparian- Canopy Cover",	"Riparian-Disturbance",		"Temperature- Rearing")
 
 # columns to do sums: HQ_columns_sum = c("Riparian", "Stability")
 
@@ -300,10 +300,10 @@ for(habitat_attribute_x in HQ_columns){
   # ---------------- make is so column is numeric ---------
   habitat_attribute_scores_x[,2] = as.numeric(as.character( habitat_attribute_scores_x[,2]))
   # ------------- add to Habitat_Quality_Scores_Okanogan -----
-  Habitat_Quality_Scores_Okanogan = merge(Habitat_Quality_Scores_Okanogan,habitat_attribute_scores_x, by="ReachName", all.x=TRUE )
+  Habitat_Quality_Scores_Okanogan = merge(Habitat_Quality_Scores_Okanogan,habitat_attribute_scores_x, by="ReachName", all.y=TRUE )
   
-  # ----------- get average Riparian score)
-  if(habitat_attribute_x == "Riparian- Canopy Cover"){
+  # ----------- get average Riparian score (averages the previous two) ------
+  if(habitat_attribute_x == "Riparian-Disturbance"){
     ncolx = ncol(Habitat_Quality_Scores_Okanogan)
     Habitat_Quality_Scores_Okanogan$Riparian = rowMeans(Habitat_Quality_Scores_Okanogan[,(ncolx-1):ncolx], na.rm=T)
   }
@@ -317,7 +317,7 @@ for(habitat_attribute_x in HQ_columns){
 
 # ------------------- calculate HQ SCore ---------
 HQ_Score_Columns = c("Stability", "Coarse Substrate","Cover- Wood", 	"Flow- Summer Base Flow",
-               "Off-Channel- Floodplain","Off-Channel- Side-Channels", "Pool Quantity & Quality",
+               "Floodplain Connectivity","Off-Channel/Side-Channels", "Pool Quantity & Quality",
                "Riparian",		"Temperature- Rearing")
 
 # ------------------------------------------------------------------------------------- 
@@ -475,7 +475,7 @@ for(RTT_life_stage_x in unique_RTT_life_stages){
   # ------------------- pull rows for this life stage -----------
   Limiting_Factors_Okanogan_EDT_LIFE_STAGE = Limiting_Factors_Okanogan_EDT[which(Limiting_Factors_Okanogan_EDT$`RTT Life Stage` == RTT_life_stage_x ),]
   
-  # ---------------- loup through each EDT life stage ------------
+  # ---------------- loop through each EDT life stage ------------
   unique_EDT_life_stages = unique(Limiting_Factors_Okanogan_EDT_LIFE_STAGE$`EDT Life Stage`)
   
   for(EDT_life_stage_x in unique_EDT_life_stages){
@@ -671,8 +671,6 @@ Spawning_and_Incubation_LF_Okanogan
 Summer_Rearing_LF_Okanogan 
 Winter_Rearing_LF_Okanogan 
 
-#Life_stage_Okanogan_data_frame = Holding_and_Maturation_LF_Okanogan
-
 LF_Scores_Okanogan_FUNCTION = function(Life_stage_Okanogan_data_frame, life_stage_x){
   
   # --------------------------------------------------
@@ -850,6 +848,10 @@ for(RTT_life_stage_x in unique_RTT_life_stages){
   Okanogan_Basic_Reach_Info_LF_initial_RTT = Okanogan_Basic_Reach_Info_LF_initial
   Okanogan_Basic_Reach_Info_LF_initial_RTT$'RTT Life Stage' = RTT_life_stage_x
   
+  # --------------- add life stage presence and priority ---------------
+  #AU_level_data_x  = Life_Stage_Priorities_AU_and_Reach_data
+  #Okanogan_Basic_Reach_Info_LF_initial_RTT = merge(Okanogan_Basic_Reach_Info_LF_initial_RTT, 
+  
   # -------------------------------- get habitat attributes for this life stage  ---------------
   habitat_attributes_life_stage_x = Attribute_LifeStage_Crosswalk[which(Attribute_LifeStage_Crosswalk$Species == "Steelhead" &
                                                                           Attribute_LifeStage_Crosswalk$`Life Stage` == RTT_life_stage_x), ]
@@ -860,6 +862,7 @@ for(RTT_life_stage_x in unique_RTT_life_stages){
     Habitat_Attribute_Scores_Okanogan_LIFE_STAGE = Habitat_Attribute_Scores_Okanogan[which(Habitat_Attribute_Scores_Okanogan$Habitat_Attribute == habitat_attribute_x), ] 
     Habitat_Attribute_Scores_Okanogan_LIFE_STAGE = Habitat_Attribute_Scores_Okanogan_LIFE_STAGE[,c("ReachName","Habitat_Attribute", "Habitat_Attribute_Score")]
     Okanogan_Basic_Reach_Info_LF_initial_RTT_output = merge(Okanogan_Basic_Reach_Info_LF_initial_RTT,Habitat_Attribute_Scores_Okanogan_LIFE_STAGE, by="ReachName", all.x=TRUE )
+    # ------------ add AU priorities and presence ------------
     
     
     if( RTT_life_stage_x == "Adult Migration" ){
@@ -881,8 +884,6 @@ for(RTT_life_stage_x in unique_RTT_life_stages){
   }
   
 }
-
-
 
 
 # ---------------------------------------------------------------------------
@@ -907,10 +908,10 @@ for(RTT_life_stage_x in unique_RTT_life_stages){
 #Summer_Rearing_LF_Okanogan 
 #Winter_Rearing_LF_Okanogan 
 
-test_x = TRUE
+test_x = FALSE
 if(test_x){
-  Limiting_Factor_Life_Stage_Table = Holding_and_Maturation_LF_Okanogan_no_Level3
-  life_stage_x = "Holding and Maturation" 
+  Limiting_Factor_Life_Stage_Table = Limiting_Factor_Life_Stage_Table
+  # life_stage_x = "Winter Rearing" 
 }
 
 
@@ -920,6 +921,8 @@ Generate_Species_Output_Table_Okanogan_Restoration_Protection_NO_LEVEL_3 = funct
   # ----------------- only pull RTT habitat attributes for this life stage -----------
   Attribute_LifeStage_Crosswalk_Life_Stage = Attribute_LifeStage_Crosswalk[which(Attribute_LifeStage_Crosswalk$Species == "Steelhead" & 
                                                                                    Attribute_LifeStage_Crosswalk$`Life Stage` == life_stage_x),]
+  # ------------------ only pull core metrics -------------------
+  Attribute_LifeStage_Crosswalk_Life_Stage_Core_Metrics = Attribute_LifeStage_Crosswalk_Life_Stage[which(Attribute_LifeStage_Crosswalk_Life_Stage$`Life Stage Core Metric?` == "x"), ]
   
   # --------------------------------------------------
   #   LF Sum Calculate
@@ -936,15 +939,20 @@ Generate_Species_Output_Table_Okanogan_Restoration_Protection_NO_LEVEL_3 = funct
     
     # ------------------ reach data frame ---------------
     Limiting_Factor_Life_Stage_Table_REACH = Limiting_Factor_Life_Stage_Table[which(Limiting_Factor_Life_Stage_Table$ReachName == reach_x), ]
-    
+
     # ------------------- pull reaches with scores ---------------
     Limiting_Factor_Life_Stage_Table_REACH_numeric = Limiting_Factor_Life_Stage_Table_REACH[ which( Limiting_Factor_Life_Stage_Table_REACH$Habitat_Attribute_Score >= 0), ]
+    # -------------------- pull values JUST from core metrics --------------
+    mylist = list(a = Limiting_Factor_Life_Stage_Table_REACH_numeric$Habitat_Attribute, b = Attribute_LifeStage_Crosswalk_Life_Stage_Core_Metrics$`Habitat Attribute`)  #OR  mylist = mget(c("a", "b", "d"))
+    common_values = Reduce(intersect, mylist)
+    Limiting_Factor_Life_Stage_Table_REACH_numeric_core_metric = Limiting_Factor_Life_Stage_Table_REACH_numeric[lapply(mylist, function(x) which(x %in% common_values))$a, ]
+    Limiting_Factor_Life_Stage_Table_REACH_numeric_core_metric = Limiting_Factor_Life_Stage_Table_REACH_numeric_core_metric[!is.na(Limiting_Factor_Life_Stage_Table_REACH_numeric_core_metric$Habitat_Attribute),]
     # -------------- pull unique habitat attributes in this Reach ----------------
-    RTT_attributes_unique = unique(Limiting_Factor_Life_Stage_Table_REACH_numeric$Habitat_Attribute )
+    RTT_attributes_unique = unique(Limiting_Factor_Life_Stage_Table_REACH_numeric_core_metric$Habitat_Attribute )
     
     combined_RTT_scores = c()
     for(RTT_attributes_unique_x in RTT_attributes_unique){
-      indiv_score = mean(Limiting_Factor_Life_Stage_Table_REACH_numeric$Habitat_Attribute_Score[ Limiting_Factor_Life_Stage_Table_REACH_numeric$Habitat_Attribute ==RTT_attributes_unique_x] )
+      indiv_score = mean(Limiting_Factor_Life_Stage_Table_REACH_numeric_core_metric$Habitat_Attribute_Score[ Limiting_Factor_Life_Stage_Table_REACH_numeric_core_metric$Habitat_Attribute ==RTT_attributes_unique_x] )
       combined_RTT_scores = c(combined_RTT_scores,indiv_score)
     }
     
@@ -1036,20 +1044,6 @@ Generate_Species_Output_Table_Okanogan_Restoration_Protection_NO_LEVEL_3 = funct
   
 }
 
-# -------------------------------------------------------------------------
-#    Combine all the life stage output 
-# ----------------------------------------------------------------------
-
-# Limiting_Factor_Pathway_Steelhead_OKANOGAN_no_level3
-Limiting_Factor_Pathway_Steelhead_OKANOGAN_no_level3_NO_Filters = rbind(
-  Generate_Species_Output_Table_Okanogan_Restoration_Protection_NO_LEVEL_3("Adult Migration",  Adult_Migration_LF_Okanogan_no_Level3 ),
-  Generate_Species_Output_Table_Okanogan_Restoration_Protection_NO_LEVEL_3("Fry",  Fry_LF_Okanogan_no_Level3 ),
-  Generate_Species_Output_Table_Okanogan_Restoration_Protection_NO_LEVEL_3("Holding and Maturation",  Holding_and_Maturation_LF_Okanogan_no_Level3 ),
-  Generate_Species_Output_Table_Okanogan_Restoration_Protection_NO_LEVEL_3("Smolt Outmigration",  Smolt_Outmigration_LF_Okanogan_no_Level3 ),
-  Generate_Species_Output_Table_Okanogan_Restoration_Protection_NO_LEVEL_3("Spawning and Incubation",  Spawning_and_Incubation_LF_Okanogan_no_Level3 ),
-  Generate_Species_Output_Table_Okanogan_Restoration_Protection_NO_LEVEL_3("Summer Rearing",  Summer_Rearing_LF_Okanogan_no_Level3 ),
-  Generate_Species_Output_Table_Okanogan_Restoration_Protection_NO_LEVEL_3("Winter Rearing",  Winter_Rearing_LF_Okanogan_no_Level3 )
-)
 
 # -------------------------------------------------------------------------
 #    Filter out for Protection and Restoration

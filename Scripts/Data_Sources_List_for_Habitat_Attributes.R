@@ -30,7 +30,7 @@ Habitat_Attributes_List = list(
   'Brook Trout' = c('PROFESSIONAL JUDGEMENT', 'Step1 results'),
   'Channel Stability' = c('Vertical_Channel_Stability_CATEGORY_1', 'UCSRB_ChannelStability'),
   'Coarse Substrate' = c('Dominant_Substrate_CATEGORY_1', 'GravelCobble_UCSRB_pct', 'GRVL_COBL_UCSRB_CHAMP'),
-  'Contaminants' = c( 'Contaminants_303d (not pH, bacteria, or DO listings)'),
+  'Contaminants' = c( 'Contaminants_303d (not pH bacteria or DO listings)'),
   'Cover- Boulders'  = c( 'Boulder_UCSRB_pct',  'SubEstBldr_CHAMP'), 
   'Cover- Undercut Banks' = c('Bank_Stability_CATEGORY_1', 'Structure_CATEGORY_1', 'Undercut_Area_Pct_CHAMP' ), 
   'Cover- Wood' = c('Pieces_per_mile_CATEGORY_1', 'Pieces_per_mile_INDICATOR_1', 'LWFreq_Bf_CHAMP' ), 
@@ -64,7 +64,7 @@ Habitat_Attributes_List_OKANOGAN = list(
   'Brook Trout' = c(),
   'Channel Stability' = c('EDT_Level 2 Confinement: Artificial'),
   'Coarse Substrate' = c('EDT_UCSRBCoarseSub pct'),
-  'Contaminants' = c( 'Contaminants_303d (not pH, bacteria, or DO listings)', 'EDT Level 2 Metals in Sediments Functional Condition','EDT Level 2 Metals in Water Functional Condition','EDT Level 2 Miscellaneous Toxins Functional Condition'),
+  'Contaminants' = c( 'Contaminants_303d (not pH bacteria or DO listings)', 'EDT Level 2 Metals in Sediments Functional Condition','EDT Level 2 Metals in Water Functional Condition','EDT Level 2 Miscellaneous Toxins Functional Condition'),
   'Cover- Boulders'  = c( ), 
   'Cover- Undercut Banks' = c( ), 
   'Cover- Wood' = c('EDT_Woody Debris' ), 
@@ -111,14 +111,13 @@ CHAMP_data_per_reach_data_use = list('Off-Channel/Side-Channels' = 3,
 CHAMP_data_per_reach_data_sources = list('Off-Channel/Side-Channels' = 'WetSC_Pct_Average',
                                      'Coarse Substrate' = 'SubEstSandFines_Average' )  # TRIEd: 'GRVL_COBL_UCSRB_CHAMP' 
 #------------------------- column names of Habitat_Quality_Scores - HQ scores output (generated scores for pathway) -------
-habitat_quality_scores_colnames_for_sum = c('Stability_Mean','CoarseSubstrate_score','Cover-Wood_score',
-                                    'Flow-SummerBaseFlow_score', 'FloodplainConnectivity_score',
-                                    'Off-Channel/Side-Channels_score','PoolQuantity&Quality_score','Riparian_Mean',
-                                    'Temperature-Rearing_score')
+habitat_quality_scores_colnames_for_sum = c("Stability_Mean" , "CoarseSubstrate_score" ,"Cover-Wood_score", "Flow-SummerBaseFlow_score",
+                                            "FloodplainConnectivity_score", "Off-Channel/Side-Channels_score","PoolQuantity&Quality_score",
+                                            "Riparian_Mean","Temperature-Rearing_score")
 
 habitat_quality_scores_colnames_ALL = c("BankStability_score", "ChannelStability_score",'Stability_Mean','CoarseSubstrate_score','Cover-Wood_score',
-                                            'Flow-SummerBaseFlow_score', 'Off-Channel-Floodplain_score',
-                                            'Off-Channel-Side-Channels_score','PoolQuantity&Quality_score',"Riparian-Disturbance_score" , "Riparian-CanopyCover_score" ,
+                                            'Flow-SummerBaseFlow_score', 'FloodplainConnectivity_score',
+                                            'Off-Channel/Side-Channels_score','PoolQuantity&Quality_score',"Riparian-Disturbance_score" , "Riparian-CanopyCover_score" ,
                                         'Riparian_Mean', 'Temperature-Rearing_score')
 
 # ---------------------------------------------------------------------------

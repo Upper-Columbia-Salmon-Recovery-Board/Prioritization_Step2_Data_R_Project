@@ -818,14 +818,34 @@ if(comparing_habitat_raw_data_and_reach_layer_T_F){
 
 
 # ------------------------------------------- read in Step 1 ranks and merge with Life Stage Priorities (AU level) - for WebMap ---------------------
-Step1_Scores = read_excel( "Y:/Ryan/2_Habitat_Prioritization/Data/AU_Step1_Priorities.xlsx" , sheet="Sheet1")
-# ---------------- merge with life stage priorites --------------
+Step1_Scores_Spring_Chinook = read_excel( "Y:/Ryan/2_Habitat_Prioritization/Data/AU_Step1_Priorities_V2.xlsx" , sheet="Spring_Chinook")
+Step1_Scores_Spteelhead = read_excel( "Y:/Ryan/2_Habitat_Prioritization/Data/AU_Step1_Priorities_V2.xlsx" , sheet="Steelhead")
+Step1_Scores_Bull_Trout = read_excel( "Y:/Ryan/2_Habitat_Prioritization/Data/AU_Step1_Priorities_V2.xlsx" , sheet="Bull_Trout")
+# ---------------- pull reach data with AU priority data --------------
 Life_Stage_Priorities_AU_and_Reach_data_AU_Only = Life_Stage_Priorities_AU_and_Reach_data[duplicated(Life_Stage_Priorities_AU_and_Reach_data$`Assessment Unit`)==FALSE,c(2,3,seq(4,by=2, length.out=7), seq(19,by=2, length.out=7), seq(34,by=2, length.out=6) )]
-# ---------------- merge with life stage priorites --------------
-pop_up_Step1_scores_life_stage_priorities = merge(Life_Stage_Priorities_AU_and_Reach_data_AU_Only,Step1_Scores, by="Assessment Unit", all.x=TRUE )
+Life_Stage_Priorities_AU_and_Reach_data_AU_Only = Life_Stage_Priorities_AU_and_Reach_data_AU_Only[,c(2,1,3:ncol(Life_Stage_Priorities_AU_and_Reach_data_AU_Only) )]  # rearrange so Assessment Unit first
+# ------------------ pull AU only data 
+Life_Stage_Priorities_AU_only_data_v2 = Life_Stage_Priorities_AU_only_data
+colnames(Life_Stage_Priorities_AU_only_data_v2)[1:2] = c("Assessment Unit", "Basin")
+# -------------loop thorugh and add any missing AUs (from AU only) ------------
+i = 0
+for(AUx in Life_Stage_Priorities_AU_and_Reach_data_AU_Only$`Assessment Unit`){
+  i = i + 1
+  if( any(Life_Stage_Priorities_AU_only_data_v2$`Assessment Unit` == AUx) == FALSE ){
+        print("reach not in AU only: ")
+        print(Life_Stage_Priorities_AU_and_Reach_data_AU_Only$`Assessment Unit`[i])
+        print(" ")
+        new_row_x = Life_Stage_Priorities_AU_and_Reach_data_AU_Only[i,]
+        colnames(new_row_x) = colnames(Life_Stage_Priorities_AU_only_data_v2)
+        Life_Stage_Priorities_AU_only_data_v2 = rbind(Life_Stage_Priorities_AU_only_data_v2, new_row_x)
+  }
+}
 
-
-
-
+# ---------------- merge with life stage priories --------------
+#pop_up_Step1_scores_life_stage_priorities = merge(Life_Stage_Priorities_AU_only_data_v2,Step1_Scores, by="Assessment Unit", all.x=TRUE )
+# -------------- pull in data 
+Okanogan_AU_not_in_EDT_interface = read_excel("Y:/Ryan/2_Habitat_Prioritization/Data/Okanogan_EDT_AUs_not_in_EDT_interface.xlsx", sheet="Sheet1")
+Okanogan_AU_not_in_EDT_interface$Basin = "Okanogan"
+colnames(Okanogan_AU_not_in_EDT_interface) = c("Assessment Unit", "Basin")
 
 

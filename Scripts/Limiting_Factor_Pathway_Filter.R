@@ -650,6 +650,9 @@ Generate_individual_life_stage_score = function(species, life_stage){
   habitat_attributes_life_stage_list = Attribute_LifeStage_Crosswalk_Life_Stage %>%
     filter(Attribute_LifeStage_Crosswalk_Life_Stage$'Life Stage'  %in%  life_stage  )
   
+  # ------------------ just pull core metrics -------------------
+  habitat_attributes_life_stage_list = habitat_attributes_life_stage_list[which(habitat_attributes_life_stage_list$`Life Stage Core Metric?` == "x"), ]
+  
   # --------------------------------------------------------------------------------
   #         generate all the scores for all the habitat attributes for EVERY reach in basin(s)
   # --------------------------------------------------------------------------------
@@ -928,6 +931,11 @@ Generate_Species_Output_Table_for_ALL_REACHES_and_ALL_LIFE_STAGES = function(spe
   # ----------------------- filter out for Habitat_Quality_Scores reaches with Habitat Quality Score criteria --------------
   Species_Reach_Information_data = merge(Species_Reach_Information_data,Life_Stage_Priorities_AU_and_Reach_data_SPECIES, by="ReachName" )
 
+  #  ---------------------------------------------------------------------------------
+  #           Add HQ Pct (Protection filters )
+  #  ---------------------------------------------------------------------------------
+  HQ_output = Habitat_Quality_Scores[,c("ReachName", "HQ_Pct")]
+  Species_Reach_Information_data = merge(Species_Reach_Information_data , HQ_output, by="ReachName")
   
   #  ---------------------------------------------------------------------------------
   #            Add AU rank - RESTORATION

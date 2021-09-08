@@ -49,7 +49,7 @@ LF_or_HQ = "HQ"
 test_x = TRUE
 if(test_x){
   data_col_name = data_source_x
-  LF_or_HQ = "HQ"
+  LF_or_HQ = "LF"
 }
 
 

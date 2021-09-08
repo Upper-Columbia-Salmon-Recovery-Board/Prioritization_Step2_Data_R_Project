@@ -47,7 +47,7 @@ for(habitat_attribute_x in Order_of_Habitat_Attribute_Rating_Table_Columns){
     output_x = Habitat_Attribute_Scores[which(Habitat_Attribute_Scores$Habitat_Attribute == habitat_attribute_x), ]
     output_x = output_x[,c("ReachName", "Habitat_Attribute_Score")]
     output_x[,2] = FUNCTION_score_numeric_to_word(output_x[,2])  # convert numeric (1,3,5) scores to words (Unacceptable, At Risk, Adequate)
-    Habitat_Attributes_Ratings_Table = merge(Habitat_Attributes_Ratings_Table, output_x, by="ReachName")  # 
+    Habitat_Attributes_Ratings_Table = merge(Habitat_Attributes_Ratings_Table, output_x, by="ReachName", all.y=TRUE)  # 
     colnames(Habitat_Attributes_Ratings_Table)[colnames(Habitat_Attributes_Ratings_Table)      # Rename two variable names
                        %in% c("Habitat_Attribute_Score")] <- c(habitat_attribute_x)
     
@@ -61,9 +61,13 @@ for(habitat_attribute_x in Order_of_Habitat_Attribute_Rating_Table_Columns){
   }
 
   print(dim(Habitat_Attributes_Ratings_Table))
+  #print(Habitat_Attributes_Ratings_Table$Basin[1:6])
   
   
 }
+
+# -------------------- update off-channel - side channel (so no "/") ------------
+colnames(Habitat_Attributes_Ratings_Table)[which(colnames(Habitat_Attributes_Ratings_Table) == "Off-Channel/Side-Channels")] = "Off-Channel and Side-Channels"
 
 # -----------------------------------------------------
 #  Add HQ Sum and PCT

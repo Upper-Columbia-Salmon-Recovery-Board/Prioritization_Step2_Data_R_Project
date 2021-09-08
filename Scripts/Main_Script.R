@@ -36,6 +36,7 @@ update_Okanogan_reach_names = "no"  # if "yes" - update Okanogan reach names (sh
 HQ_add_life_stage = "no"   # IF "yes" generate life stages for HQ pathway based on life stage presence in reaches, for combining into ONE Data frame across all pathways and scores
 HQ_priority_life_stages = "yes"  # "yes" if use AU Life stages priority reach layer to generate life stages for habitat quality pathway
 EDT_convert_Level3_Flow_to_Flow_Variability = "yes" # Level2_Level3_EDT_Crosswalk has "Flow Variability", Limiting_Factors_Okanogan_EDT and HabitatAttribute_Ratings_Level3
+Okanogan_LF_Pathway_Level2_to_Level_3_yes_no = "no" # if yes, for Okanogan LF Pathway pull Level 3 then use crosswalk to get to Level 2, if "no" - just go straight to Level 2
 core_metric_missing_data_species = c("Steelhead", "Spring Chinook") # species to use for core metrics in missing data (based on data layer Attribute_LifeStage_Crosswalk)
 
 # -----------------------------------------------------------------------------------------------------------------------------------------------
@@ -164,16 +165,10 @@ source(paste(script_path, 'Habitat_Quality_Pathway_Filter.R', sep=""))  # for Me
 # ------- Habitat Quality Pathway Filter for the Okanogan ---------------
 source(paste(script_path, 'Habitat_Quality_Pathway_Filter_OKANOGAN.R', sep=""))  # for Methow-Wenatchee-Entiat AND Okanogan functions
 
-
-# ----- set names of Habitat Quality Scores to sum ------
-habitat_quality_scores_colnames_for_sum = c("Stability_Mean" , "CoarseSubstrate_score" ,"Cover-Wood_score", "Flow-SummerBaseFlow_score",
-                                            "FloodplainConnectivity_score", "Off-Channel/Side-Channels_score","PoolQuantity&Quality_score",
-                                            "Riparian_Mean","Temperature-Rearing_score")
-
 # --------------- generate for all basins except Okanogan ---------------
-Habitat_Quality_Pathway_Spring_Chinook = Generate_Habitat_Quality_Output_Table("Spring Chinook", basins_to_include, habitat_quality_scores_colnames_for_sum )
-Habitat_Quality_Pathway_Steelhead = Generate_Habitat_Quality_Output_Table("Steelhead", basins_to_include, habitat_quality_scores_colnames_for_sum )
-Habitat_Quality_Pathway_Bull_Trout = Generate_Habitat_Quality_Output_Table("Bull Trout", basins_to_include, habitat_quality_scores_colnames_for_sum )
+Habitat_Quality_Pathway_Spring_Chinook = Generate_Habitat_Quality_Output_Table("Spring Chinook", basins_to_include, habitat_quality_scores_colnames_for_sum, habitat_quality_scores_colnames_ALL )
+Habitat_Quality_Pathway_Steelhead = Generate_Habitat_Quality_Output_Table("Steelhead", basins_to_include, habitat_quality_scores_colnames_for_sum, habitat_quality_scores_colnames_ALL )
+Habitat_Quality_Pathway_Bull_Trout = Generate_Habitat_Quality_Output_Table("Bull Trout", basins_to_include, habitat_quality_scores_colnames_for_sum, habitat_quality_scores_colnames_ALL )
 # View(Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']])
 # View(Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']])
 
@@ -200,6 +195,7 @@ Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Protection']] = Comb
 source(paste(script_path, 'Compare_EDT_and_RTT_output_data.R', sep=""))  # for Methow-Wenatchee-Entiat AND Okanogan functions
 
 # Use these to View the various outputs
+# View(Habitat_Quality_Pathway_Steelhead[['Habitat_Quality_Pathway_Restoration']])
 # View(Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Restoration']])
 # View(Habitat_Quality_Pathway_Spring_Chinook[['Habitat_Quality_Pathway_Protection']])
 # View(Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']])
@@ -238,11 +234,17 @@ if(exclude_bull_trout == "no"){ Limiting_Factor_Pathway_Bull_Trout = Generate_Li
 # --------------- generate for Okanogan ---------------
 Limiting_Factor_Pathway_Steelhead_OKANOGAN = Generate_Limiting_Factor_Output_Table_Okanogan("Steelhead", "Okanogan" )
 Limiting_Factor_Pathway_Steelhead_OKANOGAN_no_level3 = Generate_Limiting_Factor_Output_Table_Okanogan_no_level3("Steelhead", "Okanogan")
+# -------------- IF for Okanogan LF Pathway - Level 3-> Level 2 (yes) OR just Level 2 (no) -----
+if(Okanogan_LF_Pathway_Level2_to_Level_3_yes_no == "no"){
+  Limiting_Factor_Pathway_Steelhead_OKANOGAN = Limiting_Factor_Pathway_Steelhead_OKANOGAN_no_level3
+}
 
 # ------------------- combine "regular" and EDT data -------------------
 # ---------- first remove Okanogan reaches ---------
-Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']] = Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']][-which(Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']]$Basin == "Okanogan"), ]
-Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']] = Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']][-which(Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']]$Basin == "Okanogan"), ]
+if( length(which(Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']]$Basin == "Okanogan")) > 0 ){
+  Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']] = Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']][-which(Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']]$Basin == "Okanogan"), ]  }
+if( length(which(Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']]$Basin == "Okanogan")) > 0 ){
+  Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']] = Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']][-which(Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']]$Basin == "Okanogan"), ] }
 
 # ---------------- add EDT data --------------------
 Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']] = rbind( Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']],
@@ -253,7 +255,7 @@ Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']] = rbin
 # --------------------------------------------------
 # Generate life stage tables for ALL reaches for each species (JUST for QAQC purposes)
 # --------------------------------------------------
-test_x = FALSE
+test_x = TRUE
 if(test_x){
   
   # --------- for each life stage and reach - calculate the LF Score -------
@@ -609,20 +611,28 @@ Protection_Prioritization_Output_Bull_Trout = FUNCTION_Add_Reach_Rank_and_Misc_U
 
 Habitat_Attribute_Scores_columns_to_pull  = c("Bank Stability","Channel Stability",  "Coarse Substrate",
                                               "Cover- Wood", "Flow- Summer Base Flow",
-                                              "Off-Channel- Floodplain", "Off-Channel- Side-Channels","Pool Quantity & Quality", # <- REI Values
+                                              "Floodplain Connectivity", "Off-Channel/Side-Channels","Pool Quantity & Quality", # <- REI Values
                                               "Riparian- Canopy Cover"  ,    "Riparian-Disturbance" , 
                                               "Temperature- Rearing")
 
-Habitat_Quality_Scores_columns_to_pull = c("ReachName","Basin", "BankStability_score","ChannelStability_score","Stability_Mean","CoarseSubstrate_score","Cover-Wood_score","Flow-SummerBaseFlow_score",
-                                             "Off-Channel-Floodplain_score","Off-Channel-Side-Channels_score","PoolQuantity&Quality_score","Riparian-Disturbance_score",
+
+Habitat_Quality_Scores_columns_to_pull = c("ReachName","Basin", "BankStability_score","ChannelStability_score","Stability_Mean","CoarseSubstrate_score",
+                                           "Cover-Wood_score","Flow-SummerBaseFlow_score",
+                                           "FloodplainConnectivity_score" ,"Off-Channel/Side-Channels_score","PoolQuantity&Quality_score","Riparian-Disturbance_score",
                                              "Riparian-CanopyCover_score","Riparian_Mean","Temperature-Rearing_score", "HQ_Sum","HQ_Pct")
 
-Reach_Information_data_columns_to_pull = c("ReachName","Basin","Assessment.Unit","Spring.Chinook.Reach" ,"Steelhead.Reach","Bull.Trout.Reach",
-                                           "ReviewComments", "Reach.Assessment.Data", "Level.2.Survey.Data", "Level.2.Data.Prior.to.2000", "Level.2.Survey.Data.Date",
-                                           "Data.Gap","Length..miles.",  "Length..meters." ,"Reach_start_river_miles", "Reach_end_river_miles"   )
-Reach_Information_data_columns_new_names = c("Reach Name","Basin","Assessment Unit","Spring Chinook Reach" ,"Steelhead Reach","Bull Trout Reach",
-                                             "Review Comments", "Reach Assessment Data", "Level 2 Survey Data", "Level 2 Data Prior to 2000", "Level 2 Survey Date",
-                                             "Data Gap","Length (miles)",  "Length (meters)" ,"RM Start", "RM End")
+Habitat_qulaity_Scores_for_WebMap_column_names = c("Reach Name","Basin", "Bank Stability","Channel Stability", "Stability Mean", "Coarse Substrate",
+                                                   "Cover- Wood", "Flow- Summer Base Flow",
+                                                   "Floodplain Connectivity", "Off-Channel and Side-Channels","Pool Quantity and Quality", # <- REI Values
+                                                   "Riparian- Canopy Cover"  ,    "Riparian-Disturbance" , "Riparian Mean",
+                                                   "Temperature- Rearing", "Habitat Quality Scores Sum", "Habitat Quality Score Percent" )
+   
+Reach_Information_data_columns_to_pull = c("ReachName","Basin","Assessment.Unit","Reach_start_river_miles", "Reach_end_river_miles" ,"Spring.Chinook.Reach" ,"Steelhead.Reach","Bull.Trout.Reach")
+                                           #"ReviewComments", "Reach.Assessment.Data", "Level.2.Survey.Data", "Level.2.Data.Prior.to.2000", "Level.2.Survey.Data.Date",
+                                           #"Data.Gap","Length..miles.",  "Length..meters."   )
+Reach_Information_data_columns_new_names = c("Reach Name","Basin","Assessment Unit","RM Start", "RM End","Spring Chinook Reach" ,"Steelhead Reach","Bull Trout Reach") 
+                                             #"Review Comments", "Reach Assessment Data", "Level 2 Survey Data", "Level 2 Data Prior to 2000", "Level 2 Survey Date",
+                                             #"Data Gap","Length (miles)",  "Length (meters)" )
 
 # ORDER: REI ratings -> core metrics -> then the rest of them
 # Order_of_Habitat_Attribute_Rating_Table_Columns = c("Coarse Substrate","% Fines/Embeddedness", "Cover- Wood","Pool Quantity & Quality", # <- REI Values
@@ -636,7 +646,7 @@ Reach_Information_data_columns_new_names = c("Reach Name","Basin","Assessment Un
                                                   #  "Brook Trout", "Pools- Deep Pools", "Predators- Adults")                           # <- not a core metric
 Order_of_Habitat_Attribute_Rating_Table_Columns = c("Bank Stability","Channel Stability",  "Coarse Substrate",
                                                      "Cover- Wood", "Flow- Summer Base Flow",
-                                                    "Off-Channel- Floodplain", "Off-Channel- Side-Channels","Pool Quantity & Quality", # <- REI Values
+                                                    "Floodplain Connectivity", "Off-Channel/Side-Channels","Pool Quantity & Quality", # <- REI Values
                                                     "Riparian- Canopy Cover"  ,    "Riparian-Disturbance" , 
                                                     "Temperature- Rearing" )        # <- HQ scores based on REI Values
                                                      
@@ -646,6 +656,15 @@ source(paste(script_path, "FUNCTIONS_for_Habitat_Attribute_Rating_Table_for_WebM
 #  generate missing data layer (HQ habitat attributes that are missing) for WebMap
 # reaches_remove = c("Lake ")  not using
 source(paste(script_path, "Generate_Habitat_Quality_Scores_Missing_Data_Layer.R", sep=""))
+
+# ----------------- script to add Okanogan HQ scores for Webmap ---------------------
+# Output is Habitat_Quality_Scores_for_WebMap - results saved to excel file below
+source(paste(script_path, "Generate_Habitat_Quality_Scores_for_WebMap.R", sep=""))
+
+# ------------------------------- Generate AU layer --------------------------
+source(paste(script_path, "Generate_AU_level_information_for_WebMap_pop_up.R", sep=""))
+
+
 
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #
@@ -758,11 +777,10 @@ output_path_x = paste(output_path,'Barriers_Pathway_Output.xlsx', sep="")
 write_xlsx(Barriers_Pathways_Data, output_path_x)
 
 # ------------------ output Habitat Quality Scores for WebMap ----------------
-Habitat_Quality_Scores_for_WebMap = Habitat_Quality_Scores[,Habitat_Quality_Scores_columns_to_pull]
 output_path_x = paste(output_path,'Habitat_Quality_Scores_for_WebMap.xlsx', sep="")
 write_xlsx(Habitat_Quality_Scores_for_WebMap, output_path_x)
 
-# ------------------ output Basin Reach Information for WebMap ----------------
+# ------------------ output Basin Reach Information for WebMap ---------------- 
 Reach_Information_data_for_WebMap = Reach_Information_data[,Reach_Information_data_columns_to_pull]
 colnames(Reach_Information_data_for_WebMap) = Reach_Information_data_columns_new_names
 output_path_x = paste(output_path,'Reach_Information_Data_for_WebMap.xlsx', sep="")
@@ -806,39 +824,3 @@ write.xlsx(data_output_x,   file = output_path_x,  sheetName = sheet_name ,  app
 
 print(paste("Time to complete ENTIRE tool: ", paste(round((proc.time()[3] - time1)/60, 2), " minutes")    ))
 
-# -----------------------------------------------------------------
-#      Get unique
-# -----------------------------------------------------------------
-
-habitat_attributes_all_x = unique(Habitat_Attribute_Scores$Habitat_Attribute)
-priority_reach_all_attributes_unacceptable = paste( Restoration_Prioritization_Output_for_WebMap$`Unacceptable Limiting Factors`,  collapse=",")
-priority_reach_all_attributes_at_risk= paste( Restoration_Prioritization_Output_for_WebMap$`At-Risk Limiting Factors`,  collapse=",")
-
-unnaceptable_habitat_attributes_x = c()
-for(habitat_attribute_x in habitat_attributes_all_x){
-  if( str_detect(priority_reach_all_attributes_unacceptable, habitat_attribute_x, negate = FALSE) ){
-    unnaceptable_habitat_attributes_x = c(unnaceptable_habitat_attributes_x,habitat_attribute_x )
-  }
-}
-at_risk_habitat_attributes_x = c()
-for(habitat_attribute_x in habitat_attributes_all_x){
-  
-  if( str_detect(priority_reach_all_attributes_at_risk, habitat_attribute_x, negate = FALSE) ){
-    at_risk_habitat_attributes_x = c(at_risk_habitat_attributes_x,habitat_attribute_x )
-  }
-  
-  
-}
-
-
-action_categories_all_x = unique(Crosswalk_Habitat_Attributes_and_Actions$`Action Category`)
-
-action_categories_x = c()
-for(habitat_attribute_x in action_categories_all_x){
-  
-  if( str_detect(priority_reach_all_attributes_at_risk, habitat_attribute_x, negate = FALSE) ){
-    action_categories_x = c(action_categories_x,habitat_attribute_x )
-  }
-  
-  
-}
