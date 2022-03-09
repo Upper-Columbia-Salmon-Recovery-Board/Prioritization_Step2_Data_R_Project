@@ -191,6 +191,6 @@ for(life_stage_x in life_stages_bull_trout){
 
 # --------------------------- Output ------------------
 output_path_x =  paste(output_path,'AU_pop_up_information_for_WebMap.xlsx', sep="")
-write_xlsx(pop_up_AU_information,output_path_x )
+write.xlsx(pop_up_AU_information,output_path_x )
 
 

@@ -18,7 +18,8 @@
 # ----------------------------------------------------------------------------------------------------------------------------
 
 # -------- Assessment Unit (AU) (HUC12) Tier rank (data in habitat_attribute_scores) ----------------
-AU_Rank = c(1)                       # potential: 1, 2, or 3; 1 is high priority, 3 is low priority
+# NOTE - for ranking, need to update AU Tiers in the "Criteria_Reach_Scoring_Restoration_and_Protection.xlsx" if you want to update tier priorites there too
+AU_Rank = c(1, 2)                       # potential: 1, 2, or 3; 1 is high priority, 3 is low priority
 
 # --------------- Reach Confinement (data in confinement_scores) --------------------------------
 Reach_Confinement_SCORE_Criteria =  c(5)           # potential: 1, 3, 5; 1 is higher % confined, 5 is higher % unconfined, based on USGS Valley Confinment Algorithm
@@ -61,7 +62,8 @@ HQ_Pct_for_LF_PCT_in_Ranks = 0.5
 # -------------------------------------------------------------------------------------------------------------
 
 # -------- Assessment Unit (AU) (HUC12) Tier rank (data in habitat_attribute_scores) ----------------
-AU_Rank = c(1)                        #potential: 1,2,3; 1 is high priority, 5 is low priority
+# I set as AU_Rank since the variable is in here twice
+AU_Rank = AU_Rank                        #potential: 1,2,3; 1 is high priority, 5 is low priority
 
 # --------------------- Habitat Attribute Scores-- "DRAFT Habitat Attribute..." data (data in Cumul_Habitat_Attribute_Score)
 # NOT using - pulling "Unacceptable" and "At Risk" habitat attributes

@@ -21,7 +21,7 @@
 
 
 #  to test
-test_x = TRUE
+test_x = FALSE
 if(test_x){
   basins = c( "Wenatchee", "Methow", "Entiat", "Okanogan")
 }
@@ -186,13 +186,13 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   # ------------------- establish AU Rank ------------------
   AU_Rank_Restoration = Restoration_Reach_Scoring[which(Restoration_Reach_Scoring$Indicator == "AU_Ranking" &
                                                           Restoration_Reach_Scoring$Category_Stage == "filter"),"Category"]
-  
+  AU_Rank_Restoration = as.numeric(AU_Rank_Restoration)
   # --------------------------- SPRING CHINOOK -----------------
   # -------------------- add additional column for this particular species reach presence ---------------
   Species_AU_Ranks_data_Spring_Chinook ["Species_AU_Ranks"] = Species_AU_Ranks_data_Spring_Chinook [AU_rank_name_restoration_Spring_Chinook]
   # ----------------------- filter out for only reaches with this species --------------
-  Species_AU_Ranks_data_Spring_Chinook_restoration = Species_AU_Ranks_data_Spring_Chinook  %>%  
-    filter(Species_AU_Ranks    %in%   AU_Rank_Restoration)
+  Species_AU_Ranks_data_Spring_Chinook_restoration = Species_AU_Ranks_data_Spring_Chinook[
+    which(Species_AU_Ranks_data_Spring_Chinook["Species_AU_Ranks"] <= as.numeric(AU_Rank_Restoration) ), ]
   # ------------------------ identify AUs that pass this filter in reach-based table ----------
   Spring_Chinook_Reach_Information_data_restoration = Spring_Chinook_Reach_Information_data %>%  
     filter(Assessment.Unit    %in%   Species_AU_Ranks_data_Spring_Chinook_restoration$`Assessment Unit`)
@@ -203,9 +203,11 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   # -------------------- add additional column for this particular species reach presence ---------------
   Species_AU_Ranks_data_Steelhead ["Species_AU_Ranks"] = Species_AU_Ranks_data_Steelhead [AU_rank_name_restoration_Steelhead]
   # ----------------------- filter out for only reaches with this species --------------
-  Species_AU_Ranks_data_Steelhead_restoration = Species_AU_Ranks_data_Steelhead  %>%  
-    filter(Species_AU_Ranks    %in%   AU_Rank_Restoration)
+  Species_AU_Ranks_data_Steelhead_restoration = Species_AU_Ranks_data_Steelhead[
+    which(Species_AU_Ranks_data_Steelhead["Species_AU_Ranks"] <= as.numeric(AU_Rank_Restoration) ), ]
   # ------------------------ identify AUs that pass this filter in reach-based table ----------
+  #Steelhead_Reach_Information_data_restoration = Steelhead_Reach_Information_data %>%  
+  # filter(Assessment.Unit    %in%   Species_AU_Ranks_data_Steelhead_restoration$`Assessment Unit`)
   Steelhead_Reach_Information_data_restoration = Steelhead_Reach_Information_data %>%  
     filter(Assessment.Unit    %in%   Species_AU_Ranks_data_Steelhead_restoration$`Assessment Unit`)
   
@@ -213,8 +215,8 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   # -------------------- add additional column for this particular species reach presence ---------------
   Species_AU_Ranks_data_Steelhead_Okanogan["Species_AU_Ranks"] = Species_AU_Ranks_data_Steelhead_Okanogan[AU_rank_name_restoration_Steelhead_Okanogan]
   # ----------------------- filter out for only reaches with this species --------------
-  Species_AU_Ranks_data_Steelhead_restoration_Okanogan = Species_AU_Ranks_data_Steelhead_Okanogan %>%  
-    filter(Species_AU_Ranks    %in%   AU_Rank_Restoration)
+  Species_AU_Ranks_data_Steelhead_restoration_Okanogan = Species_AU_Ranks_data_Steelhead_Okanogan[
+    which(Species_AU_Ranks_data_Steelhead_Okanogan["Species_AU_Ranks"] <= as.numeric(AU_Rank_Restoration) ), ]
   # ------------------------ identify AUs that pass this filter in reach-based table ----------
   Steelhead_Reach_Information_data_restoration_Okanogan = Steelhead_Reach_Information_data %>%  
     filter(Assessment.Unit    %in%   Species_AU_Ranks_data_Steelhead_restoration_Okanogan$`EDT AU`)
@@ -230,8 +232,8 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     # -------------------- add additional column for this particular species reach presence ---------------
     Species_AU_Ranks_data_Bull_Trout ["Species_AU_Ranks"] = Species_AU_Ranks_data_Bull_Trout [AU_rank_name_restoration_Bull_Trout]
     # ----------------------- filter out for only reaches with this species --------------
-    Species_AU_Ranks_data_Bull_Trout_restoration = Species_AU_Ranks_data_Bull_Trout  %>%  
-      filter(Species_AU_Ranks    %in%   AU_Rank_Restoration)
+    Species_AU_Ranks_data_Bull_Trout_restoration = Species_AU_Ranks_data_Bull_Trout[
+      which(Species_AU_Ranks_data_Bull_Trout["Species_AU_Ranks"] <= as.numeric(AU_Rank_Restoration) ), ]
     # ------------------------ identify AUs that pass this filter in reach-based table ----------
     Bull_Trout_Reach_Information_data_restoration = Bull_Trout_Reach_Information_data %>%  
       filter(Assessment.Unit    %in%   Species_AU_Ranks_data_Bull_Trout_restoration$`Assessment Unit`)
@@ -272,13 +274,13 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   # ------------------- establish AU Rank ------------------
   AU_Rank_Protection = Protection_Reach_Scoring[which(Protection_Reach_Scoring$Indicator == "AU_Ranking"  &
                                                        Protection_Reach_Scoring$Category_Stage == "filter"),"Category"]
-  
+  AU_Rank_Protection = as.numeric(AU_Rank_Protection)
   # --------------------------- SPRING CHINOOK -----------------
   # -------------------- add additional column for this particular species reach presence ---------------
   Species_AU_Ranks_data_Spring_Chinook ["Species_AU_Ranks"] = Species_AU_Ranks_data_Spring_Chinook [AU_rank_name_protection_Spring_Chinook]
   # ----------------------- filter out for only reaches with this species --------------
-  Species_AU_Ranks_data_Spring_Chinook_protection = Species_AU_Ranks_data_Spring_Chinook  %>%  
-    filter(Species_AU_Ranks    %in%   AU_Rank_Protection)
+  Species_AU_Ranks_data_Spring_Chinook_protection = Species_AU_Ranks_data_Spring_Chinook[
+    which(Species_AU_Ranks_data_Spring_Chinook["Species_AU_Ranks"] <= as.numeric(AU_Rank_Restoration) ), ]
   # ------------------------ identify AUs that pass this filter in reach-based table ----------
   Spring_Chinook_Reach_Information_data_protection = Spring_Chinook_Reach_Information_data %>%  
     filter(Assessment.Unit    %in%   Species_AU_Ranks_data_Spring_Chinook_protection$`Assessment Unit`)
@@ -289,8 +291,8 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   # -------------------- add additional column for this particular species reach presence ---------------
   Species_AU_Ranks_data_Steelhead ["Species_AU_Ranks"] = Species_AU_Ranks_data_Steelhead [AU_rank_name_protection_Steelhead]
   # ----------------------- filter out for only reaches with this species --------------
-  Species_AU_Ranks_data_Steelhead_protection = Species_AU_Ranks_data_Steelhead  %>%  
-    filter(Species_AU_Ranks    %in%   AU_Rank_Protection)
+  Species_AU_Ranks_data_Steelhead_protection = Species_AU_Ranks_data_Steelhead[
+    which(Species_AU_Ranks_data_Steelhead["Species_AU_Ranks"] <= as.numeric(AU_Rank_Restoration) ), ]
   # ------------------------ identify AUs that pass this filter in reach-based table ----------
   Steelhead_Reach_Information_data_protection = Steelhead_Reach_Information_data %>%  
     filter(Assessment.Unit    %in%   Species_AU_Ranks_data_Steelhead_protection$`Assessment Unit`)
@@ -299,8 +301,8 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   # -------------------- add additional column for this particular species reach presence ---------------
   Species_AU_Ranks_data_Steelhead_Okanogan["Species_AU_Ranks"] = Species_AU_Ranks_data_Steelhead_Okanogan[AU_rank_name_protection_Steelhead_Okanogan]
   # ----------------------- filter out for only reaches with this species --------------
-  Species_AU_Ranks_data_Steelhead_protection_Okanogan = Species_AU_Ranks_data_Steelhead_Okanogan %>%  
-    filter(Species_AU_Ranks    %in%   AU_Rank_Protection)
+  Species_AU_Ranks_data_Steelhead_protection_Okanogan = Species_AU_Ranks_data_Steelhead_Okanogan[
+    which(Species_AU_Ranks_data_Steelhead_Okanogan["Species_AU_Ranks"] <= as.numeric(AU_Rank_Restoration) ), ]
   # ------------------------ identify AUs that pass this filter in reach-based table ----------
   Steelhead_Reach_Information_data_protection_Okanogan = Steelhead_Reach_Information_data %>%  
     filter(Assessment.Unit    %in%   Species_AU_Ranks_data_Steelhead_protection_Okanogan$`EDT AU`)
@@ -316,8 +318,8 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     # -------------------- add additional column for this particular species reach presence ---------------
     Species_AU_Ranks_data_Bull_Trout ["Species_AU_Ranks"] = Species_AU_Ranks_data_Bull_Trout [AU_rank_name_protection_Bull_Trout]
     # ----------------------- filter out for only reaches with this species --------------
-    Species_AU_Ranks_data_Bull_Trout_protection = Species_AU_Ranks_data_Bull_Trout  %>%  
-      filter(Species_AU_Ranks    %in%   AU_Rank_Protection)
+    Species_AU_Ranks_data_Bull_Trout_protection = Species_AU_Ranks_data_Bull_Trout[
+      which(Species_AU_Ranks_data_Bull_Trout["Species_AU_Ranks"] <= as.numeric(AU_Rank_Restoration) ), ]
     # ------------------------ identify AUs that pass this filter in reach-based table ----------
     Bull_Trout_Reach_Information_data_protection = Bull_Trout_Reach_Information_data %>%  
       filter(Assessment.Unit    %in%   Species_AU_Ranks_data_Bull_Trout_protection$`Assessment Unit`)
@@ -1015,14 +1017,14 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   # ---------------------------- Restoration: Yes/No if pass Species-reach, AU Rank, Confinement, and # of Life Stages filters ------------------------------------
   Output_Spring_Chinook_All$Restoration_filter_speciesreach_AUrank_confinement_numlifestages = "no"
   pass_restoration_filters_x = which( Output_Spring_Chinook_All$Spring.Chinook.Reach == "yes"   &  # Species Reach
-                                      Output_Spring_Chinook_All$`AU Restoration Rank` == 1      &  # AU Rank - Restoration
+                                      Output_Spring_Chinook_All$`AU Restoration Rank` <= max(AU_Rank)      &  # AU Rank - Restoration
                                       Output_Spring_Chinook_All$Unconfined_more_than_0 == "yes" &  # Confinement - less than 100 (unconfined more than 0)
                                       Output_Spring_Chinook_All$Life_Stage_Sum_Filter_yes_no == "yes"  )       # Number of life stages greater than 3
   Output_Spring_Chinook_All$Restoration_filter_speciesreach_AUrank_confinement_numlifestages[pass_restoration_filters_x] = "yes"
   
   Output_Steelhead_All$Restoration_filter_speciesreach_AUrank_confinement_numlifestages = "no"
   pass_restoration_filters_x = which( Output_Steelhead_All$Steelhead.Reach == "yes"   &  # Species Reach
-                                        Output_Steelhead_All$`AU Restoration Rank` == 1      &  # AU Rank - Restoration
+                                        Output_Steelhead_All$`AU Restoration Rank` <= max(AU_Rank)      &  # AU Rank - Restoration
                                         Output_Steelhead_All$Unconfined_more_than_0 == "yes" &  # Confinement - less than 100 (unconfined more than 0)
                                         Output_Steelhead_All$Life_Stage_Sum_Filter_yes_no == "yes"  )       # Number of life stages greater than 3
   Output_Steelhead_All$Restoration_filter_speciesreach_AUrank_confinement_numlifestages[pass_restoration_filters_x] = "yes"
@@ -1030,7 +1032,7 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   if(exclude_bull_trout == "no"){
     Output_Bull_Trout_All$Restoration_filter_speciesreach_AUrank_confinement_numlifestages = "no"
     pass_restoration_filters_x = which( Output_Bull_Trout_All$Bull.Trout.Reach == "yes"   &  # Species Reach
-                                          Output_Bull_Trout_All$`AU Restoration Rank` == 1      &  # AU Rank - Restoration
+                                          Output_Bull_Trout_All$`AU Restoration Rank` <= max(AU_Rank)      &  # AU Rank - Restoration
                                           Output_Bull_Trout_All$Unconfined_more_than_0 == "yes" &  # Confinement - less than 100 (unconfined more than 0)
                                           Output_Bull_Trout_All$Life_Stage_Sum_Filter_yes_no == "yes"  )       # Number of life stages greater than 3
     Output_Bull_Trout_All$Restoration_filter_speciesreach_AUrank_confinement_numlifestages[pass_restoration_filters_x] = "yes"
@@ -1038,14 +1040,14 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   # ---------------------------- Protection: Yes/No if pass Species-reach, AU Rank, Confinement, and # of Life Stages filters ------------------------------------
   Output_Spring_Chinook_All$Protection_filter_speciesreach_AUrank_confinement_numlifestages = "no"
   pass_Protection_filters_x = which( Output_Spring_Chinook_All$Spring.Chinook.Reach == "yes"   &  # Species Reach
-                                       Output_Spring_Chinook_All$`AU Protection Rank` == 1      &  # AU Rank - Protection
+                                       Output_Spring_Chinook_All$`AU Protection Rank` <= max(AU_Rank)     &  # AU Rank - Protection
                                        Output_Spring_Chinook_All$Unconfined_more_than_0 == "yes" &  # Confinement - less than 100 (unconfined more than 0)
                                        Output_Spring_Chinook_All$Life_Stage_Sum_Filter_yes_no == "yes"  )       # Number of life stages greater than 3
   Output_Spring_Chinook_All$Protection_filter_speciesreach_AUrank_confinement_numlifestages[pass_Protection_filters_x] = "yes"
   
   Output_Steelhead_All$Protection_filter_speciesreach_AUrank_confinement_numlifestages = "no"
   pass_Protection_filters_x = which( Output_Steelhead_All$Steelhead.Reach == "yes"   &  # Species Reach
-                                       Output_Steelhead_All$`AU Protection Rank` == 1      &  # AU Rank - Protection
+                                       Output_Steelhead_All$`AU Protection Rank` <= max(AU_Rank)     &  # AU Rank - Protection
                                        Output_Steelhead_All$Unconfined_more_than_0 == "yes" &  # Confinement - less than 100 (unconfined more than 0)
                                        Output_Steelhead_All$Life_Stage_Sum_Filter_yes_no == "yes"  )       # Number of life stages greater than 3
   Output_Steelhead_All$Protection_filter_speciesreach_AUrank_confinement_numlifestages[pass_Protection_filters_x] = "yes"
@@ -1053,7 +1055,7 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   if(exclude_bull_trout == "no"){
     Output_Bull_Trout_All$Protection_filter_speciesreach_AUrank_confinement_numlifestages = "no"
     pass_Protection_filters_x = which( Output_Bull_Trout_All$Bull.Trout.Reach == "yes"   &  # Species Reach
-                                         Output_Bull_Trout_All$`AU Protection Rank` == 1      &  # AU Rank - Protection
+                                         Output_Bull_Trout_All$`AU Protection Rank` <= max(AU_Rank)     &  # AU Rank - Protection
                                          Output_Bull_Trout_All$Unconfined_more_than_0 == "yes" &  # Confinement - less than 100 (unconfined more than 0)
                                          Output_Bull_Trout_All$Life_Stage_Sum_Filter_yes_no == "yes"  )       # Number of life stages greater than 3
     Output_Bull_Trout_All$Protection_filter_speciesreach_AUrank_confinement_numlifestages[pass_Protection_filters_x] = "yes"
@@ -1089,10 +1091,10 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   # ------------- write the Output of the Reaches --------
   # -------- Spring Chinook -------
   output_path_x =  paste(output_path,Output_ALL_Spring_Chinook_file, sep="")
-  write_xlsx(Output_Spring_Chinook_All,output_path_x )
+  write.xlsx(Output_Spring_Chinook_All,output_path_x )
   # -------- Steelhead -------
   output_path_x =  paste(output_path,Output_ALL_Steelhead_file, sep="")
-  write_xlsx(Output_Steelhead_All,output_path_x )
+  write.xlsx(Output_Steelhead_All,output_path_x )
   
   # ------------------  Bull Trout ----------
   if(exclude_bull_trout == "no"){
@@ -1102,7 +1104,7 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     
     # -------- Steelhead -------
     output_path_x =  paste(output_path,Output_ALL_Bull_Trout_file, sep="")
-    write_xlsx(Output_Bull_Trout_All,output_path_x )
+    write.xlsx(Output_Bull_Trout_All,output_path_x )
     
     # ------------ combine all the species -------
     Output_ALL_species_and_reaches = data.frame( "Spring_Chinook" = Output_Spring_Chinook_All, 
@@ -1122,17 +1124,18 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     Output_ALL_species_and_reaches$Protection_filter_speciesreach_AUrank_confinement_numlifestages_ALL_Species == "yes"
   )
   Output_ALL_species_and_reaches$Potential_Priority_Reach_all_species_restoration_or_protection[Potential_Priority_Reach_all_species_restoration_or_protection_index_x] = "yes"
-  # ------------------ column that is yes/no if in Tier 1 restoration or protectoin -----------------
-  Output_ALL_species_and_reaches$Tier_1_all_species_restoration_or_protection = "no"
-  Tier_1_all_species_restoration_or_protection_index_x = which(
-    Output_ALL_species_and_reaches$Spring_Chinook.AU.Restoration.Rank == 1 |  # Spring Chinook - Restoration
-    Output_ALL_species_and_reaches$Spring_Chinook.AU.Protection.Rank == 1 |   # Spring Chinook - Protection
-    Output_ALL_species_and_reaches$Steelhead.AU.Restoration.Rank == 1 |  # Steelhead - Restoration
-    Output_ALL_species_and_reaches$Steelhead.AU.Protection.Rank == 1 |   # Steelhead - Protection
-    Output_ALL_species_and_reaches$Bull_Trout.AU.Restoration.Rank == 1 |  # Bull Trout - Restoration
-    Output_ALL_species_and_reaches$Bull_Trout.AU.Protection.Rank == 1    # Bull Trout - Protection
+
+  # ------------------ column that is yes/no if in AU_Rank (1 or 1 and 2) tiers for restoration or protection -----------------
+  Output_ALL_species_and_reaches$Priority_Tiers_all_species_restoration_or_protection = "no"
+  Priority_Tiers_all_species_restoration_or_protection_index_x = which(
+    Output_ALL_species_and_reaches$Spring_Chinook.AU.Restoration.Rank <= max(AU_Rank) |  # Spring Chinook - Restoration
+    Output_ALL_species_and_reaches$Spring_Chinook.AU.Protection.Rank <= max(AU_Rank) |   # Spring Chinook - Protection
+    Output_ALL_species_and_reaches$Steelhead.AU.Restoration.Rank <= max(AU_Rank) |  # Steelhead - Restoration
+    Output_ALL_species_and_reaches$Steelhead.AU.Protection.Rank <= max(AU_Rank) |   # Steelhead - Protection
+    Output_ALL_species_and_reaches$Bull_Trout.AU.Restoration.Rank <= max(AU_Rank) |  # Bull Trout - Restoration
+    Output_ALL_species_and_reaches$Bull_Trout.AU.Protection.Rank <= max(AU_Rank)    # Bull Trout - Protection
   )
-  Output_ALL_species_and_reaches$Tier_1_all_species_restoration_or_protection[Tier_1_all_species_restoration_or_protection_index_x] = "yes"
+  Output_ALL_species_and_reaches$Priority_Tiers_all_species_restoration_or_protection[Priority_Tiers_all_species_restoration_or_protection_index_x] = "yes"
   
   # ------------- set first column as reach name --------
   colnames(Output_ALL_species_and_reaches)[1] = "ReachName"
@@ -1991,9 +1994,9 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
 
 
 #output_path_x =  paste(output_path,'Protection_Reach_Ranking_Scores_Output.xlsx', sep="")
-#write_xlsx(Protection_Scores_Output,output_path_x )
+#write.xlsx(Protection_Scores_Output,output_path_x )
 #output_path_x =  paste(output_path,'Restoration_Reach_Ranking_Scores_Output.xlsx', sep="")
-#write_xlsx(Restoration_Scores_Output,output_path_x )
+#write.xlsx(Restoration_Scores_Output,output_path_x )
 
 # get percent that have 100%
 # x = which(Restoration_Scores_Output$Habitat_Attribute_Percent_Data_Presence == 1)

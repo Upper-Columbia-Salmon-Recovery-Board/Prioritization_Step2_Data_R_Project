@@ -273,7 +273,7 @@ Generate_Habitat_Quality_Output_Table = function(species, basins, habitat_qualit
     
     # ----------------------- Restoration --------------------
     output_path_x =  paste(output_path,restoration_output_name, sep="")
-    write_xlsx(Habitat_Quality_Pathway_Restoration,output_path_x )
+    write.xlsx(Habitat_Quality_Pathway_Restoration,output_path_x )
     
   }else{
     
@@ -300,7 +300,7 @@ Generate_Habitat_Quality_Output_Table = function(species, basins, habitat_qualit
 
     # ----------------------- Protection --------------------
     output_path_x =  paste(output_path,protection_output_name, sep="")
-    write_xlsx(Habitat_Quality_Pathway_Protection,output_path_x )
+    write.xlsx(Habitat_Quality_Pathway_Protection,output_path_x )
     
   }else{
     

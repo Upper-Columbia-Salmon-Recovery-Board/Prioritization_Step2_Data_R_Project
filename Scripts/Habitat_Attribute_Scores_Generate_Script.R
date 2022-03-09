@@ -156,13 +156,17 @@ for(habitat_attribute_x in names(Habitat_Attributes_List) ){
     rowwise() %>%
     mutate(minimum_score = min(c_across(), na.rm=T) )
   
+  # ------- add the reach name back in ---------
+  habitat_attribute_x_data_frame_CALC = cbind(habitat_attribute_x_data_frame$ReachName,habitat_attribute_x_data_frame_CALC)
+  
   # ---------------- over-ride with REI values -------
   if( any(REI_Default_List == habitat_attribute_x) ){
     # ----------- pull REI values if REI value is present and over-ride minimum value ------
     REI_present_x = which( !is.na(habitat_attribute_x_data_frame_CALC$HabitatAttributeScore1) )
     habitat_attribute_x_data_frame_CALC$minimum_score[REI_present_x] = habitat_attribute_x_data_frame_CALC$HabitatAttributeScore1[REI_present_x]
   }
-  
+  # ------------ update first column name ---------
+  colnames(habitat_attribute_x_data_frame_CALC)[1] = "ReachName"
   
   # --------------------- add data source ----------------
   data_source_output_list_per_row = rep(data_source_output_list_per_row, length.out=nrow(habitat_attribute_x_data_frame))
@@ -174,10 +178,13 @@ for(habitat_attribute_x in names(Habitat_Attributes_List) ){
   habitat_attribute_x_data_frame_Reach_Name = habitat_attribute_x_data_frame[,"ReachName"]
   habitat_attribute_x_data_frame_Reach_Name = as.data.frame(habitat_attribute_x_data_frame_Reach_Name)
   colnames(habitat_attribute_x_data_frame_Reach_Name) = "ReachName"
-  habitat_attribute_x_data_frame = merge(habitat_attribute_x_data_frame_Reach_Name, Reach_Information_data[, c("ReachName","Basin","Assessment.Unit")],
+  habitat_attribute_x_data_frame = merge(habitat_attribute_x_data_frame_Reach_Name,   Reach_Information_data[, c("ReachName","Basin","Assessment.Unit")],
                                          by="ReachName")
-  
-  habitat_attribute_x_data_frame = cbind(habitat_attribute_x_data_frame,habitat_attribute_name, data_source_output_list_per_row,habitat_attribute_x_data_frame_CALC)
+  # ----------------- add habitat attribute name and data source list -----------
+  habitat_attribute_x_data_frame = cbind( habitat_attribute_x_data_frame, habitat_attribute_name,  data_source_output_list_per_row)
+  colnames(habitat_attribute_x_data_frame) = c('ReachName',	'Basin',	'Assessment.Unit',	'Habitat_Attribute',	'Data_Sources')
+  # --------------- merge Habitat Attribute Scores data with reach basic data ----------------
+  habitat_attribute_x_data_frame = merge(habitat_attribute_x_data_frame, habitat_attribute_x_data_frame_CALC, by="ReachName")
   colnames(habitat_attribute_x_data_frame) = c('ReachName',	'Basin',	'Assessment.Unit',	'Habitat_Attribute',	'Data_Sources',	'HabitatAttributeScore1',
                                                'HabitatAttributeScore2',	'HabitatAttributeScore3',	'HabitatAttributeScore4',
                                                'HabitatAttributeScore5',	'HabitatAttributeScore6', 'Habitat_Attribute_Score')

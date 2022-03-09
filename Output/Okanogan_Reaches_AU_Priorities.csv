@@ -1,117 +1,117 @@
 "Assessment.Unit","ReachName","Basin","Spring.Chinook.Reach","Steelhead.Reach","AU Restoration Rank","AU Protection Rank"
 "Aeneas Creek-DS","Aeneas 16-1","Okanogan","no","yes",2,2
 "Aeneas Creek-DS","Aeneas 16-2","Okanogan","no","yes",2,2
-"Antoine Creek-Lower","Antoine 16-1","Okanogan","no","yes",1,1
-"Antoine Creek-Lower","Antoine 16-2","Okanogan","no","yes",1,1
 "Antoine Creek-Lower","Antoine 16-3","Okanogan","no","yes",1,1
 "Antoine Creek-Lower","Antoine 16-4","Okanogan","no","yes",1,1
-"Antoine Creek-Lower","Antoine 16-5","Okanogan","no","yes",1,1
+"Antoine Creek-Lower","Antoine 16-1","Okanogan","no","yes",1,1
+"Antoine Creek-Lower","Antoine 16-2","Okanogan","no","yes",1,1
 "Antoine Creek-Lower","Antoine 16-6","Okanogan","no","yes",1,1
+"Antoine Creek-Lower","Antoine 16-5","Okanogan","no","yes",1,1
 "Bonaparte Creek-Lower DS","Bonaparte 16-1","Okanogan","no","yes",2,1
 "Chiliwist Creek","Chiliwist 16-1","Okanogan","no","yes",NA,NA
 "Johnson Creek","Johnson 16-1","Okanogan","no","yes",1,2
 "Johnson Creek","Johnson 16-2","Okanogan","no","no",1,2
-"Johnson Creek","Johnson 16-3","Okanogan","no","no",1,2
-"Johnson Creek","Johnson 16-4","Okanogan","no","no",1,2
 "Johnson Creek","Johnson 16-5","Okanogan","no","no",1,2
 "Johnson Creek","Johnson 16-6","Okanogan","no","no",1,2
+"Johnson Creek","Johnson 16-3","Okanogan","no","no",1,2
+"Johnson Creek","Johnson 16-4","Okanogan","no","no",1,2
+"Johnson Creek","Johnson 16-9","Okanogan","no","no",1,2
 "Johnson Creek","Johnson 16-7","Okanogan","no","no",1,2
 "Johnson Creek","Johnson 16-8","Okanogan","no","no",1,2
-"Johnson Creek","Johnson 16-9","Okanogan","no","no",1,2
 "Loup Loup Creek-Lower DS","Loup Loup 16-1","Okanogan","no","yes",1,1
-"Loup Loup Creek-Lower DS","Loup Loup 16-2","Okanogan","no","yes",1,1
 "Loup Loup Creek-Lower DS","Loup Loup 16-3","Okanogan","no","yes",1,1
-"Ninemile Creek DS","Ninemile 16-1","Okanogan","no","yes",2,2
+"Loup Loup Creek-Lower DS","Loup Loup 16-2","Okanogan","no","yes",1,1
 "Ninemile Creek DS","Ninemile 16-2","Okanogan","no","yes",2,2
 "Ninemile Creek DS","Ninemile 16-3","Okanogan","no","yes",2,2
+"Ninemile Creek DS","Ninemile 16-1","Okanogan","no","yes",2,2
 "Ninemile Creek DS","Ninemile 16-4","Okanogan","no","yes",2,2
 "Ninemile Creek DS","Ninemile 16-5","Okanogan","no","yes",2,2
 "Okanogan-Alkali Lake","Okanogan 16-24","Okanogan","no","yes",2,3
 "Okanogan-Alkali Lake","Okanogan 16-25","Okanogan","no","yes",2,3
-"Okanogan-Davis Canyon","Okanogan 16-5","Okanogan","no","yes",2,3
 "Okanogan-Davis Canyon","Okanogan 16-6","Okanogan","no","yes",2,3
 "Okanogan-Davis Canyon","Okanogan 16-7","Okanogan","no","yes",2,3
-"Okanogan-Davis Canyon","Okanogan 16-8","Okanogan","no","yes",2,3
-"Okanogan-Davis Canyon","Okanogan 16-1","Okanogan","no","yes",2,3
+"Okanogan-Davis Canyon","Okanogan 16-5","Okanogan","no","yes",2,3
 "Okanogan-Davis Canyon","Okanogan 16-4","Okanogan","no","yes",2,3
 "Okanogan-Davis Canyon","Okanogan 16-3","Okanogan","no","yes",2,3
+"Okanogan-Davis Canyon","Okanogan 16-1","Okanogan","no","yes",2,3
 "Okanogan-Davis Canyon","Okanogan 16-2","Okanogan","no","yes",2,3
+"Okanogan-Davis Canyon","Okanogan 16-8","Okanogan","no","yes",2,3
 "Okanogan-Haynes Creek North","Okanagan 16-48","Okanogan","no","yes",2,1
 "Okanogan-Haynes Creek North","Okanogan 16-46","Okanogan","no","yes",2,1
 "Okanogan-Haynes Creek North","Okanogan 16-47","Okanogan","no","yes",2,1
-"Okanogan-Haynes Creek South","Okanogan 16-45","Okanogan","no","yes",2,2
 "Okanogan-Haynes Creek South","Okanogan 16-43","Okanogan","no","yes",2,2
+"Okanogan-Haynes Creek South","Okanogan 16-45","Okanogan","no","yes",2,2
 "Okanogan-Haynes Creek South","Okanogan 16-44","Okanogan","no","yes",2,2
 "Okanogan-Haynes Creek South","Okanogan Crosschannel 16-1","Okanogan","no","yes",2,2
-"Okanogan-Mosquito Creek","Okanogan 16-41","Okanogan","no","yes",2,2
 "Okanogan-Mosquito Creek","Okanogan 16-42","Okanogan","no","yes",2,2
-"Okanogan-Mosquito Creek","Okanogan 16-35","Okanogan","no","yes",2,2
 "Okanogan-Mosquito Creek","Okanogan 16-40","Okanogan","no","yes",2,2
-"Okanogan-Mosquito Creek","Okanogan 16-37","Okanogan","no","yes",2,2
+"Okanogan-Mosquito Creek","Okanogan 16-41","Okanogan","no","yes",2,2
 "Okanogan-Mosquito Creek","Okanogan 16-34","Okanogan","no","yes",2,2
-"Okanogan-Mosquito Creek","Okanogan 16-39","Okanogan","no","yes",2,2
+"Okanogan-Mosquito Creek","Okanogan 16-35","Okanogan","no","yes",2,2
 "Okanogan-Mosquito Creek","Okanogan 16-36","Okanogan","no","yes",2,2
+"Okanogan-Mosquito Creek","Okanogan 16-37","Okanogan","no","yes",2,2
 "Okanogan-Mosquito Creek","Okanogan 16-38","Okanogan","no","yes",2,2
-"Okanogan-Swipkin Canyon","Okanogan 16-17","Okanogan","no","yes",2,3
+"Okanogan-Mosquito Creek","Okanogan 16-39","Okanogan","no","yes",2,2
 "Okanogan-Swipkin Canyon","Okanogan 16-21","Okanogan","no","yes",2,3
 "Okanogan-Swipkin Canyon","Okanogan 16-19","Okanogan","no","yes",2,3
-"Okanogan-Swipkin Canyon","Okanogan 16-20","Okanogan","no","yes",2,3
+"Okanogan-Swipkin Canyon","Okanogan 16-17","Okanogan","no","yes",2,3
 "Okanogan-Swipkin Canyon","Okanogan 16-16","Okanogan","no","yes",2,3
 "Okanogan-Swipkin Canyon","Okanogan 16-18","Okanogan","no","yes",2,3
+"Okanogan-Swipkin Canyon","Okanogan 16-20","Okanogan","no","yes",2,3
 "Okanogan-Swipkin Canyon","Okanogan 16-22","Okanogan","no","yes",2,3
 "Okanogan-Swipkin Canyon","Okanogan 16-23","Okanogan","no","yes",2,3
 "Okanogan-Talant Creek","Okanogan 16-11","Okanogan","no","yes",2,3
-"Okanogan-Talant Creek","Okanogan 16-15","Okanogan","no","yes",2,3
 "Okanogan-Talant Creek","Okanogan 16-9","Okanogan","no","yes",2,3
 "Okanogan-Talant Creek","Okanogan 16-12","Okanogan","no","yes",2,3
-"Okanogan-Talant Creek","Okanogan 16-13","Okanogan","no","yes",2,3
 "Okanogan-Talant Creek","Okanogan 16-10","Okanogan","no","yes",2,3
 "Okanogan-Talant Creek","Okanogan 16-14","Okanogan","no","yes",2,3
-"Okanogan-Whitestone Coulee","Okanogan 16-30","Okanogan","no","yes",2,3
-"Okanogan-Whitestone Coulee","Okanogan 16-31","Okanogan","no","yes",2,3
+"Okanogan-Talant Creek","Okanogan 16-15","Okanogan","no","yes",2,3
+"Okanogan-Talant Creek","Okanogan 16-13","Okanogan","no","yes",2,3
 "Okanogan-Whitestone Coulee","Okanogan 16-29","Okanogan","no","yes",2,3
 "Okanogan-Whitestone Coulee","Okanogan 16-33","Okanogan","no","yes",2,3
-"Okanogan-Whitestone Coulee","Okanogan 16-26","Okanogan","no","yes",2,3
-"Okanogan-Whitestone Coulee","Okanogan 16-27","Okanogan","no","yes",2,3
+"Okanogan-Whitestone Coulee","Okanogan 16-30","Okanogan","no","yes",2,3
+"Okanogan-Whitestone Coulee","Okanogan 16-31","Okanogan","no","yes",2,3
 "Okanogan-Whitestone Coulee","Okanogan 16-32","Okanogan","no","yes",2,3
 "Okanogan-Whitestone Coulee","Okanogan 16-28","Okanogan","no","yes",2,3
+"Okanogan-Whitestone Coulee","Okanogan 16-27","Okanogan","no","yes",2,3
+"Okanogan-Whitestone Coulee","Okanogan 16-26","Okanogan","no","yes",2,3
 "Omak Creek-Lower US","Omak 16-1","Okanogan","no","yes",1,1
 "Omak Creek-Lower US","Omak 16-10","Okanogan","no","yes",1,1
-"Omak Creek-Lower US","Omak 16-8","Okanogan","no","yes",1,1
-"Omak Creek-Lower US","Omak 16-9","Okanogan","no","yes",1,1
 "Omak Creek-Lower US","Omak 16-5","Okanogan","no","yes",1,1
 "Omak Creek-Lower US","Omak 16-2","Okanogan","no","yes",1,1
+"Omak Creek-Lower US","Omak 16-8","Okanogan","no","yes",1,1
+"Omak Creek-Lower US","Omak 16-9","Okanogan","no","yes",1,1
 "Omak Creek-Lower US","Omak 16-3","Okanogan","no","yes",1,1
-"Omak Creek-Lower US","Omak 16-4","Okanogan","no","yes",1,1
 "Omak Creek-Lower US","Omak 16-6","Okanogan","no","yes",1,1
 "Omak Creek-Lower US","Omak 16-7","Okanogan","no","yes",1,1
-"Omak Creek-Middle DS","Omak 16-13","Okanogan","no","yes",2,2
+"Omak Creek-Lower US","Omak 16-4","Okanogan","no","yes",1,1
 "Omak Creek-Middle DS","Omak 16-11","Okanogan","no","yes",2,2
-"Omak Creek-Middle DS","Omak 16-12","Okanogan","no","yes",2,2
-"Omak Creek-Middle DS","Stapaloop 16-2","Okanogan","no","yes",2,2
+"Omak Creek-Middle DS","Omak 16-13","Okanogan","no","yes",2,2
 "Omak Creek-Middle DS","Swimptkin 16-1","Okanogan","no","yes",2,2
+"Omak Creek-Middle DS","Omak 16-12","Okanogan","no","yes",2,2
 "Omak Creek-Middle DS","Stapaloop 16-1","Okanogan","no","yes",2,2
+"Omak Creek-Middle DS","Stapaloop 16-2","Okanogan","no","yes",2,2
 "Omak Creek-Upper DS","Omak 16-16","Okanogan","no","yes",2,2
+"Omak Creek-Upper DS","Omak 16-17","Okanogan","no","yes",2,2
 "Omak Creek-Upper DS","Omak 16-14","Okanogan","no","yes",2,2
 "Omak Creek-Upper DS","Omak 16-15","Okanogan","no","yes",2,2
-"Omak Creek-Upper DS","Omak 16-17","Okanogan","no","yes",2,2
 "Omak Creek-Upper DS","Trail 16-1","Okanogan","no","yes",2,2
 "Salmon Creek-Lower","Salmon 16-11","Okanogan","no","yes",1,1
-"Salmon Creek-Lower","Salmon 16-10","Okanogan","no","yes",1,1
 "Salmon Creek-Lower","Salmon 16-3","Okanogan","no","yes",1,1
 "Salmon Creek-Lower","Salmon 16-12","Okanogan","no","yes",1,1
-"Salmon Creek-Lower","Salmon 16-1","Okanogan","no","yes",1,1
-"Salmon Creek-Lower","Salmon 16-2","Okanogan","no","yes",1,1
+"Salmon Creek-Lower","Salmon 16-10","Okanogan","no","yes",1,1
 "Salmon Creek-Lower","Salmon 16-7","Okanogan","no","yes",1,1
 "Salmon Creek-Lower","Salmon 16-8","Okanogan","no","yes",1,1
-"Salmon Creek-Lower","Salmon 16-13","Okanogan","no","yes",1,1
-"Salmon Creek-Lower","Salmon 16-5","Okanogan","no","yes",1,1
+"Salmon Creek-Lower","Salmon 16-1","Okanogan","no","yes",1,1
+"Salmon Creek-Lower","Salmon 16-2","Okanogan","no","yes",1,1
 "Salmon Creek-Lower","Salmon 16-6","Okanogan","no","yes",1,1
-"Salmon Creek-Lower","Salmon 16-4","Okanogan","no","yes",1,1
+"Salmon Creek-Lower","Salmon 16-13","Okanogan","no","yes",1,1
 "Salmon Creek-Lower","Salmon 16-9","Okanogan","no","yes",1,1
+"Salmon Creek-Lower","Salmon 16-5","Okanogan","no","yes",1,1
+"Salmon Creek-Lower","Salmon 16-4","Okanogan","no","yes",1,1
 "Similkameen River","Similkameen 16-3","Okanogan","no","yes",1,1
-"Similkameen River","Similkameen 16-2","Okanogan","no","yes",1,1
 "Similkameen River","Similkameen 16-4","Okanogan","no","yes",1,1
+"Similkameen River","Similkameen 16-2","Okanogan","no","yes",1,1
 "Similkameen River","Similkameen 16-1","Okanogan","no","yes",1,1
 "Similkameen River","Similkameen 16-6","Okanogan","no","yes",1,1
 "Similkameen River","Similkameen 16-5","Okanogan","no","yes",1,1
@@ -122,8 +122,6 @@
 "Wanacut Creek DS","Wanacut 16-1","Okanogan","no","yes",3,2
 "Wanacut Creek DS","Wanacut 16-2","Okanogan","no","yes",3,2
 "Wanacut Creek DS","Wanacut 16-3","Okanogan","no","yes",3,2
-"Whitestone Creek","Whitestone 16-1","Okanogan","no","no",3,3
 "Whitestone Creek","Whitestone 16-2","Okanogan","no","no",3,3
 "Whitestone Creek","Whitestone 16-3","Okanogan","no","no",3,3
-"Wildhorse Spring Creek","Wildhorse 16-1","Okanogan","no","yes",3,3
-"Wildhorse Spring Creek","Wildhorse 16-2","Okanogan","no","yes",3,3
+"Whitestone Creek","Whitestone 16-1","Okanogan","no","no",3,3

@@ -204,7 +204,7 @@ colnames(Habitat_Quality_Data_Gaps2) = c("Reach Name", "Basin", "Assessment Unit
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 
 output_path_x =  paste(output_path,'Habitat_Quality_Data_Missing.xlsx', sep="")
-write_xlsx(Habitat_Quality_Data_Gaps2,output_path_x )
+write.xlsx(Habitat_Quality_Data_Gaps2,output_path_x )
 
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #
@@ -240,14 +240,14 @@ Habitat_Quality_Data_Gaps_Pool_True_False = grepl("Pool Quantity and Quality", H
 Habitat_Quality_Data_Gaps_Pool = Habitat_Quality_Data_Gaps_SprChn_Stld[Habitat_Quality_Data_Gaps_Pool_True_False, ] 
 Habitat_Quality_Data_Gaps_Pool = Habitat_Quality_Data_Gaps_Pool[columns_to_pull]
 output_path_x =  paste(output_path,'Habitat_Quality_Data_Missing_Pool_Quant_and_Qual.xlsx', sep="")
-write_xlsx(Habitat_Quality_Data_Gaps_Pool,output_path_x )
+write.xlsx(Habitat_Quality_Data_Gaps_Pool,output_path_x )
 
 # --------------------- Coarse Substrate -----------------
 Habitat_Quality_Data_Gaps_Coarse_Substrate_True_False = grepl("Coarse Substrate", Habitat_Quality_Data_Gaps_SprChn_Stld$`Missing Data`)
 Habitat_Quality_Data_Gaps_Coarse_Substrate = Habitat_Quality_Data_Gaps_SprChn_Stld[Habitat_Quality_Data_Gaps_Coarse_Substrate_True_False, ] 
 Habitat_Quality_Data_Gaps_Coarse_Substrate = Habitat_Quality_Data_Gaps_Coarse_Substrate[columns_to_pull]
 output_path_x =  paste(output_path,'Habitat_Quality_Data_Missing_Coarse_Substrate.xlsx', sep="")
-write_xlsx(Habitat_Quality_Data_Gaps_Coarse_Substrate,output_path_x )
+write.xlsx(Habitat_Quality_Data_Gaps_Coarse_Substrate,output_path_x )
 
 
 # -------------------- Cover- Wood ------------------
@@ -255,7 +255,7 @@ Habitat_Quality_Data_Gaps_Cover_Wood_True_False = grepl("Cover- Wood", Habitat_Q
 Habitat_Quality_Data_Gaps_Cover_Wood = Habitat_Quality_Data_Gaps_SprChn_Stld[Habitat_Quality_Data_Gaps_Cover_Wood_True_False, ] 
 Habitat_Quality_Data_Gaps_Cover_Wood = Habitat_Quality_Data_Gaps_Cover_Wood[columns_to_pull]
 output_path_x =  paste(output_path,'Habitat_Quality_Data_Missing_Cover_Wood.xlsx', sep="")
-write_xlsx(Habitat_Quality_Data_Gaps_Cover_Wood,output_path_x )
+write.xlsx(Habitat_Quality_Data_Gaps_Cover_Wood,output_path_x )
 
 
 # -----------------------------------------------------------------------------------------------------------------------------------------------
@@ -329,7 +329,7 @@ Habitat_Quality_Data_Gaps_10_years_older_no_Okanogan$Survey_Year = as.numeric(Ha
 
 
 output_path_x =  paste(output_path,'ALL_Data_Wenatchee_Entiat_Methow,list_potential_data_gaps_Tier1_and_survey_year.xlsx', sep="")
-write_xlsx(Habitat_Quality_Data_Gaps_10_years_older_no_Okanogan,output_path_x )
+write.xlsx(Habitat_Quality_Data_Gaps_10_years_older_no_Okanogan,output_path_x )
 
 
 # -----------------------------------------------------------------------------------------------------------------------------------------------
@@ -374,7 +374,7 @@ table_missing_data$total_length_miles = round(table_missing_data$total_length_mi
 
 
 output_path_x =  paste(output_path,'Data_Gap_Wenatchee_Entiat_Methow,Tier1_and_survey_before_2011.xlsx', sep="")
-write_xlsx(table_missing_data,output_path_x )
+write.xlsx(table_missing_data,output_path_x )
 
 
 any(AU_Ranks_data[AU_Ranks_data$`Assessment Unit` == "Rock Creek",] == 1)

@@ -36,7 +36,8 @@ library(mapview)
 #reaches <- sf::st_transform(reaches, 4326)
 
 # ------ updated with Okanogan EDT data layers -----------------
-reaches_path = "Y:/UCRTT/Prioritization/Step 2/Data/GIS/Reaches/Reaches.shp"
+#reaches_path = "Y:/UCRTT/Prioritization/Step 2/Data/GIS/Reaches/Reaches.shp"
+reaches_path = "C:/Users/ryan/Documents/GitHub/Prioritization_Step2_Data_R_Project/Data/Reaches/Reaches.shp"
 reaches <- sf::st_read(reaches_path) # this shapefile does not show up properly
 reaches <- sf::st_transform(reaches, 4326)
 

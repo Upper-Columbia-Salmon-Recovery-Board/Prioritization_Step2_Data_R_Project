@@ -20,15 +20,16 @@
 #  import R Packages
 # ---------------------------------------------------------------------------
 library(tidyverse)
-library(xlsx)
-library(writexl)
+#library(xlsx)
+library(openxlsx)
+#library(writexl)
 library(readxl)
 
 # ---------------------------------------------------------------------------
 #  Script Criteria for output
 # ---------------------------------------------------------------------------
 read_MASTER_directly = TRUE # if TRUE - read MASTER from UCSRB servers, if FALSE - read from local 
-write_MASTER_locally = FALSE # if TRUE -  write tabs in MASTER from UCSRB servers, if FALSE - do not write
+write_MASTER_locally = TRUE # if TRUE -  write tabs in MASTER from UCSRB servers, if FALSE - do not write
 basins_to_include = c("Methow",  "Entiat","Wenatchee" , "Okanogan")  # basins to include in simulation    
 exclude_bull_trout = "no"  # if "yes" -> remove bull trout for WebMap applications
 output_Habitat_Quality_and_Habitat_Attribute_Scores = "no"  # enter "yes" or "no" if you want the "flat table" Habitat Attribute output (doubles time to run script)
@@ -59,7 +60,7 @@ reach_assessment_projects_path = paste(master_path,'Reach_Assessment_Projects/',
 
 # -------------- MASTER path and file ----------
 folder_x = "Y:/UCRTT/Prioritization/Step 2/Habitat Evaluation/"
-master_file = "MASTER_Step2_REVIEWDRAFT_071321.xlsx"
+master_file = "MASTER_Step2_FINALDRFT_11052021.xlsx"
 MASTER_Data_path = paste(folder_x,master_file, sep="")   # Data from Okanogan EDT results
 
 # ----------- directory for output (where results are saved) ---------
@@ -255,7 +256,7 @@ Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']] = rbin
 # --------------------------------------------------
 # Generate life stage tables for ALL reaches for each species (JUST for QAQC purposes)
 # --------------------------------------------------
-test_x = TRUE
+test_x = FALSE
 if(test_x){
   
   # --------- for each life stage and reach - calculate the LF Score -------
@@ -302,6 +303,8 @@ if(test_x){
 
 # -- for viewing data -----
 # View(Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']])
+# View(Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']])
+
 # View(Limiting_Factor_Spring_Chinook[['Limiting_Factor_Pathway_Protection']])
 #View(Limiting_Factor_Spring_Chinook[['Limiting_Factor_Pathway_Protection']][c('ReachName','LF_Sum','LF_Pct','LF_Score_Protection')])
 #unique(Limiting_Factor_Bull_Trout[['Limiting_Factor_Pathway_Restoration']]$unacceptable_and_at_risk_1_3_indiv_habitat_attributes)
@@ -719,7 +722,7 @@ Reach_Assessment_Project_Data_Habitat_Attributes_Priority_Reaches = FUNCTION_out
 #       Restoration
 # -----------------------------------------------------------------
 output_path_x =  paste(output_path,'Reach_Actions_Restoration_Unacceptable_and_AtRisk.xlsx', sep="")
-write_xlsx(Restoration_Prioritization_Output,output_path_x )
+write.xlsx(Restoration_Prioritization_Output,output_path_x )
 
 # --------------------------
 #     For WebMap
@@ -729,62 +732,63 @@ write_xlsx(Restoration_Prioritization_Output,output_path_x )
 # ------- change "Habitat_Attribute" name to "Limiting_Factor"
 colnames(Reach_Habitat_Attribute_Life_Stage_Restoration_Output)[colnames(Reach_Habitat_Attribute_Life_Stage_Restoration_Output) == "Habitat_Attribute"] <- "Limiting_Factor"
 output_path_x =  paste(output_path,'Reach_Habitat_Attribute_Life_Stage_Restoration_Output.xlsx', sep="")
-write_xlsx(Reach_Habitat_Attribute_Life_Stage_Restoration_Output,output_path_x )
+write.xlsx(Reach_Habitat_Attribute_Life_Stage_Restoration_Output,output_path_x )
 # ------------- Output for WebMap ------------------
 colnames(Reach_Habitat_Attribute_Life_Stage_Species_Restoration_Output)[colnames(Reach_Habitat_Attribute_Life_Stage_Species_Restoration_Output) == "Habitat_Attribute"] <- "Limiting_Factor"
 output_path_x =  paste(output_path,'Reach_Habitat_Attribute_Life_Stage_Species_Restoration_Output.xlsx', sep="")
-write_xlsx(Reach_Habitat_Attribute_Life_Stage_Species_Restoration_Output,output_path_x )
+write.xlsx(Reach_Habitat_Attribute_Life_Stage_Species_Restoration_Output,output_path_x )
 
 # ----------- Outward Facing Table (pops up when reach is clicked on AND in tab below) - RESTORATION -----------
+#     ALSO for the excel 
 output_path_x =  paste(output_path,'Restoration_Prioritization_Output_for_WebMap_Table.xlsx', sep="")
-write_xlsx(Restoration_Prioritization_Output_for_WebMap,output_path_x )
+write.xlsx(Restoration_Prioritization_Output_for_WebMap,output_path_x )
 # ----------- Outward Facing Table (pops up when reach is clicked on AND in tab below) - PROTECTION -----------
 output_path_x =  paste(output_path,'Protection_Prioritization_Output_for_WebMap_Table.xlsx', sep="")
-write_xlsx(Protection_Prioritization_Output_for_WebMap,output_path_x )
+write.xlsx(Protection_Prioritization_Output_for_WebMap,output_path_x )
 
 # ----------- Outward Facing Table - For individual species - RESTORATION --------
 output_path_x =  paste(output_path,'Restoration_Prioritization_Output_SPRING_CHINOOK_for_WebMap_Table.xlsx', sep="")
-write_xlsx(Restoration_Prioritization_Output_Spring_Chinook,output_path_x )
+write.xlsx(Restoration_Prioritization_Output_Spring_Chinook,output_path_x )
 output_path_x =  paste(output_path,'Restoration_Prioritization_Output_STEELHEAD_for_WebMap_Table.xlsx', sep="")
-write_xlsx(Restoration_Prioritization_Output_Steelhead,output_path_x )
+write.xlsx(Restoration_Prioritization_Output_Steelhead,output_path_x )
 output_path_x =  paste(output_path,'Restoration_Prioritization_Output_BULL_TROUT_for_WebMap_Table.xlsx', sep="")
-write_xlsx(Restoration_Prioritization_Output_Bull_Trout,output_path_x )
+write.xlsx(Restoration_Prioritization_Output_Bull_Trout,output_path_x )
 
 # ----------- Outward Facing Table - For individual species - PROTECTION --------
 output_path_x =  paste(output_path,'Protection_Prioritization_Output_SPRING_CHINOOK_for_WebMap_Table.xlsx', sep="")
-write_xlsx(Protection_Prioritization_Output_Spring_Chinook,output_path_x )
+write.xlsx(Protection_Prioritization_Output_Spring_Chinook,output_path_x )
 output_path_x =  paste(output_path,'Protection_Prioritization_Output_STEELHEAD_for_WebMap_Table.xlsx', sep="")
-write_xlsx(Protection_Prioritization_Output_Steelhead,output_path_x )
+write.xlsx(Protection_Prioritization_Output_Steelhead,output_path_x )
 output_path_x =  paste(output_path,'Protection_Prioritization_Output_BULL_TROUT_for_WebMap_Table.xlsx', sep="")
-write_xlsx(Protection_Prioritization_Output_Bull_Trout,output_path_x )
+write.xlsx(Protection_Prioritization_Output_Bull_Trout,output_path_x )
 
 
 # ----------- Habitat Attributes Table w/ Ratings (to put in WebMap) -----------
 output_path_x =  paste(output_path,'Habitat_Attributes_Ratings_Table_for_WebMap.xlsx', sep="")
-write_xlsx(Habitat_Attributes_Ratings_Table,output_path_x )
+write.xlsx(Habitat_Attributes_Ratings_Table,output_path_x )
 
 
 # ------------ output Action Categories ----------------
 output_path_x =  paste(output_path,'Action_Categories_and_Pathways_Restoration_Unacceptable.xlsx', sep="")
-write_xlsx(Restoration_Unacceptable,output_path_x )
+write.xlsx(Restoration_Unacceptable,output_path_x )
 output_path_x =  paste(output_path,'Action_Categories_and_Pathways_Restoration_At_Risk.xlsx', sep="")
-write_xlsx(Restoration_At_Risk,output_path_x )
+write.xlsx(Restoration_At_Risk,output_path_x )
 output_path_x =  paste(output_path,'Action_Categories_and_Pathways_Restoration_Unacceptable_and_At_Risk.xlsx', sep="")
-write_xlsx(Restoration_Unacceptable_and_At_Risk,output_path_x )
+write.xlsx(Restoration_Unacceptable_and_At_Risk,output_path_x )
 
 # ----------------- output Barriers data -----------------------
 output_path_x = paste(output_path,'Barriers_Pathway_Output.xlsx', sep="")
-write_xlsx(Barriers_Pathways_Data, output_path_x)
+write.xlsx(Barriers_Pathways_Data, output_path_x)
 
 # ------------------ output Habitat Quality Scores for WebMap ----------------
 output_path_x = paste(output_path,'Habitat_Quality_Scores_for_WebMap.xlsx', sep="")
-write_xlsx(Habitat_Quality_Scores_for_WebMap, output_path_x)
+write.xlsx(Habitat_Quality_Scores_for_WebMap, output_path_x)
 
 # ------------------ output Basin Reach Information for WebMap ---------------- 
 Reach_Information_data_for_WebMap = Reach_Information_data[,Reach_Information_data_columns_to_pull]
 colnames(Reach_Information_data_for_WebMap) = Reach_Information_data_columns_new_names
 output_path_x = paste(output_path,'Reach_Information_Data_for_WebMap.xlsx', sep="")
-write_xlsx(Reach_Information_data_for_WebMap, output_path_x)
+write.xlsx(Reach_Information_data_for_WebMap, output_path_x)
 
 
 # -----------------------------------------------------------------
@@ -792,25 +796,25 @@ write_xlsx(Reach_Information_data_for_WebMap, output_path_x)
 # -----------------------------------------------------------------
 
 output_path_x =  paste(output_path,'Reach_Assessment_Project_Data_Habitat_Attributes.xlsx', sep="")
-write_xlsx(Reach_Assessment_Project_Data_Habitat_Attributes,output_path_x )
+write.xlsx(Reach_Assessment_Project_Data_Habitat_Attributes,output_path_x )
 output_path_x =  paste(output_path,'Reach_Assessment_Project_Data_per_Reach.xlsx', sep="")
-write_xlsx(Reach_Assessment_Project_Data_per_Reach,output_path_x )
+write.xlsx(Reach_Assessment_Project_Data_per_Reach,output_path_x )
 output_path_x =  paste(output_path,'Reach_Assessment_Project_Data_Habitat_Attributes_Priority_Reaches.xlsx', sep="")
-write_xlsx(Reach_Assessment_Project_Data_Habitat_Attributes_Priority_Reaches,output_path_x )
+write.xlsx(Reach_Assessment_Project_Data_Habitat_Attributes_Priority_Reaches,output_path_x )
 
 # -----------------------------------------------------------------
 #      Protection
 # -----------------------------------------------------------------
 output_path_x =  paste(output_path,'Reach_Actions_Protection.xlsx', sep="")
-write_xlsx(Protection_Prioritization_Output,output_path_x )
+write.xlsx(Protection_Prioritization_Output,output_path_x )
 
 # -----------------------------------------------------------------
 #     Reach Rankings
 # -----------------------------------------------------------------
 output_path_x =  paste(output_path,'Restoration_Reach_Ranking_Scores_Output.xlsx', sep="")
-write_xlsx(Reach_Rankings_Output_Restoration,output_path_x )
+write.xlsx(Reach_Rankings_Output_Restoration,output_path_x )
 output_path_x =  paste(output_path,'Protection_Reach_Ranking_Scores_Output.xlsx', sep="")
-write_xlsx(Reach_Rankings_Output_Protection,output_path_x )
+write.xlsx(Reach_Rankings_Output_Protection,output_path_x )
 
 # -----------------------------------------------------------------
 #      Combine into one MASTER excel

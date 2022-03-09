@@ -160,7 +160,7 @@ rownames(EDT_RTT_habitat_attribute_comparison) = seq(1, nrow(EDT_RTT_habitat_att
 EDT_RTT_habitat_attribute_comparison = as.data.frame(EDT_RTT_habitat_attribute_comparison)
 
 output_path_x =  paste(output_path,'EDT_RTT_habitat_attribute_score_comparison_REACHES.xlsx', sep="")
-write_xlsx(EDT_RTT_habitat_attribute_comparison,output_path_x )
+write.xlsx(EDT_RTT_habitat_attribute_comparison,output_path_x )
 
 # ---------------------- summarize the EDT and RTT difference findings -----------------
 dif_column = colnames(EDT_RTT_habitat_attribute_comparison)[c(4,7,11,15,18,21)]
@@ -187,5 +187,5 @@ EDT_RTT_dif_summary$PRCNT_Okanogan_Reaches_RTT_greater_than_EDT = round( (as.num
 
 # -------------- output data ---------------
 output_path_x =  paste(output_path,'EDT_RTT_habitat_attribute_score_comparison_SUMMARY.xlsx', sep="")
-write_xlsx(EDT_RTT_dif_summary,output_path_x )
+write.xlsx(EDT_RTT_dif_summary,output_path_x )
 

@@ -285,7 +285,7 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species, colnames_HQ_
     }
     
     # ---------- write all the output ------------
-    write.xlsx(Output_All_Combined, file=paste(output_path,"Habitat_Quality_Scores_Filters_Okanogan.xlsx",sep=""),  row.names=FALSE)
+    write.xlsx(Output_All_Combined, file=paste(output_path,"Habitat_Quality_Scores_Filters_Okanogan.xlsx",sep=""),  rowNames=FALSE)
     
     #  ---------------------------------------------------------------------------------
     #           Write output data to output file
@@ -293,7 +293,7 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species, colnames_HQ_
     
     # ----------------------- Restoration --------------------
     output_path_x =  paste(output_path,restoration_output_name, sep="")
-    write_xlsx(Habitat_Quality_Scores_Okanogan_for_Restoration, output_path_x)
+    write.xlsx(Habitat_Quality_Scores_Okanogan_for_Restoration, output_path_x)
     
   }else{
     
@@ -334,7 +334,7 @@ Generate_Habitat_Quality_Output_Table_Okanogan = function( species, colnames_HQ_
     
     # ----------------------- Protection --------------------
     output_path_x =  paste(output_path,protection_output_name, sep="")
-    write_xlsx(Habitat_Quality_Scores_Okanogan_for_Protection,output_path_x )
+    write.xlsx(Habitat_Quality_Scores_Okanogan_for_Protection,output_path_x )
     
   }else{
     

@@ -41,7 +41,7 @@ if(read_MASTER_directly){
   
   # -------------- write locally --------------
   if(write_MASTER_locally){
-    write_xlsx( habitat_raw_data,  paste(habitat_data_path,'Habitat_Data_Raw.xlsx', sep="")  )
+    write.xlsx( habitat_raw_data,  paste(habitat_data_path,'Habitat_Data_Raw.xlsx', sep="")  )
   }
   
 # --------------- read in Habitat Raw Data Locally -------------
@@ -118,7 +118,7 @@ if(read_MASTER_directly){
 
   # -------------- write locally --------------
   if(write_MASTER_locally){
-    write_xlsx( AU_Ranks_data,  paste(ranking_data_path,'AU_Ranks.xlsx', sep="")  )
+    write.xlsx( AU_Ranks_data,  paste(ranking_data_path,'AU_Ranks.xlsx', sep="")  )
   }
   
   # --------------- read in Habitat Raw Data Locally -------------
@@ -163,7 +163,7 @@ if(read_MASTER_directly){
   
   # -------------- write locally --------------
   if(write_MASTER_locally){
-    write_xlsx( Life_Stage_Priorities_AU_and_Reach_data,  paste(ranking_data_path,'LifeStagePriorities_AUandReach.xlsx', sep="")  )
+    write.xlsx( Life_Stage_Priorities_AU_and_Reach_data,  paste(ranking_data_path,'LifeStagePriorities_AUandReach.xlsx', sep="")  )
   }
   
   # --------------- read in Habitat Raw Data Locally -------------
@@ -249,7 +249,7 @@ if(read_MASTER_directly){
   
   # -------------- write locally --------------
   if(write_MASTER_locally){
-    write_xlsx( Channel_Unit_Raw,   paste(habitat_data_path,'Channel_Unit_Raw.xlsx', sep="")   )
+    write.xlsx( Channel_Unit_Raw,   paste(habitat_data_path,'Channel_Unit_Raw.xlsx', sep="")   )
   }
   
   # --------------- read in locally (will already be written with Reach_Information_data) -------------
@@ -285,7 +285,7 @@ if(read_MASTER_directly){
   
   # -------------- write locally --------------
   if(write_MASTER_locally){
-    write_xlsx( CHAMP_data_per_reach,   paste(habitat_data_path,'CHAMP_data_per_reach.xlsx', sep="")   )
+    write.xlsx( CHAMP_data_per_reach,   paste(habitat_data_path,'CHAMP_data_per_reach.xlsx', sep="")   )
   }
   
   # --------------- read in locally (will already be written with Reach_Information_data) -------------
@@ -366,7 +366,7 @@ if(read_MASTER_directly){
   
   # -------------- write locally --------------
   if(write_MASTER_locally){
-    write_xlsx( Reach_Information_data,   paste(habitat_data_path,'ReachInfo.xlsx', sep="")   )
+    write.xlsx( Reach_Information_data,   paste(habitat_data_path,'ReachInfo.xlsx', sep="")   )
   }
   
   # --------------- read in locally (will already be written with Reach_Information_data) -------------
@@ -495,7 +495,7 @@ if(read_MASTER_directly){
   
   # -------------- write locally --------------
   if(write_MASTER_locally){
-    write_xlsx( Confinement_Scores,  paste(habitat_data_path,'Confinement_Scores.xlsx', sep="")    )
+    write.xlsx( Confinement_Scores,  paste(habitat_data_path,'Confinement_Scores.xlsx', sep="")    )
   }
   
   # --------------- read in Data Locally -------------
@@ -524,7 +524,7 @@ if(read_MASTER_directly){
   
   # -------------- write locally --------------
   if(write_MASTER_locally){
-    write_xlsx( Protected_Percentage_Data,  paste(habitat_data_path,'Protected_Percentage_Data.xlsx', sep="")    )
+    write.xlsx( Protected_Percentage_Data,  paste(habitat_data_path,'Protected_Percentage_Data.xlsx', sep="")    )
   }
   
   # --------------- read in Data Locally -------------
