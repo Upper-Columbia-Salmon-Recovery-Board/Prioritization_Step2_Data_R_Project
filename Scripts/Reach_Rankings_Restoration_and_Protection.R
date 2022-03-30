@@ -1722,6 +1722,25 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     
     # ----------------------------------------------------------------------------------- 
     #
+    #         Limiting Factors for High Priority Life Stages (Scoring for Ranks)
+    #
+    # ----------------------------------------------------------------------------------- 
+    
+    # ------------------ add Habitat Quality Scores ----------
+    #columns_to_output = c("ReachName", "Limiting_Factor_Score_Percent" , "Habitat_Attribute_Present_List", "Habitat_Attribute_Missing_List" , "Habitat_Attribute_All_Total" ,"Habitat_Attribute_Percent_Data_Presence")
+    # all potential: c("ReachName","Habitat_Attribute_Present_List", "Habitat_Attribute_Missing_List" , "Habitat_Attribute_Present_Total", "Habitat_Attribute_All_Total" ,"Habitat_Attribute_Percent_Data_Presence", "Total_Attribute_Score", "Species", "Limiting_Factor_Score_Percent" )
+    
+    # ------------------ function that outputs the entire row (so you can check) ------
+    Limiting_Factor_Output = FUNCTION_calc_Limiting_Factor_Score(Habitat_Quality_Pathway_Protection)
+    
+    # ------------------- reduce the row for the output column --------------------
+    Limiting_Factor_Output_truncated = Limiting_Factor_Output[,c("ReachName", "Life_Stage_Habitat_Degradation")]
+    
+    Protection_Scores_Output = merge(Protection_Scores_Output, 
+                                      Limiting_Factor_Output_truncated, by = "ReachName", all.x=TRUE)
+    
+    # ----------------------------------------------------------------------------------- 
+    #
     #         Threats (% of floodplain disturbance)
     #
     # ----------------------------------------------------------------------------------- 
@@ -1764,7 +1783,7 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     #       Add all the Percents for a Total
     #
     # ----------------------------------------------------------------------------------- 
-    Protection_Scores_Output$Reach_Rank_Total_Score = rowSums(Protection_Scores_Output[ , c("Unconfined_Percent", "Habitat_Quality_Percent","Threats_Percent", "Protected_Percent" )])
+    Protection_Scores_Output$Reach_Rank_Total_Score = rowSums(Protection_Scores_Output[ , c("Unconfined_Percent", "Habitat_Quality_Percent","Life_Stage_Habitat_Degradation", "Threats_Percent", "Protected_Percent" )])
     
     # ----------------------------------------------------------------------------------- 
     #

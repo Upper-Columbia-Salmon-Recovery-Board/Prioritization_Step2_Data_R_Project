@@ -39,6 +39,7 @@ HQ_priority_life_stages = "yes"  # "yes" if use AU Life stages priority reach la
 EDT_convert_Level3_Flow_to_Flow_Variability = "yes" # Level2_Level3_EDT_Crosswalk has "Flow Variability", Limiting_Factors_Okanogan_EDT and HabitatAttribute_Ratings_Level3
 Okanogan_LF_Pathway_Level2_to_Level_3_yes_no = "no" # if yes, for Okanogan LF Pathway pull Level 3 then use crosswalk to get to Level 2, if "no" - just go straight to Level 2
 core_metric_missing_data_species = c("Steelhead", "Spring Chinook") # species to use for core metrics in missing data (based on data layer Attribute_LifeStage_Crosswalk)
+generate_reach_level_AU_scores = TRUE # True/False to generate AU scores with reach-level HQ scores
 
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #   Directories of Input and Output data  
@@ -147,6 +148,16 @@ source( paste(script_path, 'FUNCTIONS_Okanogan_EDT_Habitat_Attribute_Habitat_Qua
 # LF Pathway: Habitat_Attribute_Scores_Okanogan
 # Individual Life stages for the Okanogan: Adult_Migration_LF_Okanogan, Fry_LF_Okanogan, Holding_and_Maturation_LF_Okanogan,
 #                   Smolt_Outmigration_LF_Okanogan, Spawning_and_Incubation_LF_Okanogan, Summer_Rearing_LF_Okanogan, Winter_Rearing_LF_Okanogan
+
+# ---------------------------------------------------------------------------
+#   Generate AU-level HQ score
+# ---------------------------------------------------------------------------
+
+if(generate_reach_level_AU_scores){
+  source( paste(script_path, 'Generate_AU_level_HQ_Score_from_Reach_HQ_Scores.R', sep="") )
+  
+}
+
 
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #
@@ -815,6 +826,10 @@ output_path_x =  paste(output_path,'Restoration_Reach_Ranking_Scores_Output.xlsx
 write.xlsx(Reach_Rankings_Output_Restoration,output_path_x )
 output_path_x =  paste(output_path,'Protection_Reach_Ranking_Scores_Output.xlsx', sep="")
 write.xlsx(Reach_Rankings_Output_Protection,output_path_x )
+output_path_x =  paste(output_path,'Output_Reach_Rank_ALL_species_and_reaches.xlsx', sep="")
+write.xlsx(Output_ALL_species_and_reaches,output_path_x )
+
+
 
 # -----------------------------------------------------------------
 #      Combine into one MASTER excel
