@@ -8,7 +8,7 @@
 #          and Limiting Factor Analysis from Step 2 of RTT Prioritization Process
 #
 #          Author: Ryan Niemeyer, Upper Columbia Salmon Recovery Board
-#          For more information, see https://www.ucsrb.org/prioritization/
+#          For more information==, see https://www.ucsrb.org/prioritization/
 #
 # ---------------------------------------------------------------------------
 
@@ -40,7 +40,7 @@ for( habitat_attribute_x in names(Habitat_Attributes_List_OKANOGAN) ){
     if( any( colnames(Okanogan_Basic_Reach_Info) == data_source_x) ){ next }
     
     # ------------------ pull EDT data name (based on data sources names) ---------------
-    data_source_level_2_index_x = which(Level2_Data_Sources_Name_Crosswalk$EDT_Level_2_names == data_source_x)
+    data_source_level_2_index_x = which( Level2_Data_Sources_Name_Crosswalk$EDT_Level_2_names == data_source_x )
     data_source_level_2_x = Level2_Data_Sources_Name_Crosswalk$EDT_Level_2_habitat_attribute[data_source_level_2_index_x]
     
     # --------------------------------------

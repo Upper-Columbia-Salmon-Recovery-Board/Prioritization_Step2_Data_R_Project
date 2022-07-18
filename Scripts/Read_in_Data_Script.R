@@ -854,9 +854,13 @@ colnames(Okanogan_AU_not_in_EDT_interface) = c("Assessment Unit", "Basin")
 # ------------------------------------------------------------------------------------
 
 if(generate_reach_level_AU_scores){
+  path_x = "Y:/UCRTT/Prioritization/Step 1/Step1_Restoration_Protection_Scores_May2022_for_RCode.xlsx"
+  Step1_Scores_All = read_excel( path_x , sheet="Restoration_Scores", skip = 2)
   path_x = "Y:/UCRTT/Prioritization/Step 1/AU Prioritization Worksheet - 20201203.xlsx"
-  Step1_Scores_All = read_excel( path_x , sheet="Restoration Scores", skip = 2)
+  Step1_Scores_All_old = read_excel( path_x , sheet="Restoration Scores", skip = 2)
+  Step1_Scores_All_total = Step1_Scores_All
   Step1_Scores_All = Step1_Scores_All[,c(3,2,14,15,41,42,68,69)]
+  Step1_Scores_All_old = Step1_Scores_All_old[,c(3,2,14,15,41,42,68,69)]
   colnames(Step1_Scores_All) = c("AU","Basin","HQ_Geomean_SprChn","HQ_Score_SprChn",
                                  "HQ_Geomean_STLD","HQ_Score_STLD",
                                  "HQ_Geomean_BullT","HQ_Score_BullT")

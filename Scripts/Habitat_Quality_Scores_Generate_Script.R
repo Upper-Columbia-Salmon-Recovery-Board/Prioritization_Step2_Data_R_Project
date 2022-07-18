@@ -234,6 +234,114 @@ if(output_Habitat_Quality_and_Habitat_Attribute_Scores == "yes"){
   )
 }
 
+# --------------------------------------------------------------------------------------------------
+#
+#                Sensitivity Analysis by removing HQ Score
+#
+# --------------------------------------------------------------------------------------------------
+
+
+# --------------------------------------------------------------------------------------------------
+#           Calculate new HQ_Pct and HQ_Sum by pulling out one variable
+# --------------------------------------------------------------------------------------------------
+
+if(HQ_sensitivity_analysis_true_false){
+  
+  # -------------- names of new HQ_Pct columns data frame --------
+  HQ_sensitivity_analysis_true_false_HQ_PCT_COLUMN_NAMES = c()
+ 
+  # ------------------- remove original HQ Sum, HQ_Pct, and Restoration and Protection scores ------
+  Habitat_Quality_Scores_for_sensitivity = Habitat_Quality_Scores
+  
+  # ------------- loop through habitat attributes to NOT use to calculate HQ  ---------------
+  for(habitat_attribute_x in habitat_quality_scores_colnames_for_sum){
+    
+    # --------------------------- remove column for sensitivity analysis ----------------------
+    habitat_quality_scores_colnames_for_sum_X = habitat_quality_scores_colnames_for_sum[-which(habitat_quality_scores_colnames_for_sum == habitat_attribute_x)]
+    
+    # ------------------------------------------------------------------------------------- 
+    #                       calculate the HQ Sum and Percent
+    # ------------------------------------------------------------------------------------- 
+    
+    # -------------------- Calculate the HQ Sum ----------------------
+    Habitat_Quality_Scores_for_sensitivity = Habitat_Quality_Scores_for_sensitivity%>%
+      rowwise() %>%
+      mutate(HQ_Sum2 = sum(c_across( habitat_quality_scores_colnames_for_sum_X  ), na.rm=F) )
+
+    # -------------------- Calculate percent (0 - 100%) ------------------
+    Habitat_Quality_Scores_for_sensitivity$HQ_Pct2 = Habitat_Quality_Scores_for_sensitivity[,"HQ_Sum2"] /40
+
+    # ------------------------------------------------------------------------------------- 
+    #                 calculate HQ Restoration and Protection Score
+    # ------------------------------------------------------------------------------------- 
+    
+    Habitat_Quality_Scores_for_sensitivity = Habitat_Quality_Scores_for_sensitivity  %>%
+      mutate(HQ_Score_Restoration2 = ifelse(HQ_Pct2  > Restoration_Scoring$Category_Lower[1] & 
+                                             HQ_Pct2  < Restoration_Scoring$Category_Upper[1] , Restoration_Scoring$Score[1],
+                                           ifelse(HQ_Pct2  >= Restoration_Scoring$Category_Lower[2] & 
+                                                    HQ_Pct2  <= Restoration_Scoring$Category_Upper[2] , Restoration_Scoring$Score[2],
+                                                  ifelse(HQ_Pct2  > Restoration_Scoring$Category_Lower[3] & 
+                                                           HQ_Pct2  <= Restoration_Scoring$Category_Upper[3] , Restoration_Scoring$Score[3],
+                                                         NA))))
+    Habitat_Quality_Scores_for_sensitivity = Habitat_Quality_Scores_for_sensitivity  %>%
+      mutate(HQ_Score_Protection2 = ifelse(HQ_Pct2  > Protection_Scoring$Category_Lower [1] & 
+                                            HQ_Pct2  < Protection_Scoring$Category_Upper[1] , Protection_Scoring$Score[1],
+                                          ifelse(HQ_Pct2  >= Protection_Scoring$Category_Lower[2] & 
+                                                   HQ_Pct2  <= Protection_Scoring$Category_Upper[2] , Protection_Scoring$Score[2],
+                                                 ifelse(HQ_Pct2  > Protection_Scoring$Category_Lower[3] & 
+                                                          HQ_Pct2  <= Protection_Scoring$Category_Upper[3] , Protection_Scoring$Score[3],
+                                                        NA))))
+    
+    # ---------------- update column names -----------
+    colnames(Habitat_Quality_Scores_for_sensitivity)[ncol(Habitat_Quality_Scores_for_sensitivity)-3] = paste("HQ_Sum_NO",habitat_attribute_x, sep="_")
+    colnames(Habitat_Quality_Scores_for_sensitivity)[ncol(Habitat_Quality_Scores_for_sensitivity)-2] = paste("HQ_Pct_NO",habitat_attribute_x, sep="_")
+    colnames(Habitat_Quality_Scores_for_sensitivity)[ncol(Habitat_Quality_Scores_for_sensitivity)-1] = paste("HQ_Score_Restoration_NO",habitat_attribute_x, sep="_")
+    colnames(Habitat_Quality_Scores_for_sensitivity)[ncol(Habitat_Quality_Scores_for_sensitivity)] = paste("HQ_Score_Protection_NO",habitat_attribute_x, sep="_")
+    
+    # ----------------- output name --------------
+    HQ_sensitivity_analysis_true_false_HQ_PCT_COLUMN_NAMES=rbind(HQ_sensitivity_analysis_true_false_HQ_PCT_COLUMN_NAMES , paste("HQ_Pct_NO",habitat_attribute_x, sep="_"))
+  }
+   
+}
+
+if(HQ_sensitivity_analysis_true_false){
+  # test for NA in original, but present in updated 
+  Habitat_Quality_Scores_for_sensitivity$ReachName[which(  is.na(Habitat_Quality_Scores_for_sensitivity$HQ_Pct) & !is.na(Habitat_Quality_Scores_for_sensitivity$HQ_Pct_NO_Stability_Mean) )]
+  Habitat_Quality_Scores_for_sensitivity$ReachName[which(  is.na(Habitat_Quality_Scores_for_sensitivity$HQ_Pct) & !is.na(Habitat_Quality_Scores_for_sensitivity$HQ_Pct_NO_CoarseSubstrate_score) )]
+  Habitat_Quality_Scores_for_sensitivity$ReachName[which(  is.na(Habitat_Quality_Scores_for_sensitivity$HQ_Pct) & !is.na(Habitat_Quality_Scores_for_sensitivity$`HQ_Pct_NO_PoolQuantity&Quality_score`) )]
+  length( which(  !is.na(Habitat_Quality_Scores_for_sensitivity$HQ_Pct) ) )
+  
+}
+
+# --------------------------------------------------------------------------------------------------
+#          Analysis of new HQ_Pct values
+# --------------------------------------------------------------------------------------------------
+
+if(HQ_sensitivity_analysis_true_false){
+  par(mfrow=c(3,3))
+  i = 0
+  for(HQ_Pct_column_x in HQ_sensitivity_analysis_true_false_HQ_PCT_COLUMN_NAMES){
+    i = i + 1
+    # ------------ establish data frame with old and new HQ Pct ----------
+    HQ_new = Habitat_Quality_Scores_for_sensitivity[, c("HQ_Pct",HQ_Pct_column_x)]
+    HQ_new = as.data.frame(as.matrix(HQ_new))
+    colnames(HQ_new) = c("HQ_Pct_Orig","HQ_Pct_Updated")
+    
+    # ----------------- calculate the reaches gained ------------
+    HQ_new_reach_added = which( is.na(HQ_new$HQ_Pct_Orig) & !is.na(HQ_new$HQ_Pct_Updated) )
+    HQ_new_reach_added_total = length(HQ_new_reach_added)
+    #if(HQ_Pct_column_x == "HQ_Pct_NO_Temperature-Rearing_score" ){
+    #  HQ_new_reach_added_total = 0
+    #}
+    # ------------------ Plot -------------------
+    plot(HQ_new$HQ_Pct_Orig, HQ_new$HQ_Pct_Updated, 
+         main=paste("Attribute removed: ",habitat_quality_scores_colnames_for_sum[i], " \n ","additional reaches: ",HQ_new_reach_added_total, sep=""),
+         ylab="HQ Pct UPDATED", xlab="HQ Pct ORIGINAL")
+    abline(0,1,col="black")
+    
+  }
+  
+}
 
 
 

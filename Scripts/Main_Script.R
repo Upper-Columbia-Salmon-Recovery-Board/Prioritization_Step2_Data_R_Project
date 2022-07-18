@@ -28,8 +28,8 @@ library(readxl)
 # ---------------------------------------------------------------------------
 #  Script Criteria for output
 # ---------------------------------------------------------------------------
-read_MASTER_directly = TRUE # if TRUE - read MASTER from UCSRB servers, if FALSE - read from local 
-write_MASTER_locally = TRUE # if TRUE -  write tabs in MASTER from UCSRB servers, if FALSE - do not write
+read_MASTER_directly = FALSE # if TRUE - read MASTER from UCSRB servers, if FALSE - read from local 
+write_MASTER_locally = FALSE # if TRUE -  write tabs in MASTER from UCSRB servers, if FALSE - do not write
 basins_to_include = c("Methow",  "Entiat","Wenatchee" , "Okanogan")  # basins to include in simulation    
 exclude_bull_trout = "no"  # if "yes" -> remove bull trout for WebMap applications
 output_Habitat_Quality_and_Habitat_Attribute_Scores = "no"  # enter "yes" or "no" if you want the "flat table" Habitat Attribute output (doubles time to run script)
@@ -40,6 +40,7 @@ EDT_convert_Level3_Flow_to_Flow_Variability = "yes" # Level2_Level3_EDT_Crosswal
 Okanogan_LF_Pathway_Level2_to_Level_3_yes_no = "no" # if yes, for Okanogan LF Pathway pull Level 3 then use crosswalk to get to Level 2, if "no" - just go straight to Level 2
 core_metric_missing_data_species = c("Steelhead", "Spring Chinook") # species to use for core metrics in missing data (based on data layer Attribute_LifeStage_Crosswalk)
 generate_reach_level_AU_scores = TRUE # True/False to generate AU scores with reach-level HQ scores
+HQ_sensitivity_analysis_true_false = FALSE # IF you want to run the HQ sensitivity analysis
 
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #   Directories of Input and Output data  
@@ -496,6 +497,30 @@ Reach_Rankings_Output = Reach_Rankings_and_all_species_Output[["Reach_Rankings_C
 Output_ALL_species_and_reaches = Reach_Rankings_and_all_species_Output[["Output_ALL_species_and_reaches"]]
 # Output of all reaches and species: Output_ALL_species_and_reaches
 
+# ------------------------ re-run for sensitivity analysis --------------
+if(HQ_sensitivity_analysis_true_false){
+  for(HQ_Pct_column_x in HQ_sensitivity_analysis_true_false_HQ_PCT_COLUMN_NAMES){
+    i = i + 1
+    # ------------ establish data frame with old and new HQ Pct ----------
+    HQ_new = Habitat_Quality_Scores_for_sensitivity[, HQ_Pct_column_x]
+    HQ_new = as.data.frame(as.matrix(HQ_new))
+    colnames(HQ_new) = c("HQ_Pct_Orig","HQ_Pct_Updated")
+    
+    # ----------------- calculate the reaches gained ------------
+    HQ_new_reach_added = which( is.na(HQ_new$HQ_Pct_Orig) & !is.na(HQ_new$HQ_Pct_Updated) )
+    HQ_new_reach_added_total = length(HQ_new_reach_added)
+    #if(HQ_Pct_column_x == "HQ_Pct_NO_Temperature-Rearing_score" ){
+    #  HQ_new_reach_added_total = 0
+    #}
+    # ------------------ Plot -------------------
+    plot(HQ_new$HQ_Pct_Orig, HQ_new$HQ_Pct_Updated, 
+         main=paste("Attribute removed: ",habitat_quality_scores_colnames_for_sum[i], " \n ","additional reaches: ",HQ_new_reach_added_total, sep=""),
+         ylab="HQ Pct UPDATED", xlab="HQ Pct ORIGINAL")
+    abline(0,1,col="black")
+    
+  }
+  
+}
 # ----------------- separate into Restoration and Protection ----------------
 Reach_Rankings_Output_Restoration = Reach_Rankings_Output[['Reach_Rankings_Restoration']]
 Reach_Rankings_Output_Protection = Reach_Rankings_Output[['Reach_Ranking_Protection']]
@@ -580,7 +605,6 @@ Reach_Habitat_Attribute_Life_Stage_Restoration_Output_Steelhead = FUNCTION_combi
 if(exclude_bull_trout == "no"){
   Reach_Habitat_Attribute_Life_Stage_Restoration_Output_Bull_Trout = FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_SPECIES_ONLY( Habitat_Quality_Pathway_Bull_Trout[['Habitat_Quality_Pathway_Restoration']],
                                                                                                                                              Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']], "Bull Trout", c( "ReachName","Basin","Assessment.Unit" ))
-  
 }
 
 # -----------------------------------------------------------------------------------------------------------------------------------------------

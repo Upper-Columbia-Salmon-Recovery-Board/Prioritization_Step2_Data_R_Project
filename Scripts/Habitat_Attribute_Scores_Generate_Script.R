@@ -122,11 +122,14 @@ for(habitat_attribute_x in names(Habitat_Attributes_List) ){
     colnames(output_x) = c("ReachName","metric_data","score")
     
     # -------- data frame for this specific reach and habitat attribute --------
+    output_x_2 = as.data.frame(output_x[,c("ReachName","score")])
+    colnames(output_x_2) = c( "ReachName",paste("score",i,sep="_") )
     scores_x = as.data.frame(output_x$score)
+    
     if(nrow(habitat_attribute_x_data_frame) == 0){
-      habitat_attribute_x_data_frame = cbind(output_x$ReachName, scores_x)
+      habitat_attribute_x_data_frame = as.data.frame(output_x_2)
     }else{
-      habitat_attribute_x_data_frame = cbind(habitat_attribute_x_data_frame, scores_x )
+      habitat_attribute_x_data_frame = merge(habitat_attribute_x_data_frame, output_x_2, by="ReachName")
     }
     
   }
@@ -236,7 +239,6 @@ for(habitat_attribute_x in names(Habitat_Attributes_List) ){
   print(paste(" NUMBER OF ROWS: ",dim(habitat_attribute_x_data_frame)[1]))
     
 }
-
 
 
 # ------------------ output data -------------------------
