@@ -53,11 +53,17 @@ source(paste(script_path, 'FUNCTIONS_for_Habitat_Quality_Filters.R', sep=""))
 # --------------------------------------
 #   Loop through each Habitat Attribute
 # --------------------------------------
+
+# --------------------- Establish Habitat_Quality_Scores data frame ---------------------------------
 Habitat_Quality_Scores = as.tibble(Reach_Information_data[,c('ReachName','Basin', 'Assessment.Unit',
                                                              'Spring.Chinook.Reach','Steelhead.Reach','Bull.Trout.Reach')])
 colnames(Habitat_Quality_Scores) = c('ReachName','Basin', 'Assessment.Unit',
                                      'Spring.Chinook.Reach','Steelhead.Reach','Bull.Trout.Reach')
 habitat_attribute_x = names(Habitat_Quality_Habitat_Attributes_List)[1] # just to print out
+
+# --------------------- Establish data frame to establish data source ---------------------------------
+Habitat_Quality_Scores_DATA_SOURCES = as.tibble(Reach_Information_data[,c('ReachName','Basin', 'Assessment.Unit')])
+
 
 ptm <- proc.time()[3]
 for( habitat_attribute_x in names(Habitat_Quality_Habitat_Attributes_List) ){
@@ -97,9 +103,9 @@ for( habitat_attribute_x in names(Habitat_Quality_Habitat_Attributes_List) ){
       output_x = FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw(habitat_attribute_x, data_sources_list[[1]][1], "HQ")
       
       
-      # --------------------------------------------------------------------
-      #  MULTIPLE data source for this habitat attribute (need to get optimum)
-      # --------------------------------------------------------------------
+    # --------------------------------------------------------------------
+    #  MULTIPLE data source for this habitat attribute (need to get optimum)
+    # --------------------------------------------------------------------
       # NOTE this is only true for Temperature- Rearing AND	Flow- Summer Base Flow
       
     }else{
@@ -233,6 +239,15 @@ if(output_Habitat_Quality_and_Habitat_Attribute_Scores == "yes"){
     password = NULL
   )
 }
+
+
+# --------------------------------------------------------------------------------------------------
+#
+#              Calculate HQ Score by pulling out habitat attribute
+#
+# --------------------------------------------------------------------------------------------------
+
+
 
 # --------------------------------------------------------------------------------------------------
 #

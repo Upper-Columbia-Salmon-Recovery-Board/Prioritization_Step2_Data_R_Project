@@ -191,11 +191,11 @@ Habitat_Quality_Data_Gaps$Data_Gap = gsub("Off-Channel- Floodplain", "Floodplain
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #    Add whether a reach was a potential reach layer (yes/no)  potential_priority_reach_yes_no
 # -----------------------------------------------------------------------------------------------------------------------------------------------
-Output_ALL_species_and_reaches_SLIM = Output_ALL_species_and_reaches[,c("ReachName","Potential_Priority_Reach_all_species_restoration_or_protection", "Tier_1_all_species_restoration_or_protection")]
+Output_ALL_species_and_reaches_SLIM = Output_ALL_species_and_reaches[,c("ReachName","Potential_Priority_Reach_all_species_restoration_or_protection", "Priority_Tiers_all_species_restoration_or_protection")]
 #colnames(Output_ALL_species_and_reaches_SLIM)[1] = "Reach Name"
 Habitat_Quality_Data_Gaps2  = merge(Habitat_Quality_Data_Gaps, Output_ALL_species_and_reaches_SLIM, by="ReachName", all.x=TRUE)
 
-colnames(Habitat_Quality_Data_Gaps2) = c("Reach Name", "Basin", "Assessment Unit", "Missing Data", "Primary Data Source", "Potential Priority Reach (yes or no)" , "Tier 1 Restoration or Protection (yes or no)")
+colnames(Habitat_Quality_Data_Gaps2) = c("Reach Name", "Basin", "Assessment Unit", "Missing Data", "Primary Data Source", "Potential Priority Reach (yes or no)" , "Priority AU Tiers all species restoraiton or protection (yes or no)")
  
 
   

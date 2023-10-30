@@ -54,6 +54,10 @@ Habitat_Attributes_List = list(
   'Temperature- Rearing'  = c('NORWEST_Temperature', '305bListings_Temperature', 'RAWatershed_Rating_Temp' )
 )
 
+if(Cramer_Remote_Sensing_yes_no){
+  
+}
+
 
 
 # ----------------------- list of Level 2 habitat attribute names in Okanogan EDT Results --------------

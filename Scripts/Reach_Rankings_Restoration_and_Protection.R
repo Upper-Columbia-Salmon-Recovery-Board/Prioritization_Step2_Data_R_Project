@@ -21,7 +21,7 @@
 
 
 #  to test
-test_x = FALSE
+test_x = TRUE
 if(test_x){
   basins = c( "Wenatchee", "Methow", "Entiat", "Okanogan")
 }
@@ -1553,8 +1553,18 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
       
       # --------------- pull scores for reaches in this AU (from prioritization) ---------
       AU_data_frame = Restoration_Scores_Output[which(Restoration_Scores_Output$Assessment.Unit == AU_x), ]
+      
       # --------------- pull scores for reaches in this AU (from EDT) ---------
-      AU_data_frame_EDT = Reach_and_Attribute_Rank_Restoration_Okanogan[which(Reach_and_Attribute_Rank_Restoration_Okanogan$`Assessment Unit` == AU_x), ]
+      
+      # --------- remove "DS" or US" from end of AU name ----------
+      end_AU_x = substring(AU_x, (nchar(AU_x)-1), nchar(AU_x))
+      if(end_AU_x == "US" | end_AU_x == "DS"){
+        AU_x_updated = substring(AU_x,1,(nchar(AU_x)-3)  )
+        AU_data_frame_EDT = Reach_and_Attribute_Rank_Restoration_Okanogan[which(Reach_and_Attribute_Rank_Restoration_Okanogan$Assessment_Unit_NO_DS_US == AU_x_updated), ]
+      }else{
+        AU_data_frame_EDT = Reach_and_Attribute_Rank_Restoration_Okanogan[which(Reach_and_Attribute_Rank_Restoration_Okanogan$`Assessment Unit` == AU_x), ]
+      }
+      
       # --------------- initiate AU_level_Reach_Rank ------------
       AU_data_frame$AU_level_Reach_Rank = NA
       # ---------------- remove NA ------------

@@ -43,9 +43,9 @@ source(paste(script_path, 'FUNCTIONS_for_Habitat_Attribute_Filters.R', sep=""))
 # ---------------------------------------------------------------------------
 
 # -------------- to test ------------------------
-test = FALSE
+test = TRUE
 if(test){
-  habitat_attribute_x = names(Habitat_Attributes_List)[6]
+  habitat_attribute_x = names(Habitat_Attributes_List)[5]
   data_sources_list =  Habitat_Attributes_List[habitat_attribute_x]
   data_source_x = data_sources_list[[1]][1]
 }
@@ -115,7 +115,7 @@ for(habitat_attribute_x in names(Habitat_Attributes_List) ){
       # ------------ Generate metric value  AND score (1,3,5) for each habitat attribute -------------------
       # outputs both metric value and score
       output_x = FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw(habitat_attribute_x, data_source_x , "LF" )
-      
+
     }
     
     # ------------------ Add Column Names ----------------
@@ -131,7 +131,7 @@ for(habitat_attribute_x in names(Habitat_Attributes_List) ){
     }else{
       habitat_attribute_x_data_frame = merge(habitat_attribute_x_data_frame, output_x_2, by="ReachName")
     }
-    
+
   }
 
   # -------------- add NA columns so there are four columns -----------------
@@ -158,6 +158,25 @@ for(habitat_attribute_x in names(Habitat_Attributes_List) ){
   habitat_attribute_x_data_frame_CALC = habitat_attribute_x_data_frame_CALC %>% 
     rowwise() %>%
     mutate(minimum_score = min(c_across(), na.rm=T) )
+  
+  # ------------------- which row is the minimum score  ----------
+  column_data_sources_x = c()
+  for(i2 in 1:nrow(habitat_attribute_x_data_frame_CALC)){
+    # --------------- identify which columns were the minimum ---------
+    min_x = which( as.numeric(habitat_attribute_x_data_frame_CALC[i2,1:6]) == as.numeric(habitat_attribute_x_data_frame_CALC[i2,7]) )
+    # ------------pull the data source(s) -------------
+    data_sources_row_x = data_sources_list[[1]][min_x]
+    if(length(data_sources_row_x)>1){
+      data_sources_row_x = paste(data_sources_row_x, collapse=", ")
+    }
+    # ------------ if no data ---------
+    if(length(min_x) == 0){data_sources_row_x = NA}
+    # --------- combine -----
+    column_data_sources_x = rbind(column_data_sources_x, t(as.data.frame(data_sources_row_x)))
+  }
+  # ------- add data sources column ---------
+  colnames(column_data_sources_x) = "Data_Source_of_metric_prioritized"
+  habitat_attribute_x_data_frame_CALC = cbind(habitat_attribute_x_data_frame_CALC, column_data_sources_x)
   
   # ------- add the reach name back in ---------
   habitat_attribute_x_data_frame_CALC = cbind(habitat_attribute_x_data_frame$ReachName,habitat_attribute_x_data_frame_CALC)

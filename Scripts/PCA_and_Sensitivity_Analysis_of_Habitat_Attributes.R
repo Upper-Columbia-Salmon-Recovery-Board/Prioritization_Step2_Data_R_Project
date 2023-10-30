@@ -11,11 +11,12 @@
 # ---------------------------------------------------------------------------
 # for plotting
 library(devtools)
-library(RTools)
+#library(RTools)
 library(ggplot2)
 # package: https://www.datacamp.com/tutorial/pca-analysis-r
-install_github("vqv/ggbiplot")
+# Only install once: install_github("vqv/ggbiplot")
 library(ggbiplot)
+library(ggExtra)
 
 
 # -------------- for correlation plot ---------
@@ -116,6 +117,38 @@ par(mar=c(5,5,3,3))
 ggplot(habitat_raw_pca_categorical, aes(x = Pools, y = Substrate)) +
   geom_hex(bins=12, color="white") +
   scale_fill_viridis_c()
+
+par(mar=c(5,5,3,3))
+ggplot(habitat_raw_pca_categorical, aes(x = Floodplain_Connectivity, y = Canopy_Cover )) +
+  geom_hex(bins=12, color="white") +
+  scale_fill_viridis_c()
+
+par(mar=c(5,5,3,3))
+ggplot(habitat_raw_pca_categorical, aes(x = Floodplain_Connectivity, y = Disturbance )) +
+  geom_hex(bins=12, color="white") +
+  scale_fill_viridis_c()
+
+
+ggplot(habitat_raw_pca_categorical, aes(x = Canopy_Cover, y = Disturbance)) +
+  geom_hex(bins=12, color="white") +
+  scale_fill_viridis_c()
+
+p <- ggplot(habitat_raw_pca_categorical, aes(x = Canopy_Cover, y = Disturbance)) +
+  geom_point(shape=21, size=3, fill="grey", alpha=0.3 ) + theme_classic() + 
+  geom_jitter(width = 0.5, height = 0.5, shape=21, size=3, fill="grey", alpha=0.3 )
+ggExtra::ggMarginal(p, type = "histogram")
+
+p <- ggplot(habitat_raw_pca_categorical, aes(x = Floodplain_Connectivity, y = Disturbance)) +
+  geom_point(shape=21, size=3, fill="grey", alpha=0.3 ) + theme_classic() + 
+  geom_jitter(width = 0.5, height = 0.5, shape=21, size=3, fill="grey", alpha=0.3 )
+ggExtra::ggMarginal(p, type = "histogram")
+
+p <- ggplot(habitat_raw_pca_categorical, aes(x = Floodplain_Connectivity, y = Canopy_Cover)) +
+  geom_point(shape=21, size=3, fill="grey", alpha=0.3 ) + theme_classic() + 
+  geom_jitter(width = 0.5, height = 0.5, shape=21, size=3, fill="grey", alpha=0.3 ) +
+  geom_smooth(method=lm) #add linear trend line
+ggExtra::ggMarginal(p, type = "histogram", size=5, binwidth=1.5))
+
 # ---------------------------------------------------------------------------
 #        Run the PCA with HQ scores (pulls from mutliple data sources)
 # ---------------------------------------------------------------------------

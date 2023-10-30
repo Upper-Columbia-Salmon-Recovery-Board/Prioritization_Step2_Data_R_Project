@@ -19,7 +19,7 @@
 
 # -------- Assessment Unit (AU) (HUC12) Tier rank (data in habitat_attribute_scores) ----------------
 # NOTE - for ranking, need to update AU Tiers in the "Criteria_Reach_Scoring_Restoration_and_Protection.xlsx" if you want to update tier priorites there too
-AU_Rank = c(1, 2)                       # potential: 1, 2, or 3; 1 is high priority, 3 is low priority
+AU_Rank = c(1, 2)       # for 1 and 2: c(1, 2)                   # potential: 1, 2, or 3; 1 is high priority, 3 is low priority
 
 # --------------- Reach Confinement (data in confinement_scores) --------------------------------
 Reach_Confinement_SCORE_Criteria =  c(5)           # potential: 1, 3, 5; 1 is higher % confined, 5 is higher % unconfined, based on USGS Valley Confinment Algorithm

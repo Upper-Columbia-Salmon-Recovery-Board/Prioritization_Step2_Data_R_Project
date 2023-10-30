@@ -38,6 +38,7 @@ if(read_MASTER_directly){
   habitat_raw_data_colnames = habitat_raw_data[1,]   # pull the colnames
   habitat_raw_data = habitat_raw_data[2:nrow(habitat_raw_data),] # remove the top layer
   colnames(habitat_raw_data) = habitat_raw_data_colnames # update column names
+  habitat_raw_data = habitat_raw_data[!is.na(habitat_raw_data$ReachName), ] # remove blank rows at the bottom
   
   # -------------- write locally --------------
   if(write_MASTER_locally){
