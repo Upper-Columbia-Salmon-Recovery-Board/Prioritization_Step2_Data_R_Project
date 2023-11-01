@@ -49,7 +49,7 @@ LF_or_HQ = "HQ"
 test_x = TRUE
 if(test_x){
   data_col_name = data_source_x
-  LF_or_HQ = "LF"
+  LF_or_HQ = "HQ"
 }
 
 
@@ -71,7 +71,7 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
   }
   
   # ------------- habitat attribute metrics have gone between LF and HQ (need to merge) -----
-  if(nrow(metric_criteria_x) == 0 & LF_or_HQ == "LF"){
+  if( nrow(metric_criteria_x) == 0 & LF_or_HQ == "LF"){
     metric_criteria_x = Habitat_Quality_and_Geomorphic_Potential_Rating_Criteria_Updated %>%
       filter(Data_Sources   == data_col_name)
   }
@@ -79,8 +79,8 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
   # -----------------------------------
   #    Generate Metric value from Raw (primary) data table
   # -----------------------------------
-  if( nrow(metric_criteria_x) == 0 ){
-    print("no data")
+  if( nrow(metric_criteria_x) == 0 ){ 
+    print(paste("no data for: ",habitat_attribute_x, "and ",data_col_name )  )
     data_output_x = cbind(  habitat_raw_data$ReachName,
                             as.data.frame(rep(NA, length.out = nrow(habitat_raw_data))),
                             as.data.frame(rep(NA, length.out = nrow(habitat_raw_data)))  )
@@ -137,13 +137,17 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
       # -----------------------------------
     }else if( metric_criteria_x$Category_Type[1]== 'numeric' ){
       
+      # ------------------- Convert tometric_data to numeric ----------
+      data_output_x$metric_data = as.numeric(as.character(data_output_x$metric_data))
       
       # -----------------------------
       #    IF Cover- Wood OR Pool Quantity & Quality, filter by stream width
       # -----------------------------
       
       if(metric_criteria_x$Habitat_Attribute[1] == 'Cover- Wood' |
-         metric_criteria_x$Data_Sources[1] ==  'Pools_per_mile_INDICATOR_2'){
+         metric_criteria_x$Data_Sources[1] ==  'Pools_per_mile_INDICATOR_2' |
+         metric_criteria_x$Data_Sources[1] ==  'CCT_OBMEP_LWM_pieces_per_mile'|
+         metric_criteria_x$Data_Sources[1] ==  'CCT_OBMEP_pools_per_mile'){
         
         # ----------- pull stream width for this reach -------------
         stream_width_m = Reach_Information_data %>%
@@ -155,22 +159,22 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
         # --------- create blank NA column ------
         data_output_x$score = NA
         # habitat_filter_type = unique(metric_criteria_x$Habitat_Type_Filter)[8]
-        for(habitat_filter_type in unique(metric_criteria_x$Habitat_Type_Filter) ){
+        for( habitat_filter_type in unique(metric_criteria_x$Habitat_Type_Filter) ){
           
           # ------------ get criteria specific to this stream width -----
           metric_criteria_x_i = metric_criteria_x %>%
             filter(metric_criteria_x$Habitat_Type_Filter == habitat_filter_type)
           
           # ------------ find streams with this width ----------
-          if( metric_criteria_x$Data_Sources[1] ==  'Pools_per_mile_INDICATOR_2'){
+          if( metric_criteria_x$Data_Sources[1] ==  'Pools_per_mile_INDICATOR_2' |
+              metric_criteria_x$Data_Sources[1] ==  'CCT_OBMEP_pools_per_mile' ){
             
-            # ---------- "upper" of 100 foot bin was set high 
-            if(habitat_filter_type == "100 ft stream width bin" ){
+            # ---------- "upper" of 100 foot bin was set high --------
+            if( habitat_filter_type == "100 ft stream width bin"  ){
               stream_width_m_i = which( abs(stream_width_m$PFC_Channel_Width_meters - 30.480)<0.1) 
               
             }else{
-              stream_width_m_i = which( abs(stream_width_m$PFC_Channel_Width_meters - metric_criteria_x_i$Filter_value_upper_meters[1])<0.1) 
-              
+              stream_width_m_i = which( abs( stream_width_m$PFC_Channel_Width_meters - as.numeric(metric_criteria_x_i$Filter_value_upper_meters[1]) )<0.1) 
             }
             
           }else if(metric_criteria_x$Habitat_Attribute[1] == 'Cover- Wood'){
@@ -236,6 +240,7 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
                                        NA)))
         
       }else if(length(metric_criteria_x$Category) == 3){
+        data_output_x$metric_data = as.numeric(data_output_x$metric_data)  # convert metric data to numeric
         data_output_x = data_output_x  %>%
           mutate(score = ifelse(metric_data  >= metric_criteria_x$Category_lower[1] & 
                                   metric_data  <= metric_criteria_x$Category_upper[1] , metric_criteria_x$Score[1],
@@ -245,6 +250,7 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
                                                 metric_data  <= metric_criteria_x$Category_upper[3] , metric_criteria_x$Score[3],
                                               NA))))
       }else if(length(metric_criteria_x$Category) == 4){
+        data_output_x$metric_data = as.numeric(data_output_x$metric_data)  # convert metric data to numeric
         data_output_x = data_output_x  %>%
           mutate(score = ifelse(metric_data  >= metric_criteria_x$Category_lower[1] & 
                                   metric_data  <= metric_criteria_x$Category_upper[1] , metric_criteria_x$Score[1],
@@ -256,6 +262,7 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
                                                        metric_data  <= metric_criteria_x$Category_upper[4] , metric_criteria_x$Score[4],  
                                                      NA)))))
       }else if(length(metric_criteria_x$Category) == 5){
+        data_output_x$metric_data = as.numeric(data_output_x$metric_data)  # convert metric data to numeric
         data_output_x = data_output_x  %>%
           mutate(score = ifelse(metric_data  >= metric_criteria_x$Category_lower[1] & 
                                   metric_data  <= metric_criteria_x$Category_upper[1] , metric_criteria_x$Score[1],
@@ -296,12 +303,7 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
       # GENERATE NA
     }
     
-    
-    
   }
-
-  
-  
 
   return(data_output_x)
   

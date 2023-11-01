@@ -32,9 +32,8 @@ print("----------------------------------------- GENERATE HABITAT ATTRIBUTE SCOR
 source( paste(script_path, 'FUNCTIONS_for_Habitat_Quality_Filters.R', sep="")  )
 
 # script to generate habitat attribute scores
-source(paste(script_path, 'Habitat_Attribute_Scores_Generate_Script.R', sep="") )
+source( paste(script_path, 'Habitat_Attribute_Scores_Generate_Script.R', sep="") )
 # OUTPUT is Habitat_Attribute_Scores
-
 
 # ---------------------------------------------------------------------------
 #   HABITAT QUALITY PATHWAY: Generate Habitat Quality Restoration and Protection Score 

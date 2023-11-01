@@ -41,7 +41,8 @@ Okanogan_LF_Pathway_Level2_to_Level_3_yes_no = "no" # if yes, for Okanogan LF Pa
 core_metric_missing_data_species = c("Steelhead", "Spring Chinook") # species to use for core metrics in missing data (based on data layer Attribute_LifeStage_Crosswalk)
 generate_reach_level_AU_scores = FALSE # True/False to generate AU scores with reach-level HQ scores
 HQ_sensitivity_analysis_true_false = FALSE # IF you want to run the HQ sensitivity analysis
-Cramer_Remote_Sensing_yes_no = FALSE # True/False whether to use Cramer Fish Sciences modeled data
+Cramer_Remote_Sensing_yes_no = TRUE # True/False whether to use Cramer Fish Sciences modeled data
+Okanogan_direct_data_NOT_EDT = TRUE # True/False whether to use 2023 updated Okanogan data (actual habitat data) instead of EDT data
 
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #   Directories of Input and Output data  

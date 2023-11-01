@@ -85,6 +85,26 @@ plot( jitter(Habitat_Attribute_Scores_to_plot$HabitatAttributeScore1), jitter(Ha
 abline(lm( Habitat_Attribute_Scores_to_plot$HabitatAttributeScore5 ~ Habitat_Attribute_Scores_to_plot$HabitatAttributeScore1 ), col="red")
 
 
+# -----------------------------------------------------------------------------------------------
+#         compare old and new Reach Ranks data
+# -----------------------------------------------------------------------------------------------
+
+# ------------ read in 2023 reach ranks -------
+Restoration_Reaches_2023 = read_excel( "C:/Users/ryan/Downloads/MASTER_Step2_FINALDRFT_Feb2023_opens_to_Restoration.xlsx" , sheet="Restoration_Results")
+Restoration_Reaches_2023$ReachName = Restoration_Reaches_2023$`Reach Name`
+
+# ----------------- compare and plot old/new Okanogan data ----------
+Restoration_Reaches_2023_OK = Restoration_Reaches_2023[which(Restoration_Reaches_2023$Basin == "Okanogan"),]
+Reach_Rankings_Output_Restoration_OK = Reach_Rankings_Output_Restoration[which(Reach_Rankings_Output_Restoration$Basin == "Okanogan"),]
+Reach_Ranks_Merged = merge(Restoration_Reaches_2023_OK, Reach_Rankings_Output_Restoration_OK, by="ReachName")
+
+plot( jitter(Reach_Ranks_Merged$`Reach Rank`), jitter(Reach_Ranks_Merged$AU_level_Reach_Rank), xlab="2023 Reach Rank (EDT HQ)", ylab="2024 Reach Rank (Prioritization HQ)",
+      col = rgb(red = 0, green = 0, blue = 1, alpha = 0.5),
+      pch = 16, cex = 2)
+text(Reach_Ranks_Merged$`Reach Rank`+0.03, Reach_Ranks_Merged$AU_level_Reach_Rank-0.01 + runif(n=nrow(Reach_Ranks_Merged), min=-0.015, max=0.015), labels=Reach_Ranks_Merged$ReachName, cex=0.6)
+
+
+
 
 
 

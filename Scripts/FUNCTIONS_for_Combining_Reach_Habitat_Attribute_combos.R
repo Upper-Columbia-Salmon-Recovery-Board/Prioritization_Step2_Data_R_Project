@@ -591,7 +591,8 @@ if(test_x ){
   LF_steelhead = Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']]
   LF_bull_trout = Limiting_Factor_Pathway_Bull_Trout[['Limiting_Factor_Pathway_Restoration']]
   columns_info = c( "ReachName","Basin","Assessment.Unit" ) # columns to automatically add to beginning (left side) of output
-  HQ_life_stages = "no"
+  exclude_bull_trout = "no"
+  HQ_life_stages = "yes"
 }
 
 
@@ -751,7 +752,7 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ
       # ------------------------------------------------------------
       #    Habitat Quality Pathways
       # ------------------------------------------------------------
-      if( !is.na(life_stages_HQ) ){
+      if( !is.na(life_stages_HQ[1]) ){
         for(life_stage_x in life_stages_HQ){
           
           # ------------------------------------------------------------
@@ -904,7 +905,7 @@ FUNCTION_combine_by_Reach_AND_Habitat_Attribute_Life_Stage_Species = function(HQ
       # ------------------------------------------------------------
       #    Limiting Factor
       # ------------------------------------------------------------
-      if(!is.na(life_stages_LF)){
+      if(!is.na(life_stages_LF[1])){
         for(life_stage_x in life_stages_LF){
           
           # ------------------------------------------------------------

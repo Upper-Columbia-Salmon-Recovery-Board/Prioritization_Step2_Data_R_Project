@@ -68,7 +68,7 @@ for( habitat_attribute_x in names(Habitat_Attributes_List_OKANOGAN) ){
         habitat_raw_data_output_x = FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw(habitat_attribute_x, data_source_x, "LF")
       }
       # ------------------- generate simple data frame with both habitat data and reach name -----------------
-      habitat_raw_data_output_x = habitat_raw_data_output_x[,c("ReachName","score")]
+      habitat_raw_data_output_x = habitat_raw_data_output_x[,c("ReachName","score")]  # previously pulled "metric_data"
       colnames(habitat_raw_data_output_x)[2] = data_source_x
       # ------------- add data from habitat_raw_data to data frame -----------
       Okanogan_Basic_Reach_Info = merge(Okanogan_Basic_Reach_Info,habitat_raw_data_output_x, by="ReachName", all.x=TRUE )
@@ -84,6 +84,8 @@ for( habitat_attribute_x in names(Habitat_Attributes_List_OKANOGAN) ){
     
   }
 }
+
+
 # ------- give it a different name ---------
 Okanogan_Habitat_Quality_Output = Okanogan_Basic_Reach_Info
 
@@ -158,7 +160,7 @@ for(habitat_attribute_x in habitat_attribute_list){
   
   # -------------- IF no data sources ------------
   if(length(data_sources_combined_x) == 0){
-    Okanogan_Habitat_Quality_Output_X$Data_Sources = "no data sources"
+    Okanogan_Habitat_Quality_Output_X$Data_Sources = paste("no data sources for: ",data_source_x)
     
   # ---------------- if data sources to add --------------
   }else{
@@ -316,19 +318,35 @@ for(habitat_attribute_x in HQ_columns){
 }
 
 # ------------------- calculate HQ SCore ---------
-HQ_Score_Columns = c("Stability", "Coarse Substrate","Cover- Wood", 	"Flow- Summer Base Flow",
-               "Floodplain Connectivity","Off-Channel/Side-Channels", "Pool Quantity & Quality",
-               "Riparian",		"Temperature- Rearing")
+# used for non-Okanogan reaches: HQ_Score_Columns = c("Stability", "Coarse Substrate","Cover- Wood", 	"Flow- Summer Base Flow",
+#               "Floodplain Connectivity","Off-Channel/Side-Channels", "Pool Quantity & Quality",
+#               "Riparian",		"Temperature- Rearing")
+HQ_Score_Columns = c("Stability_Mean", "CoarseSubstrate_score","Cover-Wood_score", 	"Flow-SummerBaseFlow_score",
+                     "FloodplainConnectivity_score","Off-Channel/Side-Channels_score", "PoolQuantity&Quality_score",
+                     "Riparian_Mean",		"Temperature-Rearing_score")
 
 # ------------------------------------------------------------------------------------- 
 #                 calculate HQ Sum and Pct
 # -------------------------------------------------------------------------------------
 # NOTE - for EDT the HQ_Pct was calculated from the % of Template in EDT
 
-Habitat_Quality_Scores_Okanogan$HQ_Sum = NA # other basins: rowSums(Habitat_Quality_Scores_Okanogan[,HQ_Score_Columns]) 
-PRCNT_Habitat_Quality_Okanogan_EDT_SHORTENED = PRCNT_Habitat_Quality_Okanogan_EDT[,c("ReachName","HQ_Score")]
-colnames(PRCNT_Habitat_Quality_Okanogan_EDT_SHORTENED)[2] = c("HQ_Pct")
-Habitat_Quality_Scores_Okanogan = merge(Habitat_Quality_Scores_Okanogan,PRCNT_Habitat_Quality_Okanogan_EDT_SHORTENED, by="ReachName", all.x=TRUE )
+# ---------------- if using habitat data to calcualte HQ_Pct value ---------
+if(Okanogan_direct_data_NOT_EDT){
+  
+  # -------------------- calculate the sum -------------
+  HQ_sum_Okanogan_x = rowSums(Habitat_Quality_Scores_Okanogan[,HQ_Score_Columns])
+  # -------------- merge with data frame ----------
+  Habitat_Quality_Scores_Okanogan$HQ_Sum = HQ_sum_Okanogan_x # other basins: rowSums(Habitat_Quality_Scores_Okanogan[,HQ_Score_Columns]) 
+  Habitat_Quality_Scores_Okanogan$HQ_Pct = HQ_sum_Okanogan_x/(5*length(HQ_Score_Columns)) 
+  
+# --------------- IF just using EDT data -------  
+}else{
+  Habitat_Quality_Scores_Okanogan$HQ_Sum = NA # other basins: rowSums(Habitat_Quality_Scores_Okanogan[,HQ_Score_Columns]) 
+  PRCNT_Habitat_Quality_Okanogan_EDT_SHORTENED = PRCNT_Habitat_Quality_Okanogan_EDT[,c("ReachName","HQ_Score")]
+  colnames(PRCNT_Habitat_Quality_Okanogan_EDT_SHORTENED)[2] = c("HQ_Pct")
+  Habitat_Quality_Scores_Okanogan = merge(Habitat_Quality_Scores_Okanogan,PRCNT_Habitat_Quality_Okanogan_EDT_SHORTENED, by="ReachName", all.x=TRUE )
+  
+}
 
 # ------------------------------------------------------------------------------------- 
 #                 calculate HQ Restoration and Protection Score
@@ -430,6 +448,7 @@ if(output_Habitat_Quality_and_Habitat_Attribute_Scores == "yes"){
 # ---------------------------------------------------------------------------
 #
 #  Generate Life Stage tables for the Limiting Factor Pathway -  Okanogan
+#       FOR using EDT data 
 #     NOTE - this is mergable with the Habitat Attribute Scores data frame
 #     ALSO Note - this applies no filters
 #
@@ -558,6 +577,9 @@ for(RTT_life_stage_x in unique_RTT_life_stages){
             # ---------------------- pull Level 2 data from Okanogan_Habitat_Quality_Output -----
             col_attribute_short_x = which(Level2_Data_Sources_Name_Crosswalk$EDT_Level_2_habitat_attribute == level2_habitat_attribute_x)
             col_attribute_long_x = Level2_Data_Sources_Name_Crosswalk$EDT_Level_2_names[col_attribute_short_x]
+            if(Okanogan_direct_data_NOT_EDT){
+              col_attribute_long_x = Level2_Data_Sources_Name_Crosswalk$EDT_Level_2_names_updated[col_attribute_short_x]
+            }
             
             # ---------------- IF no crosswalk for level 2 -------------
             if( is.na(col_attribute_long_x)  | col_attribute_long_x == "NA" ){
@@ -1050,4 +1072,28 @@ Generate_Species_Output_Table_Okanogan_Restoration_Protection_NO_LEVEL_3 = funct
 # ----------------------------------------------------------------------
 
 Adult_Migration_LF_Okanogan_combo = Generate_Species_Output_Table_Okanogan_Restoration_Protection_NO_LEVEL_3("Adult Migration",  Adult_Migration_LF_Okanogan )
+
+# -------------------------------------------------------------------------
+#   Plot EDT HQ vs. prioritization habitat metric-based HQ
+# ----------------------------------------------------------------------
+
+plot_HQ_comparison = FALSE
+
+if(plot_HQ_comparison){
+  HQ_Okanogan_X = merge(Habitat_Quality_Scores_Okanogan,PRCNT_Habitat_Quality_Okanogan_EDT, by="ReachName")
+  par(mar=c(4,4,1,1))
+  plot(HQ_Okanogan_X$HQ_Score,HQ_Okanogan_X$HQ_Pct,  
+       ylab="HQ PRCNT - habitat metrics (new)", xlab="HQ PRCNT - EDT - % of Template in EDT",
+       col = rgb(red = 0, green = 0, blue = 1, alpha = 0.5),
+       pch = 16, cex = 2)
+  grid(lwd=2)
+  par(new=T)
+  plot(HQ_Okanogan_X$HQ_Score,HQ_Okanogan_X$HQ_Pct,  
+       ylab="HQ PRCNT - habitat metrics (new)", xlab="HQ PRCNT - EDT - % of Template in EDT",
+       col = rgb(red = 0, green = 0, blue = 1, alpha = 0.5),
+       pch = 16, cex = 2)
+  text(HQ_Okanogan_X$HQ_Score+0.03, HQ_Okanogan_X$HQ_Pct-0.01 + runif(n=nrow(HQ_Okanogan_X), min=-0.015, max=0.015), labels=HQ_Okanogan_X$ReachName, cex=0.6)
+  }
+
+
 

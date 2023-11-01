@@ -765,7 +765,7 @@ Generate_individual_life_stage_score = function(species, life_stage){
 #                 
 # -----------------------------------------------------------------------------------------
 
-# habitat_row = Habitat_Attribute_Scores_for_individual_Life_Stage[439,]
+# habitat_row = Habitat_Attribute_Scores_for_individual_Life_Stage[520,]
 # colnames_x = colnames(Habitat_Attribute_Scores_for_individual_Life_Stage)
 list_indiv_habitat_attributes_low_FUNCTION <- function(habitat_row, colnames_x){
   
@@ -845,6 +845,7 @@ Life_Stage_Priority_Filter_Function = function(life_stage, Habitat_Attribute_Sco
 #
 #--------------------------------------------------------------------------
 
+# species = "Steelhead"  # to test
 
 Generate_Species_Output_Table_for_ALL_REACHES_and_ALL_LIFE_STAGES = function(species){
   
