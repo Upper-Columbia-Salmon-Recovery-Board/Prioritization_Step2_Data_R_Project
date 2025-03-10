@@ -19,7 +19,7 @@
 # ---------------------------------------------------------------------------
 
 #  to test
-species = "Steelhead"
+species = "Spring Chinook"
 basins = c("Methow",  "Entiat","Wenatchee", "Okanogan")
 exclude_habitat_attribute = NA
 
@@ -341,7 +341,9 @@ Generate_Habitat_Quality_Output_Table = function(species, basins, habitat_qualit
 
 test_x = FALSE
 if(test_x){
-  habitat_row = Habitat_Quality_Pathway_Restoration[rowx, habitat_quality_scores_colnames_ALL]
+  #habitat_row = Habitat_Quality_Pathway_Restoration[rowx, habitat_quality_scores_colnames_ALL]
+  #colnames_x = habitat_quality_scores_colnames_for_sum
+  habitat_row = Habitat_Quality_Pathway_Restoration[rowx, habitat_quality_scores_colnames_ALL] 
   colnames_x = habitat_quality_scores_colnames_for_sum
 }
 # ------------------ Function to list all the rows below individual habitat criteria -------------------------

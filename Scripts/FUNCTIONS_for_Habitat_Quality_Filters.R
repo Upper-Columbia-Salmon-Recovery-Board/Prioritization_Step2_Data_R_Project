@@ -44,12 +44,15 @@ reach_name_x  = "Big Meadow Creek 01"
 #   'Temperature- Adult Spawning' = c('NORWEST_Temperature', '305bListings_Temperature', 'RAWatershed_Rating_Temp' ), 
 habitat_attribute_x = "Temperature- Adult Holding"
 data_col_name = 'NORWEST_Temperature'
-LF_or_HQ = "HQ"
+LF_or_HQ = "LF"
 
-test_x = TRUE
+habitat_attribute_x = 'Off-Channel/Side-Channels'
+data_source_x = 'PRCNT_Area_Off_Channel_10_yr_floodplain_Aspect'
+
+test_x = TRUE  # use to run when testing from "Habitat_Attributes_Scores_Generate_Script"
 if(test_x){
   data_col_name = data_source_x
-  LF_or_HQ = "HQ"
+  LF_or_HQ = "LF"
 }
 
 
@@ -80,7 +83,7 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
   #    Generate Metric value from Raw (primary) data table
   # -----------------------------------
   if( nrow(metric_criteria_x) == 0 ){ 
-    print(paste("no data for: ",habitat_attribute_x, "and ",data_col_name )  )
+    print(paste("     no data for: ",habitat_attribute_x, "and ",data_col_name )  )
     data_output_x = cbind(  habitat_raw_data$ReachName,
                             as.data.frame(rep(NA, length.out = nrow(habitat_raw_data))),
                             as.data.frame(rep(NA, length.out = nrow(habitat_raw_data)))  )
@@ -137,7 +140,7 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
       # -----------------------------------
     }else if( metric_criteria_x$Category_Type[1]== 'numeric' ){
       
-      # ------------------- Convert tometric_data to numeric ----------
+      # ------------------- Convert to metric_data to numeric ----------
       data_output_x$metric_data = as.numeric(as.character(data_output_x$metric_data))
       
       # -----------------------------
@@ -146,6 +149,10 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
       
       if(metric_criteria_x$Habitat_Attribute[1] == 'Cover- Wood' |
          metric_criteria_x$Data_Sources[1] ==  'Pools_per_mile_INDICATOR_2' |
+         metric_criteria_x$Data_Sources[1] ==  'Pools_per_mile_Cramer_2023' | 
+         metric_criteria_x$Data_Sources[1] ==  'Cramer_Pools_FIELD_Pools_Per_Mile' |
+         metric_criteria_x$Data_Sources[1] ==  'Cramer_Pools_MODELED_pools_per_mile' |
+         metric_criteria_x$Data_Sources[1] ==  'Pools_per_mile_Cascade_Fisheries_2024' |
          metric_criteria_x$Data_Sources[1] ==  'CCT_OBMEP_LWM_pieces_per_mile'|
          metric_criteria_x$Data_Sources[1] ==  'CCT_OBMEP_pools_per_mile'){
         
@@ -167,6 +174,10 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
           
           # ------------ find streams with this width ----------
           if( metric_criteria_x$Data_Sources[1] ==  'Pools_per_mile_INDICATOR_2' |
+              metric_criteria_x$Data_Sources[1] ==  'Pools_per_mile_Cramer_2023' |
+              metric_criteria_x$Data_Sources[1] ==  'Cramer_Pools_FIELD_Pools_Per_Mile' |
+              metric_criteria_x$Data_Sources[1] ==  'Cramer_Pools_MODELED_pools_per_mile' |
+              metric_criteria_x$Data_Sources[1] ==  'Pools_per_mile_Cascade_Fisheries_2024' |
               metric_criteria_x$Data_Sources[1] ==  'CCT_OBMEP_pools_per_mile' ){
             
             # ---------- "upper" of 100 foot bin was set high --------
@@ -226,6 +237,49 @@ FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw = function(habit
                                        ifelse(metric_data  > metric_criteria_UPDATED_x$Category_lower[3] & 
                                                 metric_data  <= metric_criteria_UPDATED_x$Category_upper[3] , metric_criteria_UPDATED_x$Score[3],
                                               NA))))
+        
+        
+        
+        
+        # --------------------------------------------------
+        #   Off-Channel/Side-Channel metrics - PRCNT Area Off-Channel -  filter for confinement
+        #       # Confined reaches recieve a 5 (Adequate)
+        # --------------------------------------------------     
+        
+        
+      }else if( metric_criteria_x$Data_Sources[1] == 'PRCNT_Area_Off_Channel_10_yr_floodplain_Aspect' ){
+        
+        # --------- create blank NA column -------------
+        data_output_x$score = NA
+        
+        # --------------- Confined Reaches -------------
+        Confined_Reaches = which(Confinement_Scores$Confined_Pct == 100)
+        Confinement_Scores_confined_reaches = Confinement_Scores[Confined_Reaches, ]
+        
+        # -------------- generate ranks ---------------
+        # --------------- get metric data ONLY for this habitat attribute --------
+        metric_criteria_UPDATED_x = metric_criteria_x %>%
+          filter(Habitat_Attribute   == habitat_attribute_x ) 
+        
+        # ----------------- generate scores ------------
+        data_output_x = data_output_x  %>%
+          mutate(score = ifelse(metric_data  >= metric_criteria_UPDATED_x$Category_lower[1] & 
+                                  metric_data  <= metric_criteria_UPDATED_x$Category_upper[1] , metric_criteria_UPDATED_x$Score[1],
+                                ifelse(metric_data  > metric_criteria_UPDATED_x$Category_lower[2] & 
+                                         metric_data  <= metric_criteria_UPDATED_x$Category_upper[2] , metric_criteria_UPDATED_x$Score[2],
+                                       ifelse(metric_data  > metric_criteria_UPDATED_x$Category_lower[3] & 
+                                                metric_data  <= metric_criteria_UPDATED_x$Category_upper[3] , metric_criteria_UPDATED_x$Score[3],
+                                              NA))))
+        
+        # ----------------- over-ride confined reaches to be adeqauate ------------
+        for(reach_x_i in Confinement_Scores_confined_reaches$ReachName){
+          row_x = which(data_output_x$ReachName == reach_x_i)
+          data_output_x$score[row_x] = 5
+        }
+
+        
+        
+        
         
         
         # -----------------------------

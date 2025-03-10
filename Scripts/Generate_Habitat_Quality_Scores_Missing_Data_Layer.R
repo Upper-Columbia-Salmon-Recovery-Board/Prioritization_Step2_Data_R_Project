@@ -249,7 +249,6 @@ Habitat_Quality_Data_Gaps_Coarse_Substrate = Habitat_Quality_Data_Gaps_Coarse_Su
 output_path_x =  paste(output_path,'Habitat_Quality_Data_Missing_Coarse_Substrate.xlsx', sep="")
 write.xlsx(Habitat_Quality_Data_Gaps_Coarse_Substrate,output_path_x )
 
-
 # -------------------- Cover- Wood ------------------
 Habitat_Quality_Data_Gaps_Cover_Wood_True_False = grepl("Cover- Wood", Habitat_Quality_Data_Gaps_SprChn_Stld$`Missing Data`)
 Habitat_Quality_Data_Gaps_Cover_Wood = Habitat_Quality_Data_Gaps_SprChn_Stld[Habitat_Quality_Data_Gaps_Cover_Wood_True_False, ] 
@@ -286,7 +285,7 @@ for(reach_x in habitat_raw_data$ReachName){
       year_x = as.numeric(year_x)
     }
     # ----------------- tier 1 protection or restoration --------------
-    Tier_1_all_species_restoration_or_protection_x = Output_ALL_species_and_reaches$Tier_1_all_species_restoration_or_protection[which(Output_ALL_species_and_reaches$ReachName == reach_x)]
+    Priority_Tiers_all_species_restoration_or_protection_x = Output_ALL_species_and_reaches$Priority_Tiers_all_species_restoration_or_protection[which(Output_ALL_species_and_reaches$ReachName == reach_x)]
     
     # --------------------- list data gaps if present ----------
     data_gaps_index_x = which(Habitat_Quality_Data_Gaps$`Reach Name` == reach_x)
@@ -300,18 +299,18 @@ for(reach_x in habitat_raw_data$ReachName){
                   habitat_raw_data[i,c("Basin" )],
                   habitat_raw_data[i,c("Assessment.Unit" )],
                   habitat_raw_data[i,c("Data_Source" )], 
-                  year_x,   Tier_1_all_species_restoration_or_protection_x,  missing_data_x  )
+                  year_x,   Priority_Tiers_all_species_restoration_or_protection_x,  missing_data_x  )
     output_x =  t( as.data.frame(unlist(output_x)) )
     output_x = as.data.frame(output_x)
     colnames(output_x) = c("ReachName", "Basin", "Assessment.Unit", "Data_Source","Survey_Year", 
-                           "Tier1_restoration_or_protection","Missing_Data")
+                           "Priority_Tier_all_species_restoration_or_protection","Missing_Data")
     
     # --------------- if A) a Tier 1 and B) data survey older than 2011 -----------
     if( is.na(output_x$Survey_Year)){year_x = 0}
-    if( (year_x < 2011 | output_x$Missing_Data != "no missing data" ) & output_x$Tier1_restoration_or_protection == "yes"){
-      output_x$Tier1_and_missing_data_OR_survey_before_2011 = "yes"
+    if( (year_x < 2011 | output_x$Missing_Data != "no missing data" ) & output_x$Priority_Tier_all_species_restoration_or_protection == "yes"){
+      output_x$Priority_Tier_and_missing_data_OR_survey_before_2011 = "yes"
     }else{
-      output_x$Tier1_and_missing_data_OR_survey_before_2011 = "no"
+      output_x$Priority_Tier_and_missing_data_OR_survey_before_2011 = "no"
     }
     # -------------- combine -------------
     Habitat_Quality_Data_Gaps_10_years_older_no_Okanogan = rbind( Habitat_Quality_Data_Gaps_10_years_older_no_Okanogan, output_x)
@@ -337,7 +336,7 @@ write.xlsx(Habitat_Quality_Data_Gaps_10_years_older_no_Okanogan,output_path_x )
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 
 # ---------------- only pull reaches taht pass the filter -------------
-Habitat_Quality_Data_Gaps_10_years_older_no_Okanogan_TRUE = Habitat_Quality_Data_Gaps_10_years_older_no_Okanogan[which(Habitat_Quality_Data_Gaps_10_years_older_no_Okanogan$Tier1_and_missing_data_OR_survey_before_2011 == "yes"),]
+Habitat_Quality_Data_Gaps_10_years_older_no_Okanogan_TRUE = Habitat_Quality_Data_Gaps_10_years_older_no_Okanogan[which(Habitat_Quality_Data_Gaps_10_years_older_no_Okanogan$Priority_Tier_and_missing_data_OR_survey_before_2011 == "yes"),]
 # remove Brender Creek - since year was not in there (will add in later)
 # Habitat_Quality_Data_Gaps_10_years_older_no_Okanogan_TRUE[-which(Habitat_Quality_Data_Gaps_10_years_older_no_Okanogan_TRUE$ReachName == "Brender Creek 01"),]
 

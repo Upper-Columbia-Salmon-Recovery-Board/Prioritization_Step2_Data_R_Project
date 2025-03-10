@@ -211,19 +211,22 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   Steelhead_Reach_Information_data_restoration = Steelhead_Reach_Information_data %>%  
     filter(Assessment.Unit    %in%   Species_AU_Ranks_data_Steelhead_restoration$`Assessment Unit`)
   
-  # ---------------- add Okanogan -------------
-  # -------------------- add additional column for this particular species reach presence ---------------
-  Species_AU_Ranks_data_Steelhead_Okanogan["Species_AU_Ranks"] = Species_AU_Ranks_data_Steelhead_Okanogan[AU_rank_name_restoration_Steelhead_Okanogan]
-  # ----------------------- filter out for only reaches with this species --------------
-  Species_AU_Ranks_data_Steelhead_restoration_Okanogan = Species_AU_Ranks_data_Steelhead_Okanogan[
-    which(Species_AU_Ranks_data_Steelhead_Okanogan["Species_AU_Ranks"] <= as.numeric(AU_Rank_Restoration) ), ]
-  # ------------------------ identify AUs that pass this filter in reach-based table ----------
-  Steelhead_Reach_Information_data_restoration_Okanogan = Steelhead_Reach_Information_data %>%  
-    filter(Assessment.Unit    %in%   Species_AU_Ranks_data_Steelhead_restoration_Okanogan$`EDT AU`)
+  # --------------- IF using Okanogan EDT reach ranks, insert them here ---------------------
+  if(Okanogan_direct_data_NOT_EDT == FALSE){
+    # ---------------- add Okanogan -------------
+    # -------------------- add additional column for this particular species reach presence ---------------
+    Species_AU_Ranks_data_Steelhead_Okanogan["Species_AU_Ranks"] = Species_AU_Ranks_data_Steelhead_Okanogan[AU_rank_name_restoration_Steelhead_Okanogan]
+    # ----------------------- filter out for only reaches with this species --------------
+    Species_AU_Ranks_data_Steelhead_restoration_Okanogan = Species_AU_Ranks_data_Steelhead_Okanogan[
+      which(Species_AU_Ranks_data_Steelhead_Okanogan["Species_AU_Ranks"] <= as.numeric(AU_Rank_Restoration) ), ]
+    # ------------------------ identify AUs that pass this filter in reach-based table ----------
+    Steelhead_Reach_Information_data_restoration_Okanogan = Steelhead_Reach_Information_data %>%  
+      filter(Assessment.Unit    %in%   Species_AU_Ranks_data_Steelhead_restoration_Okanogan$`EDT AU`)
+    # ------------------- combine Wen-Ent-Methow and Okanogan ------------
+    Steelhead_Reach_Information_data_restoration = rbind(Steelhead_Reach_Information_data_restoration, Steelhead_Reach_Information_data_restoration_Okanogan)
+    
+  }
 
-  # ------------------- combine Wen-Ent-Methow and Okanogan ------------
-  Steelhead_Reach_Information_data_restoration = rbind(Steelhead_Reach_Information_data_restoration, Steelhead_Reach_Information_data_restoration_Okanogan)
-  
   print(paste("Steelhead Restoration - total AU rank filter: ", nrow(Steelhead_Reach_Information_data_restoration), sep=""))
   
   # --------------------------- BULL TROUT -----------------
@@ -884,14 +887,16 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   
   # ------------------ prep HQ data for merge -------
   Habitat_Quality_Scores_for_merge = Habitat_Quality_Scores[,c("ReachName","HQ_Pct")]
-  # ---------- add the Okanogan ---------------
-  Habitat_Quality_Scores_for_merge_Okanogan = PRCNT_Habitat_Quality_Okanogan_EDT[,c("ReachName","HQ_Score")]
-  colnames(Habitat_Quality_Scores_for_merge_Okanogan)[2] = "HQ_Pct"
-  for(i in 1:nrow(Habitat_Quality_Scores_for_merge_Okanogan)){
-    x = which(Habitat_Quality_Scores_for_merge$ReachName == Habitat_Quality_Scores_for_merge_Okanogan$ReachName[i])
-    Habitat_Quality_Scores_for_merge$HQ_Pct[x] = Habitat_Quality_Scores_for_merge_Okanogan$HQ_Pct[i]
+  # ---------- IF using Okanogan EDT reach ranks, insert them here ---------------
+  if(Okanogan_direct_data_NOT_EDT==FALSE){
+    Habitat_Quality_Scores_for_merge_Okanogan = PRCNT_Habitat_Quality_Okanogan_EDT[,c("ReachName","HQ_Score")]
+    colnames(Habitat_Quality_Scores_for_merge_Okanogan)[2] = "HQ_Pct"
+    for(i in 1:nrow(Habitat_Quality_Scores_for_merge_Okanogan)){
+      x = which(Habitat_Quality_Scores_for_merge$ReachName == Habitat_Quality_Scores_for_merge_Okanogan$ReachName[i])
+      Habitat_Quality_Scores_for_merge$HQ_Pct[x] = Habitat_Quality_Scores_for_merge_Okanogan$HQ_Pct[i]
+    }
   }
-  
+
   #  ---------------------------------------------------------------------------------
   #                Restoration
   #  ---------------------------------------------------------------------------------
@@ -1443,7 +1448,7 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     reaches_dewater_intersection = intersect(Restoration_Scores_Output$ReachName, DeWater_Reaches_Data$ReachName)
     reaches_dewater_different = setdiff( DeWater_Reaches_Data$ReachName, Restoration_Scores_Output$ReachName)
     
-    # ----------- if reach dewaters  in an existing reach in Restoration_Scores_Output ----------
+    # ----------- if reach de-waters  in an existing reach in Restoration_Scores_Output ----------
     if( length(reaches_dewater_intersection)>0 ){
       for(reach_x in reaches_dewater_intersection){
         # ------------ identify reach ------------
@@ -1476,9 +1481,20 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     # ----------------------------------------------------------------------------------- 
     
     # ---------------- pull unique AU -------------------
-    x_basins = which(Restoration_Scores_Output$Basin == "Methow" |
-                       Restoration_Scores_Output$Basin == "Entiat" |
-                       Restoration_Scores_Output$Basin == "Wenatchee" )
+     # ------------- if using EDT -----------
+    if(Okanogan_direct_data_NOT_EDT == FALSE){
+      x_basins = which(Restoration_Scores_Output$Basin == "Methow" |
+                         Restoration_Scores_Output$Basin == "Entiat" |
+                         Restoration_Scores_Output$Basin == "Wenatchee" )
+      
+      # ------------ if NOT using EDT -------------
+    }else{
+      x_basins = which(Restoration_Scores_Output$Basin == "Methow" |
+                         Restoration_Scores_Output$Basin == "Entiat" |
+                         Restoration_Scores_Output$Basin == "Wenatchee" |
+                         Restoration_Scores_Output$Basin == "Okanogan")
+    }
+
     unique_AU = unique(Restoration_Scores_Output$Assessment.Unit[x_basins])
     # -------------- start the AU Rank score ---------
     Restoration_Scores_Output$AU_level_Reach_Rank = NA
@@ -1621,20 +1637,26 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
         
       }
       
-      # -------------- add the AU Rank to data -----------------
-      for(reach_x in AU_data_frame$ReachName){
-        AU_rank_x = AU_data_frame$AU_level_Reach_Rank[ which(AU_data_frame$ReachName == reach_x)]
-        Restoration_Scores_Output$AU_level_Reach_Rank[ which(Restoration_Scores_Output$ReachName == reach_x)] = AU_rank_x
+      # -------------- add the AU Rank to data (IF using EDT data) -----------------
+      if(Okanogan_direct_data_NOT_EDT == FALSE){
+        for(reach_x in AU_data_frame$ReachName){
+          AU_rank_x = AU_data_frame$AU_level_Reach_Rank[ which(AU_data_frame$ReachName == reach_x)]
+          Restoration_Scores_Output$AU_level_Reach_Rank[ which(Restoration_Scores_Output$ReachName == reach_x)] = AU_rank_x
+        }
       }
+      
       #Restoration_Scores_Output$AU_level_Reach_Rank[which(Restoration_Scores_Output$Assessment.Unit == AU_x)] = AU_data_frame$AU_level_Reach_Rank
       
-      # -------------- add Okanogan AU level rank ---------
+      # --------------  add Okanogan AU level rank (later determined if used to calculate reach rank) ---------
+
       for(reach_x in AU_data_frame_EDT$ReachName){
         EDT_AU_rank_x = AU_data_frame_EDT$Reach_Rank[ which(AU_data_frame_EDT$ReachName == reach_x)]
         Restoration_Scores_Output$EDT_reach_rank[ which(Restoration_Scores_Output$ReachName == reach_x)] = EDT_AU_rank_x
       }
       #Restoration_Scores_Output$EDT_reach_rank[which(Restoration_Scores_Output$Assessment.Unit == AU_x)] = AU_data_frame_EDT$Reach_Rank 
       
+    
+ 
     }
     
     # ----------------------------------------------------------------------------------- 
@@ -1898,13 +1920,14 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
     
     # ----------------------------------------------------------------------------------- 
     #
-    #       Generate within AU scores: Okanogan
+    #       Generate within AU scores for Okanogan (IF using EDT)
     #
     # ----------------------------------------------------------------------------------- 
     
     # ---------------- pull unique AU -------------------
     x_basins = which(Protection_Scores_Output$Basin == "Okanogan" )
     unique_AU = unique(Protection_Scores_Output$Assessment.Unit[x_basins])
+    
     
     for(AU_x in unique_AU){
       
@@ -1985,6 +2008,8 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
       
       
     }
+    
+
     
     # ----------------------------------------------------------------------------------- 
     #

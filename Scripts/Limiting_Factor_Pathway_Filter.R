@@ -47,9 +47,10 @@ for(habitat_attribute_x in unique(Habitat_Attribute_Scores$Habitat_Attribute)[or
 #
 # ---------------------------------------------------------------------------
 
-test_x = FALSE
+test_x = TRUE
 if(test_x){
   species = "Spring Chinook"
+  #species = "Steelhead"
   basins = c("Methow", "Entiat", "Wenatchee", "Okanogan")
 }
 
@@ -640,6 +641,12 @@ Generate_Species_Output_Table_ALL_LIFE_STAGES = function(species,life_stages_pri
 # attributes not in data: Entrainment - Fry OR Entrainment- Summer Rearing (Entrainment/Stranding) is present AND Predators- Adults are misspelled
 # Generate_individual_life_stage_score("Spring Chinook", "Adult Migration")
 
+test_x=FALSE
+if(test_x){
+  species = "Spring Chinook"
+  life_stage = "Adult Migration"
+}
+
 Generate_individual_life_stage_score = function(species, life_stage){
   
   # -------------------- pull habitat attributes/life stages JUST for this species ---------
@@ -717,6 +724,8 @@ Generate_individual_life_stage_score = function(species, life_stage){
   
   # ----------- total number of habitat attributes ------
   number_habitat_attributes = ncol(Habitat_Attribute_Scores_for_individual_Life_Stage)
+  # ----------- convert to numeric ---------------
+  Habitat_Attribute_Scores_for_individual_Life_Stage[] <- lapply(Habitat_Attribute_Scores_for_individual_Life_Stage, as.numeric)
   # ---------- Summation of Habitat Attributes ---------
   Habitat_Attribute_Scores_for_individual_Life_Stage$LF_Sum = rowSums(Habitat_Attribute_Scores_for_individual_Life_Stage)
   # -------- add Reach Names and Basin to beginning of data frame -----

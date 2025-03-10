@@ -46,9 +46,9 @@ source(paste(script_path, 'FUNCTIONS_for_Habitat_Attribute_Filters.R', sep=""))
 # -------------- to test ------------------------
 test = TRUE
 if(test){
-  habitat_attribute_x = names(Habitat_Attributes_List)[5]
+  habitat_attribute_x = names(Habitat_Attributes_List)[4]
   data_sources_list =  Habitat_Attributes_List[habitat_attribute_x]
-  data_source_x = data_sources_list[[1]][1]
+  data_source_x = data_sources_list[[1]][2]
 }
 
 
@@ -74,8 +74,11 @@ for(habitat_attribute_x in names(Habitat_Attributes_List) ){
   # ------------ prep data source name -----------
   data_source_output_list_per_row = c('a') # create a nchar = 1 data frame
   column_names = c("(HabitatAttributeScore1)",	"(HabitatAttributeScore2)",	"(HabitatAttributeScore3)",
-                   "(HabitatAttributeScore4)", "(HabitatAttributeScore5)", "(HabitatAttributeScore6)")
-
+                   "(HabitatAttributeScore4)", "(HabitatAttributeScore5)", "(HabitatAttributeScore6)",
+                   "(HabitatAttributeScore7)","(HabitatAttributeScore8)")
+  column_names2 = c("ReachName", "HabitatAttributeScore1",	"HabitatAttributeScore2",	"HabitatAttributeScore3",	"HabitatAttributeScore4",
+    "HabitatAttributeScore5","HabitatAttributeScore6","HabitatAttributeScore7",  "HabitatAttributeScore8")
+  
   # ------------------------------------------------------------------
   #         For non-Okanogan sub-basins (Methow, Entiat, Wenatchee)
   # ------------------------------------------------------------------
@@ -120,7 +123,7 @@ for(habitat_attribute_x in names(Habitat_Attributes_List) ){
     }else{
       
       # ------------ Generate metric value  AND score (1,3,5) for each habitat attribute -------------------
-      # outputs both metric value and score
+      # outputs both metric value and score, created in "FUNCTIONS_for_Habitat_Quality_Filters.R"
       output_x = FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw(habitat_attribute_x, data_source_x , "LF" )
 
     }
@@ -142,7 +145,7 @@ for(habitat_attribute_x in names(Habitat_Attributes_List) ){
   }
 
   # ------------------------------------------------------------------
-  #         For Okanogan sub-basins 
+  #         For Okanogan sub-basin 
   # ------------------------------------------------------------------
   
   # ------------------ over-write data in Okanogan to all be NA ----------
@@ -205,12 +208,22 @@ for(habitat_attribute_x in names(Habitat_Attributes_List) ){
     colnames(output_x_2) = c( "ReachName",paste("score",i,sep="_") )
     
     # ------------- loop through new Okanogan data and add to habitat_attribute_x_data_frame --------
-    numeric_rows_x = which(  !is.na(output_x_2$score_1) )  # which rows/reaches have metric
+    
+    numeric_rows_x = which(  !is.na(output_x_2[,2]) )  # which rows/reaches have metric (and are just Okanogan)
+    # loop through reaches to make non-Okanogan reaches NA
+    for(row_x in numeric_rows_x){
+      if( any(Reach_Information_data_Okanogan$ReachName == output_x_2[row_x,1])==FALSE ) {
+        output_x_2[row_x,2] = NA
+      }
+    }
+    # ----- rerun after forcing non-Okanogan reaches to be NA ----------
+    numeric_rows_x = which(  !is.na(output_x_2[,2]) )  # which rows/reaches have metric (and are just Okanogan)
+
     for(i_x in numeric_rows_x){
       # ----- row in habitat_attribute_x_data_frame that has i_x ReachName ---------
       i_x_habitat = which(habitat_attribute_x_data_frame$ReachName == output_x_2$ReachName[i_x])
       # ----------- pull new Okanogan data and put in habitat_attribute_x_data_frame -------
-      habitat_attribute_x_data_frame[i_x_habitat ,(i+1)] = output_x_2$score_1[i_x]
+      habitat_attribute_x_data_frame[i_x_habitat ,(i+1)] = output_x_2[i_x,2]
     }
     
   }
@@ -221,8 +234,8 @@ for(habitat_attribute_x in names(Habitat_Attributes_List) ){
   
   # -------------- add NA columns so there are four columns -----------------
   na_column = as.data.frame(rep(NA, length.out=nrow(habitat_attribute_x_data_frame)))
-  if( ncol(habitat_attribute_x_data_frame) < 7){
-    for(i in 1:(7-ncol(habitat_attribute_x_data_frame) ) )
+  if( ncol(habitat_attribute_x_data_frame) < length(column_names2)){
+    for(i in 1:(length(column_names2) - ncol(habitat_attribute_x_data_frame) ) )
       habitat_attribute_x_data_frame = cbind(habitat_attribute_x_data_frame, na_column)
   }
   
@@ -231,14 +244,13 @@ for(habitat_attribute_x in names(Habitat_Attributes_List) ){
   # --------------------------------------------------------------------
   
   # ---------------------------  prepare habitat data frame ----------------
-  colnames(habitat_attribute_x_data_frame) = c("ReachName", "HabitatAttributeScore1",	"HabitatAttributeScore2",	"HabitatAttributeScore3",	"HabitatAttributeScore4",
-                                               "HabitatAttributeScore5","HabitatAttributeScore6")
+  colnames(habitat_attribute_x_data_frame) = column_names2
   habitat_attribute_x_data_frame = as.tibble(habitat_attribute_x_data_frame)
-  cols.num <- c("HabitatAttributeScore1",	"HabitatAttributeScore2",	"HabitatAttributeScore3",	"HabitatAttributeScore4",  "HabitatAttributeScore5",  "HabitatAttributeScore6")
+  cols.num <- c("HabitatAttributeScore1",	"HabitatAttributeScore2",	"HabitatAttributeScore3",	"HabitatAttributeScore4",  "HabitatAttributeScore5",  "HabitatAttributeScore6","HabitatAttributeScore7",  "HabitatAttributeScore8")
   habitat_attribute_x_data_frame[cols.num] <- sapply(habitat_attribute_x_data_frame[cols.num],as.numeric)
   
   # ------------------- get minimum score for each row ----------
-  habitat_attribute_x_data_frame_CALC = habitat_attribute_x_data_frame[,c("HabitatAttributeScore1",	"HabitatAttributeScore2",	"HabitatAttributeScore3",	"HabitatAttributeScore4", "HabitatAttributeScore5", "HabitatAttributeScore6")]
+  habitat_attribute_x_data_frame_CALC = habitat_attribute_x_data_frame[,column_names2[2:length(column_names2)]]
   
   habitat_attribute_x_data_frame_CALC = habitat_attribute_x_data_frame_CALC %>% 
     rowwise() %>%
@@ -291,9 +303,7 @@ for(habitat_attribute_x in names(Habitat_Attributes_List) ){
   # ------------ update first column name ---------
   colnames(habitat_attribute_x_data_frame_CALC)[1] = "ReachName"
   
-  # --------------------- add data source ----------------
-  data_source_output_list_per_row = rep(data_source_output_list_per_row, length.out=nrow(habitat_attribute_x_data_frame))
-  data_source_output_list_per_row = as.data.frame(data_source_output_list_per_row)
+
   # --------------------- add habitat attribute ----------------
   habitat_attribute_name = rep(habitat_attribute_x, length.out=nrow(habitat_attribute_x_data_frame))
   habitat_attribute_name = as.data.frame(habitat_attribute_name)
@@ -303,6 +313,13 @@ for(habitat_attribute_x in names(Habitat_Attributes_List) ){
   colnames(habitat_attribute_x_data_frame_Reach_Name) = "ReachName"
   habitat_attribute_x_data_frame = merge(habitat_attribute_x_data_frame_Reach_Name,   Reach_Information_data[, c("ReachName","Basin","Assessment.Unit")],
                                          by="ReachName")
+  # --------------------- add data source ----------------
+  # -------  Methow, Entiat, Wenatchee ------------
+  data_source_output_list_per_row = rep(data_source_output_list_per_row, length.out=nrow(habitat_attribute_x_data_frame))
+  data_source_output_list_per_row = as.data.frame(data_source_output_list_per_row)
+  # --------- Okanogan ---------------
+  x_OK = which(habitat_attribute_x_data_frame$Basin == "Okanogan")
+  data_source_output_list_per_row[x_OK,1] = rep(data_source_output_list_per_row_Okanogan, length.out=length(x_OK))
   # ----------------- add habitat attribute name and data source list -----------
   habitat_attribute_x_data_frame = cbind( habitat_attribute_x_data_frame, habitat_attribute_name,  data_source_output_list_per_row)
   colnames(habitat_attribute_x_data_frame) = c('ReachName',	'Basin',	'Assessment.Unit',	'Habitat_Attribute',	'Data_Sources')
@@ -310,7 +327,7 @@ for(habitat_attribute_x in names(Habitat_Attributes_List) ){
   habitat_attribute_x_data_frame = merge(habitat_attribute_x_data_frame, habitat_attribute_x_data_frame_CALC, by="ReachName")
   colnames(habitat_attribute_x_data_frame) = c('ReachName',	'Basin',	'Assessment.Unit',	'Habitat_Attribute',	'Data_Sources',	'HabitatAttributeScore1',
                                                'HabitatAttributeScore2',	'HabitatAttributeScore3',	'HabitatAttributeScore4',
-                                               'HabitatAttributeScore5',	'HabitatAttributeScore6', 'Habitat_Attribute_Score','Data_Source_of_Metric_Prioritized')
+                                               'HabitatAttributeScore5',	'HabitatAttributeScore6', 'HabitatAttributeScore7','HabitatAttributeScore8','Habitat_Attribute_Score','Data_Source_of_Metric_Prioritized')
   habitat_attribute_x_data_frame$Notes_or_Professional_Judgement = NA
   
   # --------------------------------------------------------------------
@@ -341,11 +358,11 @@ for(habitat_attribute_x in names(Habitat_Attributes_List) ){
     # -------------------- generate new habitat_attribute_x_data_frame ---------
     habitat_attribute_x_data_frame = habitat_attribute_x_data_frame_Merge[, c("ReachName" , "Basin","Assessment.Unit", "Habitat_Attribute", "Data_Sources" ,"HabitatAttributeScore1",           
                                   "HabitatAttributeScore2","HabitatAttributeScore3","HabitatAttributeScore4" ,
-                                  'HabitatAttributeScore5',	'HabitatAttributeScore6',          
+                                  'HabitatAttributeScore5',	'HabitatAttributeScore6', 'HabitatAttributeScore7',	'HabitatAttributeScore8',           
                                    "Habitat_Attribute_Score" ,"Data_Source_of_Metric_Prioritized", "Notes_or_Professional_Judgement.x")]
     colnames(habitat_attribute_x_data_frame) = c("ReachName" , "Basin","Assessment.Unit", "Habitat_Attribute", "Data_Sources" ,"HabitatAttributeScore1",           
                                                  "HabitatAttributeScore2","HabitatAttributeScore3","HabitatAttributeScore4" ,
-                                                 'HabitatAttributeScore5',	'HabitatAttributeScore6',          
+                                                 'HabitatAttributeScore5',	'HabitatAttributeScore6',  'HabitatAttributeScore7',	'HabitatAttributeScore8',           
                                                  "Habitat_Attribute_Score" ,"Data_Source_of_Metric_Prioritized", "Notes_or_Professional_Judgement")
   }
   

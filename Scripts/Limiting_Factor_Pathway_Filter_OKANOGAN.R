@@ -274,7 +274,6 @@ if(test_x){
 
 Generate_Species_Output_Table_Okanogan_Restoration_Protection = function(life_stage_x, Limiting_Factor_Life_Stage_Table){
   
-  
   # ------------------ only use habitat attributes from RTT ---------------------
   unique_level2_attributes_x = unique(Limiting_Factor_Life_Stage_Table$Level_2_Habitat_Attribute)
   

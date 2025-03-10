@@ -28,7 +28,7 @@ library(readxl)
 # ---------------------------------------------------------------------------
 #  Script Criteria for output
 # ---------------------------------------------------------------------------
-read_MASTER_directly = TRUE # if TRUE - read MASTER from UCSRB servers, if FALSE - read from local 
+read_MASTER_directly = FALSE # if TRUE - read MASTER from UCSRB servers, if FALSE - read from local 
 write_MASTER_locally = TRUE # if TRUE -  write tabs in MASTER from UCSRB servers, if FALSE - do not write
 basins_to_include = c("Methow",  "Entiat","Wenatchee" , "Okanogan")  # basins to include in simulation    
 exclude_bull_trout = "no"  # if "yes" -> remove bull trout for WebMap applications
@@ -42,7 +42,7 @@ core_metric_missing_data_species = c("Steelhead", "Spring Chinook") # species to
 generate_reach_level_AU_scores = FALSE # True/False to generate AU scores with reach-level HQ scores
 HQ_sensitivity_analysis_true_false = FALSE # IF you want to run the HQ sensitivity analysis
 Cramer_Remote_Sensing_yes_no = TRUE # True/False whether to use Cramer Fish Sciences modeled data
-Okanogan_direct_data_NOT_EDT = TRUE # True/False whether to use 2023 updated Okanogan data (actual habitat data) instead of EDT data
+Okanogan_direct_data_NOT_EDT = FALSE # TRUE = use 2023 updated Okanogan data (actual habitat data), FALSE = use EDT data
 
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #   Directories of Input and Output data  
@@ -66,7 +66,7 @@ reach_assessment_projects_path = paste(master_path,'Reach_Assessment_Projects/',
 folder_x = "Y:/UCRTT/Prioritization/Step 2/Habitat Evaluation/"
 #master_file = "MASTER_Step2_FINALDRFT_11052021.xlsx"
 #master_file = "MASTER_Step2_FINALDRFT_09142022.xlsx"
-master_file = "MASTER_Step2_FINALDRFT_2023_Updates.xlsx"
+master_file = "MASTER_Step2_FINALDRFT_2024_Updates.xlsx"
 MASTER_Data_path = paste(folder_x,master_file, sep="")   # Data from Okanogan EDT results
 
 # ----------- directory for output (where results are saved) ---------
@@ -200,6 +200,10 @@ write.xlsx(Restoration_Unacceptable_and_At_Risk,output_path_x )
 output_path_x = paste(output_path,'Barriers_Pathway_Output.xlsx', sep="")
 write.xlsx(Barriers_Pathways_Data, output_path_x)
 
+# ------------------ output Habitat Quality Scores ----------------
+output_path_x = paste(output_path,'Habitat_Quality_Scores.xlsx', sep="")
+write.xlsx(Habitat_Quality_Scores, output_path_x)
+
 # ------------------ output Habitat Quality Scores for WebMap ----------------
 output_path_x = paste(output_path,'Habitat_Quality_Scores_for_WebMap.xlsx', sep="")
 write.xlsx(Habitat_Quality_Scores_for_WebMap, output_path_x)
@@ -237,8 +241,6 @@ output_path_x =  paste(output_path,'Protection_Reach_Ranking_Scores_Output.xlsx'
 write.xlsx(Reach_Rankings_Output_Protection,output_path_x )
 output_path_x =  paste(output_path,'Output_Reach_Rank_ALL_species_and_reaches.xlsx', sep="")
 write.xlsx(Output_ALL_species_and_reaches,output_path_x )
-
-
 
 # -----------------------------------------------------------------
 #      Combine into one MASTER excel

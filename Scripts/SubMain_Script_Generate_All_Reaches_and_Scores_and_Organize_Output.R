@@ -68,7 +68,6 @@ if(generate_reach_level_AU_scores){
   
 }
 
-
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #
 #
@@ -153,26 +152,33 @@ source( paste(script_path, 'Limiting_Factor_Pathway_Filter_OKANOGAN.R', sep="") 
 Limiting_Factor_Pathway_Spring_Chinook = Generate_Limiting_Factor_Output_Table("Spring Chinook", basins_to_include)
 Limiting_Factor_Pathway_Steelhead = Generate_Limiting_Factor_Output_Table("Steelhead", basins_to_include)
 if(exclude_bull_trout == "no"){ Limiting_Factor_Pathway_Bull_Trout = Generate_Limiting_Factor_Output_Table("Bull Trout", basins_to_include) }
-# --------------- generate for Okanogan ---------------
-Limiting_Factor_Pathway_Steelhead_OKANOGAN = Generate_Limiting_Factor_Output_Table_Okanogan("Steelhead", "Okanogan" )
-Limiting_Factor_Pathway_Steelhead_OKANOGAN_no_level3 = Generate_Limiting_Factor_Output_Table_Okanogan_no_level3("Steelhead", "Okanogan")
-# -------------- IF for Okanogan LF Pathway - Level 3-> Level 2 (yes) OR just Level 2 (no) -----
-if(Okanogan_LF_Pathway_Level2_to_Level_3_yes_no == "no"){
-  Limiting_Factor_Pathway_Steelhead_OKANOGAN = Limiting_Factor_Pathway_Steelhead_OKANOGAN_no_level3
+
+# --------------------- generate for Okanogan ----------------------
+# ---------- use EDT appraoch to LF ------- 
+
+if(Okanogan_direct_data_NOT_EDT==FALSE){
+
+  # ----------- use EDT to generate Okaogan Limitign Factors ----------------
+  Limiting_Factor_Pathway_Steelhead_OKANOGAN = Generate_Limiting_Factor_Output_Table_Okanogan("Steelhead", "Okanogan" )
+  Limiting_Factor_Pathway_Steelhead_OKANOGAN_no_level3 = Generate_Limiting_Factor_Output_Table_Okanogan_no_level3("Steelhead", "Okanogan")
+  # -------------- IF for Okanogan LF Pathway - Level 3-> Level 2 (yes) OR just Level 2 (no) -----
+  if(Okanogan_LF_Pathway_Level2_to_Level_3_yes_no == "no"){
+    Limiting_Factor_Pathway_Steelhead_OKANOGAN = Limiting_Factor_Pathway_Steelhead_OKANOGAN_no_level3
+  }
+  # ------------------- combine "regular" and EDT data -------------------
+  # ---------- first remove Okanogan reaches ---------
+  if( length(which(Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']]$Basin == "Okanogan")) > 0 ){
+    Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']] = Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']][-which(Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']]$Basin == "Okanogan"), ]  }
+  if( length(which(Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']]$Basin == "Okanogan")) > 0 ){
+    Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']] = Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']][-which(Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']]$Basin == "Okanogan"), ] }
+  # ---------------- then add EDT data --------------------
+  Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']] = rbind( Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']],
+                                                                                      Limiting_Factor_Pathway_Steelhead_OKANOGAN[['Limiting_Factor_Pathway_Restoration']] )
+  Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']] = rbind( Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']],
+                                                                                     Limiting_Factor_Pathway_Steelhead_OKANOGAN[['Limiting_Factor_Pathway_Protection']] )
+  
 }
 
-# ------------------- combine "regular" and EDT data -------------------
-# ---------- first remove Okanogan reaches ---------
-if( length(which(Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']]$Basin == "Okanogan")) > 0 ){
-  Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']] = Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']][-which(Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']]$Basin == "Okanogan"), ]  }
-if( length(which(Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']]$Basin == "Okanogan")) > 0 ){
-  Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']] = Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']][-which(Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']]$Basin == "Okanogan"), ] }
-
-# ---------------- add EDT data --------------------
-Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']] = rbind( Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Restoration']],
-                                                                                    Limiting_Factor_Pathway_Steelhead_OKANOGAN[['Limiting_Factor_Pathway_Restoration']] )
-Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']] = rbind( Limiting_Factor_Pathway_Steelhead[['Limiting_Factor_Pathway_Protection']],
-                                                                                   Limiting_Factor_Pathway_Steelhead_OKANOGAN[['Limiting_Factor_Pathway_Protection']] )
 
 # --------------------------------------------------
 # Generate life stage tables for ALL reaches for each species (JUST for QAQC purposes)
@@ -404,6 +410,14 @@ source(paste(script_path, "Reach_Rankings_Restoration_and_Protection.R", sep="")
 Reach_Rankings_and_all_species_Output = Generate_Restoration_or_Protection_Reach_Rankings_Table(basins_to_include )
 Reach_Rankings_Output = Reach_Rankings_and_all_species_Output[["Reach_Rankings_Combined"]]
 Output_ALL_species_and_reaches = Reach_Rankings_and_all_species_Output[["Output_ALL_species_and_reaches"]]
+Reach_Rankings_Output_Restoration = Reach_Rankings_Output[["Reach_Rankings_Restoration"]]
+output_Reach_Rankings_Output_Restoration= TRUE
+if(output_Reach_Rankings_Output_Restoration){
+  output_path_x =  paste(output_path,'Reach_Rankings_Output_Restoration.xlsx', sep="")
+  write.xlsx(Reach_Rankings_Output_Restoration,output_path_x ) 
+}
+
+
 # Output of all reaches and species: Output_ALL_species_and_reaches
 
 # ------------------------ re-run for sensitivity analysis --------------

@@ -95,15 +95,38 @@ Restoration_Reaches_2023$ReachName = Restoration_Reaches_2023$`Reach Name`
 
 # ----------------- compare and plot old/new Okanogan data ----------
 Restoration_Reaches_2023_OK = Restoration_Reaches_2023[which(Restoration_Reaches_2023$Basin == "Okanogan"),]
-Reach_Rankings_Output_Restoration_OK = Reach_Rankings_Output_Restoration[which(Reach_Rankings_Output_Restoration$Basin == "Okanogan"),]
-Reach_Ranks_Merged = merge(Restoration_Reaches_2023_OK, Reach_Rankings_Output_Restoration_OK, by="ReachName")
+Reach_Rankings_Output_Restoration_OK = Restoration_Prioritization_Output_for_WebMap[which(Restoration_Prioritization_Output_for_WebMap$Basin == "Okanogan"),]
 
-plot( jitter(Reach_Ranks_Merged$`Reach Rank`), jitter(Reach_Ranks_Merged$AU_level_Reach_Rank), xlab="2023 Reach Rank (EDT HQ)", ylab="2024 Reach Rank (Prioritization HQ)",
+
+colnames(Reach_Rankings_Output_Restoration_OK)[1] = "ReachName"
+Reach_Ranks_Merged = merge(Restoration_Reaches_2023_OK, Reach_Rankings_Output_Restoration_OK, by="ReachName")
+Reach_Ranks_Merged$`Reach Rank.y` = as.numeric(as.character(Reach_Ranks_Merged$`Reach Rank.y`))
+plot( jitter(Reach_Ranks_Merged$`Reach Rank.x`), jitter(Reach_Ranks_Merged$`Reach Rank.y`), xlab="2023 Reach Rank (EDT HQ)", ylab="2024 Reach Rank (Prioritization HQ)",
       col = rgb(red = 0, green = 0, blue = 1, alpha = 0.5),
       pch = 16, cex = 2)
-text(Reach_Ranks_Merged$`Reach Rank`+0.03, Reach_Ranks_Merged$AU_level_Reach_Rank-0.01 + runif(n=nrow(Reach_Ranks_Merged), min=-0.015, max=0.015), labels=Reach_Ranks_Merged$ReachName, cex=0.6)
+
+model = lm(Reach_Ranks_Merged$`Reach Rank.y` ~  Reach_Ranks_Merged$`Reach Rank.x`)
+newx <- seq(min(Reach_Ranks_Merged$`Reach Rank.x`), max(Reach_Ranks_Merged$`Reach Rank.x`), length.out=100)
+preds <- predict(model, newdata = data.frame(x=newx), interval = 'confidence')
+
+#add fitted regression line
+abline(model)
+
+#add dashed lines for confidence bands
+lines(newx, preds[ ,3], lty = 'dashed', col = 'blue')
+lines(newx, preds[ ,2], lty = 'dashed', col = 'blue')
+
+#text(Reach_Ranks_Merged$`Reach Rank.x`+0.03, Reach_Ranks_Merged$`Reach Rank.y`-0.01 + runif(n=nrow(Reach_Ranks_Merged), min=-0.015, max=0.015), labels=Reach_Ranks_Merged$ReachName, cex=0.6)
+
+# Reach_Rankings_Output_Restoration_OK_New = Reach_Rankings_Output_Restoration_OK
+
+plot( jitter(Reach_Rankings_Output_Restoration$EDT_reach_rank ), jitter(Reach_Rankings_Output_Restoration$AU_level_Reach_Rank), xlab="EDT Reach Rank", ylab="Prioritizatoin Reach Rank",
+      col = rgb(red = 0, green = 0, blue = 1, alpha = 0.5),
+      pch = 16, cex = 2)
 
 
+View(Restoration_Scores_Output[which(Restoration_Scores_Output$Basin == "Okanogan" & Restoration_Scores_Output$AU_level_Reach_Rank>0),])
+View(Restoration_Scores_Output[which(Restoration_Scores_Output$Basin == "Okanogan" ),])
 
 
 

@@ -101,7 +101,7 @@ for( habitat_attribute_x in names(Habitat_Quality_Habitat_Attributes_List) ){
     if( length(data_sources_list[[1]]) == 1){
       
       output_x = FUNCTION_generate_habitat_attribute_score_from_Habitat_Data_Raw(habitat_attribute_x, data_sources_list[[1]][1], "HQ")
-      
+         # NOTE: this function is in "FUNCTIONS_for_Habitat_Quality_Filters.R"
       
     # --------------------------------------------------------------------
     #  MULTIPLE data source for this habitat attribute (need to get optimum)

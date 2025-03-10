@@ -60,7 +60,7 @@ cols.num <- c( 'Sand_occular_prcnt_INDICATOR_1',	'Gravel_occular_prcnt_INDICATOR
               'Silt_pebble_count_PRCNT_INDICATOR_14',	'Sand_pebble_count_PRCNT_INDICATOR_15',	'Gravel_pebble_count_PRCNT_INDICATOR_16',
               'Cobble_pebble_count_PRCNT_INDICATOR_17',	'Boulder_pebble_count_PRCNT_INDICATOR_18',	
               'Bedrock_pebble_count_PRCNT_INDICATOR_19',	'Gravel_and_Cobble_pebble_count_PRCNT_INDICATOR_20',	'Boulder_UCSRB_pct',
-              'GravelCobble_UCSRB_pct',	'Pieces_per_mile_INDICATOR_1',
+              'GravelCobble_UCSRB_pct',	'Pieces_per_mile_CATEGORY_1_NUMERIC', # Pieces_per_mile_CATEGORY_1_NUMERIC was previously Pieces_per_mile_INDICATOR_1
               'Small_pieces_per_mile_INDICATOR_2',	'Medium_pieces_per_mile_INDICATOR_3',	'Large_pieces_per_mile_INDICATOR_4',
               'Overstory_mature_tree_prcnt_INDICATOR_5','Pools_CATEGORY_1_NUMERIC',	'Pools_total_INDICATOR_1',
               'Pools_per_mile_INDICATOR_2',	'Pools_deeper_3_ft_prcnt_INDICATOR_3',	'Pools_deeper_3_ft_per_mile_INDICATOR_4',
