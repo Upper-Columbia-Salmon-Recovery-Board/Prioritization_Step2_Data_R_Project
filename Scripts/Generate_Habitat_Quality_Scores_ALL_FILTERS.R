@@ -5,9 +5,9 @@
 # 
 # ------------------------------------------------------------------------------------------------------------------
 
-test_x = FALSE
+test_x = TRUE
 if(test_x){
-  species="Steelhead"
+  species="Spring Chinook"
   basins = c("Methow"  ,  "Entiat"  ,  "Wenatchee", "Okanogan" )
   
 }
@@ -307,13 +307,14 @@ FUNCTION_combine_HQ_ALL_Filters_no_Bull_Trout = function(HQ_Spring_Chinook, HQ_S
   Habitat_Quality_Scores_ALL_Species = merge(Habitat_Quality_Scores_ALL_Species, HQ_Scores_x, by="ReachName", all.x=TRUE)
   
   # ------------------------ replace blank cells "NA" --------------
+  # NOTE: on 12.March.2025 RTT decided to remove stability metrics
   replace_blank_x = "NA"
-  blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$BankStability_score  ))
-  Habitat_Quality_Scores_ALL_Species$BankStability_score[blank_x] = replace_blank_x
-  blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$ChannelStability_score  ))
-  Habitat_Quality_Scores_ALL_Species$ChannelStability_score[blank_x] = replace_blank_x
-  blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$Stability_Mean  ))
-  Habitat_Quality_Scores_ALL_Species$Stability_Mean[blank_x] = replace_blank_x
+  #blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$BankStability_score  ))
+  #Habitat_Quality_Scores_ALL_Species$BankStability_score[blank_x] = replace_blank_x
+  #blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$ChannelStability_score  ))
+  #Habitat_Quality_Scores_ALL_Species$ChannelStability_score[blank_x] = replace_blank_x
+  #blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$Stability_Mean  ))
+  #Habitat_Quality_Scores_ALL_Species$Stability_Mean[blank_x] = replace_blank_x
   blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$CoarseSubstrate_score  ))
   Habitat_Quality_Scores_ALL_Species$CoarseSubstrate_score[blank_x] = replace_blank_x
   blank_x = which( is.na( Habitat_Quality_Scores_ALL_Species$"Cover-Wood_score"  ))
@@ -340,9 +341,9 @@ FUNCTION_combine_HQ_ALL_Filters_no_Bull_Trout = function(HQ_Spring_Chinook, HQ_S
   Habitat_Quality_Scores_ALL_Species$SPCHNTier_Protection = as.factor(Habitat_Quality_Scores_ALL_Species$SPCHNTier_Protection)
   Habitat_Quality_Scores_ALL_Species$STLTier_Restoration = as.factor(Habitat_Quality_Scores_ALL_Species$STLTier_Restoration)
   Habitat_Quality_Scores_ALL_Species$STLTier_Protection = as.factor(Habitat_Quality_Scores_ALL_Species$STLTier_Protection)
-  Habitat_Quality_Scores_ALL_Species$BankStability_score = as.numeric(Habitat_Quality_Scores_ALL_Species$BankStability_score)
-  Habitat_Quality_Scores_ALL_Species$ChannelStability_score = as.numeric(Habitat_Quality_Scores_ALL_Species$ChannelStability_score)
-  Habitat_Quality_Scores_ALL_Species$Stability_Mean = as.numeric(Habitat_Quality_Scores_ALL_Species$Stability_Mean)
+  #Habitat_Quality_Scores_ALL_Species$BankStability_score = as.numeric(Habitat_Quality_Scores_ALL_Species$BankStability_score)
+  #Habitat_Quality_Scores_ALL_Species$ChannelStability_score = as.numeric(Habitat_Quality_Scores_ALL_Species$ChannelStability_score)
+  #Habitat_Quality_Scores_ALL_Species$Stability_Mean = as.numeric(Habitat_Quality_Scores_ALL_Species$Stability_Mean)
   Habitat_Quality_Scores_ALL_Species$CoarseSubstrate_score = as.numeric(Habitat_Quality_Scores_ALL_Species$CoarseSubstrate_score)
   Habitat_Quality_Scores_ALL_Species$"Cover-Wood_score" = as.numeric(Habitat_Quality_Scores_ALL_Species$"Cover-Wood_score")
   Habitat_Quality_Scores_ALL_Species$"Flow-SummerBaseFlow_score" = as.numeric(Habitat_Quality_Scores_ALL_Species$"Flow-SummerBaseFlow_score")

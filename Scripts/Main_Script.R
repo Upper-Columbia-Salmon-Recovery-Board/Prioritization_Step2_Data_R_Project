@@ -28,8 +28,8 @@ library(readxl)
 # ---------------------------------------------------------------------------
 #  Script Criteria for output
 # ---------------------------------------------------------------------------
-read_MASTER_directly = FALSE # if TRUE - read MASTER from UCSRB servers, if FALSE - read from local 
-write_MASTER_locally = TRUE # if TRUE -  write tabs in MASTER from UCSRB servers, if FALSE - do not write
+read_MASTER_directly = TRUE # if TRUE - read MASTER from UCSRB servers, if FALSE - read from local 
+write_MASTER_locally = FALSE # if TRUE -  write tabs in MASTER from UCSRB servers, if FALSE - do not write
 basins_to_include = c("Methow",  "Entiat","Wenatchee" , "Okanogan")  # basins to include in simulation    
 exclude_bull_trout = "no"  # if "yes" -> remove bull trout for WebMap applications
 output_Habitat_Quality_and_Habitat_Attribute_Scores = "no"  # enter "yes" or "no" if you want the "flat table" Habitat Attribute output (doubles time to run script)
@@ -43,6 +43,7 @@ generate_reach_level_AU_scores = FALSE # True/False to generate AU scores with r
 HQ_sensitivity_analysis_true_false = FALSE # IF you want to run the HQ sensitivity analysis
 Cramer_Remote_Sensing_yes_no = TRUE # True/False whether to use Cramer Fish Sciences modeled data
 Okanogan_direct_data_NOT_EDT = FALSE # TRUE = use 2023 updated Okanogan data (actual habitat data), FALSE = use EDT data
+Okanogan_direct_dataand_EDT_Hybrid = FALSE # TRUE = use 2023 updated Okanogan data AND use EDT data
 
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 #   Directories of Input and Output data  

@@ -283,7 +283,7 @@ if(output_Habitat_Quality_and_Habitat_Attribute_Scores == "yes"){
 # ---------------------------------------------------------------------------
 
 # ----------- habitat attributes for HQ output --------
-HQ_columns = c("Bank Stability", "Channel Stability", "Coarse Substrate","Cover- Wood", 	"Flow- Summer Base Flow",
+HQ_columns = c("Coarse Substrate","Cover- Wood", 	"Flow- Summer Base Flow",  # RTT approved removing stability metrics on 12.March.2025 "Bank Stability", "Channel Stability", 
                "Floodplain Connectivity","Off-Channel/Side-Channels", "Pool Quantity & Quality",
                "Riparian- Canopy Cover",	"Riparian-Disturbance",		"Temperature- Rearing")
 
@@ -312,7 +312,7 @@ for(habitat_attribute_x in HQ_columns){
     Habitat_Quality_Scores_Okanogan$Riparian = rowMeans(Habitat_Quality_Scores_Okanogan[,(ncolx-1):ncolx], na.rm=T)
   }
   
-  # ----------- get average Riparian score)
+  # ----------- Stability score -----------
   if(habitat_attribute_x == "Channel Stability"){
     ncolx = ncol(Habitat_Quality_Scores_Okanogan)
     Habitat_Quality_Scores_Okanogan$Stability = rowMeans(Habitat_Quality_Scores_Okanogan[,(ncolx-1):ncolx], na.rm=T)
@@ -323,7 +323,7 @@ for(habitat_attribute_x in HQ_columns){
 # used for non-Okanogan reaches: HQ_Score_Columns = c("Stability", "Coarse Substrate","Cover- Wood", 	"Flow- Summer Base Flow",
 #               "Floodplain Connectivity","Off-Channel/Side-Channels", "Pool Quantity & Quality",
 #               "Riparian",		"Temperature- Rearing")
-HQ_Score_Columns = c("Stability", "Coarse Substrate","Cover- Wood", 	"Flow- Summer Base Flow",
+HQ_Score_Columns = c("Coarse Substrate","Cover- Wood", 	"Flow- Summer Base Flow",   # "Stability", 
                                     "Floodplain Connectivity","Off-Channel/Side-Channels", "Pool Quantity & Quality",
                                    "Riparian",		"Temperature- Rearing")
 #HQ_Score_Columns = c("Stability_Mean", "CoarseSubstrate_score","Cover-Wood_score", 	"Flow-SummerBaseFlow_score",

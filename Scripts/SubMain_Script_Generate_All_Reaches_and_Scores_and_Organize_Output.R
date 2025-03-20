@@ -125,7 +125,7 @@ source(paste(script_path, 'Compare_EDT_and_RTT_output_data.R', sep=""))  # for M
 
 # ---------------  Combine Habitat_Quality_Scores with all filters (for all basins) ------
 source(paste(script_path, 'Generate_Habitat_Quality_Scores_ALL_FILTERS.R', sep=""))  
-habitat_quality_scores_colnames_output = c("BankStability_score" ,"ChannelStability_score", "Stability_Mean" , "CoarseSubstrate_score" ,"Cover-Wood_score", "Flow-SummerBaseFlow_score",
+habitat_quality_scores_colnames_output = c( "CoarseSubstrate_score" ,"Cover-Wood_score", "Flow-SummerBaseFlow_score",
                                            "FloodplainConnectivity_score", "Off-Channel/Side-Channels_score","PoolQuantity&Quality_score",
                                            "Riparian-Disturbance_score", "Riparian-CanopyCover_score", "Riparian_Mean","Temperature-Rearing_score")
 Habitat_Quality_Scores_ALL_Spring_Chinook = Generate_Habitat_Quality_Output_Table_WITH_FILTERS("Spring Chinook",basins_to_include, habitat_quality_scores_colnames_output)
@@ -570,19 +570,19 @@ Protection_Prioritization_Output_Bull_Trout = FUNCTION_Add_Reach_Rank_and_Misc_U
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------------
 
-Habitat_Attribute_Scores_columns_to_pull  = c("Bank Stability","Channel Stability",  "Coarse Substrate",
+Habitat_Attribute_Scores_columns_to_pull  = c(  "Coarse Substrate",  # RTT decided to remove Stability metrics - 12.Mar.2025 "Bank Stability","Channel Stability",
                                               "Cover- Wood", "Flow- Summer Base Flow",
                                               "Floodplain Connectivity", "Off-Channel/Side-Channels","Pool Quantity & Quality", # <- REI Values
                                               "Riparian- Canopy Cover"  ,    "Riparian-Disturbance" , 
                                               "Temperature- Rearing")
 
 
-Habitat_Quality_Scores_columns_to_pull = c("ReachName","Basin", "BankStability_score","ChannelStability_score","Stability_Mean","CoarseSubstrate_score",
+Habitat_Quality_Scores_columns_to_pull = c("ReachName","Basin","CoarseSubstrate_score",    # RTT decided to remove Stability metrics - 12.Mar.2025  "BankStability_score","ChannelStability_score","Stability_Mean",
                                            "Cover-Wood_score","Flow-SummerBaseFlow_score",
                                            "FloodplainConnectivity_score" ,"Off-Channel/Side-Channels_score","PoolQuantity&Quality_score","Riparian-Disturbance_score",
                                            "Riparian-CanopyCover_score","Riparian_Mean","Temperature-Rearing_score", "HQ_Sum","HQ_Pct")
 
-Habitat_qulaity_Scores_for_WebMap_column_names = c("Reach Name","Basin", "Bank Stability","Channel Stability", "Stability Mean", "Coarse Substrate",
+Habitat_qulaity_Scores_for_WebMap_column_names = c("Reach Name","Basin",  "Coarse Substrate",   # RTT decided to remove Stability metrics - 12.Mar.2025 "Bank Stability","Channel Stability", "Stability Mean",
                                                    "Cover- Wood", "Flow- Summer Base Flow",
                                                    "Floodplain Connectivity", "Off-Channel and Side-Channels","Pool Quantity and Quality", # <- REI Values
                                                    "Riparian- Canopy Cover"  ,    "Riparian-Disturbance" , "Riparian Mean",
@@ -605,7 +605,7 @@ Reach_Information_data_columns_new_names = c("Reach Name","Basin","Assessment Un
 #  "Harassment", "Icing", "Superimposition", "Temperature- Adult Holding",               # <- one species core metric
 #  "Temperature- Adult Spawning", "Temperature- Rearing",                              # <- one species core metric
 #  "Brook Trout", "Pools- Deep Pools", "Predators- Adults")                           # <- not a core metric
-Order_of_Habitat_Attribute_Rating_Table_Columns = c("Bank Stability","Channel Stability",  "Coarse Substrate",
+Order_of_Habitat_Attribute_Rating_Table_Columns = c( "Coarse Substrate",   # RTT decided to remove stability metrics 12.Mar.2025 "Bank Stability","Channel Stability", 
                                                     "Cover- Wood", "Flow- Summer Base Flow",
                                                     "Floodplain Connectivity", "Off-Channel/Side-Channels","Pool Quantity & Quality", # <- REI Values
                                                     "Riparian- Canopy Cover"  ,    "Riparian-Disturbance" , 

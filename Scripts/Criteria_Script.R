@@ -74,7 +74,10 @@ AU_Rank = AU_Rank                        #potential: 1,2,3; 1 is high priority, 
 # -------------------------------------------------------------------------------------------------------------
 
 # -------------------- Life Stage Priority (LSP) rank is "High Priority" (data in AU_Life_Stage_Priorities)  -------------------
+# NOTE: Reach_Rankings_Restoration_and_Protection script (as of 18.March.2025) hard codes "High Priority" life stages to be pulled
+#                 to calculate the "Limiting Factors for High-Priority Life Stages" to calculate
 Life_Stage_Priority = c("High Priority") # potential: ["Life Stage Not Supported", "Low Priority", "Medium Priority", "High Priority"] 
+# Life_Stage_Priority = c("Low Priority", "Medium Priority","High Priority") # potential: ["Life Stage Not Supported", "Low Priority", "Medium Priority", "High Priority"] 
 
 # ----------------------------------------------------------------------------------------------------------------------------
 #

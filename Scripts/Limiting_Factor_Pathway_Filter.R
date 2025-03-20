@@ -49,8 +49,8 @@ for(habitat_attribute_x in unique(Habitat_Attribute_Scores$Habitat_Attribute)[or
 
 test_x = TRUE
 if(test_x){
-  species = "Spring Chinook"
-  #species = "Steelhead"
+  #species = "Spring Chinook"
+  species = "Steelhead"
   basins = c("Methow", "Entiat", "Wenatchee", "Okanogan")
 }
 

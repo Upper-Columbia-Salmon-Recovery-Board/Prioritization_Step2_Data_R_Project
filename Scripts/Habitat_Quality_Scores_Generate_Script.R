@@ -201,7 +201,7 @@ Habitat_Quality_Scores = Habitat_Quality_Scores%>%
   mutate(HQ_Sum = sum(c_across( habitat_quality_scores_colnames_for_sum  ), na.rm=F) )
 
 # -------------------- Calculate percent (0 - 100%) ------------------
-Habitat_Quality_Scores$HQ_Pct = Habitat_Quality_Scores$HQ_Sum/45
+Habitat_Quality_Scores$HQ_Pct = Habitat_Quality_Scores$HQ_Sum/ (length(habitat_quality_scores_colnames_for_sum) * 5)
 
 # ------------------------------------------------------------------------------------- 
 #                 calculate HQ Restoration and Protection Score
@@ -284,7 +284,7 @@ if(HQ_sensitivity_analysis_true_false){
       mutate(HQ_Sum2 = sum(c_across( habitat_quality_scores_colnames_for_sum_X  ), na.rm=F) )
 
     # -------------------- Calculate percent (0 - 100%) ------------------
-    Habitat_Quality_Scores_for_sensitivity$HQ_Pct2 = Habitat_Quality_Scores_for_sensitivity[,"HQ_Sum2"] /40
+    Habitat_Quality_Scores_for_sensitivity$HQ_Pct2 = Habitat_Quality_Scores_for_sensitivity[,"HQ_Sum2"] / ( (length(habitat_quality_scores_colnames_for_sum)*5) - 5  )
 
     # ------------------------------------------------------------------------------------- 
     #                 calculate HQ Restoration and Protection Score

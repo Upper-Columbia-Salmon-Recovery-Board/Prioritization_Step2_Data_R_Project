@@ -14,7 +14,7 @@
 Habitat_Quality_Scores_updated = Habitat_Quality_Scores
 
 # ------------------------------ add Okanogan scores ----------------
-HQ_columns_to_pull = colnames(Habitat_Quality_Scores_updated)[7:23]
+HQ_columns_to_pull = colnames(Habitat_Quality_Scores_updated)[7:ncol(Habitat_Quality_Scores_updated)]
 for(HQ_col_x in HQ_columns_to_pull ){
   HQ_col_Okanogan = which(colnames(Habitat_Quality_Scores_Okanogan) == HQ_col_x)
   for(row_x in 1:nrow(Habitat_Quality_Scores_Okanogan)){

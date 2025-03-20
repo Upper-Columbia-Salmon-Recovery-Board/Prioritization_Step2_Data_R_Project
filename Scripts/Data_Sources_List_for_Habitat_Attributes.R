@@ -41,13 +41,13 @@ Habitat_Attributes_List = list(
   'Food- Food Web Resources' = c( 'PROFESSIONAL JUDGEMENT'), 
   'Harassment' = c('PROFESSIONAL JUDGEMENT' ), 
   'Icing' = c( 'PROFESSIONAL JUDGEMENT'), 
-  'Floodplain Connectivity' = c( 'Floodplain_Connectivity_CATEGORY_1', 'Entrenchment_CATEGORY_2', 'Channel_Confinementor_or_Entrenchment_Ratio_INDICATOR_9', 'UCSRB_OffChannel_Floodplain', 'Floodplain_Connectivity_REI_Cascade_Fisheries_2024', 'PRCNT_Reach_length_with_bank_armour_or_levee' ),   # Old: "Off-Channel- Floodplain"
+  'Floodplain Connectivity' = c( 'Floodplain_Connectivity_CATEGORY_1', 'Entrenchment_CATEGORY_2', 'Channel_Confinementor_or_Entrenchment_Ratio_INDICATOR_9', 'UCSRB_OffChannel_Floodplain', 'Floodplain_Connectivity_REI_Cascade_Fisheries_2024' ),   #  temporarily removed(12.Mar.2025):  'PRCNT_Reach_length_with_bank_armour_or_levee'    Old: "Off-Channel- Floodplain"
   'Off-Channel/Side-Channels' = c('Connectivity_CATEGORY_1', 'Side_Channel_Habitat_Prcnt_INDICATOR_6', 'WetSC_Pct_Average', 'UCSRB_OffChannel_SideChannels', 'Off_Channel_Connectivity_REI_Rating_Cramer_2023', 'Off_Channel_habitat_REI_Cascade_Fisheries_2024', 'PRCNT_Area_Off_Channel_10_yr_floodplain_Aspect'  ),
   'Pool Quantity & Quality' = c( 'Pools_CATEGORY_1', 'Pool_Habitat_Prcnt_INDICATOR_4', 'Pools_per_mile_INDICATOR_2', 'Cramer_Pools_FIELD_REI', 'Pools_per_mile_Cramer_2023','Pools_per_mile_Cascade_Fisheries_2024'),  #  'Channel_widths_per_pool_Cascade_Fisheries_2024'
   'Pools- Deep Pools' = c('Pools_deeper_3_ft_prcnt_INDICATOR_3', 'Pools_deeper_3_ft_per_mile_INDICATOR_4', 'Pools_deeper_5_ft_per_mile_INDICATOR_5'  ), 
   'Predators- Adults' = c( 'PROFESSIONAL JUDGEMENT'), 
   'Predators- Juveniles' = c( 'PROFESSIONAL JUDGEMENT'),
-  'Riparian- Canopy Cover' = c('Canopy_Cover_CATEGORY_1', 'UCSRB_CanopyCoverPct', 'Aspect_Riparian_Tree_Shrub_Cover_PCNT', 'Canopy_Cover_NORWEST'),
+  'Riparian- Canopy Cover' = c('Canopy_Cover_CATEGORY_1', 'UCSRB_CanopyCoverPct', 'Aspect_Riparian_Tree_Shrub_Cover_PCNT'),  #  'Canopy_Cover_NORWEST' = RTT PWG decided not to use on 10.Mar.2025
   'Riparian-Disturbance' = c('Disturbance_CATEGORY_1', 'UCSRB_RiparianDisturbancePct', 'Aspect_Riparian_Disturbance_PRCNT'),
   'Superimposition' = list('PROFESSIONAL JUDGEMENT' ), 
   'Temperature- Adult Holding' = c( 'NORWEST_Temperature', '305bListings_Temperature', 'RAWatershed_Rating_Temp' ), 
@@ -80,7 +80,7 @@ Habitat_Attributes_List_OKANOGAN = list(
   'Pools- Deep Pools' = c(  'PROFESSIONAL JUDGEMENT' ),
   'Predators- Adults' = c( 'PROFESSIONAL JUDGEMENT'), 
   'Predators- Juveniles' = c( 'PROFESSIONAL JUDGEMENT', 'EDT_Level 2 Predation Risk'),
-  'Riparian- Canopy Cover' = c( 'UCSRB_CanopyCoverPct' , 'Canopy_Cover_NORWEST'),
+  'Riparian- Canopy Cover' = c( 'UCSRB_CanopyCoverPct' ), #  'Canopy_Cover_NORWEST' = RTT PWG decided not to use on 10.Mar.2025
   'Riparian-Disturbance' = c('UCSRB_RiparianDisturbancePct' ),
   'Superimposition' = list('PROFESSIONAL JUDGEMENT' ), 
   'Temperature- Adult Holding' = c( 'NORWEST_Temperature', '305bListings_Temperature',  'EDT_Temperature: Daily Maximum' ), 
@@ -90,35 +90,38 @@ Habitat_Attributes_List_OKANOGAN = list(
 
 
 # ---------hybrid EDT and empirical data ----------
-Habitat_Attributes_List_OKANOGAN = list(
-  '% Fines/Embeddedness' = c('CCT_OBMEP_embeddedness', 'CCT_OBMEP_fines_and_sands'),
-  'Bank Stability' = c('EDT_Level 2 Confinement: Artificial'),
-  'Brook Trout' = c('PROFESSIONAL JUDGEMENT', 'Step1 results'),
-  'Channel Stability' = c('EDT_Level 2 Confinement: Artificial'),
-  'Coarse Substrate' = c('CCT_OBMEP_gravel_and_small_cobbles', 'Cramer_Substrate_MODELED_sand_silt_clay_PRCNT' , 'Cramer_Substrate_MODELED_REI' ),
-  'Contaminants' = c( 'Contaminants_303d (not pH bacteria or DO listings)', 'EDT Level 2 Metals in Sediments Functional Condition','EDT Level 2 Metals in Water Functional Condition','EDT Level 2 Miscellaneous Toxins Functional Condition'),
-  'Cover- Boulders'  = c(  'SubEstBldr_CHAMP'), 
-  'Cover- Wood' = c('CCT_OBMEP_LWM_pieces_per_mile', 'Pieces_per_mile_Medium_Large_INDICATOR_1', 'LWFreq_Bf_Average CHAMP', 'Cramer_Cover_Wood_FIELD_REI', 'Cramer_Cover_Wood_MODELED_REI' ), 
-  'Cover- Undercut Banks' = c( 'Undercut_Area_Pct_CHAMP' ), 
-  'Entrainment/Stranding' = c('PROFESSIONAL JUDGEMENT'),
-  'Flow- Scour' = c( 'EDT_Level 2 Bed scour','EDT_Level 2 Flow: Inter-Annual Low Flow Variation'), 
-  'Flow- Summer Base Flow' = c( 'EDT_Width','EDT_Level 2 Flow: Inter-Annual Low Flow Variation', 'PROSPER' ,'Flow_305bList', 'ATLAS Flow','PROFESSIONAL JUDGEMENT'), 
-  'Food- Food Web Resources' = c('PROFESSIONAL JUDGEMENT',  'EDT_Level 2 Benthic Richness', 'EDT_Temperature: Food Effect'), 
-  'Harassment' = c('PROFESSIONAL JUDGEMENT' ), 
-  'Icing' = c( 'PROFESSIONAL JUDGEMENT'), 
-  'Floodplain Connectivity' = c( 'EDT_Floodplain pct','PRCNT_Reach_length_with_bank_armour_or_levee'),
-  'Off-Channel/Side-Channels' = c('CCT_OBMEP_channel_type_side_channel_and_off_channel_PRCNT'  ),
-  'Pool Quantity & Quality' = c( 'CCT_OBMEP_pools_per_mile', 'Pool_Habitat_Prcnt_INDICATOR_4', 'Pools_per_mile_INDICATOR_2', 'Cramer_Pools_FIELD_REI', 'Cramer_Pools_MODELED_REI' ), 
-  'Pools- Deep Pools' = c(  'PROFESSIONAL JUDGEMENT' ),
-  'Predators- Adults' = c( 'PROFESSIONAL JUDGEMENT'), 
-  'Predators- Juveniles' = c( 'PROFESSIONAL JUDGEMENT', 'EDT_Level 2 Predation Risk'),
-  'Riparian- Canopy Cover' = c( 'UCSRB_CanopyCoverPct' , 'Canopy_Cover_NORWEST'),
-  'Riparian-Disturbance' = c('UCSRB_RiparianDisturbancePct' ),
-  'Superimposition' = list('PROFESSIONAL JUDGEMENT' ), 
-  'Temperature- Adult Holding' = c( 'NORWEST_Temperature', '305bListings_Temperature',  'EDT_Temperature: Daily Maximum' ), 
-  'Temperature- Adult Spawning' = c('NORWEST_Temperature', '305bListings_Temperature',  'EDT_Temperature: Daily Maximum'), 
-  'Temperature- Rearing'  = c('NORWEST_Temperature', '305bListings_Temperature',  'EDT_Temperature: Daily Maximum' )
-)
+if(Okanogan_direct_dataand_EDT_Hybrid){
+  Habitat_Attributes_List_OKANOGAN = list(
+    '% Fines/Embeddedness' = c('CCT_OBMEP_embeddedness', 'CCT_OBMEP_fines_and_sands', 'EDT_Level 2 Fine Sediment', 'EDT_Level 2 Embeddedness'),
+    'Bank Stability' = c('EDT_Level 2 Confinement: Artificial'),
+    'Brook Trout' = c('PROFESSIONAL JUDGEMENT', 'Step1 results'),
+    'Channel Stability' = c('EDT_Level 2 Confinement: Artificial'),
+    'Coarse Substrate' = c('CCT_OBMEP_gravel_and_small_cobbles', 'Cramer_Substrate_MODELED_sand_silt_clay_PRCNT' , 'Cramer_Substrate_MODELED_REI' , 'EDT_UCSRBCoarseSub pct'),
+    'Contaminants' = c( 'Contaminants_303d (not pH bacteria or DO listings)', 'EDT Level 2 Metals in Sediments Functional Condition','EDT Level 2 Metals in Water Functional Condition','EDT Level 2 Miscellaneous Toxins Functional Condition'),
+    'Cover- Boulders'  = c(  'SubEstBldr_CHAMP'), 
+    'Cover- Wood' = c('CCT_OBMEP_LWM_pieces_per_mile','EDT_Woody Debris' , 'Pieces_per_mile_Medium_Large_INDICATOR_1', 'LWFreq_Bf_Average CHAMP', 'Cramer_Cover_Wood_FIELD_REI', 'Cramer_Cover_Wood_MODELED_REI' ), 
+    'Cover- Undercut Banks' = c( 'Undercut_Area_Pct_CHAMP' ), 
+    'Entrainment/Stranding' = c('PROFESSIONAL JUDGEMENT'),
+    'Flow- Scour' = c( 'EDT_Level 2 Bed scour','EDT_Level 2 Flow: Inter-Annual Low Flow Variation'), 
+    'Flow- Summer Base Flow' = c( 'EDT_Width','EDT_Level 2 Flow: Inter-Annual Low Flow Variation', 'PROSPER' ,'Flow_305bList', 'ATLAS Flow','PROFESSIONAL JUDGEMENT'), 
+    'Food- Food Web Resources' = c('PROFESSIONAL JUDGEMENT',  'EDT_Level 2 Benthic Richness', 'EDT_Temperature: Food Effect'), 
+    'Harassment' = c('PROFESSIONAL JUDGEMENT' ), 
+    'Icing' = c( 'PROFESSIONAL JUDGEMENT'), 
+    'Floodplain Connectivity' = c( 'EDT_Floodplain pct'), #  temporarily removed(12.Mar.2025):  'PRCNT_Reach_length_with_bank_armour_or_levee' 
+    'Off-Channel/Side-Channels' = c('CCT_OBMEP_channel_type_side_channel_and_off_channel_PRCNT', 'EDT Level 2 Side Channel Functional Condition'   ),
+    'Pool Quantity & Quality' = c( 'CCT_OBMEP_pools_per_mile','EDT_Scour Pool pct', 'Pool_Habitat_Prcnt_INDICATOR_4', 'Pools_per_mile_INDICATOR_2', 'Cramer_Pools_FIELD_REI', 'Cramer_Pools_MODELED_REI' ), 
+    'Pools- Deep Pools' = c(  'PROFESSIONAL JUDGEMENT' ),
+    'Predators- Adults' = c( 'PROFESSIONAL JUDGEMENT'), 
+    'Predators- Juveniles' = c( 'PROFESSIONAL JUDGEMENT', 'EDT_Level 2 Predation Risk'),
+    'Riparian- Canopy Cover' = c( 'UCSRB_CanopyCoverPct' ),  #  'Canopy_Cover_NORWEST' = RTT PWG decided not to use on 10.Mar.2025
+    'Riparian-Disturbance' = c('UCSRB_RiparianDisturbancePct' ),
+    'Superimposition' = list('PROFESSIONAL JUDGEMENT' ), 
+    'Temperature- Adult Holding' = c( 'NORWEST_Temperature', '305bListings_Temperature',  'EDT_Temperature: Daily Maximum' ), 
+    'Temperature- Adult Spawning' = c('NORWEST_Temperature', '305bListings_Temperature',  'EDT_Temperature: Daily Maximum'), 
+    'Temperature- Rearing'  = c('NORWEST_Temperature', '305bListings_Temperature',  'EDT_Temperature: Daily Maximum' )
+  )
+}
+
 
 # ----------------------- list of Okanogan habitat attribute names in habitat raw data data frame --------------
 
@@ -139,13 +142,13 @@ if(Okanogan_direct_data_NOT_EDT){
     'Food- Food Web Resources' = c('PROFESSIONAL JUDGEMENT',  'EDT_Level 2 Benthic Richness', 'EDT_Temperature: Food Effect'), 
     'Harassment' = c('PROFESSIONAL JUDGEMENT' ), 
     'Icing' = c( 'PROFESSIONAL JUDGEMENT'), 
-    'Floodplain Connectivity' = c( 'EDT_Floodplain pct','PRCNT_Reach_length_with_bank_armour_or_levee'),
+    'Floodplain Connectivity' = c( 'EDT_Floodplain pct'),   #  temporarily removed(12.Mar.2025):  'PRCNT_Reach_length_with_bank_armour_or_levee' 
     'Off-Channel/Side-Channels' = c('CCT_OBMEP_channel_type_side_channel_and_off_channel_PRCNT'  ),
     'Pool Quantity & Quality' = c( 'CCT_OBMEP_pools_per_mile', 'Pool_Habitat_Prcnt_INDICATOR_4', 'Pools_per_mile_INDICATOR_2', 'Cramer_Pools_FIELD_REI', 'Cramer_Pools_MODELED_REI' ), 
     'Pools- Deep Pools' = c(  'PROFESSIONAL JUDGEMENT' ),
     'Predators- Adults' = c( 'PROFESSIONAL JUDGEMENT'), 
     'Predators- Juveniles' = c( 'PROFESSIONAL JUDGEMENT', 'EDT_Level 2 Predation Risk'),
-    'Riparian- Canopy Cover' = c( 'UCSRB_CanopyCoverPct' , 'Canopy_Cover_NORWEST'),
+    'Riparian- Canopy Cover' = c( 'UCSRB_CanopyCoverPct' ),  #  'Canopy_Cover_NORWEST' = RTT PWG decided not to use on 10.Mar.2025
     'Riparian-Disturbance' = c('UCSRB_RiparianDisturbancePct' ),
     'Superimposition' = list('PROFESSIONAL JUDGEMENT' ), 
     'Temperature- Adult Holding' = c( 'NORWEST_Temperature', '305bListings_Temperature',  'EDT_Temperature: Daily Maximum' ), 
@@ -203,11 +206,11 @@ CHAMP_data_per_reach_data_use = list('Off-Channel/Side-Channels' = 3,
 CHAMP_data_per_reach_data_sources = list('Off-Channel/Side-Channels' = 'WetSC_Pct_Average',
                                      'Coarse Substrate' = 'SubEstSandFines_Average' )  # TRIEd: 'GRVL_COBL_UCSRB_CHAMP' 
 #------------------------- column names of Habitat_Quality_Scores - HQ scores output (generated scores for pathway) -------
-habitat_quality_scores_colnames_for_sum = c("Stability_Mean" , "CoarseSubstrate_score" ,"Cover-Wood_score", "Flow-SummerBaseFlow_score",
+habitat_quality_scores_colnames_for_sum = c("CoarseSubstrate_score" ,"Cover-Wood_score", "Flow-SummerBaseFlow_score",
                                             "FloodplainConnectivity_score", "Off-Channel/Side-Channels_score","PoolQuantity&Quality_score",
                                             "Riparian_Mean","Temperature-Rearing_score")
 
-habitat_quality_scores_colnames_ALL = c("BankStability_score", "ChannelStability_score",'Stability_Mean','CoarseSubstrate_score','Cover-Wood_score',
+habitat_quality_scores_colnames_ALL = c('CoarseSubstrate_score','Cover-Wood_score',
                                             'Flow-SummerBaseFlow_score', 'FloodplainConnectivity_score',
                                             'Off-Channel/Side-Channels_score','PoolQuantity&Quality_score',"Riparian-Disturbance_score" , "Riparian-CanopyCover_score" ,
                                         'Riparian_Mean', 'Temperature-Rearing_score')
@@ -227,15 +230,15 @@ habitat_quality_scores_colnames_ALL = c("BankStability_score", "ChannelStability
 #       is the first data source pulled for each reach
 # 
 Habitat_Quality_Habitat_Attributes_List = list(
-  'Bank Stability' = c('Bank_Stability_CATEGORY_1', 'UCSRB_BankStability'), 
-  'Channel Stability' = c('Vertical_Channel_Stability_CATEGORY_1', 'UCSRB_ChannelStability'),
+#  RTT - 12.Mar.2025 approved to not include for HQ score     'Bank Stability' = c('Bank_Stability_CATEGORY_1', 'UCSRB_BankStability'), 
+  #  RTT - 12.Mar.2025 approved to not include for HQ score  'Channel Stability' = c('Vertical_Channel_Stability_CATEGORY_1', 'UCSRB_ChannelStability'),
   'Coarse Substrate' = c('Dominant_Substrate_CATEGORY_1', 'GravelCobble_UCSRB_pct', 'GRVL_COBL_UCSRB_CHAMP'),
   'Cover- Wood' = c('Pieces_per_mile_CATEGORY_1', 'Pieces_per_mile_Medium_Large_INDICATOR_1', 'LWFreq_Bf_CHAMP' ), 
   'Flow- Summer Base Flow' = c( 'RAWatershed_Rating_Flow', 'Flow_305bList', 'PROSPER', 'PROFESSIONAL JUDGEMENT', 'ATLAS Flow'), 
   'Floodplain Connectivity' = c( 'Floodplain_Connectivity_CATEGORY_1', 'Entrenchment_CATEGORY_2', 'Channel_Confinementor_or_Entrenchment_Ratio_INDICATOR_9', 'UCSRB_OffChannel_Floodplain' ),   # Data Sources listes first HabAtr as Floodplain_Connectivity_CATEGORY_1
   'Off-Channel/Side-Channels' = c('Connectivity_CATEGORY_1', 'Side_Channel_Habitat_Prcnt_INDICATOR_6', 'WetSC_Pct_Average', 'UCSRB_OffChannel_SideChannels'  ),
   'Pool Quantity & Quality' = c( 'Pools_CATEGORY_1', 'Pool_Habitat_Prcnt_INDICATOR_4', 'Pools_per_mile_INDICATOR_2'), 
-  'Riparian- Canopy Cover' = c( 'UCSRB_CanopyCoverPct' , 'Canopy_Cover_NORWEST'),
+  'Riparian- Canopy Cover' = c( 'UCSRB_CanopyCoverPct' ),  #  'Canopy_Cover_NORWEST' = RTT PWG decided not to use on 10.Mar.2025
   'Riparian-Disturbance' = c('Disturbance_CATEGORY_1' , 'UCSRB_RiparianDisturbancePct' ),
   'Temperature- Rearing'  = c('NORWEST_Temperature', '305bListings_Temperature', 'RAWatershed_Rating_Temp' )
 )

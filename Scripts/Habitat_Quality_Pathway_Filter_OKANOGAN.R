@@ -529,6 +529,8 @@ Combine_MetEntWen_and_Okanogan_Habitat_Quality_Output = function(MetEntWen_data_
   # ----------- update Okanogan name ---------
   x = which(colnames(Okanogan_data_frame) == "Riparian_score")
   colnames(Okanogan_data_frame)[x] = "Riparian_Mean_score"
+  x = which(colnames(Okanogan_data_frame) == "Riparian_Mean")
+  colnames(Okanogan_data_frame)[x] = "Riparian_Mean_score"
   
   # -------------- start with basic info --------------
   df_add_to_MetEntWen = Okanogan_data_frame[,1:6]
@@ -612,8 +614,10 @@ Combine_MetEntWen_and_Okanogan_Habitat_Quality_Output_Protection = function(MetE
   # -------------- update "Riparian_Mean" name ---------------
   x = which(habitat_quality_scores_colnames_for_combo == "Riparian_Mean")
   habitat_quality_scores_colnames_for_combo[x] = "Riparian_Mean_score"
-  # ----------- update Okanogan name ---------
+  # ----------- update Okanogan name to be "Riparian_Mean_score" ---------
   x = which(colnames(Okanogan_data_frame) == "Riparian_score")
+  colnames(Okanogan_data_frame)[x] = "Riparian_Mean_score"
+  x = which(colnames(Okanogan_data_frame) == "Riparian_Mean")
   colnames(Okanogan_data_frame)[x] = "Riparian_Mean_score"
   
   # -------------- start with basic info --------------

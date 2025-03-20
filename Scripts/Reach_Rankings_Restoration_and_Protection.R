@@ -35,9 +35,9 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   # -------------------- SPRING CHINOOK ---------------------------
   # ---------------- species reach ---------------
   species_reach_Spring_Chinook = 'Spring.Chinook.Reach'
-  # ---------------- species AU Rank RESTORATION ----------
+  # ---------------- species AU Rank (Step 1) RESTORATION ----------
   AU_rank_name_restoration_Spring_Chinook = 'SPCHNTier_Restoration'
-  # ---------------- species AU Rank PROTECTION ----------
+  # ---------------- species AU Rank (Step 1) PROTECTION ----------
   AU_rank_name_protection_Spring_Chinook = 'SPCHNTier_Protection'
   # --------------- Life stage Sum column name ----------
   life_stage_sum_column_Spring_Chinook = 'SPCHN Number of Life Stages'
@@ -58,10 +58,10 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   # -------------------- STEELHEAD -------------------------------------------
   # ---------------- species reach ---------------
   species_reach_Steelhead = 'Steelhead.Reach'
-  # ---------------- species AU Rank ----------
+  # ---------------- species AU Rank (Step 1)  ----------
   AU_rank_name_restoration_Steelhead = 'STLTier_Restoration'
   AU_rank_name_restoration_Steelhead_Okanogan  = 'AU Restoration Rank' # FOR Okanogan
-  # ---------------- species AU Rank PROTECTION ----------
+  # ---------------- species AU Rank (Step 1) PROTECTION ----------
   AU_rank_name_protection_Steelhead = 'STLTier_Protection'
   AU_rank_name_protection_Steelhead_Okanogan = 'AU Protection Rank'
   # --------------- Life stage Sum column name ----------
@@ -130,7 +130,7 @@ Generate_Restoration_or_Protection_Reach_Rankings_Table = function( basins ){
   
   print(paste("Total reaches after only having basins of interest: ", nrow(Species_Reach_Information_data), sep=""))
   
-  # ---------- AU Ranks data frame for this species ---------
+  # ---------- AU Ranks (Step 1) data frame for this species ---------
   Species_AU_Ranks_data_Spring_Chinook = AU_Ranks_data
   Species_AU_Ranks_data_Steelhead = AU_Ranks_data
   Species_AU_Ranks_data_Steelhead_Okanogan = AU_Ranks_Okanogan
@@ -3176,10 +3176,10 @@ FUNCTION_Add_Barrier_Data_Rankings = function(Barriers_Pathways_Data,  exclude_b
 #               Function to pull all the High Priority life stages 
 #
 # -----------------------------------------------------------------------------------------------------------------------------------------------
-test_x = TRUE
+test_x = FALSE
 if(test_x){
-  species_x = "Spring Chinook"
-  reach_x = "Alder Creek 01"
+  species_x = "Steelhead"
+  reach_x = "Roaring Creek Entiat 03"
 }
   
 
